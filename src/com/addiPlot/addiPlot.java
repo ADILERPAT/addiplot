@@ -12,6 +12,7 @@ import com.addiPlot.gp_types.coordinate;
 import com.addiPlot.graphics.curve_points;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -20,7 +21,10 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,8 +34,42 @@ public class addiPlot extends Activity {
 	private static Canvas _canvas = new Canvas();
 	private static int _x;
 	private static int _y;
-	private graphics _graphics = new graphics();
-	private Vector<curve_points> _curves = new Vector<curve_points>();
+	private static term mTerm;
+	
+	// Need handler for callbacks to the UI thread
+	public final Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) { 
+			//if (msg.getData().getString("text").startsWith("STARTUPADDIEDITWITH=")) {
+		};
+	};
+	
+	// Create runnable for thread run
+	final Runnable mRunThread = new Runnable() {
+		public void run() {
+			//do something compute intensive
+			term.plotIt();
+			mHandler.post(mUpdateResults);
+		}
+	};
+	
+	// Create runnable for posting
+	final Runnable mUpdateResults = new Runnable() {
+		public void run() {
+			updateResultsInUi();
+		}
+	};
+	
+	private void updateResultsInUi() {
+		// Back in the UI thread -- update our UI elements based on the data in mResults
+	}
+	
+	public void plotIt() {
+		// Fire off a thread to do some work that we shouldn't do directly in the UI thread
+		ThreadGroup threadGroup = new ThreadGroup("plotItCmdGroup");
+		Thread t = new Thread(threadGroup, mRunThread, "plotItCmd", 16*1024*1024) {};
+		t.start();
+	}
+
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -48,26 +86,10 @@ public class addiPlot extends Activity {
 	    setIntent(intent);
 	    String plotData = intent.getStringExtra("plotData"); 
 	    
+	    //will get rid of this, but this handles original way of passing data
 	    if (plotData != null) {
-			String rows[] = plotData.split(";");
-			int firstLoop = 1;
-			_curves.clear();
-			for (int rowLoop = 0; rowLoop < rows.length; rowLoop++) {
-		        String values[] = rows[rowLoop].split(",");
-		        for (int curveLoop = 0; curveLoop < values.length/2; curveLoop++) {
-		        	if (firstLoop == 1) {
-		        		curve_points tempCurve = _graphics.new curve_points();
-		        		_curves.add(tempCurve);
-		        	}
-		        	coordinate tempCoord = new coordinate();
-		        	tempCoord.x = Double.valueOf(values[curveLoop*2]);
-		        	tempCoord.y = Double.valueOf(values[curveLoop*2+1]);
-		        	_curves.get(curveLoop).points.add(tempCoord);
-		        }
-		        firstLoop = 0;
-		    }
-			
-			demoview.invalidate();
+	    	term.usePlotDataString(plotData);
+	    	demoview.invalidate();
 	    }
 	}
 	
@@ -208,7 +230,7 @@ public class addiPlot extends Activity {
 			paint.setColor(Color.WHITE);
 			_canvas.drawRect(padding, padding, padding+width, padding+height, paint);
 			
-			if (!_curves.isEmpty()) {
+			if (!term.mCurves.isEmpty()) {
 				NumberFormat exp = DecimalFormat.getInstance();
 				if (exp instanceof DecimalFormat) {
 				    ((DecimalFormat)exp).applyPattern("0.00E0");
@@ -219,35 +241,35 @@ public class addiPlot extends Activity {
 		    	double yMax = 0;
 		    	double xRange = 0;
 		    	double yRange = 0;
-		    	for (int curveLoop=0; curveLoop < _curves.size(); curveLoop++) {
-		    		for (int pointLoop = 0; pointLoop < _curves.get(curveLoop).points.size(); pointLoop++) {
+		    	for (int curveLoop=0; curveLoop < term.mCurves.size(); curveLoop++) {
+		    		for (int pointLoop = 0; pointLoop < term.mCurves.get(curveLoop).points.size(); pointLoop++) {
 		    			if ((curveLoop == 0) && (pointLoop == 0)) {
-		    				xMin = _curves.get(curveLoop).points.get(pointLoop).x;
-		    				xMax = _curves.get(curveLoop).points.get(pointLoop).x;
-		    				yMin = _curves.get(curveLoop).points.get(pointLoop).y;
-		    				yMax = _curves.get(curveLoop).points.get(pointLoop).y;
+		    				xMin = term.mCurves.get(curveLoop).points.get(pointLoop).x;
+		    				xMax = term.mCurves.get(curveLoop).points.get(pointLoop).x;
+		    				yMin = term.mCurves.get(curveLoop).points.get(pointLoop).y;
+		    				yMax = term.mCurves.get(curveLoop).points.get(pointLoop).y;
 		    			} else {
-		    				if (_curves.get(curveLoop).points.get(pointLoop).x < xMin) {
-		    					xMin = _curves.get(curveLoop).points.get(pointLoop).x;
+		    				if (term.mCurves.get(curveLoop).points.get(pointLoop).x < xMin) {
+		    					xMin = term.mCurves.get(curveLoop).points.get(pointLoop).x;
 		    				}
-		    				if (_curves.get(curveLoop).points.get(pointLoop).x > xMax) {
-		    					xMax = _curves.get(curveLoop).points.get(pointLoop).x;
+		    				if (term.mCurves.get(curveLoop).points.get(pointLoop).x > xMax) {
+		    					xMax = term.mCurves.get(curveLoop).points.get(pointLoop).x;
 		    				}
-		    				if (_curves.get(curveLoop).points.get(pointLoop).y < yMin) {
-		    					yMin = _curves.get(curveLoop).points.get(pointLoop).y;
+		    				if (term.mCurves.get(curveLoop).points.get(pointLoop).y < yMin) {
+		    					yMin = term.mCurves.get(curveLoop).points.get(pointLoop).y;
 		    				}
-		    				if (_curves.get(curveLoop).points.get(pointLoop).y > yMax) {
-		    					yMax = _curves.get(curveLoop).points.get(pointLoop).y;
+		    				if (term.mCurves.get(curveLoop).points.get(pointLoop).y > yMax) {
+		    					yMax = term.mCurves.get(curveLoop).points.get(pointLoop).y;
 		    				}
 		    			}
 		    		}
 		    	}
 		    	xRange = xMax-xMin;
 		    	yRange = yMax-yMin;
-		    	for (int curveLoop=0; curveLoop < _curves.size(); curveLoop++) {
-		    		for (int pointLoop = 0; pointLoop < _curves.get(curveLoop).points.size(); pointLoop++) {
-		    			int xNorm = padding + (int)(width * (_curves.get(curveLoop).points.get(pointLoop).x-xMin)/xRange);
-		    			int yNorm = padding + height - (int)(height * (_curves.get(curveLoop).points.get(pointLoop).y-yMin)/yRange);
+		    	for (int curveLoop=0; curveLoop < term.mCurves.size(); curveLoop++) {
+		    		for (int pointLoop = 0; pointLoop < term.mCurves.get(curveLoop).points.size(); pointLoop++) {
+		    			int xNorm = padding + (int)(width * (term.mCurves.get(curveLoop).points.get(pointLoop).x-xMin)/xRange);
+		    			int yNorm = padding + height - (int)(height * (term.mCurves.get(curveLoop).points.get(pointLoop).y-yMin)/yRange);
 		    			if (pointLoop == 0) {
 		    			   move(xNorm,yNorm);	
 		    			} else {
