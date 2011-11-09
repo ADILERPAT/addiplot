@@ -2,24 +2,43 @@ package com.addiPlot;
 
 import java.util.Vector;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
 import com.addiPlot.gp_types.coordinate;
 import com.addiPlot.graphics.curve_points;
 
 public class term {
+	
+	private static Handler mHandler;
 	
 	public static graphics mGraphics = new graphics();
 	
 	public static Vector<curve_points> mCurves = new Vector<curve_points>();
 	
 	public static void move (int x, int y) {
-		addiPlot.move(x, y);
+		Message msg = new Message();
+    	Bundle bndl = new Bundle();
+    	bndl.putInt("x", x);
+    	bndl.putInt("y", y);
+    	bndl.putString("command", "move");
+    	msg.setData(bndl);
+    	mHandler.sendMessage(msg);
 	}
 	
 	public static void vector (int x, int y) {
-		addiPlot.vector(x, y);
+		Message msg = new Message();
+    	Bundle bndl = new Bundle();
+    	bndl.putInt("x", x);
+    	bndl.putInt("y", y);
+    	bndl.putString("command", "vector");
+    	msg.setData(bndl);
+    	mHandler.sendMessage(msg);
 	}
 
-	public static void plotIt() {
+	public static void plotIt(Handler handler) {
+		mHandler = handler;
 	}
 
 	public static void usePlotDataString(String plotData) {
