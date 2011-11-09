@@ -71,19 +71,19 @@ public class graphics {
 	    			y = axis.map_y(plot.points.get(i).y);
 
 	    			if (prev == coord_type.INRANGE) {
-	    				t.vector(x, y);
+	    				term.vector(x, y);
 	    			} else if (prev == coord_type.OUTRANGE) {
 	    				/* from outrange to inrange */
 	    				if (!gadgets.clip_lines1) {
-	    					t.move(x, y);
+	    					term.move(x, y);
 	    				} else {
 	    					tempCoord = edge_intersect(plot.points, i);
-	    					t.move(axis.map_x(tempCoord.x), axis.map_y(tempCoord.y));
-	    					t.vector(x, y);
+	    					term.move(axis.map_x(tempCoord.x), axis.map_y(tempCoord.y));
+	    					term.vector(x, y);
 	    				}
 	    			} else {	/* prev == UNDEFINED */
-	    				t.move(x, y);
-	    				t.vector(x, y);
+	    				term.move(x, y);
+	    				term.vector(x, y);
 	    			}
 
 	    			break;
@@ -93,7 +93,7 @@ public class graphics {
 	    				/* from inrange to outrange */
 	    				if (gadgets.clip_lines1) {
 	    					tempCoord = edge_intersect(plot.points, i);
-	    					t.vector(axis.map_x(tempCoord.x), axis.map_y(tempCoord.y));
+	    					term.vector(axis.map_x(tempCoord.x), axis.map_y(tempCoord.y));
 	    				}
 	    			} else if (prev == coord_type.OUTRANGE) {
 	    				/* from outrange to outrange */

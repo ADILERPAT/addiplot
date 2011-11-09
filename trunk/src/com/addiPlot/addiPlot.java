@@ -39,7 +39,11 @@ public class addiPlot extends Activity {
 	// Need handler for callbacks to the UI thread
 	public final Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) { 
-			//if (msg.getData().getString("text").startsWith("STARTUPADDIEDITWITH=")) {
+			if (msg.getData().getString("command").equals("move")) {
+				move(msg.getData().getInt("x"),msg.getData().getInt("y"));
+			} else if (msg.getData().getString("command").equals("vector")) {
+				vector(msg.getData().getInt("x"),msg.getData().getInt("y"));
+			}
 		};
 	};
 	
@@ -47,7 +51,7 @@ public class addiPlot extends Activity {
 	final Runnable mRunThread = new Runnable() {
 		public void run() {
 			//do something compute intensive
-			term.plotIt();
+			term.plotIt(mHandler);
 			mHandler.post(mUpdateResults);
 		}
 	};
