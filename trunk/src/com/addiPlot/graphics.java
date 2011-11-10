@@ -51,7 +51,7 @@ public class graphics {
 	/* plot_lines:
 	 * Plot the curves in LINES style
 	 */
-	public void plot_lines(curve_points plot) {
+	public static void plot_lines(curve_points plot) {
 		term t = new term();
 		int i;							/* point index */
 		int x, y;						/* point in terminal coordinates */
@@ -60,7 +60,7 @@ public class graphics {
 	    double ly[] = new double[2];  	/* two edge points */
 	    coordinate tempCoord = new coordinate();
 
-	    for (i = 0; i < plot.p_count; i++) {
+	    for (i = 0; i < plot.points.size(); i++) {
 
 	    	/* rgb variable  -  color read from data column */
 	    	check_for_variable_color(plot, plot.varcolor.get(i));

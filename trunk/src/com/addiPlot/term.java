@@ -39,6 +39,7 @@ public class term {
 
 	public static void plotIt(Handler handler) {
 		mHandler = handler;
+		graphics.plot_lines(mCurves.get(0));
 	}
 
 	public static void usePlotDataString(String plotData) {
