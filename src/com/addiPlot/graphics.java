@@ -98,10 +98,10 @@ public class graphics {
 	    			} else if (prev == coord_type.OUTRANGE) {
 	    				/* from outrange to outrange */
 	    				if (gadgets.clip_lines2) {
-	    					//if (two_edge_intersect(plot.points, i, lx, ly)) {
-	    					//	t.move(axis.map_x(lx[0]), axis.map_y(ly[0]));
-	    					//	t.vector(axis.map_x(lx[1]), axis.map_y(ly[1]));
-	    					//}
+	    					if (two_edge_intersect(plot.points, i, lx, ly)) {
+	    						term.move(axis.map_x(lx[0]), axis.map_y(ly[0]));
+	    						term.vector(axis.map_x(lx[1]), axis.map_y(ly[1]));
+	    					}
 	    				}
 	    			}
 	    			break;
@@ -260,204 +260,206 @@ public class graphics {
 	 * draw (the one-point case is a degenerate of the two-point case and we do
 	 * not distinguish it - we draw it anyway).
 	 */
-//	public static Vector<coordinate> two_edge_intersect(
-//		Vector<coordinate> points, /* the points array */
-//	    int i)			/* line segment from point i-1 to point i */
-//	{
-//	    /* global X_AXIS.min, X_AXIS.max, Y_AXIS.min, X_AXIS.max */
-//	    int count;
-//	    double ix = points.get(i-1).x;
-//	    double iy = points.get(i-1).y;
-//	    double ox = points.get(i).x;
-//	    double oy = points.get(i).y;
-//	    double t[4];
-//	    double swap;
-//	    double t_min, t_max;
-//
-//	    /* nasty degenerate cases, effectively drawing to an infinity
-//	     * point (?)  cope with them here, so don't process them as a
-//	     * "real" OUTRANGE point
-//
-//	     * If more than one coord is -VERYLARGE, then can't ratio the
-//	     * "infinities" so drop out by returning FALSE */
-//
-//	    count = 0;
-//	    if (ix == -VERYLARGE)
-//		count++;
-//	    if (ox == -VERYLARGE)
-//		count++;
-//	    if (iy == -VERYLARGE)
-//		count++;
-//	    if (oy == -VERYLARGE)
-//		count++;
-//
-//	    /* either doesn't pass through graph area *or* can't ratio
-//	     * infinities to get a direction to draw line, so simply
-//	     * return(FALSE) */
-//	    if (count > 1) {
-//		return (FALSE);
-//	    }
-//
-//	    if (ox == -VERYLARGE || ix == -VERYLARGE) {
-//		/* Horizontal line */
-//		if (ix == -VERYLARGE) {
-//		    /* swap points so ix/iy don't have a -VERYLARGE component */
-//		    swap = ix;
-//		    ix = ox;
-//		    ox = swap;
-//		    swap = iy;
-//		    iy = oy;
-//		    oy = swap;
-//		}
-//		/* check actually passes through the graph area */
-//		if (ix > GPMAX(X_AXIS.max, X_AXIS.min)
-//		    && inrange(iy, Y_AXIS.min, Y_AXIS.max)) {
-//		    lx[0] = X_AXIS.min;
-//		    ly[0] = iy;
-//
-//		    lx[1] = X_AXIS.max;
-//		    ly[1] = iy;
-//		    return (TRUE);
-//		} else {
-//		    return (FALSE);
-//		}
-//	    }
-//	    if (oy == -VERYLARGE || iy == -VERYLARGE) {
-//		/* Vertical line */
-//		if (iy == -VERYLARGE) {
-//		    /* swap points so ix/iy don't have a -VERYLARGE component */
-//		    swap = ix;
-//		    ix = ox;
-//		    ox = swap;
-//		    swap = iy;
-//		    iy = oy;
-//		    oy = swap;
-//		}
-//		/* check actually passes through the graph area */
-//		if (iy > GPMAX(Y_AXIS.min, Y_AXIS.max)
-//		    && inrange(ix, X_AXIS.min, X_AXIS.max)) {
-//		    lx[0] = ix;
-//		    ly[0] = Y_AXIS.min;
-//
-//		    lx[1] = ix;
-//		    ly[1] = Y_AXIS.max;
-//		    return (TRUE);
-//		} else {
-//		    return (FALSE);
-//		}
-//	    }
-//	    /*
-//	     * Special horizontal/vertical, etc. cases are checked and remaining
-//	     * slant lines are checked separately.
-//	     *
-//	     * The slant line intersections are solved using the parametric form
-//	     * of the equation for a line, since if we test x/y min/max planes explicitly
-//	     * then e.g. a  line passing through a corner point (X_AXIS.min,Y_AXIS.min)
-//	     * actually intersects 2 planes and hence further tests would be required
-//	     * to anticipate this and similar situations.
-//	     */
-//
-//	    /*
-//	     * Can have case (ix == ox && iy == oy) as both points OUTRANGE
-//	     */
-//	    if (ix == ox && iy == oy) {
-//		/* but as only define single outrange point, can't intersect graph area */
-//		return (FALSE);
-//	    }
-//	    if (ix == ox) {
-//		/* line parallel to y axis */
-//
-//		/* x coord must be in range, and line must span both Y_AXIS.min and Y_AXIS.max */
-//		/* note that spanning Y_AXIS.min implies spanning Y_AXIS.max, as both points OUTRANGE */
-//		if (!inrange(ix, X_AXIS.min, X_AXIS.max)) {
-//		    return (FALSE);
-//		}
-//		if (inrange(Y_AXIS.min, iy, oy)) {
-//		    lx[0] = ix;
-//		    ly[0] = Y_AXIS.min;
-//
-//		    lx[1] = ix;
-//		    ly[1] = Y_AXIS.max;
-//		    return (TRUE);
-//		} else
-//		    return (FALSE);
-//	    }
-//	    if (iy == oy) {
-//		/* already checked case (ix == ox && iy == oy) */
-//
-//		/* line parallel to x axis */
-//		/* y coord must be in range, and line must span both X_AXIS.min and X_AXIS.max */
-//		/* note that spanning X_AXIS.min implies spanning X_AXIS.max, as both points OUTRANGE */
-//		if (!inrange(iy, Y_AXIS.min, Y_AXIS.max)) {
-//		    return (FALSE);
-//		}
-//		if (inrange(X_AXIS.min, ix, ox)) {
-//		    lx[0] = X_AXIS.min;
-//		    ly[0] = iy;
-//
-//		    lx[1] = X_AXIS.max;
-//		    ly[1] = iy;
-//		    return (TRUE);
-//		} else
-//		    return (FALSE);
-//	    }
-//	    /* nasty 2D slanted line in an xy plane */
-//
-//	    /* From here on, it's essentially the classical Cyrus-Beck, or
-//	     * Liang-Barsky algorithm for line clipping to a rectangle */
-//	    /*
-//	       Solve parametric equation
-//
-//	       (ix, iy) + t (diff_x, diff_y)
-//
-//	       where 0.0 <= t <= 1.0 and
-//
-//	       diff_x = (ox - ix);
-//	       diff_y = (oy - iy);
-//	     */
-//
-//	    t[0] = (X_AXIS.min - ix) / (ox - ix);
-//	    t[1] = (X_AXIS.max - ix) / (ox - ix);
-//	    if (t[0] > t[1]) {
-//		swap = t[0];
-//		t[0] = t[1];
-//		t[1] = swap;
-//	    }
-//
-//	    t[2] = (Y_AXIS.min - iy) / (oy - iy);
-//	    t[3] = (Y_AXIS.max - iy) / (oy - iy);
-//	    if (t[2] > t[3]) {
-//		swap = t[2];
-//		t[2] = t[3];
-//		t[3] = swap;
-//	    }
-//
-//	    t_min = GPMAX(GPMAX(t[0], t[2]), 0.0);
-//	    t_max = GPMIN(GPMIN(t[1], t[3]), 1.0);
-//
-//	    if (t_min > t_max)
-//		return (FALSE);
-//
-//	    lx[0] = ix + t_min * (ox - ix);
-//	    ly[0] = iy + t_min * (oy - iy);
-//
-//	    lx[1] = ix + t_max * (ox - ix);
-//	    ly[1] = iy + t_max * (oy - iy);
-//
-//	    /*
-//	     * Can only have 0 or 2 intersection points -- only need test one coord
-//	     */
-//	    /* FIXME: this is UGLY. Need an 'almost_inrange()' function */
-//	    if (inrange(lx[0],
-//			(X_AXIS.min - 1e-5 * (X_AXIS.max - X_AXIS.min)),
-//			(X_AXIS.max + 1e-5 * (X_AXIS.max - X_AXIS.min)))
-//		&& inrange(ly[0],
-//			   (Y_AXIS.min - 1e-5 * (Y_AXIS.max - Y_AXIS.min)),
-//			   (Y_AXIS.max + 1e-5 * (Y_AXIS.max - Y_AXIS.min))))
-//	    {
-//
-//		return (TRUE);
-//	    }
-//	    return (FALSE);
-//	}
+	static boolean			/* any intersection? */
+	two_edge_intersect(
+		Vector<coordinate> points, /* the points array */
+	    int i,			/* line segment from point i-1 to point i */
+	    double lx[], double ly[])	/* lx[2], ly[2]: points where it crosses edges */
+	{
+	    /* global X_AXIS.min, X_AXIS.max, Y_AXIS.min, X_AXIS.max */
+	    int count;
+	    double ix = points.get(i-1).x;
+	    double iy = points.get(i-1).y;
+	    double ox = points.get(i).x;
+	    double oy = points.get(i).y;
+	    double t[] = new double[4];
+	    double swap;
+	    double t_min, t_max;
+
+	    /* nasty degenerate cases, effectively drawing to an infinity
+	     * point (?)  cope with them here, so don't process them as a
+	     * "real" OUTRANGE point
+
+	     * If more than one coord is -VERYLARGE, then can't ratio the
+	     * "infinities" so drop out by returning FALSE */
+
+	    count = 0;
+	    if (ix == -Double.MAX_VALUE)
+		count++;
+	    if (ox == -Double.MAX_VALUE)
+		count++;
+	    if (iy == -Double.MAX_VALUE)
+		count++;
+	    if (oy == -Double.MAX_VALUE)
+		count++;
+
+	    /* either doesn't pass through graph area *or* can't ratio
+	     * infinities to get a direction to draw line, so simply
+	     * return(FALSE) */
+	    if (count > 1) {
+		return (false);
+	    }
+
+	    if (ox == -Double.MAX_VALUE || ix == -Double.MAX_VALUE) {
+		/* Horizontal line */
+		if (ix == -Double.MAX_VALUE) {
+		    /* swap points so ix/iy don't have a -VERYLARGE component */
+		    swap = ix;
+		    ix = ox;
+		    ox = swap;
+		    swap = iy;
+		    iy = oy;
+		    oy = swap;
+		}
+		/* check actually passes through the graph area */
+		if (ix > stdfun.GPMAX(axis.X_AXIS.max, axis.X_AXIS.min)
+		    && stdfun.inrange(iy, axis.Y_AXIS.min, axis.Y_AXIS.max)) {
+		    lx[0] = axis.X_AXIS.min;
+		    ly[0] = iy;
+
+		    lx[1] = axis.X_AXIS.max;
+		    ly[1] = iy;
+		    return (true);
+		} else {
+		    return (false);
+		}
+	    }
+	    if (oy == -Double.MAX_VALUE || iy == -Double.MAX_VALUE) {
+		/* Vertical line */
+		if (iy == -Double.MAX_VALUE) {
+		    /* swap points so ix/iy don't have a -VERYLARGE component */
+		    swap = ix;
+		    ix = ox;
+		    ox = swap;
+		    swap = iy;
+		    iy = oy;
+		    oy = swap;
+		}
+		/* check actually passes through the graph area */
+		if (iy > stdfun.GPMAX(axis.Y_AXIS.min, axis.Y_AXIS.max)
+		    && stdfun.inrange(ix, axis.X_AXIS.min, axis.X_AXIS.max)) {
+		    lx[0] = ix;
+		    ly[0] = axis.Y_AXIS.min;
+
+		    lx[1] = ix;
+		    ly[1] = axis.Y_AXIS.max;
+		    return (true);
+		} else {
+		    return (false);
+		}
+	    }
+	    /*
+	     * Special horizontal/vertical, etc. cases are checked and remaining
+	     * slant lines are checked separately.
+	     *
+	     * The slant line intersections are solved using the parametric form
+	     * of the equation for a line, since if we test x/y min/max planes explicitly
+	     * then e.g. a  line passing through a corner point (X_AXIS.min,Y_AXIS.min)
+	     * actually intersects 2 planes and hence further tests would be required
+	     * to anticipate this and similar situations.
+	     */
+
+	    /*
+	     * Can have case (ix == ox && iy == oy) as both points OUTRANGE
+	     */
+	    if (ix == ox && iy == oy) {
+		/* but as only define single outrange point, can't intersect graph area */
+		return (false);
+	    }
+	    if (ix == ox) {
+		/* line parallel to y axis */
+
+		/* x coord must be in range, and line must span both Y_AXIS.min and Y_AXIS.max */
+		/* note that spanning Y_AXIS.min implies spanning Y_AXIS.max, as both points OUTRANGE */
+		if (!stdfun.inrange(ix, axis.X_AXIS.min, axis.X_AXIS.max)) {
+		    return (false);
+		}
+		if (stdfun.inrange(axis.Y_AXIS.min, iy, oy)) {
+		    lx[0] = ix;
+		    ly[0] = axis.Y_AXIS.min;
+
+		    lx[1] = ix;
+		    ly[1] = axis.Y_AXIS.max;
+		    return (true);
+		} else
+		    return (false);
+	    }
+	    if (iy == oy) {
+		/* already checked case (ix == ox && iy == oy) */
+
+		/* line parallel to x axis */
+		/* y coord must be in range, and line must span both X_AXIS.min and X_AXIS.max */
+		/* note that spanning X_AXIS.min implies spanning X_AXIS.max, as both points OUTRANGE */
+		if (!stdfun.inrange(iy, axis.Y_AXIS.min, axis.Y_AXIS.max)) {
+		    return (false);
+		}
+		if (stdfun.inrange(axis.X_AXIS.min, ix, ox)) {
+		    lx[0] = axis.X_AXIS.min;
+		    ly[0] = iy;
+
+		    lx[1] = axis.X_AXIS.max;
+		    ly[1] = iy;
+		    return (true);
+		} else
+		    return (false);
+	    }
+	    /* nasty 2D slanted line in an xy plane */
+
+	    /* From here on, it's essentially the classical Cyrus-Beck, or
+	     * Liang-Barsky algorithm for line clipping to a rectangle */
+	    /*
+	       Solve parametric equation
+
+	       (ix, iy) + t (diff_x, diff_y)
+
+	       where 0.0 <= t <= 1.0 and
+
+	       diff_x = (ox - ix);
+	       diff_y = (oy - iy);
+	     */
+
+	    t[0] = (axis.X_AXIS.min - ix) / (ox - ix);
+	    t[1] = (axis.X_AXIS.max - ix) / (ox - ix);
+	    if (t[0] > t[1]) {
+		swap = t[0];
+		t[0] = t[1];
+		t[1] = swap;
+	    }
+
+	    t[2] = (axis.Y_AXIS.min - iy) / (oy - iy);
+	    t[3] = (axis.Y_AXIS.max - iy) / (oy - iy);
+	    if (t[2] > t[3]) {
+		swap = t[2];
+		t[2] = t[3];
+		t[3] = swap;
+	    }
+
+	    t_min = stdfun.GPMAX(stdfun.GPMAX(t[0], t[2]), 0.0);
+	    t_max = stdfun.GPMIN(stdfun.GPMIN(t[1], t[3]), 1.0);
+
+	    if (t_min > t_max)
+		return (false);
+
+	    lx[0] = ix + t_min * (ox - ix);
+	    ly[0] = iy + t_min * (oy - iy);
+
+	    lx[1] = ix + t_max * (ox - ix);
+	    ly[1] = iy + t_max * (oy - iy);
+
+	    /*
+	     * Can only have 0 or 2 intersection points -- only need test one coord
+	     */
+	    /* FIXME: this is UGLY. Need an 'almost_inrange()' function */
+	    if (stdfun.inrange(lx[0],
+			(axis.X_AXIS.min - 1e-5 * (axis.X_AXIS.max - axis.X_AXIS.min)),
+			(axis.X_AXIS.max + 1e-5 * (axis.X_AXIS.max - axis.X_AXIS.min)))
+		&& stdfun.inrange(ly[0],
+			   (axis.Y_AXIS.min - 1e-5 * (axis.Y_AXIS.max - axis.Y_AXIS.min)),
+			   (axis.Y_AXIS.max + 1e-5 * (axis.Y_AXIS.max - axis.Y_AXIS.min))))
+	    {
+
+		return (true);
+	    }
+	    return (false);
+	}
 }
