@@ -561,8 +561,8 @@ public class graphics {
 			gadgets.draw_clip_line(key.bounds.xright, key.bounds.ybot, key.bounds.xleft, key.bounds.ybot);
 			term.closepath();
 			/* draw a horizontal line between key title and first entry */
-			gadgets.draw_clip_line( key.bounds.xleft, key.bounds.ytop - (ktitl_lines) * term.v_char,
-					key.bounds.xright, key.bounds.ytop - (ktitl_lines) * term.v_char);
+			gadgets.draw_clip_line( key.bounds.xleft, (int)(key.bounds.ytop - (ktitl_lines) * term.v_char),
+					key.bounds.xright, (int)(key.bounds.ytop - (ktitl_lines) * term.v_char));
 			gadgets.clip_area = clip_save;
 		}
 
