@@ -515,8 +515,8 @@ public class graphics {
 		/* In two-pass mode, we blank out the key area after the graph	*/
 		/* is drawn and then redo the key in the blank area.		*/
 		if (key_pass) {
-			term.linetype(LT_BACKGROUND);
-			term.fillbox(FS_OPAQUE, key.bounds.xleft, key.bounds.ybot,
+			term.linetype(term_api.LT_BACKGROUND);
+			term.fillbox(term_api.FS_OPAQUE, key.bounds.xleft, key.bounds.ybot,
 					key.bounds.xright - key.bounds.xleft,
 					key.bounds.ytop - key.bounds.ybot);
 		}
@@ -524,7 +524,7 @@ public class graphics {
 		int center = (key.bounds.xleft + key.bounds.xright) / 2;
 		double extra_height = 0.0;
 
-		if ((t->flags & TERM_ENHANCED_TEXT) && strchr(key.title,'^'))
+		if (((term.flags & term_api.TERM_ENHANCED_TEXT) != 0) && (key.title.indexOf('^') != -1))
 			extra_height += 0.51;
 
 		/* Only draw the title once */
@@ -533,37 +533,37 @@ public class graphics {
 				apply_pm3dcolor(&(key.box.pm3d_color), t);
 			else
 				apply_pm3dcolor(&(key.textcolor), t);
-			write_multiline(center, yl - (0.5 + extra_height/2.0) * t->v_char,
-					key.title, CENTRE, JUST_TOP, 0, key.font);
-			term.linetype(LT_BLACK);
+			write_multiline(center, yl - (0.5 + extra_height/2.0) * term.v_char,
+					key.title, term_api.JUSTIFY.CENTRE, term_api.VERT_JUSTIFY.JUST_TOP, 0, key.font);
+			term.linetype(term_api.LT_BLACK);
 		}
 
-		if ((t->flags & TERM_ENHANCED_TEXT) && strchr(key.title,'_'))
+		if (((term.flags & term_api.TERM_ENHANCED_TEXT) != 0) && (key.title.indexOf('_') != -1))
 			extra_height += 0.3;
 		ktitl_lines += extra_height;
-		key.bounds.ybot -= extra_height * t->v_char;
-		yl -= t->v_char * ktitl_lines;
+		key.bounds.ybot -= extra_height * term.v_char;
+		yl -= term.v_char * ktitl_lines;
 
-		yl -= (int)(0.5 * key.height_fix * t->v_char);
+		yl -= (int)(0.5 * key.height_fix * term.v_char);
 		yl_ref = yl -= key_entry_height / 2;	/* centralise the keys */
 
-		if (key.box.l_type > LT_NODRAW) {
+		if (key.box.l_type > term_api.LT_NODRAW) {
 			BoundingBox clip_save = gadgets.clip_area;
-			if (term->flags & TERM_CAN_CLIP)
+			if ((term.flags & term_api.TERM_CAN_CLIP) != 0)
 				gadgets.clip_area = NULL;
 			else
 				gadgets.clip_area = &canvas;
 			term_apply_lp_properties(key.box);
-			newpath();
-			draw_clip_line(key.bounds.xleft, key.bounds.ybot, key.bounds.xleft, key.bounds.ytop);
-			draw_clip_line(key.bounds.xleft, key.bounds.ytop, key.bounds.xright, key.bounds.ytop);
-			draw_clip_line(key.bounds.xright, key.bounds.ytop, key.bounds.xright, key.bounds.ybot);
-			draw_clip_line(key.bounds.xright, key.bounds.ybot, key.bounds.xleft, key.bounds.ybot);
-			closepath();
+			term.newpath();
+			gadgets.draw_clip_line(key.bounds.xleft, key.bounds.ybot, key.bounds.xleft, key.bounds.ytop);
+			gadgets.draw_clip_line(key.bounds.xleft, key.bounds.ytop, key.bounds.xright, key.bounds.ytop);
+			gadgets.draw_clip_line(key.bounds.xright, key.bounds.ytop, key.bounds.xright, key.bounds.ybot);
+			gadgets.draw_clip_line(key.bounds.xright, key.bounds.ybot, key.bounds.xleft, key.bounds.ybot);
+			term.closepath();
 			/* draw a horizontal line between key title and first entry */
-			draw_clip_line( key.bounds.xleft, key.bounds.ytop - (ktitl_lines) * t->v_char,
-					key.bounds.xright, key.bounds.ytop - (ktitl_lines) * t->v_char);
-			clip_area = clip_save;
+			gadgets.draw_clip_line( key.bounds.xleft, key.bounds.ytop - (ktitl_lines) * term.v_char,
+					key.bounds.xright, key.bounds.ytop - (ktitl_lines) * term.v_char);
+			gadgets.clip_area = clip_save;
 		}
 
 		xinkey[0] = xl;

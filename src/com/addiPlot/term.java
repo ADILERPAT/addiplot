@@ -17,6 +17,10 @@ public class term {
 	
 	public static Vector<curve_points> mCurves = new Vector<curve_points>();
 	
+	public static int v_char;
+	
+	public static int flags;
+	
 	public static void move (int x, int y) {
 		Message msg = new Message();
     	Bundle bndl = new Bundle();
@@ -35,6 +39,10 @@ public class term {
     	bndl.putString("command", "vector");
     	msg.setData(bndl);
     	mHandler.sendMessage(msg);
+	}
+	
+	public static void path(int x) {
+		
 	}
 
 	public static void plotIt(Handler handler) {
@@ -60,6 +68,22 @@ public class term {
 	        }
 	        firstLoop = 0;
 	    }
+	}
+	
+	/*
+	 * Wrappers for newpath and closepath
+	 */
+
+	public static void
+	newpath()
+	{
+		path(0);
+	}
+
+	public static void
+	closepath()
+	{
+		path(1);
 	}
 	
 }
