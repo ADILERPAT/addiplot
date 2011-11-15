@@ -66,6 +66,9 @@ public class term_api {
 		   
 	public static int FS_OPAQUE = (t_fillstyle.FS_SOLID.value + (100<<4));
 	
+	/* Color construction for an image, palette lookup or rgb components. */
+	public enum t_imagecolor { IC_PALETTE, IC_RGB, IC_RGBA };
+	
 	/* Values for the flags field of TERMENTRY
 	 */
 	public static int TERM_CAN_MULTIPLOT = 1;  /* tested if stdout not redirected */
