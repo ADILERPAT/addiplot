@@ -82,14 +82,14 @@ public class axis {
 	/* axes being used by the current plot */
 	public static AXIS_INDEX x_axis;
 	public static AXIS_INDEX y_axis;
-	public AXIS_INDEX z_axis;
+	public static AXIS_INDEX z_axis;
 	
 	/* macros to reduce code clutter caused by the array notation, mainly
 	 * in graphics.c and fit.c */
 	public static AXIS X_AXIS = axis_array[x_axis.value];
 	public static AXIS Y_AXIS = axis_array[y_axis.value];
-	public AXIS Z_AXIS = axis_array[z_axis.value];
-	public AXIS CB_AXIS = axis_array[AXIS_INDEX.COLOR_AXIS.value];
+	public static AXIS Z_AXIS = axis_array[z_axis.value];
+	public static AXIS CB_AXIS = axis_array[AXIS_INDEX.COLOR_AXIS.value];
 
 	public static int map_x(double x) {
 		return AXIS_MAP(x_axis, x);

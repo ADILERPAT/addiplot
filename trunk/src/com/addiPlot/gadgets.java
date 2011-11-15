@@ -304,4 +304,34 @@ public class gadgets {
 
 	    return -1;
 	}
+	
+	public static void apply_pm3dcolor(color.t_colorspec tc)
+	{
+
+	    /* Replace colorspec with that of the requested line style */
+	    lp_style_type style;
+	    if (tc.type == color.TC_LINESTYLE) {
+	    	lp_use_properties(style, tc.lt);
+	    	tc = style.pm3d_color;
+	    }
+	    if (tc.type == color.TC_DEFAULT) {
+	    	term.linetype(term_api.LT_BLACK);
+	    	return;
+	    }
+	    if (tc.type == color.TC_LT) {
+		    term.set_color(tc);
+		    return;
+	    }
+	    if (tc.type == color.TC_RGB) {
+	    	term.set_color(tc);
+	    	return;
+	    }
+	    switch (tc.type) {
+			case color.TC_Z:    set_color(pm3d.cb2gray(z2cb(tc.value))); break;
+			case color.TC_CB:   set_color(pm3d.cb2gray(tc.value));       break;
+			case color.TC_FRAC: set_color(sm_palette.positive == SMPAL_POSITIVE ?
+							tc.value : 1-tc.value);
+			      			break;
+	    }
+	}
 }
