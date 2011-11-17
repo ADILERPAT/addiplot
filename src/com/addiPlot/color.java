@@ -8,6 +8,15 @@ public class color {
 	    public double value;		/* used for TC_CB and TC_FRAC */
 	};
 	
+	public static int TC_DEFAULT    = 0;	/* Use default color, set separately */
+	public static int TC_LT		    = 1;	/* Use the color of linetype <n> */
+	public static int TC_LINESTYLE	= 2;	/* Use the color of line style <n> */
+	public static int TC_RGB		= 3;	/* Explicit RGB triple provided by user */
+	public static int TC_CB		    = 4;	/* "palette cb <value>" */
+	public static int TC_FRAC		= 5;	/* "palette frac <value> */
+	public static int TC_Z		    = 6;	/* "palette z" */
+	public static int TC_VARIABLE	= 7;	/* only used for "tc", never "lc" */
+	
 	/* EAM July 2004 - Disentangle polygon support and PM3D support  */
 	/* a point (with integer coordinates) for use in polygon drawing */
 	public class gpiPoint {
@@ -17,14 +26,48 @@ public class color {
 	    int style;
 	};
 	
-	public static int TC_DEFAULT    = 0;	/* Use default color, set separately */
-	public static int TC_LT		    = 1;	/* Use the color of linetype <n> */
-	public static int TC_LINESTYLE	= 2;	/* Use the color of line style <n> */
-	public static int TC_RGB		= 3;	/* Explicit RGB triple provided by user */
-	public static int TC_CB		    = 4;	/* "palette cb <value>" */
-	public static int TC_FRAC		= 5;	/* "palette frac <value> */
-	public static int TC_Z		    = 6;	/* "palette z" */
-	public static int TC_VARIABLE	= 7;	/* only used for "tc", never "lc" */
+	/*
+	 *    color modes
+	 */
+	public enum palette_color_mode{
+	    SMPAL_COLOR_MODE_NONE ('0'),
+	    SMPAL_COLOR_MODE_GRAY ('g'),      /* grayscale only */
+	    SMPAL_COLOR_MODE_RGB ('r'),       /* one of several fixed transforms */
+	    SMPAL_COLOR_MODE_FUNCTIONS ('f'), /* user defined transforms */
+	    SMPAL_COLOR_MODE_GRADIENT ('d');   /* interpolated table:
+					       					* explicitly defined or read from file */
+	    public char value;
+	    palette_color_mode(char value) {
+		   this.value = value;	
+		}
+	};
+	
+	/* Contains a colour in RGB scheme.
+	   Values of  r, g and b  are all in range [0;1] */
+	public class rgb_color {
+	    double r, g, b;
+	};
+	
+
+	/* Contains a colour in RGB scheme.
+  		Values of  r, g and b  are uchars in range [0;255] */
+	public class rgb255_color{
+		int r, g, b;
+	};
+
+	/* a point (with double coordinates) for use in polygon drawing */
+	/* the "c" field is used only inside the routine pm3d_plot() */
+	public class gdpPoint {
+		double x, y, z, c;
+	};
+	
+
+	/* to build up gradients:  whether it is really red, green and blue or maybe
+	 * hue saturation and value in col depends on cmodel */
+	public class gradient_struct {
+		double pos;
+		rgb_color col;
+	};
 	
 	/*
 	  inverting the colour for negative picture (default is positive picture)
@@ -98,18 +141,16 @@ public class color {
 
 	  /* Three mapping function for gray->RGB/HSV/XYZ/etc. mapping
 	   * used if colorMode == SMPAL_COLOR_MODE_FUNCTIONS */
-	  struct udft_entry Afunc;  /* R for RGB, H for HSV, C for CMY, ... */
-	  struct udft_entry Bfunc;  /* G for RGB, S for HSV, M for CMY, ... */
-	  struct udft_entry Cfunc;  /* B for RGB, V for HSV, Y for CMY, ... */
+	  eval.udft_entry Afunc;  /* R for RGB, H for HSV, C for CMY, ... */
+	  eval.udft_entry Bfunc;  /* G for RGB, S for HSV, M for CMY, ... */
+	  eval.udft_entry Cfunc;  /* B for RGB, V for HSV, Y for CMY, ... */
 
 	  /* gamma for gray scale palettes only */
 	  double gamma;
 	} ;
 
-
-
 	/* GLOBAL VARIABLES */
 
-	extern t_sm_palette sm_palette;
+	public static t_sm_palette sm_palette;
 	
 }

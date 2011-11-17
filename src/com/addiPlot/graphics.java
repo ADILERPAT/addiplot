@@ -530,9 +530,9 @@ public class graphics {
 		/* Only draw the title once */
 		if (key_pass || !key.front) {
 			if (key.textcolor.type == color.TC_RGB && key.textcolor.value < 0)
-				apply_pm3dcolor(key.box.pm3d_color);
+				gadgets.apply_pm3dcolor(key.box.pm3d_color);
 			else
-				apply_pm3dcolor(key.textcolor);
+				gadgets.apply_pm3dcolor(key.textcolor);
 			write_multiline(center, yl - (0.5 + extra_height/2.0) * term.v_char,
 					key.title, term_api.JUSTIFY.CENTRE, term_api.VERT_JUSTIFY.JUST_TOP, 0, key.font);
 			term.linetype(term_api.LT_BLACK);
