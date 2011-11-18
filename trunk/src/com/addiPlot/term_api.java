@@ -21,7 +21,7 @@ public class term_api {
 	 */
 	public static int TEXT_VERTICAL = -270;
 
-	
+	/* Type definitions */
 
 	/* this order means we can use  x-(just*strlen(text)*t->h_char)/2 if
 	 * term cannot justify
@@ -49,6 +49,11 @@ public class term_api {
     	public boolean use_palette;
     	public t_colorspec pm3d_color;
 	};
+	
+	public static lp_style_type DEFAULT_LP_STYLE_TYPE;
+	
+	
+	= {0, LT_BLACK, 0, 0, 1.0, PTSZ_DEFAULT, FALSE, DEFAULT_COLORSPEC};
 	
 	public enum t_fillstyle {
 		FS_EMPTY (0),

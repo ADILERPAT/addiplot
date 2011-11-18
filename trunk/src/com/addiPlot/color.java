@@ -57,7 +57,7 @@ public class color {
 
 	/* a point (with double coordinates) for use in polygon drawing */
 	/* the "c" field is used only inside the routine pm3d_plot() */
-	public class gdpPoint {
+	public class gpdPoint {
 		double x, y, z, c;
 	};
 	
@@ -152,5 +152,76 @@ public class color {
 	/* GLOBAL VARIABLES */
 
 	public static t_sm_palette sm_palette;
+	
+	/* ROUTINES */
+
+	public static void init_color() {  /* call once to initialize variables */
+		//CCX
+	}
+
+	/*
+	  Make the colour palette. Return 0 on success
+	  Put number of allocated colours into sm_palette.colors
+	*/
+	public static int make_palette() {
+		//CCX
+		return 0;
+	}
+
+	public static void invalidate_palette() {
+		//CCX
+	}
+
+	/*
+	   Set the colour on the terminal
+	   Currently, each terminal takes care of remembering the current colour,
+	   so there is not much to do here---well, except for reversing the gray
+	   according to sm_palette.positive == SMPAL_POSITIVE or SMPAL_NEGATIVE
+	*/
+	public static void set_color( double gray ) {
+		//CCX
+	}
+	public static void set_rgbcolor( int rgblt ) {
+		//CCX
+	}
+	public static void ifilled_quadrangle (gpiPoint icorners) {
+		//CCX
+	}
+
+	/*
+	   The routine above for 4 points explicitly
+	*/
+	//#ifdef EXTENDED_COLOR_SPECS
+	public static void filled_quadrangle(gpdPoint corners, gpiPoint icorners) {
+		//CCX
+	}
+	//#else
+	//void filled_quadrangle __PROTO((gpdPoint *corners));
+	//#endif
+
+	/*
+	   Makes mapping from real 3D coordinates, passed as coords array,
+	   to 2D terminal coordinates, then draws filled polygon
+	*/
+	/* HBB 20010216: added 'GPHUGE' attribute */
+	void filled_polygon_3dcoords (int points, gp_types.coordinate coords) {
+		//CCX
+	}
+
+	/*
+	   Makes mapping from real 3D coordinates, passed as coords array, but at z coordinate
+	   fixed (base_z, for instance) to 2D terminal coordinates, then draws filled polygon
+	*/
+	void filled_polygon_3dcoords_zfixed (int points, gp_types.coordinate coords, double z) {
+		//CCX
+	}
+
+	/*
+	  Draw colour smooth box
+	*/
+	void draw_color_smooth_box (int plot_mode) {
+		//CCX
+	}
+
 	
 }
