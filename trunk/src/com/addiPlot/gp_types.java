@@ -99,7 +99,7 @@ public class gp_types {
 		double real, imag;
 	};
 
-	public class value {
+	public class t_value {
 	    DATA_TYPES type;
 		int int_val;
 		cmplx cmplx_val;

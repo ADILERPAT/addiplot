@@ -25,10 +25,10 @@ public class eval {
 	public class udft_entry {
 		//struct udft_entry *next_udf; /* pointer to next udf in linked list */
 	    char udf_name;		 /* name of this function entry */
-	    struct at_type at;		 /* pointer to action table to execute */
+	    at_type at;		 /* pointer to action table to execute */
 	    String definition;		 /* definition of function as typed */
 	    int dummy_num;		 /* required number of input variables */
-	    t_value dummy_values[MAX_NUM_VAR]; /* current value of dummy variables */
+	    gp_types.t_value[] dummy_values = new gp_types.t_value[syscfg.MAX_NUM_VAR]; /* current value of dummy variables */
 	};
 	
 	
@@ -50,14 +50,14 @@ public class eval {
 		//struct udvt_entry *next_udv; /* pointer to next value in linked list */
 		String udv_name;		/* name of this value entry */
 		boolean udv_undef;		/* true if not defined yet */
-		t_value udv_value;		/* value it has */
+		gp_types.t_value udv_value;		/* value it has */
 	};
 	
 	/* p-code argument */
 	// CCX typedef union argument {
 	public class argument {
 		int j_arg;		/* offset for jump */
-		value v_arg;	/* constant value */
+		gp_types.t_value v_arg;	/* constant value */
 		udvt_entry udv_arg; /* pointer to dummy variable */
 		udft_entry udf_arg; /* pointer to udf to execute */
 	};

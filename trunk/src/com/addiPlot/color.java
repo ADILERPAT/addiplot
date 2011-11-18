@@ -8,14 +8,14 @@ public class color {
 	    public double value;		/* used for TC_CB and TC_FRAC */
 	};
 	
-	public static int TC_DEFAULT    = 0;	/* Use default color, set separately */
-	public static int TC_LT		    = 1;	/* Use the color of linetype <n> */
-	public static int TC_LINESTYLE	= 2;	/* Use the color of line style <n> */
-	public static int TC_RGB		= 3;	/* Explicit RGB triple provided by user */
-	public static int TC_CB		    = 4;	/* "palette cb <value>" */
-	public static int TC_FRAC		= 5;	/* "palette frac <value> */
-	public static int TC_Z		    = 6;	/* "palette z" */
-	public static int TC_VARIABLE	= 7;	/* only used for "tc", never "lc" */
+	public static final int TC_DEFAULT    = 0;	/* Use default color, set separately */
+	public static final int TC_LT		    = 1;	/* Use the color of linetype <n> */
+	public static final int TC_LINESTYLE	= 2;	/* Use the color of line style <n> */
+	public static final int TC_RGB		= 3;	/* Explicit RGB triple provided by user */
+	public static final int TC_CB		    = 4;	/* "palette cb <value>" */
+	public static final int TC_FRAC		= 5;	/* "palette frac <value> */
+	public static final int TC_Z		    = 6;	/* "palette z" */
+	public static final int TC_VARIABLE	= 7;	/* only used for "tc", never "lc" */
 	
 	/* EAM July 2004 - Disentangle polygon support and PM3D support  */
 	/* a point (with integer coordinates) for use in polygon drawing */
