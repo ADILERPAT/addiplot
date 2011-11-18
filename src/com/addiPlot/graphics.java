@@ -533,7 +533,7 @@ public class graphics {
 				gadgets.apply_pm3dcolor(key.box.pm3d_color);
 			else
 				gadgets.apply_pm3dcolor(key.textcolor);
-			write_multiline(center, yl - (0.5 + extra_height/2.0) * term.v_char,
+			term_api.write_multiline(center, (int) (yl - (0.5 + extra_height/2.0) * term.v_char),
 					key.title, term_api.JUSTIFY.CENTRE, term_api.VERT_JUSTIFY.JUST_TOP, 0, key.font);
 			term.linetype(term_api.LT_BLACK);
 		}
@@ -552,8 +552,8 @@ public class graphics {
 			if ((term.flags & term_api.TERM_CAN_CLIP) != 0)
 				gadgets.clip_area = null;
 			else
-				gadgets.clip_area = canvas;
-			term_apply_lp_properties(key.box);
+				gadgets.clip_area = gadgets.canvas;
+			term_api.term_apply_lp_properties(key.box);
 			term.newpath();
 			gadgets.draw_clip_line(key.bounds.xleft, key.bounds.ybot, key.bounds.xleft, key.bounds.ytop);
 			gadgets.draw_clip_line(key.bounds.xleft, key.bounds.ytop, key.bounds.xright, key.bounds.ytop);

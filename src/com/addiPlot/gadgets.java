@@ -115,7 +115,7 @@ public class gadgets {
 	    int layer;			/* behind or back or front */
 	    int object_type;		/* OBJ_RECTANGLE */
 	    term_api.fill_style_type fillstyle;
-	    lp_style_type lp_properties;
+	    term_api.lp_style_type lp_properties;
 	    t_rectangle rectangle; 
 	    t_circle circle; 
 	    t_ellipse ellipse; 
@@ -130,7 +130,7 @@ public class gadgets {
 	public class linestyle_def {
 	    //CCX struct linestyle_def *next;	/* pointer to next linestyle in linked list */
 	    int tag;			/* identifies the linestyle */
-	    lp_style_type lp_properties;
+	    term_api.lp_style_type lp_properties;
 	};
 
 	/* Datastructure implementing 'set style arrow' */
@@ -494,9 +494,9 @@ public class gadgets {
 	{
 
 	    /* Replace colorspec with that of the requested line style */
-	    lp_style_type style;
+	    term_api.lp_style_type style = null;
 	    if (tc.type == color.TC_LINESTYLE) {
-	    	lp_use_properties(style, tc.lt);
+	    	term_api.lp_use_properties(style, tc.lt);
 	    	tc = style.pm3d_color;
 	    }
 	    if (tc.type == color.TC_DEFAULT) {
@@ -512,9 +512,9 @@ public class gadgets {
 	    	return;
 	    }
 	    switch (tc.type) {
-			case color.TC_Z:    set_color(pm3d.cb2gray(z2cb(tc.value))); break;
-			case color.TC_CB:   set_color(pm3d.cb2gray(tc.value));       break;
-			case color.TC_FRAC: set_color(sm_palette.positive == SMPAL_POSITIVE ?
+			case color.TC_Z:    color.set_color(pm3d.cb2gray(pm3d.z2cb(tc.value))); break;
+			case color.TC_CB:   color.set_color(pm3d.cb2gray(tc.value));       break;
+			case color.TC_FRAC: color.set_color(color.sm_palette.positive == color.SMPAL_POSITIVE ?
 							tc.value : 1-tc.value);
 			      			break;
 	    }

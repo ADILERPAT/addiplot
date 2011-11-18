@@ -6,4 +6,6 @@ public class syscfg {
 	    double coordval;
 	};
 	
+	public static int MAX_NUM_VAR = 12;
+	
 }
