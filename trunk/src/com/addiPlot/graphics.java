@@ -48,7 +48,7 @@ public class graphics {
 		public Vector<Double> varcolor = new Vector<Double>();	/* Only used if plot has variable color */
 		public Vector<coordinate> points=new Vector<coordinate>();
 	};
-	
+
 	/* key placement is calculated in boundary, so we need file-wide variables
 	 * To simplify adjustments to the key, we set all these once [depends on
 	 * key->reverse] and use them throughout.
@@ -84,12 +84,582 @@ public class graphics {
 	static int ylabel_x, y2label_x, xlabel_y, x2label_y, title_y, time_y, time_x;
 	static int ylabel_y, y2label_y, xtic_y, x2tic_y, ytic_x, y2tic_x;
 	/*}}} */
+	
+	/* externally visible variables of graphics.h */
+
+	/* 'set offset' status variables */
+	public static gadgets.t_position loff, roff, toff, boff;
+
+	/* 'set bar' status */
+	public static double bar_size;
+	public static int bar_layer;
+
+	/*
+	 * Apply axis range expansions from "set offsets" command
+	 */
+	public static void adjust_offsets()
+	{ 
+		double b = boff.scaley == gadgets.position_type.graph ? Math.abs(axis.Y_AXIS.max - axis.Y_AXIS.min)*boff.y : boff.y;
+		double t = toff.scaley == gadgets.position_type.graph ? Math.abs(axis.Y_AXIS.max - axis.Y_AXIS.min)*toff.y : toff.y;
+		double l = loff.scalex == gadgets.position_type.graph ? Math.abs(axis.X_AXIS.max - axis.X_AXIS.min)*loff.x : loff.x;
+		double r = roff.scalex == gadgets.position_type.graph ? Math.abs(axis.X_AXIS.max - axis.X_AXIS.min)*roff.x : roff.x;
+
+		if (axis.Y_AXIS.min < axis.Y_AXIS.max) {
+			axis.Y_AXIS.min -= b;
+			axis.Y_AXIS.max += t;
+		} else {
+			axis.Y_AXIS.max -= b;
+			axis.Y_AXIS.min += t;
+		}
+		if (axis.X_AXIS.min < axis.X_AXIS.max) {
+			axis.X_AXIS.min -= l;
+			axis.X_AXIS.max += r;
+		} else {
+			axis.X_AXIS.max -= l;
+			axis.X_AXIS.min += r;
+		}
+
+		if (axis.X_AXIS.min == axis.X_AXIS.max)
+			util.int_error(util.NO_CARET, "x_min should not equal x_max!");
+		if (axis.Y_AXIS.min == axis.Y_AXIS.max)
+			util.int_error(util.NO_CARET, "y_min should not equal y_max!");
+	}
+
+	void
+	do_plot(curve_points plots, int pcount)
+	{
+		int curve;
+		curve_points this_plot = null;
+		int xl = 0, yl = 0;
+		int key_count = 0;
+		boolean key_pass = false;
+		gadgets.legend_key key = gadgets.keyT;
+
+		axis.x_axis = axis.AXIS_INDEX.FIRST_X_AXIS;
+		axis.y_axis = axis.AXIS_INDEX.FIRST_Y_AXIS;
+		adjust_offsets();
+
+		/* EAM June 2003 - Although the comment below implies that font dimensions
+		 * are known after term_initialise(), this is not true at least for the X11
+		 * driver.  X11 fonts are not set until an actual display window is
+		 * opened, and that happens in term->graphics(), which is called from
+		 * term_start_plot().
+		 */
+		term_initialise();		/* may set xmax/ymax */
+		term_start_plot();
+
+		/* Figure out if we need a colorbox for this plot */
+		pm3d.set_plot_with_palette(0, gp_types.MODE_PLOT_TYPE.MODE_PLOT); /* EAM FIXME - 1st parameter is a dummy */
+
+		/* compute boundary for plot (plot_bounds.xleft, plot_bounds.xright, plot_bounds.ytop, plot_bounds.ybot)
+		 * also calculates tics, since xtics depend on plot_bounds.xleft
+		 * but plot_bounds.xleft depends on ytics. Boundary calculations depend
+		 * on term->v_char etc, so terminal must be initialised first.
+		 */
+		boundary(plots, pcount);
+
+		/* Make palette */
+		if (is_plot_with_palette())
+			make_palette();
+
+		/* Give a chance for rectangles to be behind everything else */
+		place_objects( first_object, -1, 2, NULL );
+
+		screen_ok = false;
+
+		/* Sync point for epslatex text positioning */
+		term.layer(TERM_LAYER_BACKTEXT);
+
+		/* DRAW TICS AND GRID */
+		if (grid_layer == 0 || grid_layer == -1)
+			place_grid();
+
+		/* DRAW AXES */
+		/* after grid so that axes linetypes are on top */
+		x_axis = FIRST_X_AXIS;
+		y_axis = FIRST_Y_AXIS;	/* chose scaling */
+
+		axis_draw_2d_zeroaxis(FIRST_X_AXIS,FIRST_Y_AXIS);
+		axis_draw_2d_zeroaxis(FIRST_Y_AXIS,FIRST_X_AXIS);
+
+		x_axis = SECOND_X_AXIS;
+		y_axis = SECOND_Y_AXIS;	/* chose scaling */
+
+		axis_draw_2d_zeroaxis(SECOND_X_AXIS,SECOND_Y_AXIS);
+		axis_draw_2d_zeroaxis(SECOND_Y_AXIS,SECOND_X_AXIS);
+
+		/* DRAW PLOT BORDER */
+		if (draw_border)
+			plot_border();
+
+		/* YLABEL */
+		if (axis_array[FIRST_Y_AXIS].label.text) {
+			ignore_enhanced(axis_array[FIRST_Y_AXIS].label.noenhanced);
+			apply_pm3dcolor(&(axis_array[FIRST_Y_AXIS].label.textcolor),t);
+			/* we worked out x-posn in boundary() */
+			if (term.text_angle(axis_array[FIRST_Y_AXIS].label.rotate)) {
+				double tmpx, tmpy;
+				int x, y;
+				map_position_r(&(axis_array[FIRST_Y_AXIS].label.offset),
+						&tmpx, &tmpy, "doplot");
+
+				x = ylabel_x + (term.v_char / 2);
+				y = (plot_bounds.ytop + plot_bounds.ybot) / 2 + tmpy;
+
+				term_api.write_multiline(x, y, axis_array[FIRST_Y_AXIS].label.text,
+						CENTRE, JUST_TOP, axis_array[FIRST_Y_AXIS].label.rotate,
+						axis_array[FIRST_Y_AXIS].label.font);
+				term.text_angle(0);
+			} else {
+				/* really bottom just, but we know number of lines
+		       so we need to adjust x-posn by one line */
+				int x = ylabel_x;
+				int y = ylabel_y;
+
+				term_api.write_multiline(x, y, axis_array[FIRST_Y_AXIS].label.text,
+						LEFT, JUST_TOP, 0,
+						axis_array[FIRST_Y_AXIS].label.font);
+			}
+			reset_textcolor(&(axis_array[FIRST_Y_AXIS].label.textcolor),t);
+			ignore_enhanced(FALSE);
+		}
+
+		/* Y2LABEL */
+		if (axis_array[SECOND_Y_AXIS].label.text) {
+			ignore_enhanced(axis_array[SECOND_Y_AXIS].label.noenhanced);
+			apply_pm3dcolor(&(axis_array[SECOND_Y_AXIS].label.textcolor),t);
+			/* we worked out coordinates in boundary() */
+			if ((*t->text_angle) (axis_array[SECOND_Y_AXIS].label.rotate)) {
+				double tmpx, tmpy;
+				unsigned int x, y;
+				map_position_r(&(axis_array[SECOND_Y_AXIS].label.offset),
+						&tmpx, &tmpy, "doplot");
+				x = y2label_x + (t->v_char / 2) - 1;
+				y = (plot_bounds.ytop + plot_bounds.ybot) / 2 + tmpy;
+
+				write_multiline(x, y, axis_array[SECOND_Y_AXIS].label.text,
+						CENTRE, JUST_TOP, 
+						axis_array[SECOND_Y_AXIS].label.rotate,
+						axis_array[SECOND_Y_AXIS].label.font);
+				(*t->text_angle) (0);
+			} else {
+				/* really bottom just, but we know number of lines */
+				unsigned int x = y2label_x;
+				unsigned int y = y2label_y;
+
+				write_multiline(x, y, axis_array[SECOND_Y_AXIS].label.text,
+						RIGHT, JUST_TOP, 0,
+						axis_array[SECOND_Y_AXIS].label.font);
+			}
+			reset_textcolor(&(axis_array[SECOND_Y_AXIS].label.textcolor),t);
+			ignore_enhanced(FALSE);
+		}
+
+		/* XLABEL */
+		if (axis_array[FIRST_X_AXIS].label.text) {
+			double tmpx, tmpy;
+			unsigned int x, y;
+			map_position_r(&(axis_array[FIRST_X_AXIS].label.offset),
+					&tmpx, &tmpy, "doplot");
+
+			x = (plot_bounds.xright + plot_bounds.xleft) / 2 +  tmpx;
+			y = xlabel_y - t->v_char / 2;   /* HBB */
+
+			ignore_enhanced(axis_array[FIRST_X_AXIS].label.noenhanced);
+			apply_pm3dcolor(&(axis_array[FIRST_X_AXIS].label.textcolor), t);
+			write_multiline(x, y, axis_array[FIRST_X_AXIS].label.text,
+					JUST_CENTRE, JUST_TOP, 0,
+					axis_array[FIRST_X_AXIS].label.font);
+			reset_textcolor(&(axis_array[FIRST_X_AXIS].label.textcolor), t);
+			ignore_enhanced(FALSE);
+		}
+
+		/* PLACE TITLE */
+		if (title.text) {
+			double tmpx, tmpy;
+			unsigned int x, y;
+			map_position_r(&(title.offset), &tmpx, &tmpy, "doplot");
+			/* we worked out y-coordinate in boundary() */
+			x = (plot_bounds.xleft + plot_bounds.xright) / 2 + tmpx;
+			y = title_y - t->v_char / 2;
+
+			ignore_enhanced(title.noenhanced);
+			apply_pm3dcolor(&(title.textcolor), t);
+			write_multiline(x, y, title.text, CENTRE, JUST_TOP, 0, title.font);
+			reset_textcolor(&(title.textcolor), t);
+			ignore_enhanced(FALSE);
+		}
+
+		/* X2LABEL */
+		if (axis_array[SECOND_X_AXIS].label.text) {
+			double tmpx, tmpy;
+			unsigned int x, y;
+			map_position_r(&(axis_array[SECOND_X_AXIS].label.offset),
+					&tmpx, &tmpy, "doplot");
+			/* we worked out y-coordinate in boundary() */
+			x = (plot_bounds.xright + plot_bounds.xleft) / 2 + tmpx;
+			y = x2label_y - t->v_char / 2 - 1;
+			ignore_enhanced(axis_array[SECOND_X_AXIS].label.noenhanced);
+			apply_pm3dcolor(&(axis_array[SECOND_X_AXIS].label.textcolor),t);
+			write_multiline(x, y, axis_array[SECOND_X_AXIS].label.text, CENTRE,
+					JUST_TOP, 0, axis_array[SECOND_X_AXIS].label.font);
+			reset_textcolor(&(axis_array[SECOND_X_AXIS].label.textcolor),t);
+			ignore_enhanced(FALSE);
+		}
+
+		/* PLACE TIMEDATE */
+		if (timelabel.text) {
+			/* we worked out coordinates in boundary() */
+			char *str;
+			time_t now;
+			unsigned int x = time_x;
+			unsigned int y = time_y;
+			time(&now);
+			/* there is probably no way to find out in advance how many
+			 * chars strftime() writes */
+			str = gp_alloc(MAX_LINE_LEN + 1, "timelabel.text");
+			strftime(str, MAX_LINE_LEN, timelabel.text, localtime(&now));
+
+			if (timelabel_rotate && (*t->text_angle) (TEXT_VERTICAL)) {
+				x += t->v_char / 2;	/* HBB */
+				if (timelabel_bottom)
+					write_multiline(x, y, str, LEFT, JUST_TOP, TEXT_VERTICAL, timelabel.font);
+				else
+					write_multiline(x, y, str, RIGHT, JUST_TOP, TEXT_VERTICAL, timelabel.font);
+				(*t->text_angle) (0);
+			} else {
+				y -= t->v_char / 2;	/* HBB */
+				if (timelabel_bottom)
+					write_multiline(x, y, str, LEFT, JUST_BOT, 0, timelabel.font);
+				else
+					write_multiline(x, y, str, LEFT, JUST_TOP, 0, timelabel.font);
+			}
+			free(str);
+		}
+
+		/* Add back colorbox if appropriate */
+		if (is_plot_with_colorbox() && term->set_color
+				&& color_box.layer == LAYER_BACK)
+			draw_color_smooth_box(MODE_PLOT);
+
+		/* And rectangles */
+		place_objects( first_object, 0, 2, clip_area );
+
+		/* PLACE LABELS */
+		place_labels( first_label, 0, FALSE );
+
+		/* PLACE ARROWS */
+		place_arrows( 0 );
+
+		/* Sync point for epslatex text positioning */
+		if (term->layer)
+			(term->layer)(TERM_LAYER_FRONTTEXT);
+
+		/* Draw the key, or at least reserve space for it (pass 1) */
+		if (lkey)
+			do_key_layout( key, key_pass, &xl, &yl );
+		SECOND_KEY_PASS:
+
+			/* DRAW CURVES */
+			this_plot = plots;
+		for (curve = 0; curve < pcount; this_plot = this_plot->next, curve++) {
+
+			TBOOLEAN localkey = lkey;	/* a local copy */
+
+			/* Sync point for start of new curve (used by svg, post, ...) */
+			if (term->layer)
+				(term->layer)(TERM_LAYER_BEFORE_PLOT);
+
+			/* set scaling for this plot's axes */
+			x_axis = this_plot->x_axis;
+			y_axis = this_plot->y_axis;
+
+			term_apply_lp_properties(&(this_plot->lp_properties));
+
+			/* Why only for histograms? */
+			if (this_plot->plot_style == HISTOGRAMS) {
+				if (prefer_line_styles)
+					lp_use_properties(&this_plot->lp_properties, this_plot->lp_properties.l_type+1);
+			}
+
+			/* Skip a line in the key between histogram clusters */
+			if (this_plot->plot_style == HISTOGRAMS
+					&&  this_plot->histogram_sequence == 0 && yl != yl_ref) {
+				if (++key_count >= key_rows) {
+					yl = yl_ref;
+					xl += key_col_wth;
+					key_count = 0;
+				} else
+					yl = yl - key_entry_height;
+			}
+
+			/* Column-stacked histograms store their key titles internally */
+			if (this_plot->plot_style == HISTOGRAMS
+					&&  histogram_opts.type == HT_STACKED_IN_TOWERS) {
+				text_label *key_entry;
+				localkey = 0;
+				if (this_plot->labels && (key_pass || !key->front)) {
+					struct lp_style_type save_lp = this_plot->lp_properties;
+					for (key_entry = this_plot->labels->next; key_entry; key_entry = key_entry->next) {
+						key_count++;
+						this_plot->lp_properties.l_type = key_entry->tag;
+						this_plot->fill_properties.fillpattern = key_entry->tag;
+						if (key_entry->text) {
+							if (prefer_line_styles)
+								lp_use_properties(&this_plot->lp_properties, key_entry->tag + 1);
+							else
+								load_linetype(&this_plot->lp_properties, key_entry->tag + 1);
+							do_key_sample(this_plot, key, key_entry->text, t, xl, yl);
+						}
+						yl = yl - key_entry_height;
+					}
+					free_labels(this_plot->labels);
+					this_plot->labels = NULL;
+					this_plot->lp_properties = save_lp;
+				}
+
+			} else if (this_plot->title && !*this_plot->title) {
+				localkey = FALSE;
+			} else if (this_plot->plot_type == NODATA) {
+				localkey = FALSE;
+			} else if (key_pass || !key->front) {
+				ignore_enhanced(this_plot->title_no_enhanced);
+				/* don't write filename or function enhanced */
+				if (localkey && this_plot->title && !this_plot->title_is_suppressed) {
+					key_count++;
+					if (key->invert)
+						yl = key->bounds.ybot + yl_ref + key_entry_height/2 - yl;
+						do_key_sample(this_plot, key, this_plot->title, t, xl, yl);
+				}
+				ignore_enhanced(FALSE);
+			}
+
+			/* If any plots have opted out of autoscaling, we need to recheck */
+			/* whether their points are INRANGE or not.                       */
+			if (this_plot->noautoscale  &&  !key_pass)
+				recheck_ranges(this_plot);
+
+			/* and now the curves, plus any special key requirements */
+			/* be sure to draw all lines before drawing any points */
+			/* Skip missing/empty curves */
+			if (this_plot->plot_type != NODATA  &&  !key_pass) {
+
+				switch (this_plot->plot_style) {
+				case IMPULSES:
+					plot_impulses(this_plot, X_AXIS.term_zero, Y_AXIS.term_zero);
+					break;
+				case LINES:
+					plot_lines(this_plot);
+					break;
+				case STEPS:
+					plot_steps(this_plot);
+					break;
+				case FSTEPS:
+					plot_fsteps(this_plot);
+					break;
+				case HISTEPS:
+					plot_histeps(this_plot);
+					break;
+				case POINTSTYLE:
+					plot_points(this_plot);
+					break;
+				case LINESPOINTS:
+					plot_lines(this_plot);
+					plot_points(this_plot);
+					break;
+				case DOTS:
+					plot_dots(this_plot);
+					break;
+				case YERRORLINES:
+				case XERRORLINES:
+				case XYERRORLINES:
+					plot_lines(this_plot);
+					plot_bars(this_plot);
+					plot_points(this_plot);
+					break;
+				case YERRORBARS:
+				case XERRORBARS:
+				case XYERRORBARS:
+					plot_bars(this_plot);
+					plot_points(this_plot);
+					break;
+				case BOXXYERROR:
+				case BOXES:
+					plot_boxes(this_plot, Y_AXIS.term_zero);
+					break;
+
+				case HISTOGRAMS:
+					if (bar_layer == LAYER_FRONT)
+						plot_boxes(this_plot, Y_AXIS.term_zero);
+					/* Draw the bars first, so that the box will cover the bottom half */
+					if (histogram_opts.type == HT_ERRORBARS) {
+						(term->linewidth)(histogram_opts.bar_lw);
+						if (!need_fill_border(&default_fillstyle))
+							(term->linetype)(this_plot->lp_properties.l_type);
+						plot_bars(this_plot);
+						term_apply_lp_properties(&(this_plot->lp_properties));
+					}
+					if (bar_layer != LAYER_FRONT)
+						plot_boxes(this_plot, Y_AXIS.term_zero);
+					break;
+
+				case BOXERROR:
+					if (bar_layer != LAYER_FRONT)
+						plot_bars(this_plot);
+					plot_boxes(this_plot, Y_AXIS.term_zero);
+					if (bar_layer == LAYER_FRONT)
+						plot_bars(this_plot);
+					break;
+
+				case FILLEDCURVES:
+					if (this_plot->filledcurves_options.closeto == FILLEDCURVES_BETWEEN) {
+						plot_betweencurves(this_plot);
+						/* FIXME: would like to call plot_lines() here twice, once for the lower */
+						/* curve and once for the upper curve(), conditional on need_fill_border */
+					} else {
+						plot_filledcurves(this_plot);
+						if (need_fill_border(&this_plot->fill_properties))
+							plot_lines(this_plot);
+					}
+					break;
+
+				case VECTOR:
+					plot_vectors(this_plot);
+					break;
+				case FINANCEBARS:
+					plot_f_bars(this_plot);
+					break;
+				case CANDLESTICKS:
+					plot_c_bars(this_plot);
+					break;
+
+				case BOXPLOT:
+					plot_boxplot(this_plot);
+					break;
+
+				case PM3DSURFACE:
+					int_warn(NO_CARET, "Can't use pm3d for 2d plots");
+					break;
+
+				case LABELPOINTS:
+					place_labels( this_plot->labels->next, LAYER_PLOTLABELS, TRUE);
+					break;
+
+				case IMAGE:
+					this_plot->image_properties.type = IC_PALETTE;
+					plot_image_or_update_axes(this_plot, FALSE);
+					break;
+
+				case RGBIMAGE:
+					this_plot->image_properties.type = IC_RGB;
+					plot_image_or_update_axes(this_plot, FALSE);
+					break;
+
+				case RGBA_IMAGE:
+					this_plot->image_properties.type = IC_RGBA;
+					plot_image_or_update_axes(this_plot, FALSE);
+					break;
+
+					#ifdef EAM_OBJECTS
+				case CIRCLES:
+					plot_circles(this_plot);
+					break;
+
+				case ELLIPSES:
+					plot_ellipses(this_plot);
+					break;
+
+					#endif
+				}
+			}
+
+
+			if (localkey && this_plot->title && !this_plot->title_is_suppressed) {
+				/* If there are two passes, defer point sample till the second */
+				if (key->front && !key_pass) {
+					; /* Do nothing during first pass */
+
+					/* we deferred point sample until now */
+				} else if (this_plot->plot_style == LINESPOINTS
+						&&  this_plot->lp_properties.p_interval < 0) {
+					(*t->linetype)(LT_BACKGROUND);
+					(*t->point)(xl + key_point_offset, yl, 6);
+					term_apply_lp_properties(&this_plot->lp_properties);
+
+				} else if (this_plot->plot_style == BOXPLOT) {
+					;	/* Don't draw a sample point in the key */
+
+				} else if (this_plot->plot_style == DOTS) {
+					if (on_page(xl + key_point_offset, yl))
+						(*t->point) (xl + key_point_offset, yl, -1);
+
+				} else if (this_plot->plot_style & PLOT_STYLE_HAS_POINT) {
+					if (this_plot->lp_properties.p_size == PTSZ_VARIABLE)
+						(*t->pointsize)(pointsize);
+					if (on_page(xl + key_point_offset, yl))
+						(*t->point) (xl + key_point_offset, yl, this_plot->lp_properties.p_type);
+				}
+
+				if (key->invert)
+					yl = key->bounds.ybot + yl_ref + key_entry_height/2 - yl;
+					if (key_count >= key_rows) {
+						yl = yl_ref;
+						xl += key_col_wth;
+						key_count = 0;
+					} else
+						yl = yl - key_entry_height;
+			}
+
+			/* Sync point for end of this curve (used by svg, post, ...) */
+			if (term->layer)
+				(term->layer)(TERM_LAYER_AFTER_PLOT);
+
+		}
+
+		/* Go back and draw the legend in a separate pass if necessary */
+		if (lkey && key->front && !key_pass) {
+			key_pass = TRUE;
+			do_key_layout( key, key_pass, &xl, &yl );
+			goto SECOND_KEY_PASS;
+		}
+
+		/* DRAW TICS AND GRID */
+		if (grid_layer == 1)
+			place_grid();
+
+		/* REDRAW PLOT BORDER */
+		if (draw_border && border_layer == 1)
+			plot_border();
+
+		/* Add front colorbox if appropriate */
+		if (is_plot_with_colorbox() && term->set_color
+				&& color_box.layer == LAYER_FRONT)
+			draw_color_smooth_box(MODE_PLOT);
+
+		/* And rectangles */
+		place_objects( first_object, 1, 2, clip_area );
+
+		/* PLACE LABELS */
+		place_labels( first_label, 1, FALSE );
+
+		/* PLACE HISTOGRAM TITLES */
+		place_histogram_titles();
+
+		/* PLACE ARROWS */
+		place_arrows( 1 );
+
+		/* Release the palette if we have used one (PostScript only?) */
+		if (is_plot_with_palette() && term->previous_palette)
+			term->previous_palette();
+
+			term_end_plot();
+	}
 
 
 	/* plot_lines:
 	 * Plot the curves in LINES style
 	 */
-	public static void plot_lines(curve_points plot) {
+	public void plot_lines(curve_points plot) {
 		term t = new term();
 		int i;							/* point index */
 		int x, y;						/* point in terminal coordinates */
