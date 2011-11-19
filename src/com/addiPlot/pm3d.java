@@ -2,6 +2,13 @@ package com.addiPlot;
 
 public class pm3d {
 	
+
+
+	public static void set_plot_with_palette(int plot_num, int plot_mode) {
+		//CCX
+	}
+	
+	
 	public static double z2cb(double z) {
 		//CCX
 		return 0;
