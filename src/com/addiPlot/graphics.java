@@ -84,7 +84,7 @@ public class graphics {
 	static int ylabel_x, y2label_x, xlabel_y, x2label_y, title_y, time_y, time_x;
 	static int ylabel_y, y2label_y, xtic_y, x2tic_y, ytic_x, y2tic_x;
 	/*}}} */
-	
+
 	/* externally visible variables of graphics.h */
 
 	/* 'set offset' status variables */
@@ -93,6 +93,1035 @@ public class graphics {
 	/* 'set bar' status */
 	public static double bar_size;
 	public static int bar_layer;
+
+	static int
+	find_maxl_keys(curve_points plots, int count, int[] kcnt)
+	{
+		int mlen, len, curve, cnt;
+		curve_points this_plot;
+
+		mlen = cnt = 0;
+		this_plot = plots;
+		for (curve = 0; curve < count; this_plot = this_plot.next, curve++) {
+			if ((this_plot.title != null) && !this_plot.title_is_suppressed) {
+				term_api.ignore_enhanced(this_plot.title_no_enhanced);
+				len = term_api.estimate_strlen(this_plot.title);
+				if (len != 0) {
+					cnt++;
+					if (len > mlen)
+						mlen = len;
+				}
+				term_api.ignore_enhanced(false);
+			}
+
+			/* Check for new histogram here and save space for divider */
+			if (this_plot.plot_style == gp_types.PLOT_STYLE.HISTOGRAMS
+					&&  this_plot.histogram_sequence == 0 && cnt > 1)
+				cnt++;
+			/* Check for column-stacked histogram with key entries */
+			if (this_plot.plot_style == gp_types.PLOT_STYLE.HISTOGRAMS &&  (this_plot.labels != null)) {
+				text_label key_entry = this_plot.labels.next;
+				for (; key_entry; key_entry=key_entry.next) {
+					cnt++;
+					len = (key_entry.text != null) ? term_api.estimate_strlen(key_entry.text) : 0;
+					if (len > mlen)
+						mlen = len;
+				}
+			}
+		}
+
+		if (kcnt != null)
+			kcnt[0] = cnt;
+		return (mlen);
+	}
+
+
+	/*{{{  boundary() */
+	/* borders of plotting area
+	 * computed once on every call to do_plot
+	 *
+	 * The order in which things is done is getting pretty critical:
+	 *  plot_bounds.ytop depends on title, x2label, ylabels (if no rotated text)
+	 *  plot_bounds.ybot depends on key, if "under"
+	 *  once we have these, we can setup the y1 and y2 tics and the
+	 *  only then can we calculate plot_bounds.xleft and plot_bounds.xright
+	 *  plot_bounds.xright depends also on key RIGHT
+	 *  then we can do x and x2 tics
+	 *
+	 * For set size ratio ..., everything depends on everything else...
+	 * not really a lot we can do about that, so we lose if the plot has to
+	 * be reduced vertically. But the chances are the
+	 * change will not be very big, so the number of tics will not
+	 * change dramatically.
+	 *
+	 * Margin computation redone by Dick Crawford (rccrawford@lanl.gov) 4/98
+	 */
+
+	static void
+	boundary(curve_points plots, int count)
+	{
+		int yticlin = 0, y2ticlin = 0, timelin = 0;
+		gadgets.legend_key key = gadgets.keyT;
+
+		int key_h, key_w;
+		/* FIXME HBB 20000506: this line is the reason for the 'D0,1;D1,0'
+		 * bug in the HPGL terminal: we actually carry out the switch of
+		 * text orientation, just for finding out if the terminal can do
+		 * that. *But* we're not in graphical mode, yet, so this call
+		 * yields undesirable results */
+		int can_rotate = term.text_angle(term_api.TEXT_VERTICAL);
+
+		int xtic_textheight;	/* height of xtic labels */
+		int x2tic_textheight;	/* height of x2tic labels */
+		int title_textheight;	/* height of title */
+		int xlabel_textheight;	/* height of xlabel */
+		int x2label_textheight;	/* height of x2label */
+		int timetop_textheight;	/* height of timestamp (if at top) */
+		int timebot_textheight;	/* height of timestamp (if at bottom) */
+		int ylabel_textheight;	/* height of (unrotated) ylabel */
+		int y2label_textheight;	/* height of (unrotated) y2label */
+		int ylabel_textwidth;	/* width of (rotated) ylabel */
+		int y2label_textwidth;	/* width of (rotated) y2label */
+		int timelabel_textwidth;	/* width of timestamp */
+		int ytic_textwidth;		/* width of ytic labels */
+		int y2tic_textwidth;	/* width of y2tic labels */
+		int x2tic_height;		/* 0 for tic_in or no x2tics, ticscale*v_tic otherwise */
+		int xtic_textwidth=0;	/* amount by which the xtic label protrude to the right */
+		int xtic_height;
+		int ytic_width;
+		int y2tic_width;
+
+		int key_cols = 1;		/* # columns of keys */
+
+		/* figure out which rotatable items are to be rotated
+		 * (ylabel and y2label are rotated if possible) */
+		int vertical_timelabel = (can_rotate != 0) ? gadgets.timelabel_rotate : 0;
+		int vertical_xtics  = (can_rotate != 0) ? axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].tic_rotate : 0;
+		int vertical_x2tics = (can_rotate != 0) ? axis.axis_array[axis.AXIS_INDEX.SECOND_X_AXIS.value].tic_rotate : 0;
+		int vertical_ytics  = (can_rotate != 0) ? axis.axis_array[axis.AXIS_INDEX.FIRST_Y_AXIS.value].tic_rotate : 0;
+		int vertical_y2tics = (can_rotate != 0) ? axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].tic_rotate : 0;
+
+		boolean shift_labels_to_border = false;
+
+		lkey = key->visible;	/* but we may have to disable it later */
+
+		xticlin = ylablin = y2lablin = xlablin = x2lablin = titlelin = 0;
+
+		/*{{{  count lines in labels and tics */
+		if (title.text)
+			label_width(title.text, &titlelin);
+		if (axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].label.text)
+			label_width(axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].label.text, &xlablin);
+
+		/* This should go *inside* label_width(), but it messes up the key title */
+		/* Imperfect check for subscripts or superscripts */
+		if ((term->flags & TERM_ENHANCED_TEXT) && axis_array[FIRST_X_AXIS].label.text
+				&& strpbrk(axis_array[FIRST_X_AXIS].label.text, "_^"))
+			xlablin++;
+
+		if (axis_array[SECOND_X_AXIS].label.text)
+			label_width(axis_array[SECOND_X_AXIS].label.text, &x2lablin);
+		if (axis_array[FIRST_Y_AXIS].label.text)
+			label_width(axis_array[FIRST_Y_AXIS].label.text, &ylablin);
+		if (axis_array[SECOND_Y_AXIS].label.text)
+			label_width(axis_array[SECOND_Y_AXIS].label.text, &y2lablin);
+
+		if (axis_array[FIRST_X_AXIS].ticmode) {
+			label_width(axis_array[FIRST_X_AXIS].formatstring, &xticlin);
+			/* Reserve room for user tic labels even if format of autoticks is "" */
+			if (xticlin == 0 && axis_array[FIRST_X_AXIS].ticdef.def.user)
+				xticlin = 1;
+		}
+
+		if (axis_array[SECOND_X_AXIS].ticmode)
+			label_width(axis_array[SECOND_X_AXIS].formatstring, &x2ticlin);
+		if (axis_array[FIRST_Y_AXIS].ticmode)
+			label_width(axis_array[FIRST_Y_AXIS].formatstring, &yticlin);
+		if (axis_array[SECOND_Y_AXIS].ticmode)
+			label_width(axis_array[SECOND_Y_AXIS].formatstring, &y2ticlin);
+		if (timelabel.text)
+			label_width(timelabel.text, &timelin);
+		/*}}} */
+
+		/*{{{  preliminary plot_bounds.ytop  calculation */
+
+		/*     first compute heights of things to be written in the margin */
+
+		/* title */
+		if (titlelin) {
+			double tmpx, tmpy;
+			map_position_r(&(title.offset), &tmpx, &tmpy, "boundary");
+			title_textheight = (int) ((titlelin + 1) * (t->v_char) + tmpy);
+		} else
+			title_textheight = 0;
+
+		/* x2label */
+		if (x2lablin) {
+			double tmpx, tmpy;
+			map_position_r(&(axis_array[SECOND_X_AXIS].label.offset),
+					&tmpx, &tmpy, "boundary");
+			x2label_textheight = (int) (x2lablin * t->v_char + tmpy);
+			if (!axis_array[SECOND_X_AXIS].ticmode)
+				x2label_textheight += 0.5 * t->v_char;
+		} else
+			x2label_textheight = 0;
+
+		/* tic labels */
+		if (axis_array[SECOND_X_AXIS].ticmode & TICS_ON_BORDER) {
+			/* ought to consider tics on axes if axis near border */
+			if (vertical_x2tics) {
+				/* guess at tic length, since we don't know it yet
+		       --- we'll fix it after the tic labels have been created */
+				x2tic_textheight = (int) (5 * t->h_char);
+			} else
+				x2tic_textheight = (int) (x2ticlin * t->v_char);
+		} else
+			x2tic_textheight = 0;
+
+		/* tics */
+		if (!axis_array[SECOND_X_AXIS].tic_in
+				&& ((axis_array[SECOND_X_AXIS].ticmode & TICS_ON_BORDER)
+						|| ((axis_array[FIRST_X_AXIS].ticmode & TICS_MIRROR)
+								&& (axis_array[FIRST_X_AXIS].ticmode & TICS_ON_BORDER))))
+			x2tic_height = (int) (t->v_tic * axis_array[SECOND_X_AXIS].ticscale);
+		else
+			x2tic_height = 0;
+
+		/* timestamp */
+		if (timelabel.text && !timelabel_bottom) {
+			double tmpx, tmpy;
+			map_position_r(&(timelabel.offset), &tmpx, &tmpy, "boundary");
+			timetop_textheight = (int) ((timelin + 2) * t->v_char + tmpy);
+		} else
+			timetop_textheight = 0;
+
+		/* horizontal ylabel */
+		if (axis_array[FIRST_Y_AXIS].label.text && !can_rotate) {
+			double tmpx, tmpy;
+			map_position_r(&(axis_array[FIRST_Y_AXIS].label.offset),
+					&tmpx, &tmpy, "boundary");
+			ylabel_textheight = (int) (ylablin * t->v_char + tmpy);
+		} else
+			ylabel_textheight = 0;
+
+		/* horizontal y2label */
+		if (axis_array[SECOND_Y_AXIS].label.text && !can_rotate) {
+			double tmpx, tmpy;
+			map_position_r(&(axis_array[SECOND_Y_AXIS].label.offset),
+					&tmpx, &tmpy, "boundary");
+			y2label_textheight = (int) (y2lablin * t->v_char + tmpy);
+		} else
+			y2label_textheight = 0;
+
+		/* compute plot_bounds.ytop from the various components
+		 *     unless tmargin is explicitly specified  */
+
+		plot_bounds.ytop = (int) (0.5 + (ysize + yoffset) * (t->ymax-1));
+
+		if (tmargin.scalex == screen) {
+			/* Specified as absolute position on the canvas */
+			plot_bounds.ytop = (tmargin.x) * (float)(t->ymax-1);
+		} else if (tmargin.x >=0) {
+			/* Specified in terms of character height */
+			plot_bounds.ytop -= (int)(tmargin.x * (float)t->v_char + 0.5);
+		} else {
+			/* Auto-calculation of space required */
+			int top_margin = x2label_textheight + title_textheight;
+
+			if (timetop_textheight + ylabel_textheight > top_margin)
+				top_margin = timetop_textheight + ylabel_textheight;
+			if (y2label_textheight > top_margin)
+				top_margin = y2label_textheight;
+
+			top_margin += x2tic_height + x2tic_textheight;
+			/* x2tic_height and x2tic_textheight are computed as only the
+			 *     relevant heights, but they nonetheless need a blank
+			 *     space above them  */
+			if (top_margin > x2tic_height)
+				top_margin += (int) t->v_char;
+
+				plot_bounds.ytop -= top_margin;
+				if (plot_bounds.ytop == (int)(0.5 + (ysize + yoffset) * (t->ymax-1))) {
+					/* make room for the end of rotated ytics or y2tics */
+					plot_bounds.ytop -= (int) (t->h_char * 2);
+				}
+		}
+
+		/*  end of preliminary plot_bounds.ytop calculation }}} */
+
+
+		/*{{{  preliminary plot_bounds.xleft, needed for "under" */
+		if (lmargin.scalex == screen)
+			plot_bounds.xleft = lmargin.x * (float)t->xmax;
+			else
+				plot_bounds.xleft = xoffset * t->xmax
+				+ t->h_char * (lmargin.x >= 0 ? lmargin.x : 1);
+				/*}}} */
+
+
+				/*{{{  tentative plot_bounds.xright, needed for "under" */
+				if (rmargin.scalex == screen)
+					plot_bounds.xright = rmargin.x * (float)(t->xmax - 1);
+				else
+					plot_bounds.xright = (xsize + xoffset) * (t->xmax - 1)
+					- t->h_char * (rmargin.x >= 0 ? rmargin.x : 2);
+					/*}}} */
+
+
+					/*{{{  preliminary plot_bounds.ybot calculation
+					 *     first compute heights of labels and tics */
+
+					/* tic labels */
+					shift_labels_to_border = FALSE;
+					if (axis_array[FIRST_X_AXIS].ticmode & TICS_ON_AXIS) {
+						/* FIXME: This test for how close the axis is to the border does not match */
+						/*        the tests in axis_output_tics(), and assumes FIRST_Y_AXIS.       */
+						if (!inrange(0.0, axis_array[FIRST_Y_AXIS].min, axis_array[FIRST_Y_AXIS].max))
+							shift_labels_to_border = TRUE;
+						if (0.05 > fabs( axis_array[FIRST_Y_AXIS].min
+								/ (axis_array[FIRST_Y_AXIS].max - axis_array[FIRST_Y_AXIS].min)))
+							shift_labels_to_border = TRUE;
+					}
+					if ((axis_array[FIRST_X_AXIS].ticmode & TICS_ON_BORDER)
+							||  shift_labels_to_border) {
+						/* ought to consider tics on axes if axis near border */
+						if (vertical_xtics) {
+							/* guess at tic length, since we don't know it yet */
+							xtic_textheight = (int) (t->h_char * 5);
+						} else
+							xtic_textheight = (int) (t->v_char * (xticlin + 1));
+					} else
+						xtic_textheight =  0;
+
+					/* tics */
+					if (!axis_array[FIRST_X_AXIS].tic_in
+							&& ((axis_array[FIRST_X_AXIS].ticmode & TICS_ON_BORDER)
+									|| ((axis_array[SECOND_X_AXIS].ticmode & TICS_MIRROR)
+											&& (axis_array[SECOND_X_AXIS].ticmode & TICS_ON_BORDER))))
+						xtic_height = (int) (t->v_tic * axis_array[FIRST_X_AXIS].ticscale);
+					else
+						xtic_height = 0;
+
+					/* xlabel */
+					if (xlablin) {
+						double tmpx, tmpy;
+						map_position_r(&(axis_array[FIRST_X_AXIS].label.offset),
+								&tmpx, &tmpy, "boundary");
+						/* offset is subtracted because if > 0, the margin is smaller */
+						/* textheight is inflated by 0.2 to allow descenders to clear bottom of canvas */
+						xlabel_textheight = (((float)xlablin + 0.2) * t->v_char - tmpy);
+						if (!axis_array[FIRST_X_AXIS].ticmode)
+							xlabel_textheight += 0.5 * t->v_char;
+					} else
+						xlabel_textheight = 0;
+
+					/* timestamp */
+					if (timelabel.text && timelabel_bottom) {
+						/* && !vertical_timelabel)
+						 * DBT 11-18-98 resize plot for vertical timelabels too !
+						 */
+						double tmpx, tmpy;
+						map_position_r(&(timelabel.offset), &tmpx, &tmpy, "boundary");
+						/* offset is subtracted because if . 0, the margin is smaller */
+						timebot_textheight = (int) (timelin * t->v_char - tmpy);
+					} else
+						timebot_textheight = 0;
+
+					/* compute plot_bounds.ybot from the various components
+					 *     unless bmargin is explicitly specified  */
+
+					plot_bounds.ybot = yoffset * (float)t->ymax;
+
+					if (bmargin.scalex == screen) {
+						/* Absolute position for bottom of plot */
+						plot_bounds.ybot = bmargin.x * (float)t->ymax;
+					} else if (bmargin.x >= 0) {
+						/* Position based on specified character height */
+						plot_bounds.ybot += bmargin.x * (float)t->v_char + 0.5;
+					} else {
+						plot_bounds.ybot += xtic_height + xtic_textheight;
+						if (xlabel_textheight > 0)
+							plot_bounds.ybot += xlabel_textheight;
+						if (timebot_textheight > 0)
+							plot_bounds.ybot += timebot_textheight;
+						/* HBB 19990616: round to nearest integer, required to escape
+						 * floating point inaccuracies */
+						if (plot_bounds.ybot == (int) (t->ymax * yoffset)) {
+							/* make room for the end of rotated ytics or y2tics */
+							plot_bounds.ybot += (int) (t->h_char * 2);
+						}
+					}
+
+					/*  end of preliminary plot_bounds.ybot calculation }}} */
+
+					if (lkey) {
+						TBOOLEAN key_panic = FALSE;
+						/*{{{  essential key features */
+
+						p_width = pointsize * t->h_tic;
+						p_height = pointsize * t->v_tic;
+
+						if (key->swidth >= 0)
+							key_sample_width = key->swidth * t->h_char + p_width;
+							else
+								key_sample_width = 0;
+
+						key_entry_height = p_height * 1.25 * key->vert_factor;
+						if (key_entry_height < t->v_char)
+							key_entry_height = t->v_char * key->vert_factor;
+							/* HBB 20020122: safeguard to prevent division by zero later */
+							if (key_entry_height == 0)
+								key_entry_height = 1;
+
+							/* Count max_len key and number keys with len > 0 */
+							max_ptitl_len = find_maxl_keys(plots, count, &ptitl_cnt);
+
+							/* Key title length and height */
+							if (key->title) {
+								int ytlen, ytheight;
+								ytlen = label_width(key->title, &ytheight);
+								ytlen -= key->swidth + 2;
+								/* EAM FIXME */
+								if ((ytlen > max_ptitl_len) && (key->stack_dir != GPKEY_HORIZONTAL))
+									max_ptitl_len = ytlen;
+								ktitl_lines = (int)ytheight;
+							}
+
+							if (key->reverse) {
+								key_sample_left = -key_sample_width;
+								key_sample_right = 0;
+								/* if key width is being used, adjust right-justified text */
+								key_text_left = t->h_char;
+								key_text_right = t->h_char * (max_ptitl_len + 1 + key->width_fix);
+								key_size_left = t->h_char - key_sample_left; /* sample left is -ve */
+								key_size_right = key_text_right;
+							} else {
+								key_sample_left = 0;
+								key_sample_right = key_sample_width;
+								/* if key width is being used, adjust left-justified text */
+								key_text_left = -(int) (t->h_char
+										* (max_ptitl_len + 1 + key->width_fix));
+								key_text_right = -(int) t->h_char;
+								key_size_left = -key_text_left;
+								key_size_right = key_sample_right + t->h_char;
+							}
+							key_point_offset = (key_sample_left + key_sample_right) / 2;
+
+							/* advance width for cols */
+							key_col_wth = key_size_left + key_size_right;
+
+							key_rows = ptitl_cnt;
+							key_cols = 1;
+
+							/* calculate rows and cols for key */
+
+							if (key->stack_dir == GPKEY_HORIZONTAL) {
+								/* maximise no cols, limited by label-length */
+								key_cols = (int) (plot_bounds.xright - plot_bounds.xleft) / key_col_wth;
+								if (key->maxcols > 0 && key_cols > key->maxcols)
+									key_cols = key->maxcols;
+									/* EAM Dec 2004 - Rather than turn off the key, try to squeeze */
+									if (key_cols == 0) {
+										key_cols = 1;
+										key_panic = TRUE;
+										key_col_wth = (plot_bounds.xright - plot_bounds.xleft);
+									}
+									key_rows = (int) (ptitl_cnt + key_cols - 1) / key_cols;
+									/* now calculate actual no cols depending on no rows */
+									key_cols = (key_rows == 0) ? 1
+											: (int) (ptitl_cnt + key_rows - 1) / key_rows;
+									if (key_cols == 0) {
+										key_cols = 1;
+										key_panic = TRUE;
+									}
+							} else {
+								/* maximise no rows, limited by plot_bounds.ytop-plot_bounds.ybot */
+								int i = (int) (plot_bounds.ytop - plot_bounds.ybot - key->height_fix * t->v_char
+										- (ktitl_lines + 1) * t->v_char)
+										/ key_entry_height;
+								if (key->maxrows > 0 && i > key->maxrows)
+									i = key->maxrows;
+
+									if (i == 0) {
+										i = 1;
+										key_panic = TRUE;
+									}
+									if (ptitl_cnt > i) {
+										key_cols = (int) (ptitl_cnt + i - 1) / i;
+										/* now calculate actual no rows depending on no cols */
+										if (key_cols == 0) {
+											key_cols = 1;
+											key_panic = TRUE;
+										}
+										key_rows = (int) (ptitl_cnt + key_cols - 1) / key_cols;
+									}
+							}
+
+							/* adjust for outside key, leave manually set margins alone */
+							if ((key->region == GPKEY_AUTO_EXTERIOR_LRTBC && (key->vpos != JUST_CENTRE || key->hpos != CENTRE))
+									|| key->region == GPKEY_AUTO_EXTERIOR_MARGIN) {
+								int more = 0;
+								if (key->margin == GPKEY_BMARGIN && bmargin.x < 0) {
+									more = key_entry_height * key_rows + (int) (t->v_char * (ktitl_lines + 1))
+									+ (int) (key->height_fix * t->v_char);
+									if (plot_bounds.ybot + more > plot_bounds.ytop)
+										key_panic = TRUE;
+									else
+										plot_bounds.ybot += more;
+								} else if (key->margin == GPKEY_TMARGIN && tmargin.x < 0) {
+									more = key_entry_height * key_rows + (int) (t->v_char * (ktitl_lines + 1))
+									- (int) (key->height_fix * t->v_char);
+									if (plot_bounds.ytop - more < plot_bounds.ybot)
+										key_panic = TRUE;
+									else
+										plot_bounds.ytop -= more;
+								} else if (key->margin == GPKEY_LMARGIN && lmargin.x < 0) {
+									more = key_col_wth * key_cols;
+									if (plot_bounds.xleft + more > plot_bounds.xright)
+										key_panic = TRUE;
+									else
+										plot_bounds.xleft += more;
+								} else if (key->margin == GPKEY_RMARGIN && rmargin.x < 0) {
+									more = key_col_wth * key_cols;
+									if (plot_bounds.xright - more < plot_bounds.xleft)
+										key_panic = TRUE;
+									else
+										plot_bounds.xright -= more;
+								}
+							}
+
+							/* warn if we had to punt on key size calculations */
+							if (key_panic)
+								int_warn(NO_CARET, "Warning - difficulty fitting plot titles into key");
+
+							/*}}} */
+					}
+
+					/*{{{  set up y and y2 tics */
+					setup_tics(FIRST_Y_AXIS, 20);
+					setup_tics(SECOND_Y_AXIS, 20);
+					/*}}} */
+
+					/* Adjust color axis limits if necessary. */
+					if (is_plot_with_palette()) {
+						set_cbminmax();
+						axis_checked_extend_empty_range(COLOR_AXIS, "All points of color axis undefined.");
+						if (color_box.where != SMCOLOR_BOX_NO)
+							setup_tics(COLOR_AXIS, 20);
+					}
+
+					/*{{{  recompute plot_bounds.xleft based on widths of ytics, ylabel etc
+	       unless it has been explicitly set by lmargin */
+
+					/* tic labels */
+					shift_labels_to_border = FALSE;
+					if (axis_array[FIRST_Y_AXIS].ticmode & TICS_ON_AXIS) {
+						/* FIXME: This test for how close the axis is to the border does not match */
+						/*        the tests in axis_output_tics(), and assumes FIRST_X_AXIS.       */
+						if (!inrange(0.0, axis_array[FIRST_X_AXIS].min, axis_array[FIRST_X_AXIS].max))
+							shift_labels_to_border = TRUE;
+						if (0.1 > fabs( axis_array[FIRST_X_AXIS].min
+								/  (axis_array[FIRST_X_AXIS].max - axis_array[FIRST_X_AXIS].min)))
+							shift_labels_to_border = TRUE;
+					}
+
+					if ((axis_array[FIRST_Y_AXIS].ticmode & TICS_ON_BORDER)
+							||  shift_labels_to_border) {
+						if (vertical_ytics)
+							/* HBB: we will later add some white space as part of this, so
+							 * reserve two more rows (one above, one below the text ...).
+							 * Same will be done to similar calc.'s elsewhere */
+							ytic_textwidth = (int) (t->v_char * (yticlin + 2));
+						else {
+							widest_tic_strlen = 0;	/* reset the global variable ... */
+							/* get gen_tics to call widest_tic_callback with all labels
+							 * the latter sets widest_tic_strlen to the length of the widest
+							 * one ought to consider tics on axis if axis near border...
+							 */
+							gen_tics(FIRST_Y_AXIS, /* 0, */ widest_tic_callback);
+
+							ytic_textwidth = (int) (t->h_char * (widest_tic_strlen + 2));
+						}
+					} else {
+						ytic_textwidth = 0;
+					}
+
+					/* tics */
+					if (!axis_array[FIRST_Y_AXIS].tic_in
+							&& ((axis_array[FIRST_Y_AXIS].ticmode & TICS_ON_BORDER)
+									|| ((axis_array[SECOND_Y_AXIS].ticmode & TICS_MIRROR)
+											&& (axis_array[SECOND_Y_AXIS].ticmode & TICS_ON_BORDER))))
+						ytic_width = (int) (t->h_tic * axis_array[FIRST_Y_AXIS].ticscale);
+					else
+						ytic_width = 0;
+
+					/* ylabel */
+					if (axis_array[FIRST_Y_AXIS].label.text && can_rotate) {
+						double tmpx, tmpy;
+						map_position_r(&(axis_array[FIRST_Y_AXIS].label.offset),
+								&tmpx, &tmpy, "boundary");
+						ylabel_textwidth = (int) (ylablin * (t->v_char) - tmpx);
+						if (!axis_array[FIRST_Y_AXIS].ticmode)
+							ylabel_textwidth += 0.5 * t->v_char;
+					} else
+						/* this should get large for NEGATIVE ylabel.xoffsets  DBT 11-5-98 */
+						ylabel_textwidth = 0;
+
+					/* timestamp */
+					if (timelabel.text && vertical_timelabel) {
+						double tmpx, tmpy;
+						map_position_r(&(timelabel.offset), &tmpx, &tmpy, "boundary");
+						timelabel_textwidth = (int) ((timelin + 1.5) * t->v_char - tmpx);
+					} else
+						timelabel_textwidth = 0;
+
+					if (lmargin.x < 0) {	
+						/* Auto-calculation */
+						double tmpx, tmpy;
+
+						plot_bounds.xleft = xoffset * t->xmax;
+						plot_bounds.xleft += (timelabel_textwidth > ylabel_textwidth
+								? timelabel_textwidth : ylabel_textwidth)
+								+ ytic_width + ytic_textwidth;
+
+						/* make sure plot_bounds.xleft is wide enough for a negatively
+						 * x-offset horizontal timestamp
+						 */
+						map_position_r(&(timelabel.offset), &tmpx, &tmpy, "boundary");
+						if (!vertical_timelabel
+								&& plot_bounds.xleft - ytic_width - ytic_textwidth < -(int) (tmpx))
+							plot_bounds.xleft = ytic_width + ytic_textwidth - (int) (tmpx);
+						if (plot_bounds.xleft == (int) (t->xmax * xoffset)) {
+							/* make room for end of xtic or x2tic label */
+							plot_bounds.xleft += (int) (t->h_char * 2);
+						}
+						/* DBT 12-3-98  extra margin just in case */
+						plot_bounds.xleft += 0.5 * t->h_char;
+					}
+					/* Note: we took care of explicit 'set lmargin foo' at line 492 */
+
+					/*  end of plot_bounds.xleft calculation }}} */
+
+					/*{{{  recompute plot_bounds.xright based on widest y2tic. y2labels, key "outside"
+	       unless it has been explicitly set by rmargin */
+
+					/* tic labels */
+					if (axis_array[SECOND_Y_AXIS].ticmode & TICS_ON_BORDER) {
+						if (vertical_y2tics)
+							y2tic_textwidth = (int) (t->v_char * (y2ticlin + 2));
+						else {
+							widest_tic_strlen = 0;	/* reset the global variable ... */
+							/* get gen_tics to call widest_tic_callback with all labels
+							 * the latter sets widest_tic_strlen to the length of the widest
+							 * one ought to consider tics on axis if axis near border...
+							 */
+							gen_tics(SECOND_Y_AXIS, /* 0, */ widest_tic_callback);
+
+							y2tic_textwidth = (int) (t->h_char * (widest_tic_strlen + 2));
+						}
+					} else {
+						y2tic_textwidth = 0;
+					}
+
+					/* EAM May 2009
+					 * Check to see if any xtic labels are so long that they extend beyond
+					 * the right boundary of the plot. If so, allow extra room in the margin.
+					 * If the labels are too long to fit even with a big margin, too bad.
+					 */
+					if (axis_array[FIRST_X_AXIS].ticdef.def.user) {
+						struct ticmark *tic = axis_array[FIRST_X_AXIS].ticdef.def.user;
+						int maxrightlabel = plot_bounds.xright;
+
+						/* We don't really know the plot layout yet, but try for an estimate */
+						AXIS_SETSCALE(FIRST_X_AXIS, plot_bounds.xleft, plot_bounds.xright);
+						axis_set_graphical_range(FIRST_X_AXIS, plot_bounds.xleft, plot_bounds.xright);
+
+						while (tic) {
+							if (tic->label) {
+								double xx;
+								int length = estimate_strlen(tic->label)
+								* cos(DEG2RAD * (double)(axis_array[FIRST_X_AXIS].tic_rotate))
+								* term->h_char;
+
+								if (inrange(tic->position, 
+										axis_array[FIRST_X_AXIS].set_min, 
+										axis_array[FIRST_X_AXIS].set_max)) {
+									xx = axis_log_value_checked(FIRST_X_AXIS, tic->position, "xtic");
+									xx = AXIS_MAP(FIRST_X_AXIS, xx);
+									xx += (axis_array[FIRST_X_AXIS].tic_rotate) ? length : length /2;
+									if (maxrightlabel < xx)
+										maxrightlabel = xx;
+								}
+							}
+							tic = tic->next;
+						}
+						xtic_textwidth = maxrightlabel - plot_bounds.xright;
+						if (xtic_textwidth > term->xmax/4) {
+							xtic_textwidth = term->xmax/4;
+							int_warn(NO_CARET, "difficulty making room for xtic labels");
+						}
+					}
+
+					/* tics */
+					if (!axis_array[SECOND_Y_AXIS].tic_in
+							&& ((axis_array[SECOND_Y_AXIS].ticmode & TICS_ON_BORDER)
+									|| ((axis_array[FIRST_Y_AXIS].ticmode & TICS_MIRROR)
+											&& (axis_array[FIRST_Y_AXIS].ticmode & TICS_ON_BORDER))))
+						y2tic_width = (int) (t->h_tic * axis_array[SECOND_Y_AXIS].ticscale);
+					else
+						y2tic_width = 0;
+
+					/* y2label */
+					if (can_rotate && axis_array[SECOND_Y_AXIS].label.text) {
+						double tmpx, tmpy;
+						map_position_r(&(axis_array[SECOND_Y_AXIS].label.offset),
+								&tmpx, &tmpy, "boundary");
+						y2label_textwidth = (int) (y2lablin * t->v_char + tmpx);
+						if (!axis_array[SECOND_Y_AXIS].ticmode)
+							y2label_textwidth += 0.5 * t->v_char;
+					} else
+						y2label_textwidth = 0;
+
+					/* Make room for the color box if needed. */
+					if (rmargin.scalex != screen) {
+						if (is_plot_with_colorbox()) {
+							#define COLORBOX_SCALE 0.100
+							#define WIDEST_COLORBOX_TICTEXT 3
+							if ((color_box.where != SMCOLOR_BOX_NO) && (color_box.where != SMCOLOR_BOX_USER)) {
+								plot_bounds.xright -= (int) (plot_bounds.xright-plot_bounds.xleft)*COLORBOX_SCALE;
+								plot_bounds.xright -= (int) ((t->h_char) * WIDEST_COLORBOX_TICTEXT);
+							}
+							color_box.xoffset = 0;
+						}
+
+						if (rmargin.x < 0) {
+							color_box.xoffset = plot_bounds.xright;
+							plot_bounds.xright -= y2tic_width + y2tic_textwidth;
+							if (y2label_textwidth > 0)
+								plot_bounds.xright -= y2label_textwidth;
+
+							if (plot_bounds.xright > (xsize+xoffset)*(t->xmax-1) - (t->h_char * 2))
+								plot_bounds.xright = (xsize+xoffset)*(t->xmax-1) - (t->h_char * 2);
+
+							color_box.xoffset -= plot_bounds.xright;
+							/* EAM 2009 - protruding xtic labels */
+							if (term->xmax - plot_bounds.xright < xtic_textwidth)
+								plot_bounds.xright = term->xmax - xtic_textwidth;
+								/* DBT 12-3-98  extra margin just in case */
+								plot_bounds.xright -= 1.0 * t->h_char;
+						}
+						/* Note: we took care of explicit 'set rmargin foo' at line 502 */
+					}
+
+					/*  end of plot_bounds.xright calculation }}} */
+
+
+					/*{{{  set up x and x2 tics */
+					/* we should base the guide on the width of the xtics, but we cannot
+					 * use widest_tics until tics are set up. Bit of a downer - let us
+					 * assume tics are 5 characters wide
+					 */
+					/* HBB 20001205: moved this block to before aspect_ratio is
+					 * applied: setup_tics may extend the ranges, which would distort
+					 * the aspect ratio */
+
+					setup_tics(FIRST_X_AXIS, 20);
+					setup_tics(SECOND_X_AXIS, 20);
+
+
+					/* Modify the bounding box to fit the aspect ratio, if any was
+					 * given. */
+					if (aspect_ratio != 0.0) {
+						double current_aspect_ratio;
+
+						if (aspect_ratio < 0
+								&& (X_AXIS.max - X_AXIS.min) != 0.0
+						) {
+							current_aspect_ratio = - aspect_ratio
+							* fabs((Y_AXIS.max - Y_AXIS.min) / (X_AXIS.max - X_AXIS.min));
+						} else
+							current_aspect_ratio = aspect_ratio;
+
+						/* Set aspect ratio if valid and sensible */
+						/* EAM Mar 2008 - fixed borders take precedence over centering */
+						if (current_aspect_ratio >= 0.01 && current_aspect_ratio <= 100.0) {
+							double current = ((double) (plot_bounds.ytop - plot_bounds.ybot)) 
+							/ (plot_bounds.xright - plot_bounds.xleft);
+							double required = (current_aspect_ratio * t->v_tic) / t->h_tic;
+
+							if (current > required) {
+								/* too tall */
+								int old_height = plot_bounds.ytop - plot_bounds.ybot;
+								int new_height = required * (plot_bounds.xright - plot_bounds.xleft);
+								if (bmargin.scalex == screen)
+									plot_bounds.ytop = plot_bounds.ybot + new_height;
+								else if (tmargin.scalex == screen)
+									plot_bounds.ybot = plot_bounds.ytop - new_height;
+								else {
+									plot_bounds.ybot += (old_height - new_height) / 2;
+									plot_bounds.ytop -= (old_height - new_height) / 2;
+								}
+
+							} else {
+								int old_width = plot_bounds.xright - plot_bounds.xleft;
+								int new_width = (plot_bounds.ytop - plot_bounds.ybot) / required;
+								if (lmargin.scalex == screen)
+									plot_bounds.xright = plot_bounds.xleft + new_width;
+								else if (rmargin.scalex == screen)
+									plot_bounds.xleft = plot_bounds.xright - new_width;
+								else {
+									plot_bounds.xleft += (old_width - new_width) / 2;
+									plot_bounds.xright -= (old_width - new_width) / 2;
+								}
+							}
+						}
+					}
+
+					/*  Calculate space needed for tic label rotation.
+					 *  If [tb]margin is auto, move the plot boundary.
+					 *  Otherwise use textheight to adjust placement of various titles.
+					 */
+
+					if (axis_array[SECOND_X_AXIS].ticmode & TICS_ON_BORDER && vertical_x2tics) {
+						double projection = sin((double)axis_array[SECOND_X_AXIS].tic_rotate*DEG2RAD);
+						widest_tic_strlen = 0;		/* reset the global variable ... */
+						gen_tics(SECOND_X_AXIS, /* 0, */ widest_tic_callback);
+						if (tmargin.x < 0) /* Undo original estimate */
+							plot_bounds.ytop += x2tic_textheight;
+						/* Now compute a new one and use that instead: */
+						if (projection > 0.0)
+							x2tic_textheight = (int) (t->h_char * (widest_tic_strlen)) * projection;
+						else
+							x2tic_textheight = t->v_char;
+							if (tmargin.x < 0)
+								plot_bounds.ytop -= x2tic_textheight;
+					}
+					if (axis_array[FIRST_X_AXIS].ticmode & TICS_ON_BORDER && vertical_xtics) {
+						double projection;
+						if (axis_array[FIRST_X_AXIS].tic_rotate == 90)
+							projection = 1.0;
+						else if (axis_array[FIRST_X_AXIS].tic_rotate == TEXT_VERTICAL)
+							projection = 1.0;
+						else
+							projection = -sin((double)axis_array[FIRST_X_AXIS].tic_rotate*DEG2RAD);
+						widest_tic_strlen = 0;		/* reset the global variable ... */
+						gen_tics(FIRST_X_AXIS, /* 0, */ widest_tic_callback);
+
+						if (bmargin.x < 0)
+							plot_bounds.ybot -= xtic_textheight;
+						if (projection > 0.0)
+							xtic_textheight = (int) (t->h_char * widest_tic_strlen) * projection
+							+ t->v_char;
+							if (bmargin.x < 0)
+								plot_bounds.ybot += xtic_textheight;
+					}
+
+					/* EAM - FIXME
+					 * Notwithstanding all these fancy calculations, plot_bounds.ytop must always be above plot_bounds.ybot
+					 */
+					if (plot_bounds.ytop < plot_bounds.ybot) {
+						int i = plot_bounds.ytop;
+
+						plot_bounds.ytop = plot_bounds.ybot;
+						plot_bounds.ybot = i;
+						FPRINTF((stderr,"boundary: Big problems! plot_bounds.ybot > plot_bounds.ytop\n"));
+					}
+
+					/*  compute coordinates for axis labels, title et al
+					 *     (some of these may not be used) */
+
+					x2label_y = plot_bounds.ytop + x2tic_height + x2tic_textheight + x2label_textheight;
+					if (x2tic_textheight && (title_textheight || x2label_textheight))
+						x2label_y += t->v_char;
+
+						title_y = x2label_y + title_textheight;
+
+						ylabel_y = plot_bounds.ytop + x2tic_height + x2tic_textheight + ylabel_textheight;
+
+						y2label_y = plot_bounds.ytop + x2tic_height + x2tic_textheight + y2label_textheight;
+
+						/* Shift upward by 0.2 line to allow for descenders in xlabel text */
+						xlabel_y = plot_bounds.ybot - xtic_height - xtic_textheight - xlabel_textheight
+						+ ((float)xlablin+0.2) * t->v_char;
+						ylabel_x = plot_bounds.xleft - ytic_width - ytic_textwidth;
+						if (axis_array[FIRST_Y_AXIS].label.text && can_rotate)
+							ylabel_x -= ylabel_textwidth;
+
+						y2label_x = plot_bounds.xright + y2tic_width + y2tic_textwidth;
+						if (axis_array[SECOND_Y_AXIS].label.text && can_rotate)
+							y2label_x += y2label_textwidth - y2lablin * t->v_char;
+
+							if (vertical_timelabel) {
+								if (timelabel_bottom)
+									time_y = xlabel_y - timebot_textheight + xlabel_textheight;
+								else {
+									time_y = title_y + timetop_textheight - title_textheight
+									- x2label_textheight;
+								}
+							} else {
+								if (timelabel_bottom)
+									time_y = plot_bounds.ybot - xtic_height - xtic_textheight - xlabel_textheight
+									- timebot_textheight + t->v_char;
+									else if (ylabel_textheight > 0)
+										time_y = ylabel_y + timetop_textheight;
+									else
+										time_y = plot_bounds.ytop + x2tic_height + x2tic_textheight
+										+ timetop_textheight + (int) t->h_char;
+							}
+							if (vertical_timelabel)
+								time_x = plot_bounds.xleft - ytic_width - ytic_textwidth - timelabel_textwidth;
+							else {
+								double tmpx, tmpy;
+								map_position_r(&(timelabel.offset), &tmpx, &tmpy, "boundary");
+								time_x = plot_bounds.xleft - ytic_width - ytic_textwidth + (int) (tmpx);
+							}
+
+							xtic_y = plot_bounds.ybot - xtic_height
+							- (int) (vertical_xtics ? t->h_char : t->v_char);
+
+							x2tic_y = plot_bounds.ytop + x2tic_height
+							+ (vertical_x2tics ? (int) t->h_char : x2tic_textheight);
+
+							ytic_x = plot_bounds.xleft - ytic_width
+							- (vertical_ytics
+									? (ytic_textwidth - (int) t->v_char)
+											: (int) t->h_char);
+
+							y2tic_x = plot_bounds.xright + y2tic_width
+							+ (int) (vertical_y2tics ? t->v_char : t->h_char);
+
+							/* restore text to horizontal [we tested rotation above] */
+							(void) (*t->text_angle) (0);
+
+							/* needed for map_position() below */
+							AXIS_SETSCALE(FIRST_Y_AXIS, plot_bounds.ybot, plot_bounds.ytop);
+							AXIS_SETSCALE(SECOND_Y_AXIS, plot_bounds.ybot, plot_bounds.ytop);
+							AXIS_SETSCALE(FIRST_X_AXIS, plot_bounds.xleft, plot_bounds.xright);
+							AXIS_SETSCALE(SECOND_X_AXIS, plot_bounds.xleft, plot_bounds.xright);
+							/* HBB 20020122: moved here from do_plot, because map_position
+							 * needs these, too */
+							axis_set_graphical_range(FIRST_X_AXIS, plot_bounds.xleft, plot_bounds.xright);
+							axis_set_graphical_range(FIRST_Y_AXIS, plot_bounds.ybot, plot_bounds.ytop);
+							axis_set_graphical_range(SECOND_X_AXIS, plot_bounds.xleft, plot_bounds.xright);
+							axis_set_graphical_range(SECOND_Y_AXIS, plot_bounds.ybot, plot_bounds.ytop);
+
+							/* Calculate space for keys (do_plot will use these to position key). */
+							key_w = key_col_wth * key_cols;
+							key_h = (ktitl_lines) * t->v_char + key_rows * key_entry_height;
+							key_h += (int) (key->height_fix * t->v_char);
+							if (key->region == GPKEY_AUTO_INTERIOR_LRTBC
+									|| (key->region == GPKEY_AUTO_EXTERIOR_LRTBC && key->vpos == JUST_CENTRE && key->hpos == CENTRE)) {
+								if (key->vpos == JUST_TOP) {
+									key->bounds.ytop = plot_bounds.ytop - t->v_tic;
+									key->bounds.ybot = key->bounds.ytop - key_h;
+								} else if (key->vpos == JUST_BOT) {
+									key->bounds.ybot = plot_bounds.ybot + t->v_tic;
+									key->bounds.ytop = key->bounds.ybot + key_h;
+								} else /* (key->vpos == JUST_CENTRE) */ {
+									int key_box_half = key_h / 2;
+									key->bounds.ybot = (plot_bounds.ybot + plot_bounds.ytop) / 2 - key_box_half;
+									key->bounds.ytop = (plot_bounds.ybot + plot_bounds.ytop) / 2 + key_box_half;
+								}
+								if (key->hpos == LEFT) {
+									key->bounds.xleft = plot_bounds.xleft + t->h_char;
+									key->bounds.xright = key->bounds.xleft + key_w;
+								} else if (key->hpos == RIGHT) {
+									key->bounds.xright = plot_bounds.xright - t->h_char;
+									key->bounds.xleft = key->bounds.xright - key_w;
+								} else /* (key->hpos == CENTER) */ {
+									int key_box_half = key_w / 2;
+									key->bounds.xleft = (plot_bounds.xright + plot_bounds.xleft) / 2 - key_box_half;
+									key->bounds.xright = (plot_bounds.xright + plot_bounds.xleft) / 2 + key_box_half;
+								}
+							} else if (key->region == GPKEY_AUTO_EXTERIOR_LRTBC || key->region == GPKEY_AUTO_EXTERIOR_MARGIN) {
+
+								/* Vertical alignment */
+								if (key->margin == GPKEY_TMARGIN) {
+									/* align top first since tmargin may be manual */
+									key->bounds.ytop = (ysize + yoffset) * t->ymax - t->v_tic;
+									key->bounds.ybot = key->bounds.ytop - key_h;
+								} else if (key->margin == GPKEY_BMARGIN) {
+									/* align bottom first since bmargin may be manual */
+									key->bounds.ybot = yoffset * t->ymax + t->v_tic;
+									key->bounds.ytop = key->bounds.ybot + key_h;
+								} else {
+									if (key->vpos == JUST_TOP) {
+										/* align top first since tmargin may be manual */
+										key->bounds.ytop = plot_bounds.ytop;
+										key->bounds.ybot = key->bounds.ytop - key_h;
+									} else if (key->vpos == CENTRE) {
+										int key_box_half = key_h / 2;
+										key->bounds.ybot = (plot_bounds.ybot + plot_bounds.ytop) / 2 - key_box_half;
+										key->bounds.ytop = (plot_bounds.ybot + plot_bounds.ytop) / 2 + key_box_half;
+									} else {
+										/* align bottom first since bmargin may be manual */
+										key->bounds.ybot = plot_bounds.ybot;
+										key->bounds.ytop = key->bounds.ybot + key_h;
+									}
+								}
+
+								/* Horizontal alignment */
+								if (key->margin == GPKEY_LMARGIN) {
+									/* align left first since lmargin may be manual */
+									key->bounds.xleft = xoffset * t->xmax + t->h_char;
+									key->bounds.xright = key->bounds.xleft + key_w;
+								} else if (key->margin == GPKEY_RMARGIN) {
+									/* align right first since rmargin may be manual */
+									key->bounds.xright = (xsize + xoffset) * (t->xmax-1) - t->h_char;
+									key->bounds.xleft = key->bounds.xright - key_w;
+								} else {
+									if (key->hpos == LEFT) {
+										/* align left first since lmargin may be manual */
+										key->bounds.xleft = plot_bounds.xleft;
+										key->bounds.xright = key->bounds.xleft + key_w;
+									} else if (key->hpos == CENTRE) {
+										int key_box_half = key_w / 2;
+										key->bounds.xleft = (plot_bounds.xright + plot_bounds.xleft) / 2 - key_box_half;
+										key->bounds.xright = (plot_bounds.xright + plot_bounds.xleft) / 2 + key_box_half;
+									} else {
+										/* align right first since rmargin may be manual */
+										key->bounds.xright = plot_bounds.xright;
+										key->bounds.xleft = key->bounds.xright - key_w;
+									}
+								}
+
+							} else {
+								int x, y;
+
+								map_position(&key->user_pos, &x, &y, "key");
+								#if 0
+								/* FIXME!!!
+								 ** pm 22.1.2002: if key->user_pos.scalex or scaley == first_axes or second_axes,
+								 ** then the graph scaling is not yet known and the box is positioned incorrectly;
+								 ** you must do "replot" to avoid the wrong plot ... bad luck if output does not
+								 ** go to screen */
+								#define OK fprintf(stderr,"Line %i of %s is OK\n",__LINE__,__FILE__)
+								OK;
+								fprintf(stderr,"\tHELE: user pos: x=%i y=%i\n",key->user_pos.x,key->user_pos.y);
+								fprintf(stderr,"\tHELE: user pos: x=%i y=%i\n",x,y);
+								#endif
+								/* Here top, bottom, left, right refer to the alignment with respect to point. */
+								key->bounds.xleft = x;
+								if (key->hpos == CENTRE)
+									key->bounds.xleft -= key_w/2;
+									else if (key->hpos == RIGHT)
+										key->bounds.xleft -= key_w;
+										key->bounds.xright = key->bounds.xleft + key_w;
+										key->bounds.ytop = y;
+										if (key->vpos == JUST_CENTRE)
+											key->bounds.ytop += key_h/2;
+											else if (key->vpos == JUST_BOT)
+												key->bounds.ytop += key_h;
+												key->bounds.ybot = key->bounds.ytop - key_h;
+							}
+							/*}}} */
+
+							/* Set default clipping to the plot boundary */
+							clip_area = &plot_bounds;
+
+	}
+
+	/*}}} */
 
 	/*
 	 * Apply axis range expansions from "set offsets" command
@@ -145,8 +1174,8 @@ public class graphics {
 		 * opened, and that happens in term->graphics(), which is called from
 		 * term_start_plot().
 		 */
-		term_initialise();		/* may set xmax/ymax */
-		term_start_plot();
+		term_api.term_initialise();		/* may set xmax/ymax */
+		term_api.term_start_plot();
 
 		/* Figure out if we need a colorbox for this plot */
 		pm3d.set_plot_with_palette(0, gp_types.MODE_PLOT_TYPE.MODE_PLOT); /* EAM FIXME - 1st parameter is a dummy */
