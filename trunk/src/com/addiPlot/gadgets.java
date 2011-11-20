@@ -1,5 +1,7 @@
 package com.addiPlot;
 
+import java.io.File;
+
 import com.addiPlot.color.t_colorspec;
 import com.addiPlot.term_api.lp_style_type;
 
@@ -309,6 +311,112 @@ public class gadgets {
 	public static BoundingBox canvas; 	/* Writable area on terminal */
 	public static BoundingBox clip_area; /* Current clipping box */  
 	
+	public static float xsize;		/* x scale factor for size */
+	public static float ysize;		/* y scale factor for size */
+	public static float zsize;		/* z scale factor for size */
+	public static float xoffset;		/* x origin setting */
+	public static float yoffset;		/* y origin setting */
+	public static float aspect_ratio;	/* 1.0 for square */
+	public static int aspect_ratio_3D;	/* 2 for equal scaling of x and y; 3 for z also */
+
+	/* plot border autosizing overrides, in characters (-1: autosize) */
+	public static t_position lmargin, bmargin, rmargin, tmargin;
+	//CCX #define DEFAULT_MARGIN_POSITION {character, character, character, -1, -1, -1}
+
+	public static File table_outfile;
+	public static boolean table_mode;
+
+	public static arrow_def first_arrow;
+
+	public static text_label first_label;
+
+	public static linestyle_def first_linestyle;
+	public static linestyle_def first_perm_linestyle;
+
+	public static arrowstyle_def first_arrowstyle;
+
+	//#ifdef EAM_OBJECTS
+	public static t_object first_object;
+	//#endif
+
+	public static text_label title;
+
+	public static text_label timelabel;
+	//CCX #ifndef DEFAULT_TIMESTAMP_FORMAT
+	/* asctime() format */
+	//# define DEFAULT_TIMESTAMP_FORMAT "%a %b %d %H:%M:%S %Y"
+	//#endif
+	public static int timelabel_rotate;
+	public static int timelabel_bottom;
+
+	public static boolean polar;
+
+	public static double ZERO = 1e-8;		/* default for 'zero' set option */
+	public static double zero;		/* zero threshold, not 0! */
+
+	public static double pointsize;
+
+	public static int SOUTH	= 1; /* 0th bit */
+	public static int WEST = 2; /* 1th bit */
+	public static int NORTH = 4; /* 2th bit */
+	public static int EAST = 8; /* 3th bit */
+	//CCX public static int border_east	(draw_border & EAST)
+	//public static int border_west	(draw_border & WEST)
+	//public static int border_south	(draw_border & SOUTH)
+	//public static int border_north	(draw_border & NORTH)
+	//#define border_complete	((draw_border & 15) == 15)
+	public static int draw_border;
+	public static int user_border;
+	public static int border_layer;
+
+	public static lp_style_type border_lp;
+	public static lp_style_type background_lp;
+	public static lp_style_type default_border_lp;
+
+	public static boolean clip_lines1;
+	public static boolean clip_lines2;
+	public static boolean clip_points;
+
+	public static int SAMPLES = 100; /* default number of samples for a plot */
+	public static int samples_1;
+	public static int samples_2;
+
+	public static double ang2rad; /* 1 or pi/180 */
+
+	public static gp_types.PLOT_STYLE data_style;
+	public static gp_types.PLOT_STYLE func_style;
+
+	public static boolean parametric;
+
+	/* If last plot was a 3d one. */
+	public static boolean is_3d_plot;
+
+	/* A macro to check whether 2D functionality is allowed in the last plot:
+	   either the plot is a 2D plot, or it is a suitably oriented 3D plot (e.g. map).
+	*/
+	//CCX #define ALMOST2D      \
+	//    ( !is_3d_plot ||  \
+	//      ( fabs(fmod(surface_rot_z,90.0))<0.1  \
+	//        && fabs(fmod(surface_rot_x,180.0))<0.1 ) )
+
+	//CCX #ifdef VOLATILE_REFRESH
+	public static int refresh_ok;		/* 0 = no;  2 = 2D ok;  3 = 3D ok */
+	public static int refresh_nplots;
+	//#else
+	//#define refresh_ok FALSE
+	//#endif
+	//extern TBOOLEAN volatile_data;
+
+	/* WINDOWID to be filled by terminals running on X11 (x11, wxt, qt, ...) */
+	public static int current_x11_windowid;
+
+	/* Plot layer definitions are collected here. */
+	/* Someday they might actually be used.       */
+	public static int LAYER_BEHIND = -1;
+	public static int LAYER_BACK = 0;
+	public static int LAYER_FRONT = 1;
+	public static int LAYER_PLOTLABELS = 99;
+	
 	/*****************************************************************/
 	/* Routines that deal with global objects defined in this module */
 	/*****************************************************************/
@@ -519,11 +627,5 @@ public class gadgets {
 			      			break;
 	    }
 	}
-	
-
-	
-	/* set clip */
-	public static boolean clip_lines1 = true;
-	public static boolean clip_lines2 = false;
 	
 }
