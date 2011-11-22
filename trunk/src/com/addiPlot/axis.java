@@ -62,6 +62,7 @@ public class axis {
 
 		/* ticmark control variables */
 		public int ticmode;		/* tics on border/axis? mirrored? */
+		public t_ticdef ticdef;	/* tic series definition */
 		public int tic_rotate;		/* ticmarks rotated by this angle */
 		public boolean gridmajor;		/* Grid lines wanted on major tics? */
 	    public boolean gridminor;		/* Grid lines for minor tics? */
@@ -103,5 +104,21 @@ public class axis {
 		/* Macros to map from user to terminal coordinates and back */
 		return (int) ((axis_array[axis.value].term_lower) + ((variable) - axis_array[axis.value].min) * axis_array[axis.value].term_scale + 0.5);
 	}
+	
+	/* {{{ axis_log_value_checked() */
+	public static double
+	axis_log_value_checked(AXIS_INDEX axis, double coord, String what)
+	{
+	    if (axis_array[axis.value].log) {
+		if (coord <= 0.0) {
+		    graph_error("%s has %s coord of %g; must be above 0 for log scale!",
+				what, axis_defaults[axis.value].name, coord);
+		} else
+		    return (AXIS_DO_LOG(axis,coord));
+	    }
+	    return (coord);
+	}
+
+	/* }}} */
 	
 }
