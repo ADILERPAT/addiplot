@@ -6,4 +6,8 @@ public class util {
 	public static void int_error(int a, String message) {
 		//CCX
 	}
+	
+	public static void int_warn(int a, String message) {
+		//CCX
+	}
 }

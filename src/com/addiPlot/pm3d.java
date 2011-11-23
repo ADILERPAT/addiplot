@@ -29,4 +29,9 @@ public class pm3d {
 	    		/ (axis.CB_AXIS.max - axis.CB_AXIS.min);
 	    return (color.sm_palette.positive == color.SMPAL_POSITIVE) ? cb : 1-cb;
 	}
+	
+	public static boolean is_plot_with_palette() {
+		//CCX
+		return false;
+	}
 }
