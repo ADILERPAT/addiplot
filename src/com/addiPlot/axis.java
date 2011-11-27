@@ -237,7 +237,6 @@ public class axis {
 	 * by the set/show machinery, mainly */
 	public static gen_table axisname_tbl[] = new gen_table[AXIS_ARRAY_SIZE+1];
 
-
 	public static t_ticdef default_axis_ticdef;
 
 	/* default format for tic mark labels */
@@ -256,19 +255,19 @@ public class axis {
 	public static lp_style_type default_grid_lp;
 
 	/* grid layer: -1 default, 0 back, 1 front */
-	extern int grid_layer;
+	public static int grid_layer;
 
 	/* global variables for communication with the tic callback functions */
 	/* FIXME HBB 20010806: had better be collected into a struct that's
 	 * passed to the callback */
-	extern int tic_start, tic_direction, tic_mirror;
+	public static int tic_start, tic_direction, tic_mirror;
 	/* These are for passing on to write_multiline(): */
-	extern int tic_text, rotate_tics, tic_hjust, tic_vjust;
+	public static int tic_text, rotate_tics, tic_hjust, tic_vjust;
 	/* The remaining ones are for grid drawing; controlled by 'set grid': */
 	/* extern int grid_selection; --- comm'ed out, HBB 20010806 */
-	extern struct lp_style_type grid_lp; /* linestyle for major grid lines */
-	extern struct lp_style_type mgrid_lp; /* linestyle for minor grid lines */
-	extern double polar_grid_angle; /* angle step in polar grid in radians */
+	public static lp_style_type grid_lp; /* linestyle for major grid lines */
+	public static lp_style_type mgrid_lp; /* linestyle for minor grid lines */
+	public static double polar_grid_angle; /* angle step in polar grid in radians */
 
 	/* Length of the longest tics label, set by widest_tic_callback(): */
 
