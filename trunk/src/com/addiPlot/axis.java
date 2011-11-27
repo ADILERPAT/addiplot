@@ -235,7 +235,7 @@ public class axis {
 	
 	/* A parsing table for mapping axis names into axis indices. For use
 	 * by the set/show machinery, mainly */
-	public static gen_table axisname_tbl[] = new gen_table[AXIS_ARRAY_SIZE+1];
+	public static tables.gen_table axisname_tbl[] = new tables.gen_table[AXIS_ARRAY_SIZE+1];
 
 	public static t_ticdef default_axis_ticdef;
 
