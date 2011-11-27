@@ -654,7 +654,7 @@ public class graphics {
 							 * the latter sets widest_tic_strlen to the length of the widest
 							 * one ought to consider tics on axis if axis near border...
 							 */
-							axis.gen_tics(axis.AXIS_INDEX.FIRST_Y_AXIS, /* 0, */ widest_tic_callback);
+							axis.gen_tics(axis.AXIS_INDEX.FIRST_Y_AXIS, /* 0, */ axis.widest_tic_callback());
 
 							ytic_textwidth = (int) (term.h_char * (axis.widest_tic_strlen + 2));
 						}
@@ -754,24 +754,24 @@ public class graphics {
 						AXIS_SETSCALE(axis.AXIS_INDEX.FIRST_X_AXIS, gadgets.plot_bounds.xleft, gadgets.plot_bounds.xright);
 						axis_set_graphical_range(axis.AXIS_INDEX.FIRST_X_AXIS, gadgets.plot_bounds.xleft, gadgets.plot_bounds.xright);
 
-						while (tic) {
-							if (tic->label) {
+						while (tic != null) {
+							if (tic.label) {
 								double xx;
-								int length = estimate_strlen(tic->label)
-										* cos(DEG2RAD * (double)(axis_array[FIRST_X_AXIS].tic_rotate))
+								int length = estimate_strlen(tic.label)
+										* Math.cos(gp_types.DEG2RAD * (double)(axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].tic_rotate))
 										* term.h_char;
 
-										if (inrange(tic->position, 
-												axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].set_min, 
-												axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].set_max)) {
-											xx = axis_log_value_checked(FIRST_X_AXIS, tic->position, "xtic");
-											xx = AXIS_MAP(FIRST_X_AXIS, xx);
-											xx += (axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].tic_rotate) ? length : length /2;
+										if (inrange(tic.position, 
+												axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].set_min, 
+												axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].set_max)) {
+											xx = axis_log_value_checked(axis.AXIS_INDEX.FIRST_X_AXIS, tic.position, "xtic");
+											xx = axis.AXIS_MAP(axis.AXIS_INDEX.FIRST_X_AXIS, xx);
+											xx += (axis.axis_array[axis.AXIS_INDEX.FIRST_X_AXIS.value].tic_rotate != 0) ? length : length /2;
 											if (maxrightlabel < xx)
-												maxrightlabel = xx;
+												maxrightlabel = (int) xx;
 										}
 							}
-							tic = tic->next;
+							tic = tic.next;
 						}
 						xtic_textwidth = maxrightlabel - gadgets.plot_bounds.xright;
 						if (xtic_textwidth > term.xmax/4) {
@@ -781,21 +781,20 @@ public class graphics {
 					}
 
 					/* tics */
-					if (!axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].tic_in
-							&& ((axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].ticmode & axis.TICS_ON_BORDER)
-									|| ((axis_array[axis.AXIS_INDEX.FIRST_Y_AXIS.value].ticmode & axis.TICS_MIRROR)
-											&& (axis_array[axis.AXIS_INDEX.FIRST_Y_AXIS.value].ticmode & axis.TICS_ON_BORDER))))
-						y2tic_width = (int) (term.h_tic * axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].ticscale);
+					if (!axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].tic_in
+							&& (((axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].ticmode & axis.TICS_ON_BORDER) != 0)
+									|| (((axis.axis_array[axis.AXIS_INDEX.FIRST_Y_AXIS.value].ticmode & axis.TICS_MIRROR) != 0)
+											&& ((axis.axis_array[axis.AXIS_INDEX.FIRST_Y_AXIS.value].ticmode & axis.TICS_ON_BORDER) != 0))))
+						y2tic_width = (int) (term.h_tic * axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].ticscale);
 					else
 						y2tic_width = 0;
 
 					/* y2label */
-					if (can_rotate && axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].label.text) {
-						double tmpx, tmpy;
-						map_position_r(&(axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].label.offset),
-								&tmpx, &tmpy, "boundary");
-						y2label_textwidth = (int) (y2lablin[0] * term.v_char + tmpx);
-						if (!axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].ticmode)
+					if ((can_rotate != 0) && (axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].label.text != null)) {
+						double tmpx[], tmpy[] = new double[1];
+						map_position_r(axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].label.offset,tmpx, tmpy, "boundary");
+						y2label_textwidth = (int) (y2lablin[0] * term.v_char + tmpx[0]);
+						if (axis.axis_array[axis.AXIS_INDEX.SECOND_Y_AXIS.value].ticmode == 0)
 							y2label_textwidth += 0.5 * term.v_char;
 					} else
 						y2label_textwidth = 0;
@@ -1109,13 +1108,13 @@ public class graphics {
 										map_position(key.user_pos, x, y, "key");
 										#if 0
 										/* FIXME!!!
-										 ** pm 22.1.2002: if key->user_pos.scalex or scaley == first_axes or second_axes,
+										 ** pm 22.1.2002: if key.user_pos.scalex or scaley == first_axes or second_axes,
 										 ** then the graph scaling is not yet known and the box is positioned incorrectly;
 										 ** you must do "replot" to avoid the wrong plot ... bad luck if output does not
 										 ** go to screen */
 										#define OK fprintf(stderr,"Line %i of %s is OK\n",__LINE__,__FILE__)
 										OK;
-										fprintf(stderr,"\tHELE: user pos: x=%i y=%i\n",key->user_pos.x,key->user_pos.y);
+										fprintf(stderr,"\tHELE: user pos: x=%i y=%i\n",key.user_pos.x,key.user_pos.y);
 										fprintf(stderr,"\tHELE: user pos: x=%i y=%i\n",x,y);
 										#endif
 										/* Here top, bottom, left, right refer to the alignment with respect to point. */
@@ -1206,7 +1205,7 @@ public class graphics {
 		boundary(plots, pcount);
 
 		/* Make palette */
-		if (is_plot_with_palette())
+		if (pm3d.is_plot_with_palette())
 			make_palette();
 
 		/* Give a chance for rectangles to be behind everything else */
