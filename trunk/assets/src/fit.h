@@ -1,5 +1,5 @@
 /*
- * $Id: fit.h,v 1.14 2010/10/10 04:44:34 sfeam Exp $
+ * $Id: fit.h,v 1.12 2004/04/13 17:23:53 broeker Exp $
  */
 
 /* GNUPLOT - fit.h */
@@ -61,8 +61,13 @@
 
 extern char fitbuf[];
 extern char *fitlogfile;
+
+#ifdef GP_FIT_ERRVARS
+/* NEW 20030131: should we place parameter errors into user-defined
+ * variables?  */
 extern TBOOLEAN fit_errorvariables;
-extern TBOOLEAN fit_quiet;
+#endif /* GP_FIT_ERRVARS */
+
 
 /* Prototypes of functions exported by fit.c */
 

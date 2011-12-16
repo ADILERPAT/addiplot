@@ -1,5 +1,5 @@
 /*
- * $Id: command.h,v 1.52 2010/07/30 19:11:40 sfeam Exp $
+ * $Id: command.h,v 1.48 2008/08/15 00:45:34 sfeam Exp $
  */
 
 /* GNUPLOT - command.h */
@@ -45,9 +45,6 @@ extern size_t gp_input_line_len;
 
 extern int inline_num;
 
-extern int if_depth;
-extern TBOOLEAN if_condition;
-
 typedef struct lexical_unit {	/* produced by scanner */
     TBOOLEAN is_token;		/* true if token, false if a value */
     struct value l_val;
@@ -91,7 +88,7 @@ extern struct udft_entry *dummy_func;
 # define STDOUT 1
 #endif
 
-#if defined(MSDOS)
+#if defined(MSDOS) || defined(DOS386)
 # ifdef DJGPP
 extern char HelpFile[];         /* patch for do_help  - AP */
 # endif                         /* DJGPP */
@@ -116,7 +113,11 @@ void call_kill_pending_Pause_dialog(void);
 #endif
 
 /* input data, parsing variables */
+#ifdef AMIGA_SC_6_1
+extern __far int num_tokens, c_token;
+#else
 extern int num_tokens, c_token;
+#endif
 
 void raise_lower_command __PROTO((int));
 void raise_command __PROTO((void));
@@ -155,6 +156,7 @@ void call_command __PROTO((void));
 void changedir_command __PROTO((void));
 void clear_command __PROTO((void));
 void eval_command __PROTO((void));
+void reset_eval_depth __PROTO((void));
 void exit_command __PROTO((void));
 void help_command __PROTO((void));
 void history_command __PROTO((void));
@@ -184,12 +186,11 @@ void extend_input_line __PROTO((void));
 void extend_token_table __PROTO((void));
 int com_line __PROTO((void));
 int do_line __PROTO((void));
-void do_string __PROTO((const char* s));
-void do_string_and_free __PROTO((char* s));
+void do_string __PROTO((char* s, TBOOLEAN throwaway_s));
 #ifdef USE_MOUSE
 void toggle_display_of_ipc_commands __PROTO((void));
 int display_ipc_commands __PROTO((void));
-void do_string_replot __PROTO((const char* s));
+void do_string_replot __PROTO((char* s));
 #endif
 #ifdef VMS                     /* HBB 990829: used only on VMS */
 void done __PROTO((int status));

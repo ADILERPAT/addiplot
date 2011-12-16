@@ -116,8 +116,6 @@ typedef struct rectangle {
     t_position tr;		/* top right */
 } t_rectangle;
 
-#define DEFAULT_RADIUS (-1.0)
-#define DEFAULT_ELLIPSE (-2.0)
 typedef struct circle {
     int type;			/* not used */
     t_position center;		/* center */
@@ -126,11 +124,8 @@ typedef struct circle {
     double arc_end;
 } t_circle;
 
-#define ELLIPSEAXES_XY (0)
-#define ELLIPSEAXES_XX (1)
-#define ELLIPSEAXES_YY (2)
 typedef struct ellipse {
-    int type;			/* mapping of axes: ELLIPSEAXES_XY, ELLIPSEAXES_XX or ELLIPSEAXES_YY */
+    int type;			/* not used */
     t_position center;		/* center */
     t_position extent;		/* major and minor axes */
     double orientation;		/* angle of first axis to horizontal */
@@ -233,15 +228,6 @@ typedef enum histogram_type {
 } t_histogram_type;
 #define DEFAULT_HISTOGRAM_STYLE { HT_NONE, 2, 1, 0.0, 0.0, LT_UNDEFINED, LT_UNDEFINED, 0, NULL, EMPTY_LABELSTRUCT }
 
-typedef struct boxplot_style {
-    int limit_type;	/* 0 = multiple of interquartile 1 = fraction of points */
-    double limit_value;
-    TBOOLEAN outliers;
-    int pointtype;
-    int plotstyle;	/* CANDLESTICKS or FINANCEBARS */
-} boxplot_style;
-extern boxplot_style boxplot_opts;
-#define DEFAULT_BOXPLOT_STYLE { 0, 1.5, TRUE, 6, CANDLESTICKS }
 
 /***********************************************************/
 /* Variables defined by gadgets.c needed by other modules. */
@@ -276,7 +262,6 @@ typedef struct {
     double width_fix;		/* user specified additional (+/-) width of key titles */
     double height_fix;
     keytitle_type auto_titles;	/* auto title curves unless plotted 'with notitle' */
-    TBOOLEAN front;		/* draw key in a second pass after the rest of the graph */
     TBOOLEAN reverse;		/* key back to front */
     TBOOLEAN invert;		/* key top to bottom */
     TBOOLEAN enhanced;		/* enable/disable enhanced text of key titles */
@@ -285,8 +270,6 @@ typedef struct {
     char *font;			/* Will be used for both key title and plot titles */
     struct t_colorspec textcolor;	/* Will be used for both key title and plot titles */
     BoundingBox bounds;
-    int maxcols;		/* maximum no of columns for horizontal keys */
-    int maxrows;		/* maximum no of rows for vertical keys */
 } legend_key;
 
 extern legend_key keyT;
@@ -303,7 +286,7 @@ extern legend_key keyT;
 		GPKEY_RIGHT, GPKEY_VERTICAL, \
 		4.0, 1.0, 0.0, 0.0, \
 		FILENAME_KEYTITLES, \
-		FALSE, FALSE, FALSE, TRUE, \
+		FALSE, FALSE, TRUE, \
 		DEFAULT_KEYBOX_LP, \
 		"", \
 		NULL, {TC_LT, LT_BLACK, 0.0} }
@@ -362,7 +345,6 @@ extern struct arrow_def *first_arrow;
 extern struct text_label *first_label;
 
 extern struct linestyle_def *first_linestyle;
-extern struct linestyle_def *first_perm_linestyle;
 
 extern struct arrowstyle_def *first_arrowstyle;
 
@@ -401,7 +383,6 @@ extern int user_border;
 extern int border_layer;
 
 extern struct lp_style_type border_lp;
-extern const struct lp_style_type background_lp;
 extern const struct lp_style_type default_border_lp;
 
 extern TBOOLEAN	clip_lines1;
@@ -428,7 +409,7 @@ extern TBOOLEAN is_3d_plot;
 #define ALMOST2D      \
     ( !is_3d_plot ||  \
       ( fabs(fmod(surface_rot_z,90.0))<0.1  \
-        && fabs(fmod(surface_rot_x,180.0))<0.1 ) )
+        && (surface_rot_x>179.9 || surface_rot_x<0.1) ) )
 
 #ifdef VOLATILE_REFRESH
 extern int refresh_ok;		/* 0 = no;  2 = 2D ok;  3 = 3D ok */
@@ -472,24 +453,23 @@ extern fill_style_type default_fillstyle;
 extern struct object default_rectangle;
 #define DEFAULT_RECTANGLE_STYLE { NULL, -1, 0, OBJ_RECTANGLE,	\
 	{FS_SOLID, 100, 0, BLACK_COLORSPEC},   			\
-	{0, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, BACKGROUND_COLORSPEC}, \
-	{.rectangle = {0, {0,0,0,0.,0.,0.}, {0,0,0,0.,0.,0.}, {0,0,0,0.,0.,0.}, {0,0,0,0.,0.,0.}}} }
+	{1, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC}, \
+	{.rectangle = {0, {0,0.,0.,0.}, {0,0.,0.,0.}, {0,0.,0.,0.}, {0,0.,0.,0.}}} }
 
 extern struct object default_circle;
 #define DEFAULT_CIRCLE_STYLE { NULL, -1, 0, OBJ_CIRCLE,       \
 	{FS_SOLID, 100, 0, BLACK_COLORSPEC},   			\
-	{0, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, BACKGROUND_COLORSPEC},			\
-	{.circle = {1, {0,0,0,0.,0.,0.}, {graph,0,0,0.02,0.,0.}, 0., 360. }} }
+	{1, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC},			\
+	{.circle = {1, {0,0.,0.,0.}, {0,0.,0.,0.}, 0., 360. }} }
 
-extern struct object default_ellipse;
-#define DEFAULT_ELLIPSE_STYLE { NULL, -1, 0, OBJ_ELLIPSE,       \
+#define DEFAULT_ELLIPSE_STYLE { NULL, -1, 0, OBJ_CIRCLE,       \
 	{FS_SOLID, 100, 0, BLACK_COLORSPEC},   			\
-	{0, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, BACKGROUND_COLORSPEC}, \
-	{.ellipse = {ELLIPSEAXES_XY, {0,0,0,0.,0.,0.}, {graph,graph,0,0.05,0.03,0.}, 0. }} }
+	{1, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC},			\
+	{.ellipse = {1, {0,0.,0.,0.}, {0,0.,0.,0.}, 0. }} }
 
 #define DEFAULT_POLYGON_STYLE { NULL, -1, 0, OBJ_POLYGON,       \
 	{FS_SOLID, 100, 0, BLACK_COLORSPEC},   			\
-	{0, LT_BLACK, 0, 0, 1.0, 0.0, FALSE, BLACK_COLORSPEC}, \
+	{1, LT_BLACK, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC},			\
 	{.polygon = {0, NULL} } }
 
 #endif
