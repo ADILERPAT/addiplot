@@ -1,5 +1,5 @@
 #ifndef lint
-static char *RCSid() { return RCSid("$Id: fit.c,v 1.73 2010/10/10 04:44:34 sfeam Exp $"); }
+static char *RCSid() { return RCSid("$Id: fit.c,v 1.69 2009/03/13 01:28:57 sfeam Exp $"); }
 #endif
 
 /*  NOTICE: Change of Copyright Status
@@ -76,17 +76,17 @@ static void Dblfn __PROTO(());
 #define Dblf5 Dblfn
 #define Dblf6 Dblfn
 
-#if defined(MSDOS) 	/* non-blocking IO stuff */
+#if defined(MSDOS) || defined(DOS386)	/* non-blocking IO stuff */
 # include <io.h>
 # ifndef _Windows		/* WIN16 does define MSDOS .... */
 #  include <conio.h>
 # endif
 # include <dos.h>
-#else /* !(MSDOS) */
+#else /* !(MSDOS || DOS386) */
 # ifndef VMS
 #  include <fcntl.h>
 # endif				/* !VMS */
-#endif /* !(MSDOS) */
+#endif /* !(MSDOS || DOS386) */
 
 enum marq_res {
     OK, ML_ERROR, BETTER, WORSE
@@ -113,7 +113,7 @@ typedef enum marq_res marq_res_t;
 #define LAMBDA_UP_FACTOR 10
 #define LAMBDA_DOWN_FACTOR 10
 
-#if defined(MSDOS) || defined(OS2)
+#if defined(MSDOS) || defined(OS2) || defined(DOS386)
 # define PLUSMINUS   "\xF1"	/* plusminus sign */
 #else
 # define PLUSMINUS   "+/-"
@@ -128,8 +128,10 @@ char fitbuf[256];
 
 /* log-file for fit command */
 char *fitlogfile = NULL;
+
+#ifdef GP_FIT_ERRVARS
 TBOOLEAN fit_errorvariables = FALSE;
-TBOOLEAN fit_quiet = FALSE;
+#endif /* GP_FIT_ERRVARS */
 
 /* private variables: */
 
@@ -204,7 +206,10 @@ static char *get_next_word __PROTO((char **s, char *subst));
 static double createdvar __PROTO((char *varname, double value));
 static void splitpath __PROTO((char *s, char *p, char *f));
 static void backup_file __PROTO((char *, const char *));
+
+#ifdef GP_FIT_ERRVARS
 static void setvarerr __PROTO((char *varname, double value));
+#endif
 
 /*****************************************************************
     Small function to write the last fit command into a file
@@ -251,7 +256,7 @@ ctrlc_setup()
  *
  *  I hope that other OSes do it better, if not... add #ifdefs :-(
  */
-#if (defined(__EMX__) || !defined(MSDOS))
+#if (defined(__EMX__) || !defined(MSDOS) && !defined(DOS386))
     (void) signal(SIGINT, (sigfunc) ctrlc_handle);
 #endif
 }
@@ -260,7 +265,7 @@ ctrlc_setup()
 /*****************************************************************
     getch that handles also function keys etc.
 *****************************************************************/
-#if defined(MSDOS)
+#if defined(MSDOS) || defined(DOS386)
 
 /* HBB 980317: added a prototype... */
 int getchx __PROTO((void));
@@ -392,8 +397,7 @@ marquardt(double a[], double **C, double *chisq, double *lambda)
     }
     if (tmp_chisq < *chisq) {	/* Success, accept new solution */
 	if (*lambda > MIN_LAMBDA) {
-	    if (!fit_quiet)
-	        (void) putc('/', stderr);
+	    (void) putc('/', stderr);
 	    *lambda /= lambda_down_factor;
 	}
 	*chisq = tmp_chisq;
@@ -405,8 +409,7 @@ marquardt(double a[], double **C, double *chisq, double *lambda)
 	    a[j] = temp_a[j];
 	return BETTER;
     } else {			/* failure, increase lambda and return */
-        if (!fit_quiet)
-	    (void) putc('*', stderr);
+	(void) putc('*', stderr);
 	*lambda *= lambda_up_factor;
 	return WORSE;
     }
@@ -569,7 +572,8 @@ fit_interrupt()
 		    (void) Gcomplex(&v, a[i], 0.0);
 		    setvar(par_name[i], v);
 		}
-		do_string(tmp);
+		safe_strncpy(gp_input_line, tmp, gp_input_line_len);
+		(void) do_line();
 	    }
 	}
     }
@@ -601,8 +605,7 @@ regress(double a[])
 	Eex("FIT: error occurred during fit");
     res = BETTER;
 
-    if (!fit_quiet)
-        show_fit(iter, chisq, chisq, a, lambda, STANDARD);
+    show_fit(iter, chisq, chisq, a, lambda, STANDARD);
     show_fit(iter, chisq, chisq, a, lambda, log_f);
 
     /* Reset flag describing fit result status */
@@ -629,7 +632,7 @@ regress(double a[])
  *  HBB: I think this can be enabled for DJGPP V2. SIGINT is actually
  *  handled there, AFAIK.
  */
-#if (defined(MSDOS) && !defined(__EMX__))
+#if ((defined(MSDOS) || defined(DOS386)) && !defined(__EMX__))
 	if (kbhit()) {
 	    do {
 		getchx();
@@ -637,7 +640,6 @@ regress(double a[])
 	    ctrlc_flag = TRUE;
 	}
 #endif
-
 
 	if (ctrlc_flag) {
 	    show_fit(iter, chisq, last_chisq, a, lambda, STANDARD);
@@ -650,8 +652,7 @@ regress(double a[])
 	    last_chisq = chisq;
 	}
 	if ((res = marquardt(a, C, &chisq, &lambda)) == BETTER)
-	    if (!fit_quiet)
-	        show_fit(iter, chisq, last_chisq, a, lambda, STANDARD);
+	    show_fit(iter, chisq, last_chisq, a, lambda, STANDARD);
     } while ((res != ML_ERROR)
 	     && (lambda < MAX_LAMBDA)
 	     && ((maxiter == 0) || (iter <= maxiter))
@@ -691,11 +692,13 @@ regress(double a[])
 
     /* compute errors in the parameters */
 
+#ifdef GP_FIT_ERRVARS
     if (fit_errorvariables)
 	/* Set error variable to zero before doing this */
 	/* Thus making sure they are created */
 	for (i = 0; i < num_params; i++)
 	    setvarerr(par_name[i], 0.0);
+#endif
 
     if (num_data == num_params) {
 	int k;
@@ -774,8 +777,10 @@ regress(double a[])
 
 	    Dblf6("%-15.15s = %-15g  %-3.3s %-12.4g (%.4g%%)\n",
 		  par_name[i], a[i], PLUSMINUS, dpar[i], temp);
+#ifdef GP_FIT_ERRVARS
 	    if (fit_errorvariables)
 		setvarerr(par_name[i], dpar[i]);
+#endif
 	}
 
 	Dblf("\n\ncorrelation matrix of the fit parameters:\n\n");
@@ -913,6 +918,7 @@ setvar(char *varname, struct value data)
     udv_ptr->udv_undef = FALSE;
 }
 
+#ifdef GP_FIT_ERRVARS
 /*****************************************************************
             Set a GNUPLOT user-defined variable for an error
             variable: so take the parameter name, turn it
@@ -933,6 +939,7 @@ setvarerr(char *varname, double value)
 	setvar(pErrValName, errval);
 	free(pErrValName);
 }
+#endif /* GP_FIT_ERRVARS */
 
 /*****************************************************************
     Read INTGR Variable value, return 0 if undefined or wrong type
@@ -1735,20 +1742,17 @@ Dblfn(const char *fmt, va_dcl)
 
     VA_START(args, fmt);
 # if defined(HAVE_VFPRINTF) || _LIBC
-    if (!fit_quiet)
-        vfprintf(STANDARD, fmt, args);
+    vfprintf(STANDARD, fmt, args);
     va_end(args);
     VA_START(args, fmt);
     vfprintf(log_f, fmt, args);
 # else
-    if (!fit_quiet)
-        _doprnt(fmt, args, STANDARD);
+    _doprnt(fmt, args, STANDARD);
     _doprnt(fmt, args, log_f);
 # endif
     va_end(args);
 #else
-    if (!fit_quiet)
-        fprintf(STANDARD, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
+    fprintf(STANDARD, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
     fprintf(log_f, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
 #endif /* VA_START */
 }

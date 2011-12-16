@@ -51,7 +51,7 @@ tabulate.c tabulate.h \
 template.h term_api.h term.c term.h time.c unset.c util.c util.h \
 util3d.c util3d.h variable.c variable.h version.c version.h
 
-gnuplot_LDADD = $(TERMLIBS) $(TERMXLIBS) $(WX_LIBS) $(QT_LIBS)
+gnuplot_LDADD = $(TERMLIBS) $(TERMXLIBS) $(WX_LIBS)
 
 pkglibexec_PROGRAMS = 
 
@@ -71,12 +71,12 @@ if BUILD_SRC_BEOS_SUBDIR
 d_beos = beos
 endif
 
-SUBDIRS = $(d_beos) wxterminal qtterminal
+SUBDIRS = $(d_beos) wxterminal
 
-EXTRA_gnuplot_SOURCES = corplot.c os9.c strftime.c vms.c
+EXTRA_gnuplot_SOURCES = amiga.c corplot.c os9.c strftime.c vms.c
 
 EXTRA_DIST = GNUmakefile Makefile.maint NeXT OpenStep README \
-corgraph.asm genopt.com gnuplot.opt gnuplot.prj header.mac \
+corgraph.asm genopt.com gnuplot.def gnuplot.opt gnuplot.prj header.mac \
 hrcgraph.asm intergra.x11 lasergnu lineproc.mac linkopt.vms linkopt.ztc \
 makefile.all makefile.awc os2 pcgraph.asm rgipgnu win x11.opt \
 $(EXTRA_gnuplot_SOURCES)
@@ -89,74 +89,10 @@ if BUILD_GPCAIRO
 gnuplot_SOURCES += wxterminal/gp_cairo.c wxterminal/gp_cairo_helpers.c
 endif
 
-if BUILD_QT
-
-# Call the moc preprocessor
-moc_%.cpp : qtterminal/%.h
-	$(MOC) -o $@ $<
-
-# Call the Qt resource compiler
-qrc_%.cpp: qtterminal/%.qrc
-	rcc -name QtGnuplotResource -o $@ $<
-
-# Call the Qt ui compiler
-ui_%.h: qtterminal/%.ui
-	$(UIC) -o $@ $<
-
-if HAVE_LRELEASE
-
-# Generate translation files
-%.qm: qtterminal/po/%.ts
-	$(LRELEASE) $< -qm $@
-
-# List of compiles translation files
-TRANSLATIONS = qtgnuplot_fr.qm qtgnuplot_ja.qm
-
-# Install translation files
-qtgnuplotdir = $(pkgdatadir)/$(VERSION_MAJOR)/qt
-qtgnuplot_DATA = $(TRANSLATIONS)
-AM_CPPFLAGS += -DQTGNUPLOT_DATA_DIR=\"$(qtgnuplotdir)\"
-
-endif # HAVE_LRELEASE
-
-# Clean moc & qrc files
-clean-qt-extra:
-	rm -vf moc_*.cpp qrc_*.cpp qrc_*.o ui_*.h qtgnuplot*.qm
-
-# Clean transform gnuplot_x11 for demo
 clean-demo:
-	rm -f $(GNUPLOT_X11)
+	rm -vf $(GNUPLOT_X11)
 
-clean-local: clean-qt-extra clean-demo
-
-# Qt terminal sources
-nodist_gnuplot_SOURCES = moc_QtGnuplotWindow.cpp moc_QtGnuplotApplication.cpp \
-                         moc_QtGnuplotWidget.cpp moc_QtGnuplotScene.cpp \
-                         moc_QtGnuplotEvent.cpp qrc_QtGnuplotResource.cpp
-
-$(gnuplot_OBJECTS) : ui_QtGnuplotSettings.h
-
-gnuplot_SOURCES += qtterminal/qt_term.cpp qtterminal/QtGnuplotWindow.cpp \
-qtterminal/QtGnuplotApplication.cpp qtterminal/QtGnuplotWidget.cpp \
-qtterminal/QtGnuplotScene.cpp qtterminal/QtGnuplotItems.cpp \
-qtterminal/QtGnuplotEvent.cpp
-
-# embed example (uncomment to build it)
-
-# bin_PROGRAMS += embed_example
-# 
-# nodist_embed_example_SOURCES = moc_embed_example.cpp moc_QtGnuplotInstance.cpp \
-#                          moc_QtGnuplotWidget.cpp moc_QtGnuplotScene.cpp \
-#                          moc_QtGnuplotEvent.cpp qrc_QtGnuplotResource.cpp
-# 
-# embed_example_SOURCES = qtterminal/embed_example.cpp \
-# qtterminal/QtGnuplotWidget.cpp qtterminal/QtGnuplotEvent.cpp \
-# qtterminal/QtGnuplotScene.cpp qtterminal/QtGnuplotItems.cpp \
-# qtterminal/QtGnuplotInstance.cpp
-# 
-# embed_example_LDADD = $(QT_LIBS)
-
-endif # build_qt
+clean-local: clean-demo
 
 ## we don't need COREOBJS, but CORETERM
 ## for the term.o dependencies

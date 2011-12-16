@@ -1,5 +1,5 @@
 #ifndef lint
-static char *RCSid() { return RCSid("$Id: color.c,v 1.94 2010/10/12 21:11:25 sfeam Exp $"); }
+static char *RCSid() { return RCSid("$Id: color.c,v 1.85.2.3 2009/11/04 16:10:48 mikulik Exp $"); }
 #endif
 
 /* GNUPLOT - color.c */
@@ -123,12 +123,8 @@ make_palette()
 
     /* set the number of colours to be used (allocated) */
     sm_palette.colors = i;
-    if (sm_palette.use_maxcolors > 0) {
-	if (sm_palette.colorMode == SMPAL_COLOR_MODE_GRADIENT)
-	    sm_palette.colors = i;	/* EAM Sep 2010 - could this be a constant? */
-	else if (i > sm_palette.use_maxcolors)
-	    sm_palette.colors = sm_palette.use_maxcolors;
-    }
+    if (sm_palette.use_maxcolors > 0 && i > sm_palette.use_maxcolors)
+	sm_palette.colors = sm_palette.use_maxcolors;
 
     if (prev_palette.colorFormulae < 0
 	|| sm_palette.colorFormulae != prev_palette.colorFormulae
@@ -140,8 +136,7 @@ make_palette()
 	|| sm_palette.colors != prev_palette.colors) {
 	/* print the message only if colors have changed */
 	if (interactive)
-	    fprintf(stderr, "smooth palette in %s: using %i of %i available color positions\n",
-	    		term->name, sm_palette.colors, i);
+	fprintf(stderr, "smooth palette in %s: available %i color positions; using %i of them\n", term->name, i, sm_palette.colors);
     }
 
     prev_palette = sm_palette;
@@ -211,9 +206,16 @@ void ifilled_quadrangle(gpiPoint* icorners)
     term->filled_polygon(4, icorners);
 
     if (pm3d.hidden3d_tag) {
+
 	int i;
 
-	apply_pm3dcolor(&pm3d_border_lp.pm3d_color, term);
+	/* Colour has changed, so we must apply line properties again.
+	 * FIXME: It would be cleaner to apply the general line properties
+	 * outside this loop, and limit ourselves to apply_pm3dcolor().
+	 */
+	static struct lp_style_type lp = DEFAULT_LP_STYLE_TYPE;
+	lp_use_properties(&lp, pm3d.hidden3d_tag);
+	term_apply_lp_properties(&lp);
 
 	term->move(icorners[0].x, icorners[0].y);
 	for (i = 3; i >= 0; i--) {
@@ -351,18 +353,17 @@ draw_inside_color_smooth_box_postscript(FILE * out)
 
 
 
-/* plot a colour smooth box bounded by the terminal's integer coordinates
+/* plot the colour smooth box for from terminal's integer coordinates
    [x_from,y_from] to [x_to,y_to].
-   This routine is for non-postscript files, as it does an explicit loop
+   This routine is for non-postscript files, as it does explicitly the loop
    over all thin rectangles
  */
 static void
 draw_inside_color_smooth_box_bitmap(FILE * out)
 {
     int steps = 128; /* I think that nobody can distinguish more colours drawn in the palette */
-    int i, j, xy, xy2, xy_from, xy_to;
-    int jmin = 0;
-    double xy_step, gray, range;
+    int i, xy, xy2, xy_from, xy_to;
+    double xy_step, gray;
     gpiPoint corners[4];
 
     (void) out;			/* to avoid "unused parameter" warning */
@@ -371,58 +372,33 @@ draw_inside_color_smooth_box_bitmap(FILE * out)
 	corners[1].x = corners[2].x = color_box.bounds.xright;
 	xy_from = color_box.bounds.ybot;
 	xy_to = color_box.bounds.ytop;
-	xy_step = (color_box.bounds.ytop - color_box.bounds.ybot) / (double)steps;
     } else {
 	corners[0].y = corners[1].y = color_box.bounds.ybot;
 	corners[2].y = corners[3].y = color_box.bounds.ytop;
 	xy_from = color_box.bounds.xleft;
 	xy_to = color_box.bounds.xright;
-	xy_step = (color_box.bounds.xright - color_box.bounds.xleft) / (double)steps;
     }
-    range = (xy_to - xy_from);
+    xy_step = (color_box.rotation == 'h' ? color_box.bounds.xright - color_box.bounds.xleft : color_box.bounds.ytop - color_box.bounds.ybot) / (double) steps;
 
-    for (i = 0, xy2 = xy_from; i < steps; i++) {
-
-	/* Start from one pixel beyond the previous box */
-	xy = xy2;
-	xy2 = xy_from + (int) (xy_step * (i + 1));
-
-	/* Set the colour for the next range increment */
-	/* FIXME - The "1 +" seems wrong, yet it improves the placement in gd */
-	gray = (double)(1 + xy - xy_from) / range;
+    for (i = 0; i < steps; i++) {
+	gray = (double) i / steps;	/* colours equidistantly from [0,1] */
 	if (sm_palette.positive == SMPAL_NEGATIVE)
 	    gray = 1 - gray;
+	/* Set the colour (also for terminals which support extended specs). */
 	set_color(gray);
-
-	/* If this is a defined palette, make sure that the range increment */
-	/* does not straddle a palette segment boundary. If it does, split  */
-	/* it into two parts.                                               */
-	if (sm_palette.colorMode == SMPAL_COLOR_MODE_GRADIENT)
-	    for (j=jmin; j<sm_palette.gradient_num; j++) {
-		int boundary = xy_from + (int)(sm_palette.gradient[j].pos * range);
-		if (xy >= boundary) {
-		    jmin = j;
-		} else {
-		    if (xy2 > boundary) {
-			xy2 = boundary;
-			i--;
-			break;
-		    }
-		}
-		if (xy2 < boundary)
-		    break;
-	    }
-
+	xy = xy_from + (int) (xy_step * i);
+	xy2 = xy_from + (int) (xy_step * (i + 1));
 	if (color_box.rotation == 'v') {
 	    corners[0].y = corners[1].y = xy;
-	    corners[2].y = corners[3].y = GPMIN(xy_to,xy2+1);
+	    corners[2].y = corners[3].y = (i == steps - 1) ? xy_to : xy2;
 	} else {
 	    corners[0].x = corners[3].x = xy;
-	    corners[1].x = corners[2].x = GPMIN(xy_to,xy2+1);
+	    corners[1].x = corners[2].x = (i == steps - 1) ? xy_to : xy2;
 	}
 #ifdef EXTENDED_COLOR_SPECS
-	if (supply_extended_color_specs)
+	if (supply_extended_color_specs) {
 	    corners[0].spec.gray = -1;	/* force solid color */
+	}
 #endif
 	/* print the rectangle with the given colour */
 	if (default_fillstyle.fillstyle == FS_EMPTY)
