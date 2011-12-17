@@ -111,4 +111,12 @@ public final class StringFunctions
 
 		return activestring.substring(startingposition, activeposition);
 	}
-}
+	
+	public static int strcmp(String a, String b) {
+		if (a.equals(b)) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+ }

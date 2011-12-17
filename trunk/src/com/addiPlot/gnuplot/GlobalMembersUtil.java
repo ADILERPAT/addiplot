@@ -1,5 +1,8 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.RefObject;
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersUtil
 {
 	///#define __STDC__ 1
@@ -168,10 +171,10 @@ public class GlobalMembersUtil
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: util.c,v 1.84.2.2 2010/03/07 00:50:12 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: util.c,v 1.84.2.2 2010/03/07 00:50:12 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - util.c */
@@ -984,44 +987,44 @@ public class GlobalMembersUtil
 	 * send some other output to screen.  If FALSE, the command line
 	 * will be echoed to the screen before the ^ error message.
 	 */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean screen_ok;
 
 	/* decimal sign */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte *decimalsign;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte *numeric_locale; // LC_NUMERIC
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte *current_locale; // LC_TIME
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern String current_prompt; // needed by is_error() and friends
 
-///#if 0 // UNUSED
-//// /*
-////  * chr_in_str() compares the characters in the string of token number t_num
-////  * with c, and returns TRUE if a match was found.
-////  */
-////int
-////chr_in_str(int t_num, int c)
-////{
-////    int i;
-////
-////    if (!token[t_num].is_token)
-////	return (FALSE);		// must be a value--can't be equal 
-////    for (i = 0; i < token[t_num].length; i++) {
-////	if (input_line[token[t_num].start_index + i] == c)
-////	    return (TRUE);
-////    }
-////    return FALSE;
-////}
-///#endif
+	///#if 0 // UNUSED
+	//// /*
+	////  * chr_in_str() compares the characters in the string of token number t_num
+	////  * with c, and returns TRUE if a match was found.
+	////  */
+	////int
+	////chr_in_str(int t_num, int c)
+	////{
+	////    int i;
+	////
+	////    if (!token[t_num].is_token)
+	////	return (FALSE);		// must be a value--can't be equal 
+	////    for (i = 0; i < token[t_num].length; i++) {
+	////	if (input_line[token[t_num].start_index + i] == c)
+	////	    return (TRUE);
+	////    }
+	////    return FALSE;
+	////}
+	///#endif
 
-/*
- * equals() compares string value of token number t_num with str[], and
- *   returns TRUE if they are identical.
- */
+	/*
+	 * equals() compares string value of token number t_num with str[], and
+	 *   returns TRUE if they are identical.
+	 */
 
 	/* Functions exported by util.c: */
 
@@ -1034,20 +1037,20 @@ public class GlobalMembersUtil
 		int i;
 
 		if (!GlobalMembersCommand.token[t_num].is_token)
-		return (false); // must be a value--can't be equal
+			return (0); // must be a value--can't be equal
 		for (i = 0; i < GlobalMembersCommand.token[t_num].length; i++)
 		{
-		if (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index + i) != str.charAt(i))
-			return (false);
+			if (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index + i) != str.charAt(i))
+				return (0);
 		}
 		/* now return TRUE if at end of str[], FALSE if not */
-		return (str.charAt(i) == DefineConstants.NUL);
+		return (str.charAt(i) == DefineConstants.NUL) ? 1 : 0;
 	}
 
-/*
- * almost_equals() compares string value of token number t_num with str[], and
- *   returns TRUE if they are identical up to the first $ in str[].
- */
+	/*
+	 * almost_equals() compares string value of token number t_num with str[], and
+	 *   returns TRUE if they are identical up to the first $ in str[].
+	 */
 	public static int almost_equals(int t_num, String str)
 	{
 		int i;
@@ -1056,74 +1059,74 @@ public class GlobalMembersUtil
 		int length = GlobalMembersCommand.token[t_num].length;
 
 		if (str == null)
-		return false;
+			return 0;
 		if (!GlobalMembersCommand.token[t_num].is_token)
-		return false; // must be a value--can't be equal
+			return 0; // must be a value--can't be equal
 		for (i = 0; i < length + after; i++)
 		{
-		if (str.charAt(i) != GlobalMembersCommand.gp_input_line.charAt(start + i))
-		{
-			if (str.charAt(i) != '$')
-			return (false);
-			else
+			if (str.charAt(i) != GlobalMembersCommand.gp_input_line.charAt(start + i))
 			{
-			after = 1;
-			start--; // back up token ptr
+				if (str.charAt(i) != '$')
+					return (0);
+				else
+				{
+					after = 1;
+					start--; // back up token ptr
+				}
 			}
-		}
 		}
 
 		/* i now beyond end of token string */
 
-		return (after != 0 || str.charAt(i) == '$' || str.charAt(i) == DefineConstants.NUL);
+		return (after != 0 || str.charAt(i) == '$' || str.charAt(i) == DefineConstants.NUL) ? 1 : 0;
 	}
 	public static int isstring(int t_num)
 	{
 
-		return (GlobalMembersCommand.token[t_num].is_token && (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '\'' || GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '"'));
+		return (GlobalMembersCommand.token[t_num].is_token && (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '\'' || GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '"')) ? 1 : 0;
 	}
 	public static int isanumber(int t_num)
 	{
-		return (!GlobalMembersCommand.token[t_num].is_token);
+		return (!GlobalMembersCommand.token[t_num].is_token) ? 1 : 0;
 	}
 	public static int isletter(int t_num)
 	{
-		return (GlobalMembersCommand.token[t_num].is_token && ((Character.isLetter((byte) GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index))) || (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '_')));
+		return (GlobalMembersCommand.token[t_num].is_token && ((Character.isLetter((byte) GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index))) || (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '_'))) ? 1 : 0;
 	}
 
-/*
- * is_definition() returns TRUE if the next tokens are of the form
- *   identifier =
- *              -or-
- *   identifier ( identifer {,identifier} ) =
- */
+	/*
+	 * is_definition() returns TRUE if the next tokens are of the form
+	 *   identifier =
+	 *              -or-
+	 *   identifier ( identifer {,identifier} ) =
+	 */
 	public static int is_definition(int t_num)
 	{
 		/* variable? */
 		if (GlobalMembersUtil.isletter(t_num) != 0 && GlobalMembersUtil.equals(t_num + 1, "=") != 0)
-		return 1;
+			return 1;
 
 		/* function? */
 		/* look for dummy variables */
 		if (GlobalMembersUtil.isletter(t_num) != 0 && GlobalMembersUtil.equals(t_num + 1, "(") != 0 && GlobalMembersUtil.isletter(t_num + 2) != 0)
 		{
-		t_num += 3; // point past first dummy
-		while (GlobalMembersUtil.equals(t_num, ",") != 0)
-		{
-			if (GlobalMembersUtil.isletter(++t_num) == 0)
-			return 0;
-			t_num += 1;
-		}
-		return (GlobalMembersUtil.equals(t_num, ")") != 0 && GlobalMembersUtil.equals(t_num + 1, "=") != 0);
+			t_num += 3; // point past first dummy
+			while (GlobalMembersUtil.equals(t_num, ",") != 0)
+			{
+				if (GlobalMembersUtil.isletter(++t_num) == 0)
+					return 0;
+				t_num += 1;
+			}
+			return (GlobalMembersUtil.equals(t_num, ")") != 0 && GlobalMembersUtil.equals(t_num + 1, "=") != 0) ? 1 : 0;
 		}
 		/* neither */
 		return 0;
 	}
 
-/*
- * copy_str() copies the string in token number t_num into str, appending
- *   a null.  No more than max chars are copied (including \0).
- */
+	/*
+	 * copy_str() copies the string in token number t_num into str, appending
+	 *   a null.  No more than max chars are copied (including \0).
+	 */
 	public static void copy_str(String str, int t_num, int max)
 	{
 		int i = 0;
@@ -1132,29 +1135,29 @@ public class GlobalMembersUtil
 
 		if (count >= max)
 		{
-		count = max - 1;
-		GlobalMembersFit.a((stderr, "str buffer overflow in copy_str"));
+			count = max - 1;
+			GlobalMembersFit.a((stderr, "str buffer overflow in copy_str"));
 		}
 
 		do
 		{
-		str = tangible.StringFunctions.changeCharacter(str, i++, GlobalMembersCommand.gp_input_line.charAt(start++));
+			str = StringFunctions.changeCharacter(str, i++, GlobalMembersCommand.gp_input_line.charAt(start++));
 		} while (i != count);
-		str = tangible.StringFunctions.changeCharacter(str, i, DefineConstants.NUL);
+		str = StringFunctions.changeCharacter(str, i, DefineConstants.NUL);
 
 	}
 
-/* length of token string */
+	/* length of token string */
 	public static int token_len(int t_num)
 	{
 		return (int)(GlobalMembersCommand.token[t_num].length);
 	}
 
-/*
- * quote_str() does the same thing as copy_str, except it ignores the
- *   quotes at both ends.  This seems redundant, but is done for
- *   efficency.
- */
+	/*
+	 * quote_str() does the same thing as copy_str, except it ignores the
+	 *   quotes at both ends.  This seems redundant, but is done for
+	 *   efficency.
+	 */
 	public static void quote_str(String str, int t_num, int max)
 	{
 		int i = 0;
@@ -1163,28 +1166,28 @@ public class GlobalMembersUtil
 
 		if ((count = GlobalMembersCommand.token[t_num].length - 2) >= max)
 		{
-		count = max - 1;
-		GlobalMembersFit.a((stderr, "str buffer overflow in quote_str"));
+			count = max - 1;
+			GlobalMembersFit.a((stderr, "str buffer overflow in quote_str"));
 		}
 		if (count > 0)
 		{
-		do
-		{
-			str = tangible.StringFunctions.changeCharacter(str, i++, GlobalMembersCommand.gp_input_line.charAt(start++));
-		} while (i != count);
+			do
+			{
+				str = StringFunctions.changeCharacter(str, i++, GlobalMembersCommand.gp_input_line.charAt(start++));
+			} while (i != count);
 		}
-		str = tangible.StringFunctions.changeCharacter(str, i, DefineConstants.NUL);
+		str = StringFunctions.changeCharacter(str, i, DefineConstants.NUL);
 		/* convert \t and \nnn (octal) to char if in double quotes */
 		if (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[t_num].start_index) == '"')
-		GlobalMembersUtil.parse_esc(str);
+			GlobalMembersUtil.parse_esc(str);
 		else
 			GlobalMembersUtil.parse_sq(str);
 	}
 
-/*
- * capture() copies into str[] the part of gp_input_line[] which lies between
- * the begining of token[start] and end of token[end].
- */
+	/*
+	 * capture() copies into str[] the part of gp_input_line[] which lies between
+	 * the begining of token[start] and end of token[end].
+	 */
 	public static void capture(String str, int start, int end, int max)
 	{
 		int i;
@@ -1193,63 +1196,63 @@ public class GlobalMembersUtil
 		e = GlobalMembersCommand.token[end].start_index + GlobalMembersCommand.token[end].length;
 		if (e - GlobalMembersCommand.token[start].start_index >= max)
 		{
-		e = GlobalMembersCommand.token[start].start_index + max - 1;
-		GlobalMembersFit.a((stderr, "str buffer overflow in capture"));
+			e = GlobalMembersCommand.token[start].start_index + max - 1;
+			GlobalMembersFit.a((stderr, "str buffer overflow in capture"));
 		}
 		for (i = GlobalMembersCommand.token[start].start_index; i < e && GlobalMembersCommand.gp_input_line.charAt(i) != DefineConstants.NUL; i++)
-		str++= GlobalMembersCommand.gp_input_line.charAt(i);
+			str++= GlobalMembersCommand.gp_input_line.charAt(i);
 		str = DefineConstants.NUL;
 	}
 
-/*
- * m_capture() is similar to capture(), but it mallocs storage for the
- * string.
- */
-	public static void m_capture(tangible.RefObject<String[]> str, int start, int end)
+	/*
+	 * m_capture() is similar to capture(), but it mallocs storage for the
+	 * string.
+	 */
+	public static void m_capture(RefObject<String[]> str, int start, int end)
 	{
 		int i;
 		int e;
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * s;
 
 		e = GlobalMembersCommand.token[end].start_index + GlobalMembersCommand.token[end].length;
 		str.argvalue = GlobalMembersAlloc.gp_realloc(str.argvalue, (e - GlobalMembersCommand.token[start].start_index + 1), "string");
 		s = str.argvalue;
 		for (i = GlobalMembersCommand.token[start].start_index; i < e && GlobalMembersCommand.gp_input_line.charAt(i) != DefineConstants.NUL; i++)
-		*s++= GlobalMembersCommand.gp_input_line.charAt(i);
+			*s++= GlobalMembersCommand.gp_input_line.charAt(i);
 		*s = DefineConstants.NUL;
 	}
 
-/*
- * m_quote_capture() is similar to m_capture(), but it removes
- * quotes from either end of the string.
- */
-	public static void m_quote_capture(tangible.RefObject<String[]> str, int start, int end)
+	/*
+	 * m_quote_capture() is similar to m_capture(), but it removes
+	 * quotes from either end of the string.
+	 */
+	public static void m_quote_capture(RefObject<String[]> str, int start, int end)
 	{
 		int i;
 		int e;
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * s;
 
 		e = GlobalMembersCommand.token[end].start_index + GlobalMembersCommand.token[end].length - 1;
 		str.argvalue = GlobalMembersAlloc.gp_realloc(str.argvalue, (e - GlobalMembersCommand.token[start].start_index + 1), "string");
 		s = str.argvalue;
 		for (i = GlobalMembersCommand.token[start].start_index + 1; i < e && GlobalMembersCommand.gp_input_line.charAt(i) != DefineConstants.NUL; i++)
-		*s++= GlobalMembersCommand.gp_input_line.charAt(i);
+			*s++= GlobalMembersCommand.gp_input_line.charAt(i);
 		*s = DefineConstants.NUL;
 
 		if (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[start].start_index) == '"')
-		GlobalMembersUtil.parse_esc(str.argvalue);
+			GlobalMembersUtil.parse_esc(str.argvalue);
 		else
 			GlobalMembersUtil.parse_sq(str.argvalue);
 
 	}
 
-/*
- * Wrapper for isstring + m_quote_capture that can be used with
- * or without GP_STRING_VARS enabled.
- * EAM Aug 2004
- */
+	/*
+	 * Wrapper for isstring + m_quote_capture that can be used with
+	 * or without GP_STRING_VARS enabled.
+	 * EAM Aug 2004
+	 */
 	public static String try_to_get_string()
 	{
 		String newstring = DefineConstants.NULL;
@@ -1257,20 +1260,20 @@ public class GlobalMembersUtil
 		int save_token = GlobalMembersCommand.c_token;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		return DefineConstants.NULL;
+			return DefineConstants.NULL;
 		GlobalMembersParse.const_string_express(a);
 		if (a.type == DATA_TYPES.STRING)
-		newstring = a.v.string_val;
+			newstring = a.v.string_val;
 		else
-		GlobalMembersCommand.c_token = save_token;
+			GlobalMembersCommand.c_token = save_token;
 
 		return newstring;
 	}
 	public static void parse_esc(String instr)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * s = instr;
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * t = instr;
 
 		/* the string will always get shorter, so we can do the
@@ -1279,93 +1282,93 @@ public class GlobalMembersUtil
 
 		while (*s != DefineConstants.NUL)
 		{
-		if (*s == '\\')
-		{
-			s++;
 			if (*s == '\\')
 			{
-			*t++= '\\';
-			s++;
+				s++;
+				if (*s == '\\')
+				{
+					*t++= '\\';
+					s++;
+				}
+				else if (*s == 'n')
+				{
+					*t++= '\n';
+					s++;
+				}
+				else if (*s == 'r')
+				{
+					*t++= '\r';
+					s++;
+				}
+				else if (*s == 't')
+				{
+					*t++= '\t';
+					s++;
+				}
+				else if (*s == '\"')
+				{
+					*t++= '\"';
+					s++;
+				}
+				else if (*s >= '0' && *s <= '7')
+				{
+					int i;
+					int n;
+					byte octal = (*s == '0' ? "%4o%n" : "%3o%n");
+					if (sscanf(s, octal, i, n) > 0)
+					{
+						*t++= i;
+						s += n;
+					}
+					else
+					{
+						/* int_error("illegal octal number ", c_token); */
+						*t++= '\\';
+						*t++= *s++;
+					}
+				}
 			}
-			else if (*s == 'n')
+			else if (GlobalMembersDatafile.df_separator != 0 && *s == '\"' && *(s + 1) == '\"')
 			{
-			*t++= '\n';
-			s++;
-			}
-			else if (*s == 'r')
-			{
-			*t++= '\r';
-			s++;
-			}
-			else if (*s == 't')
-			{
-			*t++= '\t';
-			s++;
-			}
-			else if (*s == '\"')
-			{
-			*t++= '\"';
-			s++;
-			}
-			else if (*s >= '0' && *s <= '7')
-			{
-			int i;
-			int n;
-			byte octal = (*s == '0' ? "%4o%n" : "%3o%n");
-			if (sscanf(s, octal, i, n) > 0)
-			{
-				*t++= i;
-				s += n;
+				/* EAM Mar 2003 - For parsing CSV strings with quoted quotes */
+				*t++= *s++;
+				s++;
 			}
 			else
 			{
-				/* int_error("illegal octal number ", c_token); */
-				*t++= '\\';
 				*t++= *s++;
 			}
-			}
-		}
-		else if (GlobalMembersDatafile.df_separator != 0 && *s == '\"' && *(s + 1) == '\"')
-		{
-		/* EAM Mar 2003 - For parsing CSV strings with quoted quotes */
-			*t++= *s++;
-			s++;
-		}
-		else
-		{
-			*t++= *s++;
-		}
 		}
 		*t = DefineConstants.NUL;
 	}
 
-/* Test for the existence of a variable without triggering errors.
- * Return values:
- *  0	variable does not exist or is not defined
- * >0	type of variable: INTGR, CMPLX, STRING
- */
+	/* Test for the existence of a variable without triggering errors.
+	 * Return values:
+	 *  0	variable does not exist or is not defined
+	 * >0	type of variable: INTGR, CMPLX, STRING
+	 */
 	public static int type_udv(int t_num)
 	{
 		udvt_entry[] udv_ptr = GlobalMembersEval.first_udv;
 
 		while (udv_ptr != null)
 		{
-		if (GlobalMembersUtil.equals(t_num, (udv_ptr).udv_name) != 0)
-		{
-			if ((udv_ptr).udv_undef)
-			return 0;
-			else
-			return (udv_ptr).udv_value.type;
-		}
-		udv_ptr = &((udv_ptr).next_udv);
+			if (GlobalMembersUtil.equals(t_num, (udv_ptr).udv_name) != 0)
+			{
+				if ((udv_ptr).udv_undef)
+					return 0;
+				else
+					return (udv_ptr).udv_value.type;
+			}
+			udv_ptr = &((udv_ptr).next_udv);
 		}
 		return 0;
 	}
 
-/*
- * Allocate a new string and initialize it by concatenating two
- * existing strings.
- */
+	/*
+	 * Allocate a new string and initialize it by concatenating two
+	 * existing strings.
+	 */
 
 	public static String gp_stradd(String a, String b)
 	{
@@ -1375,12 +1378,12 @@ public class GlobalMembersUtil
 		return new_Renamed;
 	}
 
-/* Our own version of strdup()
- * Make copy of string into gp_alloc'd memory
- * As with all conforming str*() functions,
- * it is the caller's responsibility to pass
- * valid parameters!
- */
+	/* Our own version of strdup()
+	 * Make copy of string into gp_alloc'd memory
+	 * As with all conforming str*() functions,
+	 * it is the caller's responsibility to pass
+	 * valid parameters!
+	 */
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define isstringvalue(c_token) (isstring(c_token) || type_udv(c_token)==STRING)
 
@@ -1390,27 +1393,27 @@ public class GlobalMembersUtil
 		String d;
 
 		if (s == null)
-		return DefineConstants.NULL;
+			return DefineConstants.NULL;
 
-	///#ifndef HAVE_STRDUP
-	//    d = gp_alloc(strlen(s) + 1, "gp_strdup");
-	//    if (d)
-	//	memcpy (d, s, strlen(s) + 1);
-	///#else
+		///#ifndef HAVE_STRDUP
+		//    d = gp_alloc(strlen(s) + 1, "gp_strdup");
+		//    if (d)
+		//	memcpy (d, s, strlen(s) + 1);
+		///#else
 		d = s;
-	///#endif
+		///#endif
 		return d;
 	}
-///#endif
+	///#endif
 
-/*{{{  gprintf */
-/* extended s(n)printf */
-/* HBB 20010121: added code to maintain consistency between mantissa
- * and exponent across sprintf() calls.  The problem: format string
- * '%t*10^%T' will display 9.99 as '10.0*10^0', but 10.01 as
- * '1.0*10^1'.  This causes problems for people using the %T part,
- * only, with logscaled axes, in combination with the occasional
- * round-off error. */
+	/*{{{  gprintf */
+	/* extended s(n)printf */
+	/* HBB 20010121: added code to maintain consistency between mantissa
+	 * and exponent across sprintf() calls.  The problem: format string
+	 * '%t*10^%T' will display 9.99 as '10.0*10^0', but 10.01 as
+	 * '1.0*10^1'.  This causes problems for people using the %T part,
+	 * only, with logscaled axes, in combination with the occasional
+	 * round-off error. */
 
 	/* HBB 20020405: moved this here, from axis.[ch] */
 	public static void gprintf(String dest, int count, String format, double log10_base, double x)
@@ -1427,197 +1430,197 @@ public class GlobalMembersUtil
 
 		for (;;)
 		{
-		/*{{{  copy to dest until % */
-		while (!format.equals('%'))
-			if (!(dest++= format++))
+			/*{{{  copy to dest until % */
+			while (!format.equals('%'))
+				if (!(dest++= format++))
+				{
+					do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+					return; // end of format
+				}
+			/*}}} */
+
+			/*{{{  check for %% */
+			if (format.charAt(1) == '%')
 			{
-			() do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
-			return; // end of format
+				dest++= '%';
+				format += 2;
+				continue;
 			}
-		/*}}} */
+			/*}}} */
 
-		/*{{{  check for %% */
-		if (format.charAt(1) == '%')
-		{
-			dest++= '%';
-			format += 2;
-			continue;
-		}
-		/*}}} */
+			/*{{{  copy format part to temp, excluding conversion character */
+			t = temp;
+			t++= '%';
+			if (format.charAt(1) == '#')
+			{
+				t++= '#';
+				format++;
+				got_hash = true;
+			}
+			/* dont put isdigit first since sideeffect in macro is bad */
+			while (*++format == '.' || Character.isDigit((byte) format) || format.equals('-') || format.equals('+') || format.equals(' ') || format.equals('\''))
+				t++= format;
+			/*}}} */
 
-		/*{{{  copy format part to temp, excluding conversion character */
-		t = temp;
-		t++= '%';
-		if (format.charAt(1) == '#')
-		{
-			t++= '#';
-			format++;
-			got_hash = true;
-		}
-		/* dont put isdigit first since sideeffect in macro is bad */
-		while (*++format == '.' || Character.isDigit((byte) format) || format.equals('-') || format.equals('+') || format.equals(' ') || format.equals('\''))
-			t++= format;
-		/*}}} */
-
-		/*{{{  convert conversion character */
-		switch (format)
-		{
+			/*{{{  convert conversion character */
+			switch (format)
+			{
 			/*{{{  x and o */
-		case 'x':
-		case 'X':
-		case 'o':
-		case 'O':
-			t = tangible.StringFunctions.changeCharacter(t, 0, format);
-			t = t.substring(0, 1);
-			if (snprintf((dest),count,(temp),((int) x)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-			/*}}} */
-			/*{{{  e, f and g */
-		case 'e':
-		case 'E':
-		case 'f':
-		case 'F':
-		case 'g':
-		case 'G':
-			t = tangible.StringFunctions.changeCharacter(t, 0, format);
-			t = t.substring(0, 1);
-			if (snprintf((dest),count,(temp),(x)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-			/*}}} */
-			/*{{{  l --- mantissa to current log base */
-		case 'l':
-		{
-			double mantissa;
+			case 'x':
+			case 'X':
+			case 'o':
+			case 'O':
+				t = tangible.StringFunctions.changeCharacter(t, 0, format);
+				t = t.substring(0, 1);
+				if (snprintf((dest),count,(temp),((int) x)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+				/*}}} */
+				/*{{{  e, f and g */
+			case 'e':
+			case 'E':
+			case 'f':
+			case 'F':
+			case 'g':
+			case 'G':
+				t = tangible.StringFunctions.changeCharacter(t, 0, format);
+				t = t.substring(0, 1);
+				if (snprintf((dest),count,(temp),(x)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+				/*}}} */
+				/*{{{  l --- mantissa to current log base */
+			case 'l':
+			{
+				double mantissa;
 
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
-			t = t.substring(0, 1);
-			GlobalMembersUtil.mant_exp(log10_base, x, false, mantissa, stored_power, temp);
-			seen_mantissa = true;
-			if (snprintf((dest),count,(temp),(mantissa)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
+				t = t.substring(0, 1);
+				GlobalMembersUtil.mant_exp(log10_base, x, false, mantissa, stored_power, temp);
+				seen_mantissa = true;
+				if (snprintf((dest),count,(temp),(mantissa)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+			}
 			/*}}} */
 			/*{{{  t --- base-10 mantissa */
-		case 't':
-		{
-			double mantissa;
+			case 't':
+			{
+				double mantissa;
 
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
-			t = t.substring(0, 1);
-			GlobalMembersUtil.mant_exp(1.0, x, false, mantissa, stored_power, temp);
-			seen_mantissa = true;
-			if (snprintf((dest),count,(temp),(mantissa)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
+				t = t.substring(0, 1);
+				GlobalMembersUtil.mant_exp(1.0, x, false, mantissa, stored_power, temp);
+				seen_mantissa = true;
+				if (snprintf((dest),count,(temp),(mantissa)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+			}
 			/*}}} */
 			/*{{{  s --- base-1000 / 'scientific' mantissa */
-		case 's':
-		{
-			double mantissa;
+			case 's':
+			{
+				double mantissa;
 
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
-			t = t.substring(0, 1);
-			GlobalMembersUtil.mant_exp(1.0, x, true, mantissa, stored_power, temp);
-			seen_mantissa = true;
-			if (snprintf((dest),count,(temp),(mantissa)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
+				t = t.substring(0, 1);
+				GlobalMembersUtil.mant_exp(1.0, x, true, mantissa, stored_power, temp);
+				seen_mantissa = true;
+				if (snprintf((dest),count,(temp),(mantissa)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+			}
 			/*}}} */
 			/*{{{  L --- power to current log base */
-		case 'L':
-		{
-			int power;
+			case 'L':
+			{
+				int power;
 
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'd');
-			t = t.substring(0, 1);
-			if (seen_mantissa)
-				power = stored_power;
-			else
-				GlobalMembersUtil.mant_exp(log10_base, x, false, DefineConstants.NULL, power, "%.0f");
-			if (snprintf((dest),count,(temp),(power)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'd');
+				t = t.substring(0, 1);
+				if (seen_mantissa)
+					power = stored_power;
+				else
+					GlobalMembersUtil.mant_exp(log10_base, x, false, DefineConstants.NULL, power, "%.0f");
+				if (snprintf((dest),count,(temp),(power)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+			}
 			/*}}} */
 			/*{{{  T --- power of ten */
-		case 'T':
-		{
-			int power;
+			case 'T':
+			{
+				int power;
 
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'd');
-			t = t.substring(0, 1);
-			if (seen_mantissa)
-				power = stored_power;
-			else
-				GlobalMembersUtil.mant_exp(1.0, x, false, DefineConstants.NULL, power, "%.0f");
-			if (snprintf((dest),count,(temp),(power)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'd');
+				t = t.substring(0, 1);
+				if (seen_mantissa)
+					power = stored_power;
+				else
+					GlobalMembersUtil.mant_exp(1.0, x, false, DefineConstants.NULL, power, "%.0f");
+				if (snprintf((dest),count,(temp),(power)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+			}
 			/*}}} */
 			/*{{{  S --- power of 1000 / 'scientific' */
-		case 'S':
-		{
-			int power;
+			case 'S':
+			{
+				int power;
 
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'd');
-			t = t.substring(0, 1);
-			if (seen_mantissa)
-				power = stored_power;
-			else
-				GlobalMembersUtil.mant_exp(1.0, x, true, DefineConstants.NULL, power, "%.0f");
-			if (snprintf((dest),count,(temp),(power)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'd');
+				t = t.substring(0, 1);
+				if (seen_mantissa)
+					power = stored_power;
+				else
+					GlobalMembersUtil.mant_exp(1.0, x, true, DefineConstants.NULL, power, "%.0f");
+				if (snprintf((dest),count,(temp),(power)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
+			}
 			/*}}} */
 			/*{{{  c --- ISO decimal unit prefix letters */
-		case 'c':
-		{
-			int power;
-
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'c');
-			t = t.substring(0, 1);
-			if (seen_mantissa)
-				power = stored_power;
-			else
-				GlobalMembersUtil.mant_exp(1.0, x, true, DefineConstants.NULL, power, "%.0f");
-
-			if (power >= -18 && power <= 18)
+			case 'c':
 			{
-				/* -18 -> 0, 0 -> 6, +18 -> 12, ... */
-				/* HBB 20010121: avoid division of -ve ints! */
-				power = (power + 18) / 3;
-				if (snprintf((dest),count,(temp),("afpnum kMGTPE"[power])) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			}
-			else
-			{
-				/* please extend the range ! */
-				/* name  power   name  power
+				int power;
+
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'c');
+				t = t.substring(0, 1);
+				if (seen_mantissa)
+					power = stored_power;
+				else
+					GlobalMembersUtil.mant_exp(1.0, x, true, DefineConstants.NULL, power, "%.0f");
+
+				if (power >= -18 && power <= 18)
+				{
+					/* -18 -> 0, 0 -> 6, +18 -> 12, ... */
+					/* HBB 20010121: avoid division of -ve ints! */
+					power = (power + 18) / 3;
+					if (snprintf((dest),count,(temp),("afpnum kMGTPE"[power])) > count)
+						//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+						//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+						fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				}
+				else
+				{
+					/* please extend the range ! */
+					/* name  power   name  power
 				   -------------------------
 				   atto   -18    Exa    18
 				   femto  -15    Peta   15
@@ -1626,81 +1629,81 @@ public class GlobalMembersUtil
 				   micro   -6    Mega    6
 				   milli   -3    kilo    3   */
 
-				/* for the moment, print e+21 for example */
-				if (snprintf((dest),count,("e%+02d"),((power - 6) * 3)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			}
+					/* for the moment, print e+21 for example */
+					if (snprintf((dest),count,("e%+02d"),((power - 6) * 3)) > count)
+						//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+						//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+						fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				}
 
-			break;
-		}
+				break;
+			}
 			/*}}} */
 			/*{{{  P --- multiple of pi */
-		case 'P':
-		{
-			t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
-			t = t.substring(0, 1);
-			if (snprintf((dest),count,(temp),(x / DefineConstants.M_PI)) > count)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
-	//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
-				fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
-			break;
-		}
-			/*}}} */
-		default:
-		   () do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
-		   GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Bad format character");
-		} // switch
-		/*}}} */
-
-		if (got_hash && (!format.equals(strpbrk(format,"oeEfFgG"))))
-		{
-		   () do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
-		   GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Bad format character");
-		}
-
-		/* change decimal `.' to the actual entry in decimalsign */
-		if (!decimalsign.equals(DefineConstants.NULL))
-		{
-			String dotpos1 = dest;
-			String dotpos2;
-			int newlength = decimalsign.length();
-			int dot;
-
-			/* dot is the default decimalsign we will be replacing */
-			dot = *()(localeconv().decimal_point)();
-
-			/* replace every dot by the contents of decimalsign */
-			while ((dotpos2 = tangible.StringFunctions.strChr(dotpos1,dot)) != DefineConstants.NULL)
+			case 'P':
 			{
-			int taillength = dotpos2.length();
-
-			dotpos1 = dotpos2 + newlength;
-			/* test if the new value for dest would be too long */
-			if (dotpos1 - dest + taillength > count)
-				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "format too long due to long decimalsign string");
-			/* move tail end of string out of the way */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memmove' has no equivalent in Java:
-			memmove(dotpos1, dotpos2 + 1, taillength);
-			/* insert decimalsign */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-			memcpy(dotpos2, decimalsign, newlength);
+				t = tangible.StringFunctions.changeCharacter(t, 0, 'f');
+				t = t.substring(0, 1);
+				if (snprintf((dest),count,(temp),(x / DefineConstants.M_PI)) > count)
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __LINE__ macro:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no direct equivalent in Java to the C++ __FILE__ macro:
+					fprintf(stderr,"%s:%d: Warning: too many digits for format\n",__FILE__,__LINE__);
+				break;
 			}
-			/* clear temporary variables for safety */
-			dotpos1 = DefineConstants.NULL;
-			dotpos2 = DefineConstants.NULL;
-		}
+			/*}}} */
+			default:
+				() do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Bad format character");
+			} // switch
+			/*}}} */
 
-		/* this was at the end of every single case, before: */
-		dest += dest.length();
-		++format;
+			if (got_hash && (!format.equals(strpbrk(format,"oeEfFgG"))))
+			{
+				() do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Bad format character");
+			}
+
+			/* change decimal `.' to the actual entry in decimalsign */
+			if (!decimalsign.equals(DefineConstants.NULL))
+			{
+				String dotpos1 = dest;
+				String dotpos2;
+				int newlength = decimalsign.length();
+				int dot;
+
+				/* dot is the default decimalsign we will be replacing */
+				dot = *()(localeconv().decimal_point)();
+
+				/* replace every dot by the contents of decimalsign */
+				while ((dotpos2 = tangible.StringFunctions.strChr(dotpos1,dot)) != DefineConstants.NULL)
+				{
+					int taillength = dotpos2.length();
+
+					dotpos1 = dotpos2 + newlength;
+					/* test if the new value for dest would be too long */
+					if (dotpos1 - dest + taillength > count)
+						GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "format too long due to long decimalsign string");
+					/* move tail end of string out of the way */
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memmove' has no equivalent in Java:
+					memmove(dotpos1, dotpos2 + 1, taillength);
+					/* insert decimalsign */
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+					memcpy(dotpos2, decimalsign, newlength);
+				}
+				/* clear temporary variables for safety */
+				dotpos1 = DefineConstants.NULL;
+				dotpos2 = DefineConstants.NULL;
+			}
+
+			/* this was at the end of every single case, before: */
+			dest += dest.length();
+			++format;
 		} // for ever
 
 		() do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
 	}
 
-///#if defined(VA_START) && defined(STDC_HEADERS)
+	///#if defined(VA_START) && defined(STDC_HEADERS)
 
 	/* Error message handling */
 	///#if defined(VA_START) && defined(STDC_HEADERS)
@@ -1710,69 +1713,69 @@ public class GlobalMembersUtil
 	//os_error(int t_num, const char *str, va_dcl)
 	///#endif
 	{
-	///#ifdef VA_START
-	//	va_list args;
-	///#endif
-	///#ifdef VMS
-	//    static status[2] = { 1, 0 };		// 1 is count of error msgs
-	///#endif // VMS
+		///#ifdef VA_START
+		//	va_list args;
+		///#endif
+		///#ifdef VMS
+		//    static status[2] = { 1, 0 };		// 1 is count of error msgs
+		///#endif // VMS
 
 		/* reprint line if screen has been written to */
 
 		if (t_num == DefineConstants.DATAFILE)
 		{
-		GlobalMembersDatafile.df_showdata();
+			GlobalMembersDatafile.df_showdata();
 		} // put caret under error
 		else if (t_num != DefineConstants.NO_CARET)
 		{
-		if (!screen_ok)
-			do {fprintf(stderr, "\n%s%s\n", current_prompt != null ? current_prompt : "", GlobalMembersCommand.gp_input_line);} while (0);
+			if (!screen_ok)
+				do {fprintf(stderr, "\n%s%s\n", current_prompt != null ? current_prompt : "", GlobalMembersCommand.gp_input_line);} while (0);
 
-		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
-		do {int i; for (i = 0; i < GlobalMembersCommand.token[t_num].start_index; i++)() fputc((GlobalMembersCommand.gp_input_line.charAt(i) == '\t') ? '\t' : ' ', stderr);} while (0);
-		fputs("^\n",stderr);;
+			do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
+			do {int i; for (i = 0; i < GlobalMembersCommand.token[t_num].start_index; i++)() fputc((GlobalMembersCommand.gp_input_line.charAt(i) == '\t') ? '\t' : ' ', stderr);} while (0);
+			fputs("^\n",stderr);;
 		}
 		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
 
-	///#ifdef VA_START
-	int ParamCount = -1;
-	//	va_start(args, str);
-	///#if defined(HAVE_VFPRINTF) || _LIBC
-	//    vfprintf(stderr, str, args);
-	///#else
+		///#ifdef VA_START
+		int ParamCount = -1;
+		//	va_start(args, str);
+		///#if defined(HAVE_VFPRINTF) || _LIBC
+		//    vfprintf(stderr, str, args);
+		///#else
 		_doprnt(str, args, stderr);
-	///#endif
-	//	va_end(args);
-	///#else
-	//    fprintf(stderr, str, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#endif
+		///#endif
+		//	va_end(args);
+		///#else
+		//    fprintf(stderr, str, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#endif
 		putc('\n', stderr);
 
 		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
 		if (!GlobalMembersPlot.interactive) {if (GlobalMembersMisc.lf_head != null && GlobalMembersMisc.lf_head.name != null) fprintf(stderr, "\"%s\", line %d: ", GlobalMembersMisc.lf_head.name, GlobalMembersCommand.inline_num); else fprintf(stderr, "line %d: ", GlobalMembersCommand.inline_num);};
 
-	///#ifdef VMS
-	//    status[1] = vaxc$errno;
-	//    sys$putmsg(status);
-	//    (void) putc('\n', stderr);
-	///#else // VMS
+		///#ifdef VMS
+		//    status[1] = vaxc$errno;
+		//    sys$putmsg(status);
+		//    (void) putc('\n', stderr);
+		///#else // VMS
 		perror("util.c");
 		putc('\n', stderr);
-	///#endif // VMS
+		///#endif // VMS
 
 		GlobalMembersPlot.bail_to_command_line();
 	}
 
-///#if defined(VA_START) && defined(STDC_HEADERS)
+	///#if defined(VA_START) && defined(STDC_HEADERS)
 	public static void int_error(int t_num, String str, Object... LegacyParamArray)
 	///#else
 	//void
 	//int_error(int t_num, const char str[], va_dcl)
 	///#endif
 	{
-	///#ifdef VA_START
-	//	va_list args;
-	///#endif
+		///#ifdef VA_START
+		//	va_list args;
+		///#endif
 
 		String error_message = "";
 
@@ -1784,34 +1787,34 @@ public class GlobalMembersUtil
 		} // put caret under error
 		else if (t_num != DefineConstants.NO_CARET)
 		{
-		if (!screen_ok)
-			do {fprintf(stderr, "\n%s%s\n", current_prompt != null ? current_prompt : "", GlobalMembersCommand.gp_input_line);} while (0);
+			if (!screen_ok)
+				do {fprintf(stderr, "\n%s%s\n", current_prompt != null ? current_prompt : "", GlobalMembersCommand.gp_input_line);} while (0);
 
-		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
-		do {int i; for (i = 0; i < GlobalMembersCommand.token[t_num].start_index; i++)() fputc((GlobalMembersCommand.gp_input_line.charAt(i) == '\t') ? '\t' : ' ', stderr);} while (0);
-		fputs("^\n",stderr);;
+			do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
+			do {int i; for (i = 0; i < GlobalMembersCommand.token[t_num].start_index; i++)() fputc((GlobalMembersCommand.gp_input_line.charAt(i) == '\t') ? '\t' : ' ', stderr);} while (0);
+			fputs("^\n",stderr);;
 		}
 		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
 		if (!GlobalMembersPlot.interactive) {if (GlobalMembersMisc.lf_head != null && GlobalMembersMisc.lf_head.name != null) fprintf(stderr, "\"%s\", line %d: ", GlobalMembersMisc.lf_head.name, GlobalMembersCommand.inline_num); else fprintf(stderr, "line %d: ", GlobalMembersCommand.inline_num);};
 
-	///#ifdef VA_START
-	int ParamCount = -1;
-	//	va_start(args, str);
-	///#if defined(HAVE_VFPRINTF) || _LIBC
-	//    vsnprintf(error_message, sizeof(error_message), str, args);
-	//    fprintf(stderr,"%.120s",error_message);
-	///#else
+		///#ifdef VA_START
+		int ParamCount = -1;
+		//	va_start(args, str);
+		///#if defined(HAVE_VFPRINTF) || _LIBC
+		//    vsnprintf(error_message, sizeof(error_message), str, args);
+		//    fprintf(stderr,"%.120s",error_message);
+		///#else
 		_doprnt(str, args, stderr);
-	///#endif
-	//	va_end(args);
-	///#else
-	//    fprintf(stderr, str, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#ifdef HAVE_SNPRINTF
-	//    snprintf(error_message, sizeof(error_message), str, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#else
-	//    sprintf(error_message, str, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#endif
-	///#endif
+		///#endif
+		//	va_end(args);
+		///#else
+		//    fprintf(stderr, str, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#ifdef HAVE_SNPRINTF
+		//    snprintf(error_message, sizeof(error_message), str, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#else
+		//    sprintf(error_message, str, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#endif
+		///#endif
 
 		fputs("\n\n", stderr);
 
@@ -1826,17 +1829,17 @@ public class GlobalMembersUtil
 		GlobalMembersPlot.bail_to_command_line();
 	}
 
-/* Warn without bailing out to command line. Not a user error */
-///#if defined(VA_START) && defined(STDC_HEADERS)
+	/* Warn without bailing out to command line. Not a user error */
+	///#if defined(VA_START) && defined(STDC_HEADERS)
 	public static void int_warn(int t_num, String str, Object... LegacyParamArray)
 	///#else
 	//void
 	//int_warn(int t_num, const char str[], va_dcl)
 	///#endif
 	{
-	///#ifdef VA_START
-	//	va_list args;
-	///#endif
+		///#ifdef VA_START
+		//	va_list args;
+		///#endif
 
 		/* reprint line if screen has been written to */
 
@@ -1846,85 +1849,85 @@ public class GlobalMembersUtil
 		} // put caret under error
 		else if (t_num != DefineConstants.NO_CARET)
 		{
-		if (!screen_ok)
-			do {fprintf(stderr, "\n%s%s\n", current_prompt != null ? current_prompt : "", GlobalMembersCommand.gp_input_line);} while (0);
+			if (!screen_ok)
+				do {fprintf(stderr, "\n%s%s\n", current_prompt != null ? current_prompt : "", GlobalMembersCommand.gp_input_line);} while (0);
 
-		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
-		do {int i; for (i = 0; i < GlobalMembersCommand.token[t_num].start_index; i++)() fputc((GlobalMembersCommand.gp_input_line.charAt(i) == '\t') ? '\t' : ' ', stderr);} while (0);
-		fputs("^\n",stderr);;
+			do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
+			do {int i; for (i = 0; i < GlobalMembersCommand.token[t_num].start_index; i++)() fputc((GlobalMembersCommand.gp_input_line.charAt(i) == '\t') ? '\t' : ' ', stderr);} while (0);
+			fputs("^\n",stderr);;
 		}
 		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
 		if (!GlobalMembersPlot.interactive) {if (GlobalMembersMisc.lf_head != null && GlobalMembersMisc.lf_head.name != null) fprintf(stderr, "\"%s\", line %d: ", GlobalMembersMisc.lf_head.name, GlobalMembersCommand.inline_num); else fprintf(stderr, "line %d: ", GlobalMembersCommand.inline_num);};
 
 		fputs("warning: ", stderr);
-	///#ifdef VA_START
-	int ParamCount = -1;
-	//	va_start(args, str);
-	///#if defined(HAVE_VFPRINTF) || _LIBC
-	//    vfprintf(stderr, str, args);
-	///#else
+		///#ifdef VA_START
+		int ParamCount = -1;
+		//	va_start(args, str);
+		///#if defined(HAVE_VFPRINTF) || _LIBC
+		//    vfprintf(stderr, str, args);
+		///#else
 		_doprnt(str, args, stderr);
-	///#endif
-	//	va_end(args);
-	///#else  // VA_START
-	//    fprintf(stderr, str, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#endif // VA_START
+		///#endif
+		//	va_end(args);
+		///#else  // VA_START
+		//    fprintf(stderr, str, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#endif // VA_START
 		putc('\n', stderr);
 	}
 
-/*{{{  graph_error() */
-/* handle errors during graph-plot in a consistent way */
-/* HBB 20000430: move here, from graphics.c */
-///#if defined(VA_START) && defined(STDC_HEADERS)
+	/*{{{  graph_error() */
+	/* handle errors during graph-plot in a consistent way */
+	/* HBB 20000430: move here, from graphics.c */
+	///#if defined(VA_START) && defined(STDC_HEADERS)
 	public static void graph_error(String fmt, Object... LegacyParamArray)
 	///#else
 	//void
 	//graph_error(const char *fmt, va_dcl)
 	///#endif
 	{
-	///#ifdef VA_START
-	//	va_list args;
-	///#endif
+		///#ifdef VA_START
+		//	va_list args;
+		///#endif
 
 		GlobalMembersTerm.multiplot = false;
 		GlobalMembersTerm.term_end_plot();
 
-	///#ifdef VA_START
-	int ParamCount = -1;
-	//	va_start(args, fmt);
-	///#if 0
-	//// /* HBB 20001120: this seems not to work at all. Probably because a
-	////  * va_list argument, is, after all, something else than a varargs
-	////  * list (i.e. a '...') */
-	////    int_error(NO_CARET, fmt, args);
-	///#else
+		///#ifdef VA_START
+		int ParamCount = -1;
+		//	va_start(args, fmt);
+		///#if 0
+		//// /* HBB 20001120: this seems not to work at all. Probably because a
+		////  * va_list argument, is, after all, something else than a varargs
+		////  * list (i.e. a '...') */
+		////    int_error(NO_CARET, fmt, args);
+		///#else
 		/* HBB 20001120: instead, copy the core code from int_error() to
 		 * here: */
 		do {String GlobalMembersAnsi2knr.p; if (current_prompt == null) break; for (GlobalMembersAnsi2knr.p = current_prompt; * GlobalMembersAnsi2knr.p != '\0'; GlobalMembersAnsi2knr.p++)() fputc(' ', stderr);} while (0);
 		if (!GlobalMembersPlot.interactive) {if (GlobalMembersMisc.lf_head != null && GlobalMembersMisc.lf_head.name != null) fprintf(stderr, "\"%s\", line %d: ", GlobalMembersMisc.lf_head.name, GlobalMembersCommand.inline_num); else fprintf(stderr, "line %d: ", GlobalMembersCommand.inline_num);};
 
-	///#if defined(HAVE_VFPRINTF) || _LIBC
-	//    vfprintf(stderr, fmt, args);
-	///#else
+		///#if defined(HAVE_VFPRINTF) || _LIBC
+		//    vfprintf(stderr, fmt, args);
+		///#else
 		_doprnt(fmt, args, stderr);
-	///#endif
-	//	va_end(args);
+		///#endif
+		//	va_end(args);
 		fputs("\n\n", stderr);
 
 		GlobalMembersPlot.bail_to_command_line();
-	///#endif // 1/0
-	//	va_end(args);
-	///#else
-	//    int_error(NO_CARET, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#endif
+		///#endif // 1/0
+		//	va_end(args);
+		///#else
+		//    int_error(NO_CARET, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#endif
 
 	}
 
-/*}}} */
+	/*}}} */
 
 
-/* Lower-case the given string (DFK) */
-/* Done in place. */
+	/* Lower-case the given string (DFK) */
+	/* Done in place. */
 	///#else
 	//void os_error __PROTO(());
 	//void int_error __PROTO(());
@@ -1938,79 +1941,79 @@ public class GlobalMembersUtil
 	 * move to help.c, instead. */
 	public static void lower_case(String s)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * p = s;
 
 		while (*p)
 		{
-		if (Character.isUpperCase((byte) * p))
-			*p = Character.toLowerCase((byte) * p);
-		p++;
+			if (Character.isUpperCase((byte) * p))
+				*p = Character.toLowerCase((byte) * p);
+			p++;
 		}
 	}
 
-/* Squash spaces in the given string (DFK) */
-/* That is, reduce all multiple white-space chars to single spaces */
-/* Done in place. */
+	/* Squash spaces in the given string (DFK) */
+	/* That is, reduce all multiple white-space chars to single spaces */
+	/* Done in place. */
 	public static void squash_spaces(String s)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * r = s; // reading point
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * w = s; // writing point
 		boolean space = false; // TRUE if we've already copied a space
 
 		for (w = r = s; * r != DefineConstants.NUL; r++)
 		{
-		if (Character.isWhitespace((byte) * r))
-		{
-			/* white space; only copy if we haven't just copied a space */
-			if (!space)
+			if (Character.isWhitespace((byte) * r))
 			{
-			space = true;
-			*w++= ' ';
-			} // else ignore multiple spaces
-		}
-		else
-		{
-			/* non-space character; copy it and clear flag */
-			*w++= *r;
-			space = false;
-		}
+				/* white space; only copy if we haven't just copied a space */
+				if (!space)
+				{
+					space = true;
+					*w++= ' ';
+				} // else ignore multiple spaces
+			}
+			else
+			{
+				/* non-space character; copy it and clear flag */
+				*w++= *r;
+				space = false;
+			}
 		}
 		*w = DefineConstants.NUL; // null terminate string
 	}
 
-/* FIXME HH 20020915: This function does nothing if dirent.h and windows.h
- * not available. */
+	/* FIXME HH 20020915: This function does nothing if dirent.h and windows.h
+	 * not available. */
 
 	public static boolean existdir(String name)
 	{
-	///#ifdef HAVE_DIRENT_H
+		///#ifdef HAVE_DIRENT_H
 		DIR dp;
 		if (!(dp = opendir(name)))
-		return false;
+			return false;
 
 		closedir(dp);
 		return true;
-	///#elif defined(_Windows)
-	//    HANDLE FileHandle;
-	//    WIN32_FIND_DATA finddata;
-	//
-	//    FileHandle = FindFirstFile(name, &finddata);
-	//    if (FileHandle != INVALID_HANDLE_VALUE) {
-	//	if (finddata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-	//	    return TRUE;
-	//    }
-	//    return FALSE;
-	///#elif defined(VMS)
-	//    return FALSE;
-	///#else
-	//    int_warn(NO_CARET,
-	//	     "Test on directory existence not supported\n\t('%s!')",
-	//	     name);
-	//    return FALSE;
-	///#endif
+		///#elif defined(_Windows)
+		//    HANDLE FileHandle;
+		//    WIN32_FIND_DATA finddata;
+		//
+		//    FileHandle = FindFirstFile(name, &finddata);
+		//    if (FileHandle != INVALID_HANDLE_VALUE) {
+		//	if (finddata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		//	    return TRUE;
+		//    }
+		//    return FALSE;
+		///#elif defined(VMS)
+		//    return FALSE;
+		///#else
+		//    int_warn(NO_CARET,
+		//	     "Test on directory existence not supported\n\t('%s!')",
+		//	     name);
+		//    return FALSE;
+		///#endif
 	}
 
 	public static String getusername()
@@ -2019,7 +2022,7 @@ public class GlobalMembersUtil
 
 		username = getenv("USER");
 		if (username == null)
-		username = getenv("USERNAME");
+			username = getenv("USERNAME");
 
 		return GlobalMembersUtil.gp_strdup(username);
 	}
@@ -2028,58 +2031,58 @@ public class GlobalMembersUtil
 	{
 		while (s != null)
 		{
-		if ((s++ & 0x80))
-			return true;
+			if ((s++ & 0x80))
+				return true;
 		}
 		return false;
 	}
 
-/* Convert UTF-8 multibyte sequence from string to unsigned long character.
+	/* Convert UTF-8 multibyte sequence from string to unsigned long character.
    Returns TRUE on success.
-*/
+	 */
 	public static boolean utf8toulong(int wch, String str)
 	{
-	  byte c;
+		byte c;
 
-	  c = (byte) * (str)++;
-	  if ((c & 0x80) == 0)
-	  {
-		wch = (int) c;
-		return true;
-	  }
+		c = (byte) * (str)++;
+		if ((c & 0x80) == 0)
+		{
+			wch = (int) c;
+			return true;
+		}
 
-	  if ((c & 0xe0) == 0xc0)
-	  {
-		wch = c & 0x1f;
-		return GlobalMembersUtil.utf8_getmore(wch, str, 1);
-	  }
+		if ((c & 0xe0) == 0xc0)
+		{
+			wch = c & 0x1f;
+			return GlobalMembersUtil.utf8_getmore(wch, str, 1);
+		}
 
-	  if ((c & 0xf0) == 0xe0)
-	  {
-		wch = c & 0x0f;
-		return GlobalMembersUtil.utf8_getmore(wch, str, 2);
-	  }
+		if ((c & 0xf0) == 0xe0)
+		{
+			wch = c & 0x0f;
+			return GlobalMembersUtil.utf8_getmore(wch, str, 2);
+		}
 
-	  if ((c & 0xf8) == 0xf0)
-	  {
-		wch = c & 0x07;
-		return GlobalMembersUtil.utf8_getmore(wch, str, 3);
-	  }
+		if ((c & 0xf8) == 0xf0)
+		{
+			wch = c & 0x07;
+			return GlobalMembersUtil.utf8_getmore(wch, str, 3);
+		}
 
-	  if ((c & 0xfc) == 0xf8)
-	  {
-		wch = c & 0x03;
-		return GlobalMembersUtil.utf8_getmore(wch, str, 4);
-	  }
+		if ((c & 0xfc) == 0xf8)
+		{
+			wch = c & 0x03;
+			return GlobalMembersUtil.utf8_getmore(wch, str, 4);
+		}
 
-	  if ((c & 0xfe) == 0xfc)
-	  {
-		wch = c & 0x01;
-		return GlobalMembersUtil.utf8_getmore(wch, str, 5);
-	  }
+		if ((c & 0xfe) == 0xfc)
+		{
+			wch = c & 0x01;
+			return GlobalMembersUtil.utf8_getmore(wch, str, 5);
+		}
 
-	  wch = DefineConstants.INVALID_UTF8;
-	  return false;
+		wch = DefineConstants.INVALID_UTF8;
+		return false;
 	}
 
 
@@ -2659,11 +2662,11 @@ public class GlobalMembersUtil
 
 	public static String current_prompt = DefineConstants.NULL; // to be set by read_line()
 
-/* HBB 20020405: moved these functions here from axis.c, where they no
- * longer truly belong. */
-/*{{{  mant_exp - split into mantissa and/or exponent */
-/* HBB 20010121: added code that attempts to fix rounding-induced
- * off-by-one errors in 10^%T and similar output formats */
+	/* HBB 20020405: moved these functions here from axis.c, where they no
+	 * longer truly belong. */
+	/*{{{  mant_exp - split into mantissa and/or exponent */
+	/* HBB 20010121: added code that attempts to fix rounding-induced
+	 * off-by-one errors in 10^%T and similar output formats */
 
 	/* internal prototypes */
 
@@ -2677,23 +2680,23 @@ public class GlobalMembersUtil
 		/*{{{  check 0 */
 		if (x == 0)
 		{
-		if (m != 0)
-			m = 0;
-		if (p != 0)
-			p = 0;
-		return;
+			if (m != 0)
+				m = 0;
+			if (p != 0)
+				p = 0;
+			return;
 		}
 		/*}}} */
 		/*{{{  check -ve */
 		if (x < 0)
 		{
-		sign = (-1);
-		x = (-x);
+			sign = (-1);
+			x = (-x);
 		}
 		/*}}} */
 
 		l10 = Math.log10(x) / log10_base;
-		power = Math.floor(l10);
+		power = (int) Math.floor(l10);
 		mantissa = Math.pow(10.0, log10_base * (l10 - power));
 
 		/* round power to an integer multiple of 3, to get what's
@@ -2702,31 +2705,31 @@ public class GlobalMembersUtil
 		 * */
 		if (scientific)
 		{
-		/* Scientific mode makes no sense whatsoever if the base of
-		 * the logarithmic axis is anything but 10.0 */
-		assert log10_base == 1.0;
+			/* Scientific mode makes no sense whatsoever if the base of
+			 * the logarithmic axis is anything but 10.0 */
+			assert log10_base == 1.0;
 
-		/* HBB FIXED 20040701: negative modulo positive may yield
-		 * negative result.  But we always want an effectively
-		 * positive modulus --> adjust input by one step */
-		switch (power % 3)
-		{
-		case -1:
-			power -= 3;
-		case 2:
-			mantissa *= 100;
-			break;
-		case -2:
-			power -= 3;
-		case 1:
-			mantissa *= 10;
-			break;
-		case 0:
-			break;
-		default:
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Internal error in scientific number formatting");
-		}
-		power -= (power % 3);
+			/* HBB FIXED 20040701: negative modulo positive may yield
+			 * negative result.  But we always want an effectively
+			 * positive modulus --> adjust input by one step */
+			switch (power % 3)
+			{
+			case -1:
+				power -= 3;
+			case 2:
+				mantissa *= 100;
+				break;
+			case -2:
+				power -= 3;
+			case 1:
+				mantissa *= 10;
+				break;
+			case 0:
+				break;
+			default:
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Internal error in scientific number formatting");
+			}
+			power -= (power % 3);
 		}
 
 		/* HBB 20010121: new code for decimal mantissa fixups.  Looks at
@@ -2739,41 +2742,41 @@ public class GlobalMembersUtil
 		/* HBB 20040521: extended to also work for bases other than 10.0 */
 		if (format != null)
 		{
-		double actual_base = (scientific ? 1000 : Math.pow(10.0, log10_base));
-		int precision = 0;
-		double tolerance;
+			double actual_base = (scientific ? 1000 : Math.pow(10.0, log10_base));
+			int precision = 0;
+			double tolerance;
 
-		format = tangible.StringFunctions.strChr(format, '.');
-		if (!format.equals(DefineConstants.NULL))
-			/* a decimal point was found in the format, so use that
-			 * precision. */
-			precision = strtol(format + 1, DefineConstants.NULL, 10);
+			format = StringFunctions.strChr(format, '.');
+			if (!format.equals(DefineConstants.NULL))
+				/* a decimal point was found in the format, so use that
+				 * precision. */
+				precision = strtol(format + 1, DefineConstants.NULL, 10);
 
-		/* See if mantissa would be right on the border.  The
-		 * condition to watch out for is that the mantissa is within
-		 * one printing precision of the next power of the logarithm
-		 * base.  So add the 0.5*10^-precision to the mantissa, and
-		 * see if it's now larger than the base of the scale */
-		tolerance = Math.pow(10.0, -precision) / 2;
-		if (mantissa + tolerance >= actual_base)
-		{
-			mantissa /= actual_base;
-			power += (scientific ? 3 : 1);
-		}
+			/* See if mantissa would be right on the border.  The
+			 * condition to watch out for is that the mantissa is within
+			 * one printing precision of the next power of the logarithm
+			 * base.  So add the 0.5*10^-precision to the mantissa, and
+			 * see if it's now larger than the base of the scale */
+			tolerance = Math.pow(10.0, -precision) / 2;
+			if (mantissa + tolerance >= actual_base)
+			{
+				mantissa /= actual_base;
+				power += (scientific ? 3 : 1);
+			}
 		}
 		if (m != 0)
-		m = sign * mantissa;
+			m = sign * mantissa;
 		if (p != 0)
-		p = power;
+			p = power;
 	}
 
-/* postprocess single quoted strings: replace "''" by "'"
-*/
+	/* postprocess single quoted strings: replace "''" by "'"
+	 */
 	public static void parse_sq(String instr)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * s = instr;
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * t = instr;
 
 		/* the string will always get shorter, so we can do the
@@ -2837,29 +2840,29 @@ public class GlobalMembersUtil
 	   used by utf8toulong() */
 	public static boolean utf8_getmore(int wch, String str, int nbytes)
 	{
-	  int i;
-	  byte c;
-	  int[] minvalue = {0x80, 0x800, 0x10000, 0x200000, 0x4000000};
+		int i;
+		byte c;
+		int[] minvalue = {0x80, 0x800, 0x10000, 0x200000, 0x4000000};
 
-	  for (i = 0; i < nbytes; i++)
-	  {
-		c = (byte) * str;
-
-		if ((c & 0xc0) != 0x80)
+		for (i = 0; i < nbytes; i++)
 		{
-		  wch = DefineConstants.INVALID_UTF8;
-		  return false;
-		}
-		wch = (wch << 6) | (c & 0x3f);
-		str++;
-	  }
+			c = (byte) * str;
 
-	  /* check for overlong UTF-8 sequences */
-	  if (wch < minvalue[nbytes - 1])
-	  {
-		wch = DefineConstants.INVALID_UTF8;
-		return false;
-	  }
-	  return true;
+			if ((c & 0xc0) != 0x80)
+			{
+				wch = DefineConstants.INVALID_UTF8;
+				return false;
+			}
+			wch = (wch << 6) | (c & 0x3f);
+			str++;
+		}
+
+		/* check for overlong UTF-8 sequences */
+		if (wch < minvalue[nbytes - 1])
+		{
+			wch = DefineConstants.INVALID_UTF8;
+			return false;
+		}
+		return true;
 	}
 }

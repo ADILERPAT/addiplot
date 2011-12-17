@@ -38,6 +38,11 @@ public enum e_arrow_head
 	{
 		return intValue;
 	}
+	
+	public void setValue(int value)
+	{
+		intValue = value;
+	}
 
 	public static e_arrow_head forValue(int value)
 	{

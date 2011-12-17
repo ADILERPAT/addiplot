@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersCorplot
 {
 	///#define __STDC__ 1
@@ -168,10 +170,10 @@ public class GlobalMembersCorplot
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: corplot.c,v 1.7 2008/03/30 03:27:54 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: corplot.c,v 1.7 2008/03/30 03:27:54 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - corplot.c */
@@ -248,7 +250,7 @@ public class GlobalMembersCorplot
 		System.exit(3);
 		}
 //C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		corscreen = tangible.StringFunctions.changeCharacter(corscreen, sizeof(corscreen) - 2, '0' + segm);
+		corscreen = StringFunctions.changeCharacter(corscreen, sizeof(corscreen) - 2, '0' + segm);
 		if (putenv(corscreen))
 		perror("putenv");
 

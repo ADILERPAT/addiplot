@@ -168,10 +168,10 @@ public class GlobalMembersDynarray
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: dynarray.c,v 1.11 2004/07/01 17:10:04 broeker Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: dynarray.c,v 1.11 2004/07/01 17:10:04 broeker Exp $");
+	//}
 	///#endif
 ///#if defined(VA_START) && defined(STDC_HEADERS)
 ///#else

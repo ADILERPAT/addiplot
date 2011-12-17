@@ -173,7 +173,7 @@ public class GlobalMembersBf_test
 		return GlobalMembersAlloc.RCSid("$Id: bf_test.c,v 1.10 2007/10/02 18:18:57 sfeam Exp $");
 	}
 
-/*---- Stubs to make this work without including huge libraries ----*/
+	/*---- Stubs to make this work without including huge libraries ----*/
 	///#endif
 
 
@@ -907,7 +907,6 @@ public class GlobalMembersBf_test
 	/* we declare these here instead of including more header files */
 	public static void int_error(int dummy, String error_text)
 	{
-		() dummy; // avoid -Wunused warning
 		fprintf(stderr, "Fatal error..\n%s\n...now exiting to system ...\n", error_text);
 		System.exit(DefineConstants.EXIT_FAILURE);
 	}
@@ -915,7 +914,7 @@ public class GlobalMembersBf_test
 	{
 	}
 
-/*---- End of stubs ----*/
+	/*---- End of stubs ----*/
 
 
 
@@ -927,23 +926,23 @@ public class GlobalMembersBf_test
 		switch (p)
 		{
 		case 0:
-		t = 1.0 / (x * x + y * y + 1.0);
-		break;
+			t = (float) (1.0 / (x * x + y * y + 1.0));
+			break;
 		case 1:
-		t = Math.sin(x * x + y * y) / (x * x + y * y);
-		if (t > 1.0)
-			t = 1.0F;
-		break;
+			t = (float) (Math.sin(x * x + y * y) / (x * x + y * y));
+			if (t > 1.0)
+				t = 1.0F;
+			break;
 		case 2:
-		t = Math.sin(x * x + y * y) / (x * x + y * y);
-		/* sinc modulated sinc */
-		t *= Math.sin(4.* (x * x + y * y)) / (4.* (x * x + y * y));
-		if (t > 1.0)
-			t = 1.0F;
-		break;
+			t = (float) (Math.sin(x * x + y * y) / (x * x + y * y));
+			/* sinc modulated sinc */
+			t *= Math.sin(4.* (x * x + y * y)) / (4.* (x * x + y * y));
+			if (t > 1.0)
+				t = 1.0F;
+			break;
 		default:
-		fprintf(stderr, "Unknown function\n");
-		break;
+			fprintf(stderr, "Unknown function\n");
+			break;
 		}
 		return t;
 	}
@@ -967,41 +966,41 @@ public class GlobalMembersBf_test
 		int ysize;
 		String buf = new String(new char[256]);
 		FILE fout;
-	/*  Create a few standard test interfaces */
+		/*  Create a few standard test interfaces */
 
 		for (plot = 0; plot < DefineConstants.NUM_PLOTS; plot++)
 		{
-		xsize = (TheRange[plot].xmax - TheRange[plot].xmin) * DefineConstants.ISOSAMPLES + 1;
-		ysize = (TheRange[plot].ymax - TheRange[plot].ymin) * DefineConstants.ISOSAMPLES + 1;
+			xsize = (int) ((TheRange[plot].xmax - TheRange[plot].xmin) * DefineConstants.ISOSAMPLES + 1);
+			ysize = (int) ((TheRange[plot].ymax - TheRange[plot].ymin) * DefineConstants.ISOSAMPLES + 1);
 
-		rt = GlobalMembersBinary.alloc_vector(0, xsize - 1);
-		ct = GlobalMembersBinary.alloc_vector(0, ysize - 1);
-		m = GlobalMembersBinary.matrix(0, xsize - 1, 0, ysize - 1);
+			rt = GlobalMembersBinary.alloc_vector(0, xsize - 1);
+			ct = GlobalMembersBinary.alloc_vector(0, ysize - 1);
+			m = GlobalMembersBinary.matrix(0, xsize - 1, 0, ysize - 1);
 
-		for (y = TheRange[plot].ymin, j = 0; j < ysize; j++, y += 1.0 / (double) DefineConstants.ISOSAMPLES)
-		{
-			ct[j] = y;
-		}
-
-		for (x = TheRange[plot].xmin, i = 0; i < xsize; i++, x += 1.0 / (double) DefineConstants.ISOSAMPLES)
-		{
-			rt[i] = x;
 			for (y = TheRange[plot].ymin, j = 0; j < ysize; j++, y += 1.0 / (double) DefineConstants.ISOSAMPLES)
 			{
-			m[i][j] = GlobalMembersBf_test.function(plot, x, y);
+				ct[j] = y;
 			}
-		}
 
-		String.format(buf, "binary%d", plot + 1);
-		if (!(fout = fopen(buf, "wb")))
-			GlobalMembersBf_test.int_error(0, "Could not open file");
-		else
-		{
-			GlobalMembersBinary.fwrite_matrix(fout, m, 0, xsize - 1, 0, ysize - 1, rt, ct);
-		}
-		GlobalMembersBinary.free_vector(rt, 0);
-		GlobalMembersBinary.free_vector(ct, 0);
-		GlobalMembersBinary.free_matrix(m, 0, xsize - 1, 0);
+			for (x = TheRange[plot].xmin, i = 0; i < xsize; i++, x += 1.0 / (double) DefineConstants.ISOSAMPLES)
+			{
+				rt[i] = x;
+				for (y = TheRange[plot].ymin, j = 0; j < ysize; j++, y += 1.0 / (double) DefineConstants.ISOSAMPLES)
+				{
+					m[i][j] = GlobalMembersBf_test.function(plot, x, y);
+				}
+			}
+
+			String.format(buf, "binary%d", plot + 1);
+			if (!(fout = fopen(buf, "wb")))
+				GlobalMembersBf_test.int_error(0, "Could not open file");
+			else
+			{
+				GlobalMembersBinary.fwrite_matrix(fout, m, 0, xsize - 1, 0, ysize - 1, rt, ct);
+			}
+			GlobalMembersBinary.free_vector(rt, 0);
+			GlobalMembersBinary.free_vector(ct, 0);
+			GlobalMembersBinary.free_matrix(m, 0, xsize - 1, 0);
 		}
 
 		/* Show that it's ok to vary sampling rate, as long as x1<x2, y1<y2... */
@@ -1014,23 +1013,23 @@ public class GlobalMembersBf_test
 
 		for (y = TheRange[plot].ymin, j = 0; j < ysize; j++, y += 1.0 / (double) DefineConstants.ISOSAMPLES)
 		{
-		ct[j] = y > 0 ? 2 * y : y;
+			ct[j] = y > 0 ? 2 * y : y;
 		}
 		for (x = TheRange[plot].xmin, i = 0; i < xsize; i++, x += 1.0 / (double) DefineConstants.ISOSAMPLES)
 		{
-		rt[i] = x > 0 ? 2 * x : x;
-		for (y = TheRange[plot].ymin, j = 0; j < ysize; j++, y += 1.0 / (double) DefineConstants.ISOSAMPLES)
-		{
-			m[i][j] = GlobalMembersBf_test.function(plot, x, y);
-		}
+			rt[i] = x > 0 ? 2 * x : x;
+			for (y = TheRange[plot].ymin, j = 0; j < ysize; j++, y += 1.0 / (double) DefineConstants.ISOSAMPLES)
+			{
+				m[i][j] = GlobalMembersBf_test.function(plot, x, y);
+			}
 		}
 
 		String.format(buf, "binary%d", plot + 1);
 		if (!(fout = fopen(buf, "wb")))
-		GlobalMembersBf_test.int_error(0, "Could not open file");
+			GlobalMembersBf_test.int_error(0, "Could not open file");
 		else
 		{
-		GlobalMembersBinary.fwrite_matrix(fout, m, 0, xsize - 1, 0, ysize - 1, rt, ct);
+			GlobalMembersBinary.fwrite_matrix(fout, m, 0, xsize - 1, 0, ysize - 1, rt, ct);
 		}
 		GlobalMembersBinary.free_vector(rt, 0);
 		GlobalMembersBinary.free_vector(ct, 0);

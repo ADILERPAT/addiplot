@@ -50,7 +50,7 @@ final class DefineConstants
 	public static final int __DBL_MIN_10_EXP__ = -307;
 	public static final int __DBL_MAX_EXP__ = 1024;
 	public static final int __DBL_MAX_10_EXP__ = 308;
-	public static final double __DBL_MAX__ = 1.7976931348623157e + 308;
+	public static final double __DBL_MAX__ = 1.7976931348623157e+308;
 	public static final double __DBL_MIN__ = 2.2250738585072014e-308;
 	public static final double __DBL_EPSILON__ = 2.2204460492503131e-16;
 	public static final double __DBL_DENORM_MIN__ = 4.9406564584124654e-324;
@@ -544,8 +544,8 @@ final class DefineConstants
 	public static final int ITMAX = 200;
 	public static final double MACHEPS = 1.0E-08;
 	public static final double E_MINEXP = -88.0;
-	public static final double OFLOW = 1.0E + 37;
-	public static final double XBIG = 1.0E + 08;
+	public static final double OFLOW = 1.0E+37;
+	public static final double XBIG = 1.0E+08;
 	public static final double LNPI = 1.14472988584940016;
 	public static final double LNSQRT2PI = 0.9189385332046727;
 	public static final double PI = 3.14159265358979323846;
@@ -585,7 +585,7 @@ final class DefineConstants
 	public static final double HEAD_COEFF = 0.3;
 	public static final double INC = 5.;
 	public static final int NUMBER_OF_VERTICES = 6;
-	public static final long INVALID_UTF8 = 0xfffful;
+	public static final long INVALID_UTF8 = 0xffff; //CC 0xfffful
 	public static final String FAQ_LOCATION = "http://www.gnuplot.info/faq/";
 	public static final String SUPPORT = "http://sf.net/projects/gnuplot/support";
 }
