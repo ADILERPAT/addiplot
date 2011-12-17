@@ -168,10 +168,10 @@ public class GlobalMembersGpexecute
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: gpexecute.c,v 1.16 2009/02/19 21:15:49 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: gpexecute.c,v 1.16 2009/02/19 21:15:49 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - gpexecute.c */
@@ -683,35 +683,32 @@ public class GlobalMembersGpexecute
 
 	///#ifdef PIPE_IPC
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int pipe_died;
-///#endif // PIPE_IPC || WIN_IPC 
+	///#endif // PIPE_IPC || WIN_IPC 
 
-///#ifdef PIPE_IPC
+	///#ifdef PIPE_IPC
 	public static void pipe_died_handler(int signum)
 	{
-		() signum; // avoid -Wunused warning.
 		/* fprintf(stderr, "\n*******(pipe_died_handler)*******\n"); */
 		close(1);
 		pipe_died = 1;
 	}
 	///#endif // PIPE_IPC 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int buffered_output_pending;
-///#endif // PIPE_IPC 
+	///#endif // PIPE_IPC 
 
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static gp_exec_event_gpe_fifo_t base = (gp_exec_event_gpe_fifo_t) 0;
-
-
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static gp_exec_event_gpe_fifo_t base = (gp_exec_event_gpe_fifo_t) 0;
 
 	public static void gp_exec_event(byte type, int mx, int my, int par1, int par2, int winid)
 	{
 		gp_event_t ge = new gp_event_t();
-	///#if defined(PIPE_IPC) // || defined(WIN_IPC)
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static struct gpe_fifo_t *base = (gpe_fifo_t *) 0;
-	///#endif
+		///#if defined(PIPE_IPC) // || defined(WIN_IPC)
+		//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+		//	static struct gpe_fifo_t *base = (gpe_fifo_t *) 0;
+		///#endif
 
 		ge.type = type;
 		ge.mx = mx;
@@ -719,67 +716,67 @@ private static gp_exec_event_gpe_fifo_t base = (gp_exec_event_gpe_fifo_t) 0;
 		ge.par1 = par1;
 		ge.par2 = par2;
 		ge.winid = winid;
-	///#ifdef PIPE_IPC
+		///#ifdef PIPE_IPC
 		if (pipe_died != 0)
-		return;
-	///#endif
+			return;
+		///#endif
 		/* HBB 20010218: commented this out for WIN_IPC. We don't actually use the stack,
 		 * there */
-	///#if defined(PIPE_IPC) // || defined(WIN_IPC)
+		///#if defined(PIPE_IPC) // || defined(WIN_IPC)
 		if (base == null)
 		{
-		base = GlobalMembersGpexecute.gpe_init();
+			base = GlobalMembersGpexecute.gpe_init();
 		}
 		if (GE_pending != type)
 		{
-		GlobalMembersGpexecute.gpe_push(base, ge);
+			GlobalMembersGpexecute.gpe_push(base, ge);
 		}
 		else if (buffered_output_pending == 0)
 		{
-		return;
+			return;
 		}
-	///#endif
-	///#ifdef WIN_IPC
-	// /* FIXME HBB 20010216: this breaks the wgnuplot.exe+wgnuplot.dll type of
-	//  * compilation (for Win16). do_event is in the main program(mouse.c), but
-	//  * gpexecute is in the DLL --> can't reach it, from here. */
-	//    do_event(&ge);
-	//    return;
-	///#endif
-	///#ifdef PIPE_IPC
+		///#endif
+		///#ifdef WIN_IPC
+		// /* FIXME HBB 20010216: this breaks the wgnuplot.exe+wgnuplot.dll type of
+		//  * compilation (for Win16). do_event is in the main program(mouse.c), but
+		//  * gpexecute is in the DLL --> can't reach it, from here. */
+		//    do_event(&ge);
+		//    return;
+		///#endif
+		///#ifdef PIPE_IPC
 		do
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		int status = write(1, GlobalMembersGpexecute.gpe_front(base), sizeof(ge));
-		if (-1 == status)
-		{
-			switch (errno)
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			int status = write(1, GlobalMembersGpexecute.gpe_front(base), sizeof(ge));
+			if (-1 == status)
 			{
-			case EAGAIN:
-			/* do nothing */
-			GlobalMembersFit.a((stderr, "(gp_exec_event) EAGAIN\n"));
-			break;
-			default:
-			GlobalMembersFit.a((stderr, "(gp_exec_event) errno = %d\n", errno));
-			break;
+				switch (errno)
+				{
+				case EAGAIN:
+					/* do nothing */
+					GlobalMembersFit.a((stderr, "(gp_exec_event) EAGAIN\n"));
+					break;
+				default:
+					GlobalMembersFit.a((stderr, "(gp_exec_event) errno = %d\n", errno));
+					break;
+				}
+				break;
 			}
-			break;
-		}
 		} while (GlobalMembersGpexecute.gpe_pop(base));
-	///#endif // PIPE_IPC
+		///#endif // PIPE_IPC
 
-	///#ifdef OS2_IPC // OS/2 communication via shared memory; coded according to gp_execute()
-	//    if (input_from_PM_Terminal == NULL)
-	//	return;
-	//    ((char *) input_from_PM_Terminal)[0] = '%';	// flag that passing gp_event_t
-	//    memcpy(((char *) input_from_PM_Terminal) + 1, &ge, sizeof(ge));	// copy the command to shared memory
-	//    if (pausing) {		// no communication during pause
-	// /* DosBeep(440,111); */
-	//	((char *) input_from_PM_Terminal)[0] = 0;
-	//	return;
-	//    }
-	//    gp_post_shared_mem();
-	///#endif
+		///#ifdef OS2_IPC // OS/2 communication via shared memory; coded according to gp_execute()
+		//    if (input_from_PM_Terminal == NULL)
+		//	return;
+		//    ((char *) input_from_PM_Terminal)[0] = '%';	// flag that passing gp_event_t
+		//    memcpy(((char *) input_from_PM_Terminal) + 1, &ge, sizeof(ge));	// copy the command to shared memory
+		//    if (pausing) {		// no communication during pause
+		// /* DosBeep(440,111); */
+		//	((char *) input_from_PM_Terminal)[0] = 0;
+		//	return;
+		//    }
+		//    gp_post_shared_mem();
+		///#endif
 	}
 
 
@@ -1107,8 +1104,8 @@ private static gp_exec_event_gpe_fifo_t base = (gp_exec_event_gpe_fifo_t) 0;
 	///#if defined(PIPE_IPC) // || defined(WIN_IPC)
 	public static gpe_fifo_t gpe_init()
 	{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		gpe_fifo_t base = malloc(sizeof(gpe_fifo_t));
 		/* fprintf(stderr, "(gpe_init) \n"); */
 		assert base;
@@ -1121,21 +1118,21 @@ private static gp_exec_event_gpe_fifo_t base = (gp_exec_event_gpe_fifo_t) 0;
 		buffered_output_pending++;
 		if ((base).prev)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		gpe_fifo_t new() = malloc(sizeof(gpe_fifo_t));
-		/* fprintf(stderr, "(gpe_push) \n"); */
-		assert new_Renamed;
-		base.prev.next = new_Renamed;
-		new_Renamed.prev = (base).prev;
-		base.prev = new_Renamed;
-		new_Renamed.next = (gpe_fifo_t) 0;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			gpe_fifo_t new() = malloc(sizeof(gpe_fifo_t));
+			/* fprintf(stderr, "(gpe_push) \n"); */
+			assert new_Renamed;
+			base.prev.next = new_Renamed;
+			new_Renamed.prev = (base).prev;
+			base.prev = new_Renamed;
+			new_Renamed.next = (gpe_fifo_t) 0;
 		}
 		else
 		{
-		/* first element, this is the case, if the pipe isn't clogged */
-		base.next = (gpe_fifo_t) 0; // tail
-		base.prev = (base); // points to itself
+			/* first element, this is the case, if the pipe isn't clogged */
+			base.next = (gpe_fifo_t) 0; // tail
+			base.prev = (base); // points to itself
 		}
 		base.prev.ge = ge;
 	}
@@ -1148,18 +1145,18 @@ private static gp_exec_event_gpe_fifo_t base = (gp_exec_event_gpe_fifo_t) 0;
 		buffered_output_pending--;
 		if ((base).prev == (base))
 		{
-		base.prev = (gpe_fifo_t) 0;
-		return 0;
+			base.prev = (gpe_fifo_t) 0;
+			return 0;
 		}
 		else
 		{
-		gpe_fifo_t save = base;
-		/* fprintf(stderr, "(gpe_pop) \n"); */
-		base.next.prev = (base).prev;
-		base = (base).next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(save);
-		return 1;
+			gpe_fifo_t save = base;
+			/* fprintf(stderr, "(gpe_pop) \n"); */
+			base.next.prev = (base).prev;
+			base = (base).next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(save);
+			return 1;
 		}
 	}
 	///#endif // PIPE_IPC || WIN_IPC 

@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
 public class GlobalMembersAnsi2knr
 {
 	///#define __STDC__ 1
@@ -411,8 +413,8 @@ public class GlobalMembersAnsi2knr
 //C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		public static String args;
 		{
-		public static FILE in = stdin;
-		public static FILE out = stdout;
+		public static File in = stdin;
+		public static File out = stdout;
 		public static String filename = 0;
 		public static String program_name = args.charAt(0);
 		public static String output_name = 0;

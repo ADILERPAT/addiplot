@@ -1,9 +1,11 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
 public class pipe_details
 {
 	public pipe_details next;
-	public FILE fp;
+	public File fp;
 	public int pid;
 	public int completion;
 }

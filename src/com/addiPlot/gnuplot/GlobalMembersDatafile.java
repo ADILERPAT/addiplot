@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
 public class GlobalMembersDatafile
 {
 	///#define __STDC__ 1
@@ -3623,11 +3625,11 @@ int nvsteps;
 	/* in order to allow arbitrary data line length, we need to use the heap
 	 * might consider free-ing it in df_close, especially for small systems
 	 */
-	public static String line = DefineConstants.NULL;
+	public static String line = null;
 	public static int max_line_len = 0;
 	///#define DATA_LINE_BUFSIZ 160
 
-	public static FILE data_fp = DefineConstants.NULL;
+	public static File data_fp = null;
 	///#if defined(PIPES)
 	public static boolean df_pipe_open = false;
 	///#endif
@@ -3653,7 +3655,7 @@ int nvsteps;
 	public static int df_current_index; // current mesh
 
 	/* stuff for named index support */
-	public static String indexname = DefineConstants.NULL;
+	public static String indexname = null;
 	public static boolean index_found = false;
 
 	/* stuff for every point:line */
@@ -3673,11 +3675,11 @@ int nvsteps;
 
 	/* parsing stuff */
 	public static use_spec_s[] use_spec = new use_spec_s[DefineConstants.MAXDATACOLS];
-	public static String df_format = DefineConstants.NULL;
-	public static String df_binary_format = DefineConstants.NULL;
+	public static String df_format = null;
+	public static String df_binary_format = null;
 	public static boolean evaluate_inside_using = false;
 
-	public static df_column_struct df_column = DefineConstants.NULL; // we'll allocate space as needed
+	public static df_column_struct df_column = null; // we'll allocate space as needed
 	public static int df_max_cols = 0; // space allocated
 	public static int df_no_cols; // cols read
 	public static int fast_columns; // corey@cac optimization
@@ -3686,7 +3688,7 @@ int nvsteps;
 	public static String[] df_stringexpression = {DefineConstants.NULL,DefineConstants.NULL,DefineConstants.NULL,DefineConstants.NULL,DefineConstants.NULL,DefineConstants.NULL,DefineConstants.NULL};
 	///#define NO_COLUMN_HEADER (-99)
 	public static int column_for_key_title = DefineConstants.NO_COLUMN_HEADER;
-	public static String df_key_title = DefineConstants.NULL; // filled in from <col> in 1st row by df_tokenise
+	public static String df_key_title = null; // filled in from <col> in 1st row by df_tokenise
 	public static curve_points df_current_plot; // used to process histogram labels + key entries
 
 

@@ -1,5 +1,9 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
+import com.addiPlot.term;
+
 public class GlobalMembersGadgets
 {
 	///#define __STDC__ 1
@@ -168,92 +172,92 @@ public class GlobalMembersGadgets
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("gadgets.c,v 1.1.3.1 2000/05/03 21:47:15 hbb Exp");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("gadgets.c,v 1.1.3.1 2000/05/03 21:47:15 hbb Exp");
+	//}
 	///#endif
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern legend_key keyT;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern color_box_struct color_box;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern color_box_struct default_color_box;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern BoundingBox plot_bounds; // Plot Boundary
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern BoundingBox canvas; // Writable area on terminal
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern BoundingBox *clip_area; // Current clipping box
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern float xsize; // x scale factor for size
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern float ysize; // y scale factor for size
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern float zsize; // z scale factor for size
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern float xoffset; // x origin setting
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern float yoffset; // y origin setting
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern float aspect_ratio; // 1.0 for square
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int aspect_ratio_3D; // 2 for equal scaling of x and y; 3 for z also
 
 	/* plot border autosizing overrides, in characters (-1: autosize) */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern position lmargin, bmargin, rmargin, tmargin;
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define DEFAULT_MARGIN_POSITION {character, character, character, -1, -1, -1}
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern FILE *table_outfile;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean table_mode;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct arrow_def *first_arrow;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct text_label *first_label;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct linestyle_def *first_linestyle;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct arrowstyle_def *first_arrowstyle;
 
 	///#ifdef EAM_OBJECTS
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct object *first_object;
 	///#endif
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern text_label title;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern text_label timelabel;
 	///#ifndef DEFAULT_TIMESTAMP_FORMAT
 	/* asctime() format */
 	///#define DEFAULT_TIMESTAMP_FORMAT "%a %b %d %H:%M:%S %Y"
 	///#endif
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int timelabel_rotate;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int timelabel_bottom;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean polar;
 
 	///#define ZERO 1e-8
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern double zero; // zero threshold, not 0!
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern double pointsize;
 
 	///#define SOUTH 1
@@ -270,71 +274,71 @@ public class GlobalMembersGadgets
 	///#define border_north (draw_border & NORTH)
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define border_complete ((draw_border & 15) == 15)
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int draw_border;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int user_border;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int border_layer;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct lp_style_type border_lp;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const struct lp_style_type default_border_lp;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean clip_lines1;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean clip_lines2;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean clip_points;
 
 	///#define SAMPLES 100
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int samples_1;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int samples_2;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern double ang2rad; // 1 or pi/180
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern enum PLOT_STYLE data_style;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern enum PLOT_STYLE func_style;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean parametric;
 
 	/* If last plot was a 3d one. */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean is_3d_plot;
 
 	/* A macro to check whether 2D functionality is allowed in the last plot:
 	   either the plot is a 2D plot, or it is a suitably oriented 3D plot (e.g. map).
-	*/
+	 */
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define ALMOST2D ( !is_3d_plot || ( fabs(fmod(surface_rot_z,90.0))<0.1 && (surface_rot_x>179.9 || surface_rot_x<0.1) ) )
 
 	///#ifdef VOLATILE_REFRESH
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int refresh_ok; // 0 = no;  2 = 2D ok;  3 = 3D ok
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int refresh_nplots;
 	///#else
 	///#define refresh_ok FALSE
 	///#endif
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean volatile_data;
 
 	/* WINDOWID to be filled by terminals running on X11 (x11, wxt, qt, ...) */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int current_x11_windowid;
 
-/* Clip the given line to drawing coords defined by BoundingBox.
- *   This routine uses the cohen & sutherland bit mapping for fast clipping -
- * see "Principles of Interactive Computer Graphics" Newman & Sproull page 65.
- */
+	/* Clip the given line to drawing coords defined by BoundingBox.
+	 *   This routine uses the cohen & sutherland bit mapping for fast clipping -
+	 * see "Principles of Interactive Computer Graphics" Newman & Sproull page 65.
+	 */
 
 	/* Plot layer definitions are collected here. */
 	/* Someday they might actually be used.       */
@@ -355,14 +359,12 @@ public class GlobalMembersGadgets
 		 * was one very small difference between these two routines. See
 		 * clip_line() for a comment about it, at the relevant place. */
 		if (GlobalMembersGadgets.clip_line(x1, y1, x2, y2) == 0)
-		/* clip_line() returns zero --> segment completely outside
-		 * bounding box */
-		return;
+			/* clip_line() returns zero --> segment completely outside
+			 * bounding box */
+			return;
 
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*t.move)(x1, y1);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*t.vector)(x2, y2);
+		term.move(x1, y1);
+		term.vector(x2, y2);
 	}
 	public static void draw_clip_arrow(int sx, int sy, int ex, int ey, int head)
 	{
@@ -370,23 +372,22 @@ public class GlobalMembersGadgets
 
 		/* Don't draw head if the arrow itself is clipped */
 		if (GlobalMembersGadgets.clip_point(sx, sy) != 0)
-		head &= ~e_arrow_head.BACKHEAD;
+			head &= ~e_arrow_head.BACKHEAD.getValue();
 		if (GlobalMembersGadgets.clip_point(ex, ey) != 0)
-		head &= ~e_arrow_head.END_HEAD;
+			head &= ~e_arrow_head.END_HEAD.getValue();
 		GlobalMembersGadgets.clip_line(sx, sy, ex, ey);
 
 		/* Call terminal routine to draw the clipped arrow */
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*t.arrow)((int)sx, (int)sy, (int)ex, (int)ey, head);
+		term.arrow((int)sx, (int)sy, (int)ex, (int)ey, head);
 	}
 
-/* Clip the given line to drawing coords defined by BoundingBox.
- *   This routine uses the cohen & sutherland bit mapping for fast clipping -
- * see "Principles of Interactive Computer Graphics" Newman & Sproull page 65.
- * Return 0: entire line segment is outside bounding box
- *        1: entire line segment is inside bounding box
- *       -1: line segment has been clipped to bounding box
- */
+	/* Clip the given line to drawing coords defined by BoundingBox.
+	 *   This routine uses the cohen & sutherland bit mapping for fast clipping -
+	 * see "Principles of Interactive Computer Graphics" Newman & Sproull page 65.
+	 * Return 0: entire line segment is outside bounding box
+	 *        1: entire line segment is inside bounding box
+	 *       -1: line segment has been clipped to bounding box
+	 */
 	public static int clip_line(int x1, int y1, int x2, int y2)
 	{
 		int x;
@@ -405,9 +406,9 @@ public class GlobalMembersGadgets
 		pos1 = GlobalMembersGadgets.clip_point(x1, y1);
 		pos2 = GlobalMembersGadgets.clip_point(x2, y2);
 		if (pos1 == 0 && pos2 == 0)
-		return 1; // segment is totally in
-		if (pos1 & pos2 != 0)
-		return 0; // segment is totally out.
+			return 1; // segment is totally in
+		if ((pos1 & ((pos2 != 0) ? 1 : 0)) != 0)
+			return 0; // segment is totally out.
 		/* Here part of the segment MAY be inside. test the intersection
 		 * of this segment with the 4 boundaries for hopefully 2 intersections
 		 * in. If none are found segment is totaly out.
@@ -422,145 +423,145 @@ public class GlobalMembersGadgets
 		/* Find intersections with the x parallel bbox lines: */
 		if (dy != 0)
 		{
-		x = (clip_area.ybot - y2) * dx / dy + x2; // Test for clip_area->ybot boundary.
-		if (x >= clip_area.xleft && x <= clip_area.xright)
-		{
-			x_intr[count] = x;
-			y_intr[count++] = clip_area.ybot;
-		}
-		x = (clip_area.ytop - y2) * dx / dy + x2; // Test for clip_area->ytop boundary.
-		if (x >= clip_area.xleft && x <= clip_area.xright)
-		{
-			x_intr[count] = x;
-			y_intr[count++] = clip_area.ytop;
-		}
+			x = (clip_area.ybot - y2) * dx / dy + x2; // Test for clip_area->ybot boundary.
+			if (x >= clip_area.xleft && x <= clip_area.xright)
+			{
+				x_intr[count] = x;
+				y_intr[count++] = clip_area.ybot;
+			}
+			x = (clip_area.ytop - y2) * dx / dy + x2; // Test for clip_area->ytop boundary.
+			if (x >= clip_area.xleft && x <= clip_area.xright)
+			{
+				x_intr[count] = x;
+				y_intr[count++] = clip_area.ytop;
+			}
 		}
 		/* Find intersections with the y parallel bbox lines: */
 		if (dx != 0)
 		{
-		y = (clip_area.xleft - x2) * dy / dx + y2; // Test for clip_area->xleft boundary.
-		if (y >= clip_area.ybot && y <= clip_area.ytop)
-		{
-			x_intr[count] = clip_area.xleft;
-			y_intr[count++] = y;
-		}
-		y = (clip_area.xright - x2) * dy / dx + y2; // Test for clip_area->xright boundary.
-		if (y >= clip_area.ybot && y <= clip_area.ytop)
-		{
-			x_intr[count] = clip_area.xright;
-			y_intr[count++] = y;
-		}
+			y = (clip_area.xleft - x2) * dy / dx + y2; // Test for clip_area->xleft boundary.
+			if (y >= clip_area.ybot && y <= clip_area.ytop)
+			{
+				x_intr[count] = clip_area.xleft;
+				y_intr[count++] = y;
+			}
+			y = (clip_area.xright - x2) * dy / dx + y2; // Test for clip_area->xright boundary.
+			if (y >= clip_area.ybot && y <= clip_area.ytop)
+			{
+				x_intr[count] = clip_area.xright;
+				y_intr[count++] = y;
+			}
 		}
 		if (count < 2)
-		return 0;
+			return 0;
 
 		if (x1 < x2)
 		{
-		x_min = x1;
-		x_max = x2;
+			x_min = x1;
+			x_max = x2;
 		}
 		else
 		{
-		x_min = x2;
-		x_max = x1;
+			x_min = x2;
+			x_max = x1;
 		}
 		if (y1 < y2)
 		{
-		y_min = y1;
-		y_max = y2;
+			y_min = y1;
+			y_max = y2;
 		}
 		else
 		{
-		y_min = y2;
-		y_max = y1;
+			y_min = y2;
+			y_max = y1;
 		}
 
 		if (pos1 != 0 && pos2 != 0) // Both were out - update both
 		{
-		/* EAM Sep 2008 - preserve direction of line segment */
-		if ((dx * (x_intr[1] - x_intr[0]) < 0) || (dy * (y_intr[1] - y_intr[0]) < 0))
-		{
-			x1 = x_intr[1];
-			y1 = y_intr[1];
-			x2 = x_intr[0];
-			y2 = y_intr[0];
-		}
-		else
-		{
-			x1 = x_intr[0];
-			y1 = y_intr[0];
-			x2 = x_intr[1];
-			y2 = y_intr[1];
-		}
+			/* EAM Sep 2008 - preserve direction of line segment */
+			if ((dx * (x_intr[1] - x_intr[0]) < 0) || (dy * (y_intr[1] - y_intr[0]) < 0))
+			{
+				x1 = x_intr[1];
+				y1 = y_intr[1];
+				x2 = x_intr[0];
+				y2 = y_intr[0];
+			}
+			else
+			{
+				x1 = x_intr[0];
+				y1 = y_intr[0];
+				x2 = x_intr[1];
+				y2 = y_intr[1];
+			}
 		} // Only x1/y1 was out - update only it
 		else if (pos1 != 0)
 		{
-		/* This is about the only real difference between this and
-		 * draw_clip_line(): it compares for '>0', here */
-		if (dx * (x2 - x_intr[0]) + dy * (y2 - y_intr[0]) >= 0)
-		{
-			x1 = x_intr[0];
-			y1 = y_intr[0];
-		}
-		else
-		{
-			x1 = x_intr[1];
-			y1 = y_intr[1];
-		}
+			/* This is about the only real difference between this and
+			 * draw_clip_line(): it compares for '>0', here */
+			if (dx * (x2 - x_intr[0]) + dy * (y2 - y_intr[0]) >= 0)
+			{
+				x1 = x_intr[0];
+				y1 = y_intr[0];
+			}
+			else
+			{
+				x1 = x_intr[1];
+				y1 = y_intr[1];
+			}
 		} // Only x2/y2 was out - update only it
 		else
 		{
-		/* Same difference here, again */
-		if (dx * (x_intr[0] - x1) + dy * (y_intr[0] - y1) >= 0)
-		{
-			x2 = x_intr[0];
-			y2 = y_intr[0];
-		}
-		else
-		{
-			x2 = x_intr[1];
-			y2 = y_intr[1];
-		}
+			/* Same difference here, again */
+			if (dx * (x_intr[0] - x1) + dy * (y_intr[0] - y1) >= 0)
+			{
+				x2 = x_intr[0];
+				y2 = y_intr[0];
+			}
+			else
+			{
+				x2 = x_intr[1];
+				y2 = y_intr[1];
+			}
 		}
 
 		if (x1 < x_min || x1 > x_max || x2 < x_min || x2 > x_max || y1 < y_min || y1 > y_max || y2 < y_min || y2 > y_max)
-		return 0;
+			return 0;
 
 		return -1;
 	}
 
-/*****************************************************************/
-/* Routines that deal with global objects defined in this module */
-/*****************************************************************/
+	/*****************************************************************/
+	/* Routines that deal with global objects defined in this module */
+	/*****************************************************************/
 
-/* Clipping to the bounding box: */
+	/* Clipping to the bounding box: */
 
-/* Test a single point to be within the BoundingBox.
- * Sets the returned integers 4 l.s.b. as follows:
- * bit 0 if to the left of xleft.
- * bit 1 if to the right of xright.
- * bit 2 if below of ybot.
- * bit 3 if above of ytop.
- * 0 is returned if inside.
- */
+	/* Test a single point to be within the BoundingBox.
+	 * Sets the returned integers 4 l.s.b. as follows:
+	 * bit 0 if to the left of xleft.
+	 * bit 1 if to the right of xright.
+	 * bit 2 if below of ybot.
+	 * bit 3 if above of ytop.
+	 * 0 is returned if inside.
+	 */
 	public static int clip_point(int x, int y)
 	{
 		int ret_val = 0;
 
 		if (clip_area == null)
-		return 0;
+			return 0;
 		if ((int)x < clip_area.xleft)
-		ret_val |= 0x01;
+			ret_val |= 0x01;
 		if ((int)x > clip_area.xright)
-		ret_val |= 0x02;
+			ret_val |= 0x02;
 		if ((int)y < clip_area.ybot)
-		ret_val |= 0x04;
+			ret_val |= 0x04;
 		if ((int)y > clip_area.ytop)
-		ret_val |= 0x08;
+			ret_val |= 0x08;
 
 		return ret_val;
 	}
-//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
+	//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
 	//void clip_put_text(int NamelessParameter1, int NamelessParameter2, String NamelessParameter3);
 
 	/* moved here from graph3d: */
@@ -576,46 +577,40 @@ public class GlobalMembersGadgets
 		move_pos_y = y;
 	}
 
-/* Common routines for setting text or line color from t_colorspec */
+	/* Common routines for setting text or line color from t_colorspec */
 
 
 	/* Common routines for setting line or text color from t_colorspec */
-	public static void apply_pm3dcolor(t_colorspec tc, TERMENTRY t)
+	public static void apply_pm3dcolor(t_colorspec tc)
 	{
 
 		/* Replace colorspec with that of the requested line style */
 		lp_style_type style = new lp_style_type();
 		if (tc.type == DefineConstants.TC_LINESTYLE)
 		{
-		GlobalMembersTerm.lp_use_properties(style, tc.lt);
-		tc = style.pm3d_color;
+			GlobalMembersTerm.lp_use_properties(style, tc.lt);
+			tc = style.pm3d_color;
 		}
 
 		if (tc.type == DefineConstants.TC_DEFAULT)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*t.linetype)(DefineConstants.LT_BLACK);
-		return;
+			term.linetype(DefineConstants.LT_BLACK);
+			return;
 		}
 		if (tc.type == DefineConstants.TC_LT)
 		{
-		if (t.set_color)
-			t.set_color(tc);
-		else
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*t.linetype)(tc.lt);
-		return;
+			term.set_color(tc);
+			return;
 		}
-		if (tc.type == DefineConstants.TC_RGB && t.set_color)
+		if (tc.type == DefineConstants.TC_RGB)
 		{
-		t.set_color(tc);
-		return;
+			term.set_color(tc);
+			return;
 		}
-		if (!GlobalMembersPm3d.is_plot_with_palette() || !t.set_color)
+		if (!GlobalMembersPm3d.is_plot_with_palette())
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*t.linetype)(DefineConstants.LT_BLACK);
-		return;
+			term.linetype(DefineConstants.LT_BLACK);
+			return;
 		}
 		switch (tc.type)
 		{
@@ -627,27 +622,26 @@ public class GlobalMembersGadgets
 			break;
 		case DefineConstants.TC_FRAC:
 			GlobalMembersColor.set_color(GlobalMembersColor.sm_palette.positive == DefineConstants.SMPAL_POSITIVE ? tc.value : 1 - tc.value);
-				  break;
+			break;
 		}
 	}
-	public static void reset_textcolor(t_colorspec tc, TERMENTRY t)
+	public static void reset_textcolor(t_colorspec tc)
 	{
 		if (tc.type != DefineConstants.TC_DEFAULT)
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*t.linetype)(DefineConstants.LT_BLACK);
+			term.linetype(DefineConstants.LT_BLACK);
 	}
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern fill_style_type default_fillstyle;
 
 	///#ifdef EAM_OBJECTS
 	/*       Warning: C89 does not like the union initializers     */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct object default_rectangle;
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define DEFAULT_RECTANGLE_STYLE { NULL, -1, 0, OBJ_RECTANGLE, {FS_SOLID, 100, 0, BLACK_COLORSPEC}, {1, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC}, {.rectangle = {0, {0,0.,0.,0.}, {0,0.,0.,0.}, {0,0.,0.,0.}, {0,0.,0.,0.}}} }
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct object default_circle;
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define DEFAULT_CIRCLE_STYLE { NULL, -1, 0, OBJ_CIRCLE, {FS_SOLID, 100, 0, BLACK_COLORSPEC}, {1, LT_BACKGROUND, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC}, {.circle = {1, {0,0.,0.,0.}, {0,0.,0.,0.}, 0., 360. }} }
@@ -661,16 +655,16 @@ public class GlobalMembersGadgets
 	///#endif
 
 	/* filledcurves style options set by 'set style [data|func] filledcurves opts' */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern filledcurves_opts filledcurves_opts_data;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern filledcurves_opts filledcurves_opts_func;
 
 	/* Prefer line styles over plain line types */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean prefer_line_styles;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern histogram_style histogram_opts;
 
 	public static void default_arrow_style(arrow_style_type arrow)
@@ -679,7 +673,7 @@ public class GlobalMembersGadgets
 
 		arrow.layer = 0;
 		arrow.lp_properties = tmp_lp_style;
-		arrow.head = 1;
+		arrow.head.setValue(1);
 		arrow.head_length = 0.0;
 		arrow.head_lengthunit = position_type.first_axes.getValue();
 		arrow.head_angle = 15.0;
@@ -687,82 +681,54 @@ public class GlobalMembersGadgets
 		arrow.head_filled = 0;
 	}
 
-	public static void free_labels(text_label label)
-	{
-	text_label temp;
-	String master_font = label.font;
-
-		/* Labels generated by 'plot with labels' all use the same font */
-		if (master_font != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(master_font);
-
-		while (label != null)
-		{
-		if (label.text != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(label.text);
-		if (label.font != null && !label.font.equals(master_font))
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(label.font);
-		temp = label.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(label);
-		label = temp;
-		}
-
-	}
-
-	public static void get_offsets(text_label this_label, TERMENTRY t, int htic, int vtic)
+	public static void get_offsets(text_label this_label, int htic, int vtic)
 	{
 		if (this_label.lp_properties.pointflag != 0)
 		{
-		htic = (pointsize * t.h_tic * 0.5);
-		vtic = (pointsize * t.v_tic * 0.5);
+			htic = (int) (pointsize * term.h_tic * 0.5);
+			vtic = (int) (pointsize * term.v_tic * 0.5);
 		}
 		else
 		{
-		htic = 0;
-		vtic = 0;
+			htic = 0;
+			vtic = 0;
 		}
 		if (is_3d_plot)
 		{
-		int htic2;
-		int vtic2;
-		GlobalMembersGraph3d.map3d_position_r((this_label.offset), htic2, vtic2, "get_offsets");
-		htic += htic2;
-		vtic += vtic2;
+			int htic2;
+			int vtic2;
+			GlobalMembersGraph3d.map3d_position_r((this_label.offset), htic2, vtic2, "get_offsets");
+			htic += htic2;
+			vtic += vtic2;
 		}
 		else
 		{
-		double htic2;
-		double vtic2;
-		GlobalMembersGraphics.map_position_r((this_label.offset), htic2, vtic2, "get_offsets");
-		htic += (int)htic2;
-		vtic += (int)vtic2;
+			double htic2;
+			double vtic2;
+			GlobalMembersGraphics.map_position_r((this_label.offset), htic2, vtic2, "get_offsets");
+			htic += (int)htic2;
+			vtic += (int)vtic2;
 		}
 	}
 
-/*
- * Write one label, with all the trimmings.
- * This routine is used for both 2D and 3D plots.
- */
+	/*
+	 * Write one label, with all the trimmings.
+	 * This routine is used for both 2D and 3D plots.
+	 */
 	public static void write_label(int x, int y, text_label this_label)
 	{
 		int htic;
 		int vtic;
-		int justify = VERT_JUSTIFY.JUST_TOP.getValue(); // This was the 2D default; 3D had CENTRE
+		VERT_JUSTIFY justify = VERT_JUSTIFY.JUST_TOP; // This was the 2D default; 3D had CENTRE
 
-		GlobalMembersGadgets.apply_pm3dcolor((this_label.textcolor), GlobalMembersTerm.term);
+		GlobalMembersGadgets.apply_pm3dcolor(this_label.textcolor);
 		GlobalMembersTerm.ignore_enhanced(this_label.noenhanced);
 
-		GlobalMembersGadgets.get_offsets(this_label, GlobalMembersTerm.term, htic, vtic);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	if (this_label.rotate != 0 && (*GlobalMembersTerm.term.text_angle)(this_label.rotate))
+		GlobalMembersGadgets.get_offsets(this_label, htic, vtic);
+		if (this_label.rotate != 0 && (term.text_angle(this_label.rotate) != 0))
 		{
 			GlobalMembersTerm.write_multiline(x + htic, y + vtic, this_label.text, this_label.pos, justify, this_label.rotate, this_label.font);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.text_angle)(0);
+			term.text_angle(0);
 		}
 		else
 		{
@@ -772,8 +738,7 @@ public class GlobalMembersGadgets
 		if (this_label.lp_properties.pointflag != 0 && GlobalMembersTerm.on_page(x, y))
 		{
 			GlobalMembersTerm.term_apply_lp_properties(this_label.lp_properties);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.point)(x, y, this_label.lp_properties.p_type);
+			term.point(x, y, this_label.lp_properties.p_type);
 			/* the default label color is that of border */
 			GlobalMembersTerm.term_apply_lp_properties(border_lp);
 		}
@@ -914,24 +879,24 @@ public class GlobalMembersGadgets
 	public static position tmargin = new position(position_type.character, position_type.character, position_type.character, -1, -1, -1);
 
 	/* File descriptor for output during 'set table' mode */
-	public static FILE table_outfile = DefineConstants.NULL;
+	public static File table_outfile = null;
 	public static boolean table_mode = false;
 
 	/* Pointer to the start of the linked list of 'set label' definitions */
-	public static text_label first_label = DefineConstants.NULL;
+	public static text_label first_label = null;
 
 	/* Pointer to first 'set linestyle' definition in linked list */
-	public static linestyle_def first_linestyle = DefineConstants.NULL;
+	public static linestyle_def first_linestyle = null;
 
 	/* Pointer to first 'set style arrow' definition in linked list */
-	public static arrowstyle_def first_arrowstyle = DefineConstants.NULL;
+	public static arrowstyle_def first_arrowstyle = null;
 
 	/* set arrow */
-	public static arrow_def first_arrow = DefineConstants.NULL;
+	public static arrow_def first_arrow = null;
 
 	///#ifdef EAM_OBJECTS
 	/* Pointer to first object instance in linked list */
-	public static object first_object = DefineConstants.NULL;
+	public static object first_object = null;
 	///#endif
 
 	/* 'set title' status */
@@ -939,8 +904,8 @@ public class GlobalMembersGadgets
 
 	/* 'set timelabel' status */
 	public static text_label timelabel = new text_label(DefineConstants.NULL, -2, {position_type.character, position_type.character, position_type.character, 0.0, 0.0, 0.0}, JUSTIFY.CENTRE, 0, 0, DefineConstants.NULL, DefineConstants.NULL, {DefineConstants.TC_LT, -2, 0.0}, {0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0}}, {position_type.character, position_type.character, position_type.character, 0.0, 0.0, 0.0}, false);
-	public static int timelabel_rotate = false;
-	public static int timelabel_bottom = true;
+	public static int timelabel_rotate = 0;
+	public static int timelabel_bottom = 1;
 
 	/* flag for polar mode */
 	public static boolean polar = false;

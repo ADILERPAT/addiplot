@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import android.text.format.Time;
+
 /* information about one window/plot */
 public class plot_struct
 {

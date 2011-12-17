@@ -168,10 +168,10 @@ public class GlobalMembersUtil3d
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: util3d.c,v 1.36 2009/01/07 22:55:42 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: util3d.c,v 1.36 2009/01/07 22:55:42 sfeam Exp $");
+	//}
 	///#endif
 
 /* single edge intersection algorithm */
@@ -1278,7 +1278,8 @@ public class GlobalMembersUtil3d
 		xt = ((res[0] * GlobalMembersGraph3d.xscaler / w) + GlobalMembersGraph3d.xmiddle);
 		yt = ((res[1] * GlobalMembersGraph3d.yscaler / w) + GlobalMembersGraph3d.ymiddle);
 	}
-	public static void draw3d_line(vertex GPHUGE v1, vertex GPHUGE v2, lp_style_type lp)
+	
+	public static void draw3d_line(vertex v1, vertex v2, lp_style_type lp)
 	{
 	///#ifndef LITE
 		/* hidden3d routine can't work if no surface was drawn at all */

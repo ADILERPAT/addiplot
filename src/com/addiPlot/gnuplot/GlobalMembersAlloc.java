@@ -1598,28 +1598,28 @@ public class GlobalMembersAlloc
 	{
 		String p; // the new allocation
 
-	///#ifndef NO_GIH
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
+		///#ifndef NO_GIH
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
 		p = malloc((int)(size));
 		if (p.equals((String) null))
 		{
-		GlobalMembersBf_test.FreeHelp(); // out of memory, try to make some room
-	///#endif // NO_GIH 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
-		p = malloc((int)(size));
-		if (p == null)
-		{
-			/* really out of memory */
-			if (message != null)
+			GlobalMembersBf_test.FreeHelp(); // out of memory, try to make some room
+			///#endif // NO_GIH 
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in Java:
+			p = malloc((int)(size));
+			if (p == null)
 			{
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "out of memory for %s", message);
-			/* NOTREACHED */
+				/* really out of memory */
+				if (message != null)
+				{
+					GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "out of memory for %s", message);
+					/* NOTREACHED */
+				}
+				/* else we return NULL */
 			}
-			/* else we return NULL */
+			///#ifndef NO_GIH
 		}
-	///#ifndef NO_GIH
-		}
-	///#endif
+		///#endif
 		return (p);
 	}
 
@@ -1635,30 +1635,30 @@ public class GlobalMembersAlloc
 
 		/* realloc(NULL,x) is meant to do malloc(x), but doesn't always */
 		if (p == null)
-		return GlobalMembersAlloc.gp_alloc(size, message);
+			return GlobalMembersAlloc.gp_alloc(size, message);
 
-	///#ifndef NO_GIH
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'realloc' has no equivalent in Java:
+		///#ifndef NO_GIH
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'realloc' has no equivalent in Java:
 		res = realloc((p), (int)(size));
 		if (res.equals((String) null))
 		{
-		GlobalMembersBf_test.FreeHelp(); // out of memory, try to make some room
-	///#endif // NO_GIH 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'realloc' has no equivalent in Java:
-		res = realloc((p), (int)(size));
-		if (res.equals((String) null))
-		{
-			/* really out of memory */
-			if (message != null)
+			GlobalMembersBf_test.FreeHelp(); // out of memory, try to make some room
+			///#endif // NO_GIH 
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'realloc' has no equivalent in Java:
+			res = realloc((p), (int)(size));
+			if (res.equals((String) null))
 			{
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "out of memory for %s", message);
-			/* NOTREACHED */
+				/* really out of memory */
+				if (message != null)
+				{
+					GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "out of memory for %s", message);
+					/* NOTREACHED */
+				}
+				/* else we return NULL */
 			}
-			/* else we return NULL */
+			///#ifndef NO_GIH
 		}
-	///#ifndef NO_GIH
-		}
-	///#endif
+		///#endif
 		return (res);
 	}
 	///#endif // CHECK_HEAP_USE 
