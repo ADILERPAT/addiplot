@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.addiPlot.gnuplot.t_colorspec;
+import com.addiPlot.gnuplot.termlayer;
 import com.addiPlot.gp_types.coordinate;
 import com.addiPlot.graphics.curve_points;
 
@@ -140,7 +142,7 @@ public class term {
 	       using their own palette. Those terminals that possess only
 	       one palette for the whole plot don't need this routine.
 	     */
-	public static void set_color(color.t_colorspec color) {
+	public static void set_color(t_colorspec color) {
 	}
 	
 	/* EAM November 2004 - revised to take a pointer to struct rgb_color,
@@ -170,9 +172,8 @@ public class term {
 	 * driver-specific code strewn about in the core routines.
 	 * As of this point (July 2005) used only by pslatex.trm
 	 */
-	//CCX
-	//public static void layer(t_termlayer layer) {
-	//}
+	public static void layer(termlayer layer) {
+	}
 
 	/* Begin/End path control. 
 	 * Needed by PostScript-like devices in order to join the endpoints of
