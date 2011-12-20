@@ -168,50 +168,50 @@ public class GlobalMembersPm3d
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: pm3d.c,v 1.77 2009/03/26 00:49:16 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: pm3d.c,v 1.77 2009/03/26 00:49:16 sfeam Exp $");
+	//}
 	///#endif
 
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern pm3d_struct pm3d;
 
-/* Read the option for 'pm3d at' command.
- * Used by 'set pm3d at ...' or by 'splot ... with pm3d at ...'.
- * If no option given, then returns empty string, otherwise copied there.
- * The string is unchanged on error, and 1 is returned.
- * On success, 0 is returned.
- */
+	/* Read the option for 'pm3d at' command.
+	 * Used by 'set pm3d at ...' or by 'splot ... with pm3d at ...'.
+	 * If no option given, then returns empty string, otherwise copied there.
+	 * The string is unchanged on error, and 1 is returned.
+	 * On success, 0 is returned.
+	 */
 
 
 	/****
 	  Declaration of routines
-	****/
+	 ****/
 
 	public static int get_pm3d_at_option(String pm3d_where)
 	{
 		String c;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersCommand.token[GlobalMembersCommand.c_token].length >= sizeof(pm3d.where))
 		{
-		GlobalMembersPm3d.pm3d_option_at_error();
-		return 1;
+			GlobalMembersPm3d.pm3d_option_at_error();
+			return 1;
 		}
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
 		memcpy(pm3d_where, GlobalMembersCommand.gp_input_line + GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index, GlobalMembersCommand.token[GlobalMembersCommand.c_token].length);
 		pm3d_where = pm3d_where.substring(0, GlobalMembersCommand.token[GlobalMembersCommand.c_token].length);
 		/* verify the parameter */
 		for (c = pm3d_where; c; c++)
 		{
-		if (!c.equals('C')) // !!!!! CONTOURS, UNDOCUMENTED, THIS LINE IS TEMPORARILY HERE !!!!!
-			if (!c.equals(DefineConstants.PM3D_AT_BASE) && !c.equals(DefineConstants.PM3D_AT_TOP) && !c.equals(DefineConstants.PM3D_AT_SURFACE))
-			{
-			GlobalMembersPm3d.pm3d_option_at_error();
-			return 1;
-			}
+			if (!c.equals('C')) // !!!!! CONTOURS, UNDOCUMENTED, THIS LINE IS TEMPORARILY HERE !!!!!
+				if (!c.equals(DefineConstants.PM3D_AT_BASE) && !c.equals(DefineConstants.PM3D_AT_TOP) && !c.equals(DefineConstants.PM3D_AT_SURFACE))
+				{
+					GlobalMembersPm3d.pm3d_option_at_error();
+					return 1;
+				}
 		}
 		GlobalMembersCommand.c_token++;
 		return 0;
@@ -219,11 +219,11 @@ public class GlobalMembersPm3d
 	public static void pm3d_depth_queue_clear()
 	{
 		if (pm3d.direction != DefineConstants.PM3D_DEPTH)
-		return;
+			return;
 
 		if (quadrangles != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(quadrangles);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(quadrangles);
 		quadrangles = (quadrangle)0;
 		allocated_quadrangles = 0;
 		current_quadrangle = 0;
@@ -231,67 +231,67 @@ public class GlobalMembersPm3d
 	public static void pm3d_depth_queue_flush()
 	{
 		if (pm3d.direction != DefineConstants.PM3D_DEPTH)
-		return;
+			return;
 
 		if (current_quadrangle > 0 && quadrangles != null)
 		{
 
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-		quadrangle * qp = new quadrangle();
-		quadrangle qe;
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-		gpdPoint * gpdPtr = new gpdPoint();
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-		gpiPoint * gpiPtr = new gpiPoint();
-		vertex out = new vertex();
-		double z = 0; // assignment keeps the compiler happy
-		double w = GlobalMembersGraph3d.trans_mat[3][3];
-		int i;
+			//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+			quadrangle * qp = new quadrangle();
+			quadrangle qe;
+			//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+			gpdPoint * gpdPtr = new gpdPoint();
+			//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+			gpiPoint * gpiPtr = new gpiPoint();
+			vertex out = new vertex();
+			double z = 0; // assignment keeps the compiler happy
+			double w = GlobalMembersGraph3d.trans_mat[3][3];
+			int i;
 
-		for (qp = quadrangles, qe = quadrangles + current_quadrangle; qp != qe; qp++)
-		{
-
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: gpdPtr = qp->corners;
-			gpdPtr.copyFrom(qp.corners);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: gpiPtr = qp->icorners;
-			gpiPtr.copyFrom(qp.icorners);
-
-			for (i = 0; i < 4; i++, gpdPtr++, gpiPtr++)
+			for (qp = quadrangles, qe = quadrangles + current_quadrangle; qp != qe; qp++)
 			{
 
-			GlobalMembersUtil3d.map3d_xyz(gpdPtr.x, gpdPtr.y, gpdPtr.z, out);
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+				//ORIGINAL LINE: gpdPtr = qp->corners;
+				gpdPtr.copyFrom(qp.corners);
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+				//ORIGINAL LINE: gpiPtr = qp->icorners;
+				gpiPtr.copyFrom(qp.icorners);
 
-			if (i == 0 || out.z > z)
-				z = out.z;
+				for (i = 0; i < 4; i++, gpdPtr++, gpiPtr++)
+				{
 
-			gpiPtr.x = (int)((out.x * GlobalMembersGraph3d.xscaler / w) + GlobalMembersGraph3d.xmiddle);
-			gpiPtr.y = (int)((out.y * GlobalMembersGraph3d.yscaler / w) + GlobalMembersGraph3d.ymiddle);
+					GlobalMembersUtil3d.map3d_xyz(gpdPtr.x, gpdPtr.y, gpdPtr.z, out);
+
+					if (i == 0 || out.z > z)
+						z = out.z;
+
+					gpiPtr.x = (int)((out.x * GlobalMembersGraph3d.xscaler / w) + GlobalMembersGraph3d.xmiddle);
+					gpiPtr.y = (int)((out.y * GlobalMembersGraph3d.yscaler / w) + GlobalMembersGraph3d.ymiddle);
+				}
+
+				qp.z = z; // maximal z value of all four corners
 			}
 
-			qp.z = z; // maximal z value of all four corners
-		}
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			qsort(quadrangles, current_quadrangle, sizeof(quadrangle), GlobalMembersPm3d.compare_quadrangles);
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		qsort(quadrangles, current_quadrangle, sizeof(quadrangle), GlobalMembersPm3d.compare_quadrangles);
+			for (qp = quadrangles, qe = quadrangles + current_quadrangle; qp != qe; qp++)
+			{
 
-		for (qp = quadrangles, qe = quadrangles + current_quadrangle; qp != qe; qp++)
-		{
-
-			GlobalMembersColor.set_color(qp.gray);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: ifilled_quadrangle(qp->icorners);
-			GlobalMembersColor.ifilled_quadrangle(new gpiPoint(qp.icorners));
-		}
+				GlobalMembersColor.set_color(qp.gray);
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: ifilled_quadrangle(qp->icorners);
+				GlobalMembersColor.ifilled_quadrangle(new gpiPoint(qp.icorners));
+			}
 		}
 
 		GlobalMembersPm3d.pm3d_depth_queue_clear();
 	}
 
-/*
- * unset pm3d for the reset command
- */
+	/*
+	 * unset pm3d for the reset command
+	 */
 	public static void pm3d_reset()
 	{
 		pm3d.where = "s";
@@ -306,9 +306,9 @@ public class GlobalMembersPm3d
 		pm3d.interp_j = 1;
 	}
 
-/*
- * Draw (one) PM3D color surface.
- */
+	/*
+	 * Draw (one) PM3D color surface.
+	 */
 	public static void pm3d_draw_one(surface_points plot)
 	{
 		int i = 0;
@@ -318,114 +318,114 @@ public class GlobalMembersPm3d
 
 		if (!where.charAt(0))
 		{
-		return;
+			return;
 		}
 
 		/* for pm3dCompress.awk */
 		if (GlobalMembersTerm.gppsfile != null && (pm3d.direction != DefineConstants.PM3D_DEPTH))
-		fputs("%pm3d_map_begin\n", GlobalMembersTerm.gppsfile);
+			fputs("%pm3d_map_begin\n", GlobalMembersTerm.gppsfile);
 
 		for (; where.charAt(i); i++)
 		{
-		GlobalMembersPm3d.pm3d_plot(plot, where.charAt(i));
+			GlobalMembersPm3d.pm3d_plot(plot, where.charAt(i));
 		}
 
 		if (tangible.StringFunctions.strChr(where, 'C') != DefineConstants.NULL)
 		{
-		/* !!!!! FILLED COLOR CONTOURS, *UNDOCUMENTED*
+			/* !!!!! FILLED COLOR CONTOURS, *UNDOCUMENTED*
 		   !!!!! LATER CHANGE TO STH LIKE
 		   !!!!!   (if_filled_contours_requested)
 		   !!!!!      ...
 		   Currently filled color contours do not work because gnuplot generates
 		   open contour lines, i.e. not closed on the graph boundary.
-		 */
-		if (GlobalMembersGraph3d.draw_contour & en_contour_placement.CONTOUR_SRF != 0)
-			GlobalMembersPm3d.filled_color_contour_plot(plot, en_contour_placement.CONTOUR_SRF);
-		if (GlobalMembersGraph3d.draw_contour & en_contour_placement.CONTOUR_BASE != 0)
-			GlobalMembersPm3d.filled_color_contour_plot(plot, en_contour_placement.CONTOUR_BASE);
+			 */
+			if (GlobalMembersGraph3d.draw_contour & en_contour_placement.CONTOUR_SRF != 0)
+				GlobalMembersPm3d.filled_color_contour_plot(plot, en_contour_placement.CONTOUR_SRF);
+			if (GlobalMembersGraph3d.draw_contour & en_contour_placement.CONTOUR_BASE != 0)
+				GlobalMembersPm3d.filled_color_contour_plot(plot, en_contour_placement.CONTOUR_BASE);
 		}
 
 		/* for pm3dCompress.awk */
 		if (GlobalMembersTerm.gppsfile != null && (pm3d.direction != DefineConstants.PM3D_DEPTH))
-		fputs("%pm3d_map_end\n", GlobalMembersTerm.gppsfile);
+			fputs("%pm3d_map_end\n", GlobalMembersTerm.gppsfile);
 	}
 
-/*
-* Now the routines which are really just those for pm3d.c
-*/
+	/*
+	 * Now the routines which are really just those for pm3d.c
+	 */
 
-/*
- * Rescale z to cb values. Nothing to do if both z and cb are linear or log of the
- * same base, other it has to un-log z and subsequently log it again.
- */
+	/*
+	 * Rescale z to cb values. Nothing to do if both z and cb are linear or log of the
+	 * same base, other it has to un-log z and subsequently log it again.
+	 */
 	public static double z2cb(double z)
 	{
 		if (!GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log && !GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log) // both are linear
-		return z;
+			return z;
 		if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log && !GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log) // log z, linear cb
-		return Math.exp(z * GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base); // unlog(z)
+			return Math.exp(z * GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base); // unlog(z)
 		if (!GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log && GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log) // linear z, log cb
-		return (Math.log(z) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+			return (Math.log(z) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
 		/* both are log */
 		if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].base == GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].base) // can we compare double numbers like that?
-		return z;
+			return z;
 		return z * GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base; // log_cb(unlog_z(z))
 	}
 
-/*
- * Rescale cb (color) value into the interval of grays [0,1], taking care
- * of palette being positive or negative.
- * Note that it is OK for logarithmic cb-axis too.
- */
+	/*
+	 * Rescale cb (color) value into the interval of grays [0,1], taking care
+	 * of palette being positive or negative.
+	 * Note that it is OK for logarithmic cb-axis too.
+	 */
 	public static double cb2gray(double cb)
 	{
 		if (cb <= GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-		return (GlobalMembersColor.sm_palette.positive == DefineConstants.SMPAL_POSITIVE) ? 0 : 1;
+			return (GlobalMembersColor.sm_palette.positive == DefineConstants.SMPAL_POSITIVE) ? 0 : 1;
 		if (cb >= GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-		return (GlobalMembersColor.sm_palette.positive == DefineConstants.SMPAL_POSITIVE) ? 1 : 0;
+			return (GlobalMembersColor.sm_palette.positive == DefineConstants.SMPAL_POSITIVE) ? 1 : 0;
 		cb = (cb - GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min) / (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max - GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min);
 		return (GlobalMembersColor.sm_palette.positive == DefineConstants.SMPAL_POSITIVE) ? cb : 1 - cb;
 	}
 
-/*
- * Rearrange scan array
- *
- * Allocates *first_ptr (and eventually *second_ptr)
- * which must be freed by the caller
- */
+	/*
+	 * Rearrange scan array
+	 *
+	 * Allocates *first_ptr (and eventually *second_ptr)
+	 * which must be freed by the caller
+	 */
 	public static void pm3d_rearrange_scan_array(surface_points this_plot, iso_curve[][] first_ptr, int first_n, int first_invert, iso_curve[][] second_ptr, int second_n, int second_invert)
 	{
 		if (first_ptr != null)
 		{
-		GlobalMembersPm3d.pm3d_rearrange_part(this_plot.iso_crvs, this_plot.num_iso_read, first_ptr, first_invert);
-		first_n = this_plot.num_iso_read;
+			GlobalMembersPm3d.pm3d_rearrange_part(this_plot.iso_crvs, this_plot.num_iso_read, first_ptr, first_invert);
+			first_n = this_plot.num_iso_read;
 		}
 		if (second_ptr != null)
 		{
-		iso_curve icrvs = this_plot.iso_crvs;
-		iso_curve icrvs2;
-		int i;
-		/* advance until second part */
-		for (i = 0; i < this_plot.num_iso_read; i++)
-			icrvs = icrvs.next;
-		/* count the number of scans of second part */
-		for (i = 0, icrvs2 = icrvs; icrvs2; icrvs2 = icrvs2.next)
-			i++;
-		if (i > 0)
-		{
-			second_n = i;
-			GlobalMembersPm3d.pm3d_rearrange_part(icrvs, i, second_ptr, second_invert);
-		}
-		else
-		{
-			second_ptr = (GlobalMembersMouse.struct iso_curve * *) 0;
-		}
+			iso_curve icrvs = this_plot.iso_crvs;
+			iso_curve icrvs2;
+			int i;
+			/* advance until second part */
+			for (i = 0; i < this_plot.num_iso_read; i++)
+				icrvs = icrvs.next;
+			/* count the number of scans of second part */
+			for (i = 0, icrvs2 = icrvs; icrvs2; icrvs2 = icrvs2.next)
+				i++;
+			if (i > 0)
+			{
+				second_n = i;
+				GlobalMembersPm3d.pm3d_rearrange_part(icrvs, i, second_ptr, second_invert);
+			}
+			else
+			{
+				second_ptr = (GlobalMembersMouse.struct iso_curve * *) 0;
+			}
 		}
 	}
 
-/* Set flag plot_has_palette to TRUE if there is any element on the graph
- * which requires palette of continuous colors.
- */
+	/* Set flag plot_has_palette to TRUE if there is any element on the graph
+	 * which requires palette of continuous colors.
+	 */
 
 	public static void set_plot_with_palette(int plot_num, int plot_mode)
 	{
@@ -437,56 +437,56 @@ public class GlobalMembersPm3d
 		plot_has_palette = true;
 		/* Is pm3d switched on globally? */
 		if (pm3d.implicit == PM3D_IMPL_MODE.PM3D_IMPLICIT)
-		return;
+			return;
 
 		/* Check 2D plots */
 		if (plot_mode == MODE_PLOT_TYPE.MODE_PLOT.getValue())
 		{
-		while (this_2dplot != null)
-		{
-			if (this_2dplot.plot_style == PLOT_STYLE.IMAGE)
-			return;
-			if (this_2dplot.lp_properties.use_palette && this_2dplot.lp_properties.pm3d_color.type > DefineConstants.TC_RGB)
-			return;
-			if (this_2dplot.labels != null && this_2dplot.labels.textcolor.type >= DefineConstants.TC_CB)
-			return;
-			this_2dplot = this_2dplot.next;
-		}
+			while (this_2dplot != null)
+			{
+				if (this_2dplot.plot_style == PLOT_STYLE.IMAGE)
+					return;
+				if (this_2dplot.lp_properties.use_palette && this_2dplot.lp_properties.pm3d_color.type > DefineConstants.TC_RGB)
+					return;
+				if (this_2dplot.labels != null && this_2dplot.labels.textcolor.type >= DefineConstants.TC_CB)
+					return;
+				this_2dplot = this_2dplot.next;
+			}
 		}
 
 		/* Check 3D plots */
 		if (plot_mode == MODE_PLOT_TYPE.MODE_SPLOT.getValue())
 		{
-		/* Any surface 'with pm3d', 'with image' or 'with line|dot palette'? */
-		while (surface++ < plot_num)
-		{
-			if (this_3dplot.plot_style == PLOT_STYLE.PM3DSURFACE)
-			return;
-			if (this_3dplot.plot_style == PLOT_STYLE.IMAGE)
-			return;
-			if (this_3dplot.lp_properties.use_palette)
+			/* Any surface 'with pm3d', 'with image' or 'with line|dot palette'? */
+			while (surface++ < plot_num)
 			{
-				int type = this_3dplot.lp_properties.pm3d_color.type;
-			if (type == DefineConstants.TC_LT || type == DefineConstants.TC_LINESTYLE || type == DefineConstants.TC_RGB)
-				/* don't return yet */
-				;
-			else
-				/* TC_DEFAULT: splot x with line|lp|dot palette */
-				return;
+				if (this_3dplot.plot_style == PLOT_STYLE.PM3DSURFACE)
+					return;
+				if (this_3dplot.plot_style == PLOT_STYLE.IMAGE)
+					return;
+				if (this_3dplot.lp_properties.use_palette)
+				{
+					int type = this_3dplot.lp_properties.pm3d_color.type;
+					if (type == DefineConstants.TC_LT || type == DefineConstants.TC_LINESTYLE || type == DefineConstants.TC_RGB)
+						/* don't return yet */
+						;
+					else
+						/* TC_DEFAULT: splot x with line|lp|dot palette */
+						return;
+				}
+				if (this_3dplot.labels != null && this_3dplot.labels.textcolor.type >= DefineConstants.TC_CB)
+					return;
+				this_3dplot = this_3dplot.next_sp;
 			}
-			if (this_3dplot.labels != null && this_3dplot.labels.textcolor.type >= DefineConstants.TC_CB)
-			return;
-			this_3dplot = this_3dplot.next_sp;
-		}
 		}
 
 		/* Any label with 'textcolor palette'? */
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define TC_USES_PALETTE(tctype) (tctype==TC_Z) || (tctype==TC_CB) || (tctype==TC_FRAC)
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define TC_USES_PALETTE(tctype) (tctype==TC_Z) || (tctype==TC_CB) || (tctype==TC_FRAC)
 		for (; this_label != DefineConstants.NULL; this_label = this_label.next)
 		{
-		if ((this_label.textcolor.type == DefineConstants.TC_Z) || (this_label.textcolor.type == DefineConstants.TC_CB) || (this_label.textcolor.type == DefineConstants.TC_FRAC))
-			return;
+			if ((this_label.textcolor.type == DefineConstants.TC_Z) || (this_label.textcolor.type == DefineConstants.TC_CB) || (this_label.textcolor.type == DefineConstants.TC_FRAC))
+				return;
 		}
 		/* Any of title, xlabel, ylabel, zlabel, ... with 'textcolor palette'? */
 		if ((GlobalMembersGadgets.title.textcolor.type == DefineConstants.TC_Z) || (GlobalMembersGadgets.title.textcolor.type == DefineConstants.TC_CB) || (GlobalMembersGadgets.title.textcolor.type == DefineConstants.TC_FRAC))
@@ -500,12 +500,12 @@ public class GlobalMembersPm3d
 		if ((GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_Z) || (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_CB) || (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_FRAC))
 			return;
 		if (plot_mode == MODE_PLOT_TYPE.MODE_SPLOT.getValue())
-		if ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_Z) || (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_CB) || (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_FRAC))
-			return;
+			if ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_Z) || (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_CB) || (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_FRAC))
+				return;
 		if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_Z) || (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_CB) || (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor.type == DefineConstants.TC_FRAC))
 			return;
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef TC_USES_PALETTE
+		//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+		///#undef TC_USES_PALETTE
 
 		/* Palette with continuous colors is not used. */
 		plot_has_palette = false; // otherwise it stays TRUE
@@ -718,7 +718,7 @@ public class GlobalMembersPm3d
 
 	/*
 	  Global options for pm3d algorithm (to be accessed by set / show).
-	*/
+	 */
 
 	public static pm3d_struct pm3d = new pm3d_struct("s", DefineConstants.PM3D_FLUSH_BEGIN, 0, DefineConstants.PM3D_SCANS_AUTOMATIC, DefineConstants.PM3D_CLIP_4IN, 0, PM3D_IMPL_MODE.PM3D_EXPLICIT, PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MEAN, 1, 1);
 
@@ -729,25 +729,25 @@ public class GlobalMembersPm3d
 	/* Internal prototypes for this module */
 	public static boolean plot_has_palette;
 
-/*
- * Utility routines.
- */
+	/*
+	 * Utility routines.
+	 */
 
-/* Geometrical mean = pow( prod(x_i > 0) x_i, 1/N )
- * Sign of the result: result is positive if 3 or 4 x_i are positive,
- * it is negative if 3 or all 4 x_i are negative. Helps to splot surface
- * with all color coordinates negative.
- */
+	/* Geometrical mean = pow( prod(x_i > 0) x_i, 1/N )
+	 * Sign of the result: result is positive if 3 or 4 x_i are positive,
+	 * it is negative if 3 or all 4 x_i are negative. Helps to splot surface
+	 * with all color coordinates negative.
+	 */
 	public static double geomean4(double x1, double x2, double x3, double x4)
 	{
-	///#if 0
-	//// /* return 0 if any of the number is negative */
-	////    if (x1 <= 0) x1 = 1;
-	////    if (x2 > 0) x1 *= x2;
-	////    if (x3 > 0) x1 *= x3;
-	////    if (x4 > 0) x1 *= x4;
-	////    return pow(x1, 0.25);
-	///#else
+		///#if 0
+		//// /* return 0 if any of the number is negative */
+		////    if (x1 <= 0) x1 = 1;
+		////    if (x2 > 0) x1 *= x2;
+		////    if (x3 > 0) x1 *= x3;
+		////    if (x4 > 0) x1 *= x4;
+		////    return pow(x1, 0.25);
+		///#else
 		/* honor signess, i.e. sign(geomean) = sign(prod(x_i)) */
 		int neg = (x1 < 0) + (x2 < 0) + (x3 < 0) + (x4 < 0);
 		x1 *= x2 * x3 * x4;
@@ -755,22 +755,22 @@ public class GlobalMembersPm3d
 			return 0;
 		/* pow(x, 0.25) is slightly faster than sqrt(sqrt(x)) */
 		x1 = Math.sqrt(Math.sqrt(Math.abs(x1)));
-	///#if 0
-	//// /* such a warning could be helpful, but under normal usage it is just an overhead */
-	////    if (neg > 1 && interactive && notwarned) {
-	////	    int notwarned = 1;  ... to be set on every new splot
-	////	    if (notwarned)
-	////		int_warn(NO_CARET, "corners2color geomean with negative data points");
-	////	    notwarned = 0;
-	////    }
-	///#endif
+		///#if 0
+		//// /* such a warning could be helpful, but under normal usage it is just an overhead */
+		////    if (neg > 1 && interactive && notwarned) {
+		////	    int notwarned = 1;  ... to be set on every new splot
+		////	    if (notwarned)
+		////		int_warn(NO_CARET, "corners2color geomean with negative data points");
+		////	    notwarned = 0;
+		////    }
+		///#endif
 		return (neg <= 2) ? x1 : -x1;
-	///#endif
+		///#endif
 	}
 
-/* Median: sort values, and then: for N odd, it is the middle value; for N even,
- * it is mean of the two middle values.
- */
+	/* Median: sort values, and then: for N odd, it is the middle value; for N even,
+	 * it is mean of the two middle values.
+	 */
 	public static double median4(double x1, double x2, double x3, double x4)
 	{
 		double tmp;
@@ -793,12 +793,12 @@ public class GlobalMembersPm3d
 		return tmp * 0.5;
 	}
 
-/*
- * Now the implementation of the pm3d (s)plotting mode
- *
- * Note: the input parameter at_which_z is char, but an old HP cc requires
- * ANSI C K&R routines with int only.
- */
+	/*
+	 * Now the implementation of the pm3d (s)plotting mode
+	 *
+	 * Note: the input parameter at_which_z is char, but an old HP cc requires
+	 * ANSI C K&R routines with int only.
+	 */
 	public static void pm3d_plot(surface_points this_plot, int at_which_z)
 	{
 		int j;
@@ -832,33 +832,33 @@ public class GlobalMembersPm3d
 		gpdPoint[] corners = new gpdPoint[4];
 		int interp_i;
 		int interp_j;
-	///#ifdef EXTENDED_COLOR_SPECS
-	//    gpiPoint icorners[4];
-	///#endif
+		///#ifdef EXTENDED_COLOR_SPECS
+		//    gpiPoint icorners[4];
+		///#endif
 		gpdPoint[] bl_point = DefineConstants.NULL; // used for bilinear interpolation
 
 		/* just a shortcut */
 		boolean color_from_column = this_plot.pm3d_color_from_column;
 
 		if (this_plot == DefineConstants.NULL)
-		return;
+			return;
 
 		if (at_which_z != DefineConstants.PM3D_AT_BASE && at_which_z != DefineConstants.PM3D_AT_TOP && at_which_z != DefineConstants.PM3D_AT_SURFACE)
-		return;
+			return;
 
 		/* return if the terminal does not support filled polygons */
 		if (!GlobalMembersTerm.term.filled_polygon)
-		return;
+			return;
 
 		switch (at_which_z)
 		{
 		case DefineConstants.PM3D_AT_BASE:
-		corners[0].z = corners[1].z = corners[2].z = corners[3].z = GlobalMembersGraph3d.base_z;
-		break;
+			corners[0].z = corners[1].z = corners[2].z = corners[3].z = GlobalMembersGraph3d.base_z;
+			break;
 		case DefineConstants.PM3D_AT_TOP:
-		corners[0].z = corners[1].z = corners[2].z = corners[3].z = GlobalMembersGraph3d.ceiling_z;
-		break;
-		/* the 3rd possibility is surface, PM3D_AT_SURFACE, coded below */
+			corners[0].z = corners[1].z = corners[2].z = corners[3].z = GlobalMembersGraph3d.ceiling_z;
+			break;
+			/* the 3rd possibility is surface, PM3D_AT_SURFACE, coded below */
 		}
 
 		scanA = this_plot.iso_crvs;
@@ -871,97 +871,97 @@ public class GlobalMembersPm3d
 
 		if (interp_i <= 0 || interp_j <= 0)
 		{
-		/* Number of interpolations will be determined from desired number of points.
+			/* Number of interpolations will be determined from desired number of points.
 		   Search for number of scans and maximal number of points in a scan for points
 		   which will be plotted (INRANGE). Then set interp_i,j so that number of points
 		   will be a bit larger than |interp_i,j|.
 		   If (interp_i,j==0) => set this number of points according to DEFAULT_OPTIMAL_NB_POINTS.
 		   Ideally this should be comparable to the resulution of the output device, which
 		   can hardly by done at this high level instead of the driver level.
-		   */
-		///#define DEFAULT_OPTIMAL_NB_POINTS 200
-		int max_scan_pts = 0;
-		int max_scans = 0;
-		int pts;
-		for (scan = 0; scan < this_plot.num_iso_read - 1; scan++)
-		{
-			scanA = scan_array[scan];
-			pointsA = scanA.points;
-			pts = 0;
-			for (j = 0; j < scanA.p_count; j++)
-			if (pointsA[j].type == coord_type.INRANGE)
-				pts++;
-			if (pts > 0)
+			 */
+			///#define DEFAULT_OPTIMAL_NB_POINTS 200
+			int max_scan_pts = 0;
+			int max_scans = 0;
+			int pts;
+			for (scan = 0; scan < this_plot.num_iso_read - 1; scan++)
 			{
-			max_scan_pts = ((max_scan_pts) > (pts) ? (max_scan_pts) : (pts));
-			max_scans++;
+				scanA = scan_array[scan];
+				pointsA = scanA.points;
+				pts = 0;
+				for (j = 0; j < scanA.p_count; j++)
+					if (pointsA[j].type == coord_type.INRANGE)
+						pts++;
+				if (pts > 0)
+				{
+					max_scan_pts = ((max_scan_pts) > (pts) ? (max_scan_pts) : (pts));
+					max_scans++;
+				}
 			}
-		}
 
-		if (interp_i <= 0)
-		{
-			ii = (interp_i == 0) ? DefineConstants.DEFAULT_OPTIMAL_NB_POINTS : -interp_i;
-			interp_i = Math.floor(ii / max_scan_pts) + 1;
-		}
-		if (interp_j <= 0)
-		{
-			ii = (interp_j == 0) ? DefineConstants.DEFAULT_OPTIMAL_NB_POINTS : -interp_j;
-			interp_j = Math.floor(ii / max_scans) + 1;
-		}
-	///#if 0
-	////	fprintf(stderr, "pm3d.interp_i=%i\t pm3d.interp_j=%i\n", pm3d.interp_i, pm3d.interp_j);
-	////	fprintf(stderr, "INRANGE: max_scans=%i  max_scan_pts=%i\n", max_scans, max_scan_pts);
-	////	fprintf(stderr, "seting interp_i=%i\t interp_j=%i => there will be %i and %i points\n",
-	////		interp_i, interp_j, interp_i*max_scan_pts, interp_j*max_scans);
-	///#endif
+			if (interp_i <= 0)
+			{
+				ii = (interp_i == 0) ? DefineConstants.DEFAULT_OPTIMAL_NB_POINTS : -interp_i;
+				interp_i = Math.floor(ii / max_scan_pts) + 1;
+			}
+			if (interp_j <= 0)
+			{
+				ii = (interp_j == 0) ? DefineConstants.DEFAULT_OPTIMAL_NB_POINTS : -interp_j;
+				interp_j = Math.floor(ii / max_scans) + 1;
+			}
+			///#if 0
+			////	fprintf(stderr, "pm3d.interp_i=%i\t pm3d.interp_j=%i\n", pm3d.interp_i, pm3d.interp_j);
+			////	fprintf(stderr, "INRANGE: max_scans=%i  max_scan_pts=%i\n", max_scans, max_scan_pts);
+			////	fprintf(stderr, "seting interp_i=%i\t interp_j=%i => there will be %i and %i points\n",
+			////		interp_i, interp_j, interp_i*max_scan_pts, interp_j*max_scans);
+			///#endif
 		}
 
 		if (pm3d.direction == DefineConstants.PM3D_DEPTH)
 		{
 
-		for (scan = 0; scan < this_plot.num_iso_read - 1; scan++)
-		{
-
-			scanA = scan_array[scan];
-			scanB = scan_array[scan + 1];
-
-			are_ftriangles = pm3d.ftriangles && (scanA.p_count != scanB.p_count);
-			if (are_ftriangles == 0)
-			allocated_quadrangles += ((scanA.p_count) < (scanB.p_count) ? (scanA.p_count) : (scanB.p_count)) - 1;
-			else
+			for (scan = 0; scan < this_plot.num_iso_read - 1; scan++)
 			{
-			allocated_quadrangles += ((scanA.p_count) > (scanB.p_count) ? (scanA.p_count) : (scanB.p_count)) - 1;
+
+				scanA = scan_array[scan];
+				scanB = scan_array[scan + 1];
+
+				are_ftriangles = pm3d.ftriangles && (scanA.p_count != scanB.p_count);
+				if (are_ftriangles == 0)
+					allocated_quadrangles += ((scanA.p_count) < (scanB.p_count) ? (scanA.p_count) : (scanB.p_count)) - 1;
+				else
+				{
+					allocated_quadrangles += ((scanA.p_count) > (scanB.p_count) ? (scanA.p_count) : (scanB.p_count)) - 1;
+				}
 			}
-		}
-		allocated_quadrangles *= (interp_i > 1) ? interp_i : 1;
-		allocated_quadrangles *= (interp_j > 1) ? interp_j : 1;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		quadrangles = (quadrangle)GlobalMembersAlloc.gp_realloc(quadrangles, allocated_quadrangles * sizeof(quadrangle), "pm3d_plot->quadrangles");
-		/* DEBUG: fprintf(stderr, "allocated_quadrangles = %d\n", allocated_quadrangles); */
+			allocated_quadrangles *= (interp_i > 1) ? interp_i : 1;
+			allocated_quadrangles *= (interp_j > 1) ? interp_j : 1;
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			quadrangles = (quadrangle)GlobalMembersAlloc.gp_realloc(quadrangles, allocated_quadrangles * sizeof(quadrangle), "pm3d_plot->quadrangles");
+			/* DEBUG: fprintf(stderr, "allocated_quadrangles = %d\n", allocated_quadrangles); */
 		}
 		/* pm3d_rearrange_scan_array(this_plot, (struct iso_curve***)0, (int*)0, &scan_array, &invert); */
 
-	///#if 0
-	//// /* debugging: print scan_array */
-	////    for (scan = 0; scan < this_plot->num_iso_read; scan++) {
-	////	printf("**** SCAN=%d  points=%d\n", scan, scan_array[scan]->p_count);
-	////    }
-	///#endif
+		///#if 0
+		//// /* debugging: print scan_array */
+		////    for (scan = 0; scan < this_plot->num_iso_read; scan++) {
+		////	printf("**** SCAN=%d  points=%d\n", scan, scan_array[scan]->p_count);
+		////    }
+		///#endif
 
-	///#if 0
-	//// /* debugging: this loop prints properties of all scans */
-	////    for (scan = 0; scan < this_plot->num_iso_read; scan++) {
-	////	struct coordinate GPHUGE *points;
-	////	scanA = scan_array[scan];
-	////	printf("\n#IsoCurve = scan nb %d, %d points\n#x y z type(in,out,undef)\n", scan, scanA->p_count);
-	////	for (i = 0, points = scanA->points; i < scanA->p_count; i++) {
-	////	    printf("%g %g %g %c\n",
-	////		   points[i].x, points[i].y, points[i].z, points[i].type == INRANGE ? 'i' : points[i].type == OUTRANGE ? 'o' : 'u');
-	//// /* Note: INRANGE, OUTRANGE, UNDEFINED */
-	////	}
-	////    }
-	////    printf("\n");
-	///#endif
+		///#if 0
+		//// /* debugging: this loop prints properties of all scans */
+		////    for (scan = 0; scan < this_plot->num_iso_read; scan++) {
+		////	struct coordinate GPHUGE *points;
+		////	scanA = scan_array[scan];
+		////	printf("\n#IsoCurve = scan nb %d, %d points\n#x y z type(in,out,undef)\n", scan, scanA->p_count);
+		////	for (i = 0, points = scanA->points; i < scanA->p_count; i++) {
+		////	    printf("%g %g %g %c\n",
+		////		   points[i].x, points[i].y, points[i].z, points[i].type == INRANGE ? 'i' : points[i].type == OUTRANGE ? 'o' : 'u');
+		//// /* Note: INRANGE, OUTRANGE, UNDEFINED */
+		////	}
+		////    }
+		////    printf("\n");
+		///#endif
 
 		/*
 		 * if bilinear interpolation is enabled, allocate memory for the
@@ -969,11 +969,11 @@ public class GlobalMembersPm3d
 		 */
 		if (interp_i > 1 || interp_j > 1)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		bl_point = (gpdPoint)GlobalMembersAlloc.gp_alloc(sizeof(gpdPoint) * (interp_i + 1), "bl-interp along scan");
-		for (i1 = 0; i1 <= interp_i; i1++)
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			bl_point[i1] = (gpdPoint)GlobalMembersAlloc.gp_alloc(sizeof(gpdPoint) * (interp_j + 1), "bl-interp between scan");
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			bl_point = (gpdPoint)GlobalMembersAlloc.gp_alloc(sizeof(gpdPoint) * (interp_i + 1), "bl-interp along scan");
+			for (i1 = 0; i1 <= interp_i; i1++)
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				bl_point[i1] = (gpdPoint)GlobalMembersAlloc.gp_alloc(sizeof(gpdPoint) * (interp_j + 1), "bl-interp between scan");
 		}
 
 		/*
@@ -985,308 +985,125 @@ public class GlobalMembersPm3d
 		 */
 		for (scan = 0; scan < this_plot.num_iso_read - 1; scan++)
 		{
-		scanA = scan_array[scan];
-		scanB = scan_array[scan + 1];
+			scanA = scan_array[scan];
+			scanB = scan_array[scan + 1];
 
-		GlobalMembersFit.a((stderr,"\n#IsoCurveA = scan nb %d has %d points   ScanB has %d points\n", scan, scanA.p_count, scanB.p_count));
+			GlobalMembersFit.a((stderr,"\n#IsoCurveA = scan nb %d has %d points   ScanB has %d points\n", scan, scanA.p_count, scanB.p_count));
 
-		pointsA = scanA.points;
-		pointsB = scanB.points;
-		/* if the number of points in both scans is not the same, then the
-		 * starting index (offset) of scan B according to the flushing setting
-		 * has to be determined
-		 */
-		from = 0; // default is pm3d.flush==PM3D_FLUSH_BEGIN
-		if (pm3d.flush == DefineConstants.PM3D_FLUSH_END)
-			from = Math.abs(scanA.p_count - scanB.p_count);
-		else if (pm3d.flush == DefineConstants.PM3D_FLUSH_CENTER)
-			from = Math.abs(scanA.p_count - scanB.p_count) / 2;
-		/* find the minimal number of points in both scans */
-		up_to = ((scanA.p_count) < (scanB.p_count) ? (scanA.p_count) : (scanB.p_count)) - 1;
-		up_to_minus = up_to - 1; // calculate only once
-		are_ftriangles = pm3d.ftriangles && (scanA.p_count != scanB.p_count);
-		if (are_ftriangles == 0)
-			go_over_pts = up_to;
-		else
-		{
-			max_pts = ((scanA.p_count) > (scanB.p_count) ? (scanA.p_count) : (scanB.p_count));
-			go_over_pts = max_pts - 1;
-			/* the j-subrange of quadrangles; in the remaing of the interval
-			 * [0..up_to] the flushing triangles are to be drawn */
-			ftriangles_low_pt = from;
-			ftriangles_high_pt = from + up_to_minus;
-		}
-		/* Go over
-		 *   - the minimal number of points from both scans, if only quadrangles.
-		 *   - the maximal number of points from both scans if flush triangles
-		 *     (the missing points in the scan of lower nb of points will be
-		 *     duplicated from the begin/end points).
-		 *
-		 * Notice: if it would be once necessary to go over points in `backward'
-		 * direction, then the loop body below would require to replace the data
-		 * point indices `i' by `up_to-i' and `i+1' by `up_to-i-1'.
-		 */
-		for (j = 0; j < go_over_pts; j++)
-		{
-			/* Now i be the index of the scan with smaller number of points,
-			 * ii of the scan with larger number of points. */
-			if (are_ftriangles != 0 && (j < ftriangles_low_pt || j > ftriangles_high_pt))
-			{
-			i = (j <= ftriangles_low_pt) ? 0 : ftriangles_high_pt - from + 1;
-			ii = j;
-			i1 = i;
-			ii1 = ii + 1;
-			}
+			pointsA = scanA.points;
+			pointsB = scanB.points;
+			/* if the number of points in both scans is not the same, then the
+			 * starting index (offset) of scan B according to the flushing setting
+			 * has to be determined
+			 */
+			from = 0; // default is pm3d.flush==PM3D_FLUSH_BEGIN
+			if (pm3d.flush == DefineConstants.PM3D_FLUSH_END)
+				from = Math.abs(scanA.p_count - scanB.p_count);
+			else if (pm3d.flush == DefineConstants.PM3D_FLUSH_CENTER)
+				from = Math.abs(scanA.p_count - scanB.p_count) / 2;
+			/* find the minimal number of points in both scans */
+			up_to = ((scanA.p_count) < (scanB.p_count) ? (scanA.p_count) : (scanB.p_count)) - 1;
+			up_to_minus = up_to - 1; // calculate only once
+			are_ftriangles = pm3d.ftriangles && (scanA.p_count != scanB.p_count);
+			if (are_ftriangles == 0)
+				go_over_pts = up_to;
 			else
 			{
-			int jj = are_ftriangles != 0 ? j - from : j;
-			i = jj;
-			if (DefineConstants.PM3D_SCANS_AUTOMATIC == pm3d.direction && invert != 0)
-				i = up_to_minus - jj;
-			ii = i + from;
-			i1 = i + 1;
-			ii1 = ii + 1;
+				max_pts = ((scanA.p_count) > (scanB.p_count) ? (scanA.p_count) : (scanB.p_count));
+				go_over_pts = max_pts - 1;
+				/* the j-subrange of quadrangles; in the remaing of the interval
+				 * [0..up_to] the flushing triangles are to be drawn */
+				ftriangles_low_pt = from;
+				ftriangles_high_pt = from + up_to_minus;
 			}
-			/* From here, i is index to scan A, ii to scan B */
-			if (scanA.p_count > scanB.p_count)
+			/* Go over
+			 *   - the minimal number of points from both scans, if only quadrangles.
+			 *   - the maximal number of points from both scans if flush triangles
+			 *     (the missing points in the scan of lower nb of points will be
+			 *     duplicated from the begin/end points).
+			 *
+			 * Notice: if it would be once necessary to go over points in `backward'
+			 * direction, then the loop body below would require to replace the data
+			 * point indices `i' by `up_to-i' and `i+1' by `up_to-i-1'.
+			 */
+			for (j = 0; j < go_over_pts; j++)
 			{
-				int itmp = i;
-			i = ii;
-			ii = itmp;
-			itmp = i1;
-			i1 = ii1;
-			ii1 = itmp;
-			}
+				/* Now i be the index of the scan with smaller number of points,
+				 * ii of the scan with larger number of points. */
+				if (are_ftriangles != 0 && (j < ftriangles_low_pt || j > ftriangles_high_pt))
+				{
+					i = (j <= ftriangles_low_pt) ? 0 : ftriangles_high_pt - from + 1;
+					ii = j;
+					i1 = i;
+					ii1 = ii + 1;
+				}
+				else
+				{
+					int jj = are_ftriangles != 0 ? j - from : j;
+					i = jj;
+					if (DefineConstants.PM3D_SCANS_AUTOMATIC == pm3d.direction && invert != 0)
+						i = up_to_minus - jj;
+					ii = i + from;
+					i1 = i + 1;
+					ii1 = ii + 1;
+				}
+				/* From here, i is index to scan A, ii to scan B */
+				if (scanA.p_count > scanB.p_count)
+				{
+					int itmp = i;
+					i = ii;
+					ii = itmp;
+					itmp = i1;
+					i1 = ii1;
+					ii1 = itmp;
+				}
 
-			GlobalMembersFit.a((stderr,"j=%i:  i=%i i1=%i  [%i]   ii=%i ii1=%i  [%i]\n", j,i,i1,scanA.p_count,ii,ii1,scanB.p_count));
+				GlobalMembersFit.a((stderr,"j=%i:  i=%i i1=%i  [%i]   ii=%i ii1=%i  [%i]\n", j,i,i1,scanA.p_count,ii,ii1,scanB.p_count));
 
-			/* choose the clipping method */
-			if (pm3d.clip == DefineConstants.PM3D_CLIP_4IN)
-			{
-			/* (1) all 4 points of the quadrangle must be in x and y range */
-			if (!(pointsA[i].type == coord_type.INRANGE && pointsA[i1].type == coord_type.INRANGE && pointsB[ii].type == coord_type.INRANGE && pointsB[ii1].type == coord_type.INRANGE))
-				continue;
-			} // (pm3d.clip == PM3D_CLIP_1IN)
-			else
-			{
-			/* (2) all 4 points of the quadrangle must be defined */
-			if (pointsA[i].type == coord_type.UNDEFINED || pointsA[i1].type == coord_type.UNDEFINED || pointsB[ii].type == coord_type.UNDEFINED || pointsB[ii1].type == coord_type.UNDEFINED)
-				continue;
-			/* and at least 1 point of the quadrangle must be in x and y range */
-			if (pointsA[i].type == coord_type.OUTRANGE && pointsA[i1].type == coord_type.OUTRANGE && pointsB[ii].type == coord_type.OUTRANGE && pointsB[ii1].type == coord_type.OUTRANGE)
-				continue;
-			}
+				/* choose the clipping method */
+				if (pm3d.clip == DefineConstants.PM3D_CLIP_4IN)
+				{
+					/* (1) all 4 points of the quadrangle must be in x and y range */
+					if (!(pointsA[i].type == coord_type.INRANGE && pointsA[i1].type == coord_type.INRANGE && pointsB[ii].type == coord_type.INRANGE && pointsB[ii1].type == coord_type.INRANGE))
+						continue;
+				} // (pm3d.clip == PM3D_CLIP_1IN)
+				else
+				{
+					/* (2) all 4 points of the quadrangle must be defined */
+					if (pointsA[i].type == coord_type.UNDEFINED || pointsA[i1].type == coord_type.UNDEFINED || pointsB[ii].type == coord_type.UNDEFINED || pointsB[ii1].type == coord_type.UNDEFINED)
+						continue;
+					/* and at least 1 point of the quadrangle must be in x and y range */
+					if (pointsA[i].type == coord_type.OUTRANGE && pointsA[i1].type == coord_type.OUTRANGE && pointsB[ii].type == coord_type.OUTRANGE && pointsB[ii1].type == coord_type.OUTRANGE)
+						continue;
+				}
 
-			if ((interp_i <= 1 && interp_j <= 1) || pm3d.direction == DefineConstants.PM3D_DEPTH)
-			{
-	///#ifdef EXTENDED_COLOR_SPECS
-	//	      if (!supply_extended_color_specs) {
-	///#endif
-			/* Get the gray as the average of the corner z- or gray-positions
+				if ((interp_i <= 1 && interp_j <= 1) || pm3d.direction == DefineConstants.PM3D_DEPTH)
+				{
+					///#ifdef EXTENDED_COLOR_SPECS
+					//	      if (!supply_extended_color_specs) {
+					///#endif
+					/* Get the gray as the average of the corner z- or gray-positions
 			   (note: log scale is already included). The average is calculated here
 			   if there is no interpolation (including the "pm3d depthorder" option),
 			   otherwise it is done for each interpolated quadrangle later.
 			   I always wonder what is faster: d*0.25 or d/4? Someone knows? -- 0.25 (joze) */
-			if (color_from_column)
-			{
-				/* color is set in plot3d.c:get_3ddata() */
-				cb1 = pointsA[i].ylow;
-				cb2 = pointsA[i1].ylow;
-				cb3 = pointsB[ii].ylow;
-				cb4 = pointsB[ii1].ylow;
-			}
-			else
-			{
-				cb1 = GlobalMembersPm3d.z2cb(pointsA[i].z);
-				cb2 = GlobalMembersPm3d.z2cb(pointsA[i1].z);
-				cb3 = GlobalMembersPm3d.z2cb(pointsB[ii].z);
-				cb4 = GlobalMembersPm3d.z2cb(pointsB[ii1].z);
-			}
-			switch (pm3d.which_corner_color)
-			{
-				case PM3D_WHICHCORNER_MEAN:
-					avgC = (cb1 + cb2 + cb3 + cb4) * 0.25;
-					break;
-				case PM3D_WHICHCORNER_GEOMEAN:
-					avgC = GlobalMembersPm3d.geomean4(cb1, cb2, cb3, cb4);
-					break;
-				case PM3D_WHICHCORNER_MEDIAN:
-					avgC = GlobalMembersPm3d.median4(cb1, cb2, cb3, cb4);
-					break;
-				case PM3D_WHICHCORNER_MIN:
-					avgC = GlobalMembersPm3d.minimum4(cb1, cb2, cb3, cb4);
-					break;
-				case PM3D_WHICHCORNER_MAX:
-					avgC = GlobalMembersPm3d.maximum4(cb1, cb2, cb3, cb4);
-					break;
-				case PM3D_WHICHCORNER_C1:
-					avgC = cb1;
-					break;
-				case PM3D_WHICHCORNER_C2:
-					avgC = cb2;
-					break;
-				case PM3D_WHICHCORNER_C3:
-					avgC = cb3;
-					break;
-				case PM3D_WHICHCORNER_C4:
-					avgC = cb4;
-					break;
-				default:
-					GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "cannot be here");
-					avgC = 0;
-			}
-			/* transform z value to gray, i.e. to interval [0,1] */
-			gray = GlobalMembersPm3d.cb2gray(avgC);
-
-			/* print the quadrangle with the given color */
-			GlobalMembersFit.a((stderr, "averageColor %g\tgray=%g\tM %g %g L %g %g L %g %g L %g %g\n", avgC, gray, pointsA[i].x, pointsA[i].y, pointsB[ii].x, pointsB[ii].y, pointsB[ii1].x, pointsB[ii1].y, pointsA[i1].x, pointsA[i1].y));
-
-			/* set the color */
-			if (pm3d.direction != DefineConstants.PM3D_DEPTH)
-				GlobalMembersColor.set_color(gray);
-	///#ifdef EXTENDED_COLOR_SPECS
-	//	      }
-	///#endif
-			}
-
-			corners[0].x = pointsA[i].x;
-			corners[0].y = pointsA[i].y;
-			corners[1].x = pointsB[ii].x;
-			corners[1].y = pointsB[ii].y;
-			corners[2].x = pointsB[ii1].x;
-			corners[2].y = pointsB[ii1].y;
-			corners[3].x = pointsA[i1].x;
-			corners[3].y = pointsA[i1].y;
-
-			if (interp_i > 1 || interp_j > 1 || at_which_z == DefineConstants.PM3D_AT_SURFACE)
-			{
-			/* always supply the z value if
-			 * EXTENDED_COLOR_SPECS is defined
-			 */
-			corners[0].z = pointsA[i].z;
-			corners[1].z = pointsB[ii].z;
-			corners[2].z = pointsB[ii1].z;
-			corners[3].z = pointsA[i1].z;
-			if (color_from_column)
-			{
-				corners[0].c = pointsA[i].ylow;
-				corners[1].c = pointsB[ii].ylow;
-				corners[2].c = pointsB[ii1].ylow;
-				corners[3].c = pointsA[i1].ylow;
-			}
-			}
-	///#ifdef EXTENDED_COLOR_SPECS
-	//	    if (supply_extended_color_specs) {
-	//		if (color_from_column) {
-	//		    icorners[0].z = pointsA[i].CRD_COLOR;
-	//		    icorners[1].z = pointsB[ii].CRD_COLOR;
-	//		    icorners[2].z = pointsB[ii1].CRD_COLOR;
-	//		    icorners[3].z = pointsA[i1].CRD_COLOR;
-	//		} else {
-	// /* the target wants z and gray value */
-	//		    icorners[0].z = pointsA[i].z;
-	//		    icorners[1].z = pointsB[ii].z;
-	//		    icorners[2].z = pointsB[ii1].z;
-	//		    icorners[3].z = pointsA[i1].z;
-	//		}
-	//		for (i = 0; i < 4; i++) {
-	//		    icorners[i].spec.gray =
-	//			cb2gray( color_from_column ? icorners[i].z : z2cb(icorners[i].z) );
-	//		}
-	//	    }
-	//	    if (pm3d.direction == PM3D_DEPTH) {
-	// /* copy quadrangle */
-	//		quadrangle* qp = quadrangles + current_quadrangle;
-	//		memcpy(qp->corners, corners, 4 * sizeof (gpdPoint));
-	//		qp->gray = gray;
-	//		for (i = 0; i < 4; i++) {
-	//		    qp->icorners[i].z = icorners[i].z;
-	//		    qp->icorners[i].spec.gray = icorners[i].spec.gray;
-	//		}
-	//		current_quadrangle++;
-	//
-	//	    } else
-	//    		filled_quadrangle(corners, icorners);
-	///#else
-			if (interp_i > 1 || interp_j > 1)
-			{
-			/* Interpolation is enabled.
-			 * interp_i is the # of points along scan lines
-			 * interp_j is the # of points between scan lines
-			 * Algorithm is to first sample i points along the scan lines
-			 * defined by corners[3],corners[0] and corners[2],corners[1]. */
-			int j1;
-			for (i1 = 0; i1 <= interp_i; i1++)
-			{
-				bl_point[i1][0].x = ((corners[3].x - corners[0].x) / interp_i) * i1 + corners[0].x;
-				bl_point[i1][interp_j].x = ((corners[2].x - corners[1].x) / interp_i) * i1 + corners[1].x;
-				bl_point[i1][0].y = ((corners[3].y - corners[0].y) / interp_i) * i1 + corners[0].y;
-				bl_point[i1][interp_j].y = ((corners[2].y - corners[1].y) / interp_i) * i1 + corners[1].y;
-				bl_point[i1][0].z = ((corners[3].z - corners[0].z) / interp_i) * i1 + corners[0].z;
-				bl_point[i1][interp_j].z = ((corners[2].z - corners[1].z) / interp_i) * i1 + corners[1].z;
-				if (color_from_column)
-				{
-				bl_point[i1][0].c = ((corners[3].c - corners[0].c) / interp_i) * i1 + corners[0].c;
-				bl_point[i1][interp_j].c = ((corners[2].c - corners[1].c) / interp_i) * i1 + corners[1].c;
-				}
-				/* Next we sample j points between each of the new points
-				 * created in the previous step (this samples between
-				 * scan lines) in the same manner. */
-				for (j1 = 1; j1 < interp_j; j1++)
-				{
-				bl_point[i1][j1].x = ((bl_point[i1][interp_j].x - bl_point[i1][0].x) / interp_j) * j1 + bl_point[i1][0].x;
-				bl_point[i1][j1].y = ((bl_point[i1][interp_j].y - bl_point[i1][0].y) / interp_j) * j1 + bl_point[i1][0].y;
-				bl_point[i1][j1].z = ((bl_point[i1][interp_j].z - bl_point[i1][0].z) / interp_j) * j1 + bl_point[i1][0].z;
-				if (color_from_column)
-					bl_point[i1][j1].c = ((bl_point[i1][interp_j].c - bl_point[i1][0].c) / interp_j) * j1 + bl_point[i1][0].c;
-				}
-			}
-			/* Once all points are created, move them into an appropriate
-			 * structure and call set_color on each to retrieve the
-			 * correct color mapping for this new sub-sampled quadrangle. */
-			for (i1 = 0; i1 < interp_i; i1++)
-			{
-				for (j1 = 0; j1 < interp_j; j1++)
-				{
-				corners[0].x = bl_point[i1][j1].x;
-				corners[0].y = bl_point[i1][j1].y;
-				corners[0].z = bl_point[i1][j1].z;
-				corners[1].x = bl_point[i1 + 1][j1].x;
-				corners[1].y = bl_point[i1 + 1][j1].y;
-				corners[1].z = bl_point[i1 + 1][j1].z;
-				corners[2].x = bl_point[i1 + 1][j1 + 1].x;
-				corners[2].y = bl_point[i1 + 1][j1 + 1].y;
-				corners[2].z = bl_point[i1 + 1][j1 + 1].z;
-				corners[3].x = bl_point[i1][j1 + 1].x;
-				corners[3].y = bl_point[i1][j1 + 1].y;
-				corners[3].z = bl_point[i1][j1 + 1].z;
-				if (color_from_column)
-				{
-					corners[0].c = bl_point[i1][j1].c;
-					corners[1].c = bl_point[i1 + 1][j1].c;
-					corners[2].c = bl_point[i1 + 1][j1 + 1].c;
-					corners[3].c = bl_point[i1][j1 + 1].c;
-				}
-
-				GlobalMembersFit.a((stderr,"(%g,%g),(%g,%g),(%g,%g),(%g,%g)\n", corners[0].x, corners[0].y, corners[1].x, corners[1].y, corners[2].x, corners[2].y, corners[3].x, corners[3].y));
-
-				/* If the colors are given separately, we already loaded them above */
-				if (!color_from_column)
-				{
-					cb1 = GlobalMembersPm3d.z2cb(corners[0].z);
-					cb2 = GlobalMembersPm3d.z2cb(corners[1].z);
-					cb3 = GlobalMembersPm3d.z2cb(corners[2].z);
-					cb4 = GlobalMembersPm3d.z2cb(corners[3].z);
-				}
-				else
-				{
-					cb1 = corners[0].c;
-					cb2 = corners[1].c;
-					cb3 = corners[2].c;
-					cb4 = corners[3].c;
-				}
-				switch (pm3d.which_corner_color)
-				{
+					if (color_from_column)
+					{
+						/* color is set in plot3d.c:get_3ddata() */
+						cb1 = pointsA[i].ylow;
+						cb2 = pointsA[i1].ylow;
+						cb3 = pointsB[ii].ylow;
+						cb4 = pointsB[ii1].ylow;
+					}
+					else
+					{
+						cb1 = GlobalMembersPm3d.z2cb(pointsA[i].z);
+						cb2 = GlobalMembersPm3d.z2cb(pointsA[i1].z);
+						cb3 = GlobalMembersPm3d.z2cb(pointsB[ii].z);
+						cb4 = GlobalMembersPm3d.z2cb(pointsB[ii1].z);
+					}
+					switch (pm3d.which_corner_color)
+					{
 					case PM3D_WHICHCORNER_MEAN:
 						avgC = (cb1 + cb2 + cb3 + cb4) * 0.25;
 						break;
@@ -1317,76 +1134,259 @@ public class GlobalMembersPm3d
 					default:
 						GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "cannot be here");
 						avgC = 0;
+					}
+					/* transform z value to gray, i.e. to interval [0,1] */
+					gray = GlobalMembersPm3d.cb2gray(avgC);
+
+					/* print the quadrangle with the given color */
+					GlobalMembersFit.a((stderr, "averageColor %g\tgray=%g\tM %g %g L %g %g L %g %g L %g %g\n", avgC, gray, pointsA[i].x, pointsA[i].y, pointsB[ii].x, pointsB[ii].y, pointsB[ii1].x, pointsB[ii1].y, pointsA[i1].x, pointsA[i1].y));
+
+					/* set the color */
+					if (pm3d.direction != DefineConstants.PM3D_DEPTH)
+						GlobalMembersColor.set_color(gray);
+					///#ifdef EXTENDED_COLOR_SPECS
+					//	      }
+					///#endif
 				}
-				/* transform z value to gray, i.e. to interval [0,1] */
-				gray = GlobalMembersPm3d.cb2gray(avgC);
-				if (pm3d.direction != DefineConstants.PM3D_DEPTH)
+
+				corners[0].x = pointsA[i].x;
+				corners[0].y = pointsA[i].y;
+				corners[1].x = pointsB[ii].x;
+				corners[1].y = pointsB[ii].y;
+				corners[2].x = pointsB[ii1].x;
+				corners[2].y = pointsB[ii1].y;
+				corners[3].x = pointsA[i1].x;
+				corners[3].y = pointsA[i1].y;
+
+				if (interp_i > 1 || interp_j > 1 || at_which_z == DefineConstants.PM3D_AT_SURFACE)
 				{
-					GlobalMembersColor.set_color(gray);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: filled_quadrangle(corners);
-					GlobalMembersColor.filled_quadrangle(new gpdPoint(corners));
+					/* always supply the z value if
+					 * EXTENDED_COLOR_SPECS is defined
+					 */
+					corners[0].z = pointsA[i].z;
+					corners[1].z = pointsB[ii].z;
+					corners[2].z = pointsB[ii1].z;
+					corners[3].z = pointsA[i1].z;
+					if (color_from_column)
+					{
+						corners[0].c = pointsA[i].ylow;
+						corners[1].c = pointsB[ii].ylow;
+						corners[2].c = pointsB[ii1].ylow;
+						corners[3].c = pointsA[i1].ylow;
+					}
 				}
+				///#ifdef EXTENDED_COLOR_SPECS
+				//	    if (supply_extended_color_specs) {
+				//		if (color_from_column) {
+				//		    icorners[0].z = pointsA[i].CRD_COLOR;
+				//		    icorners[1].z = pointsB[ii].CRD_COLOR;
+				//		    icorners[2].z = pointsB[ii1].CRD_COLOR;
+				//		    icorners[3].z = pointsA[i1].CRD_COLOR;
+				//		} else {
+				// /* the target wants z and gray value */
+				//		    icorners[0].z = pointsA[i].z;
+				//		    icorners[1].z = pointsB[ii].z;
+				//		    icorners[2].z = pointsB[ii1].z;
+				//		    icorners[3].z = pointsA[i1].z;
+				//		}
+				//		for (i = 0; i < 4; i++) {
+				//		    icorners[i].spec.gray =
+				//			cb2gray( color_from_column ? icorners[i].z : z2cb(icorners[i].z) );
+				//		}
+				//	    }
+				//	    if (pm3d.direction == PM3D_DEPTH) {
+				// /* copy quadrangle */
+				//		quadrangle* qp = quadrangles + current_quadrangle;
+				//		memcpy(qp->corners, corners, 4 * sizeof (gpdPoint));
+				//		qp->gray = gray;
+				//		for (i = 0; i < 4; i++) {
+				//		    qp->icorners[i].z = icorners[i].z;
+				//		    qp->icorners[i].spec.gray = icorners[i].spec.gray;
+				//		}
+				//		current_quadrangle++;
+				//
+				//	    } else
+				//    		filled_quadrangle(corners, icorners);
+				///#else
+				if (interp_i > 1 || interp_j > 1)
+				{
+					/* Interpolation is enabled.
+					 * interp_i is the # of points along scan lines
+					 * interp_j is the # of points between scan lines
+					 * Algorithm is to first sample i points along the scan lines
+					 * defined by corners[3],corners[0] and corners[2],corners[1]. */
+					int j1;
+					for (i1 = 0; i1 <= interp_i; i1++)
+					{
+						bl_point[i1][0].x = ((corners[3].x - corners[0].x) / interp_i) * i1 + corners[0].x;
+						bl_point[i1][interp_j].x = ((corners[2].x - corners[1].x) / interp_i) * i1 + corners[1].x;
+						bl_point[i1][0].y = ((corners[3].y - corners[0].y) / interp_i) * i1 + corners[0].y;
+						bl_point[i1][interp_j].y = ((corners[2].y - corners[1].y) / interp_i) * i1 + corners[1].y;
+						bl_point[i1][0].z = ((corners[3].z - corners[0].z) / interp_i) * i1 + corners[0].z;
+						bl_point[i1][interp_j].z = ((corners[2].z - corners[1].z) / interp_i) * i1 + corners[1].z;
+						if (color_from_column)
+						{
+							bl_point[i1][0].c = ((corners[3].c - corners[0].c) / interp_i) * i1 + corners[0].c;
+							bl_point[i1][interp_j].c = ((corners[2].c - corners[1].c) / interp_i) * i1 + corners[1].c;
+						}
+						/* Next we sample j points between each of the new points
+						 * created in the previous step (this samples between
+						 * scan lines) in the same manner. */
+						for (j1 = 1; j1 < interp_j; j1++)
+						{
+							bl_point[i1][j1].x = ((bl_point[i1][interp_j].x - bl_point[i1][0].x) / interp_j) * j1 + bl_point[i1][0].x;
+							bl_point[i1][j1].y = ((bl_point[i1][interp_j].y - bl_point[i1][0].y) / interp_j) * j1 + bl_point[i1][0].y;
+							bl_point[i1][j1].z = ((bl_point[i1][interp_j].z - bl_point[i1][0].z) / interp_j) * j1 + bl_point[i1][0].z;
+							if (color_from_column)
+								bl_point[i1][j1].c = ((bl_point[i1][interp_j].c - bl_point[i1][0].c) / interp_j) * j1 + bl_point[i1][0].c;
+						}
+					}
+					/* Once all points are created, move them into an appropriate
+					 * structure and call set_color on each to retrieve the
+					 * correct color mapping for this new sub-sampled quadrangle. */
+					for (i1 = 0; i1 < interp_i; i1++)
+					{
+						for (j1 = 0; j1 < interp_j; j1++)
+						{
+							corners[0].x = bl_point[i1][j1].x;
+							corners[0].y = bl_point[i1][j1].y;
+							corners[0].z = bl_point[i1][j1].z;
+							corners[1].x = bl_point[i1 + 1][j1].x;
+							corners[1].y = bl_point[i1 + 1][j1].y;
+							corners[1].z = bl_point[i1 + 1][j1].z;
+							corners[2].x = bl_point[i1 + 1][j1 + 1].x;
+							corners[2].y = bl_point[i1 + 1][j1 + 1].y;
+							corners[2].z = bl_point[i1 + 1][j1 + 1].z;
+							corners[3].x = bl_point[i1][j1 + 1].x;
+							corners[3].y = bl_point[i1][j1 + 1].y;
+							corners[3].z = bl_point[i1][j1 + 1].z;
+							if (color_from_column)
+							{
+								corners[0].c = bl_point[i1][j1].c;
+								corners[1].c = bl_point[i1 + 1][j1].c;
+								corners[2].c = bl_point[i1 + 1][j1 + 1].c;
+								corners[3].c = bl_point[i1][j1 + 1].c;
+							}
+
+							GlobalMembersFit.a((stderr,"(%g,%g),(%g,%g),(%g,%g),(%g,%g)\n", corners[0].x, corners[0].y, corners[1].x, corners[1].y, corners[2].x, corners[2].y, corners[3].x, corners[3].y));
+
+							/* If the colors are given separately, we already loaded them above */
+							if (!color_from_column)
+							{
+								cb1 = GlobalMembersPm3d.z2cb(corners[0].z);
+								cb2 = GlobalMembersPm3d.z2cb(corners[1].z);
+								cb3 = GlobalMembersPm3d.z2cb(corners[2].z);
+								cb4 = GlobalMembersPm3d.z2cb(corners[3].z);
+							}
+							else
+							{
+								cb1 = corners[0].c;
+								cb2 = corners[1].c;
+								cb3 = corners[2].c;
+								cb4 = corners[3].c;
+							}
+							switch (pm3d.which_corner_color)
+							{
+							case PM3D_WHICHCORNER_MEAN:
+								avgC = (cb1 + cb2 + cb3 + cb4) * 0.25;
+								break;
+							case PM3D_WHICHCORNER_GEOMEAN:
+								avgC = GlobalMembersPm3d.geomean4(cb1, cb2, cb3, cb4);
+								break;
+							case PM3D_WHICHCORNER_MEDIAN:
+								avgC = GlobalMembersPm3d.median4(cb1, cb2, cb3, cb4);
+								break;
+							case PM3D_WHICHCORNER_MIN:
+								avgC = GlobalMembersPm3d.minimum4(cb1, cb2, cb3, cb4);
+								break;
+							case PM3D_WHICHCORNER_MAX:
+								avgC = GlobalMembersPm3d.maximum4(cb1, cb2, cb3, cb4);
+								break;
+							case PM3D_WHICHCORNER_C1:
+								avgC = cb1;
+								break;
+							case PM3D_WHICHCORNER_C2:
+								avgC = cb2;
+								break;
+							case PM3D_WHICHCORNER_C3:
+								avgC = cb3;
+								break;
+							case PM3D_WHICHCORNER_C4:
+								avgC = cb4;
+								break;
+							default:
+								GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "cannot be here");
+								avgC = 0;
+							}
+							/* transform z value to gray, i.e. to interval [0,1] */
+							gray = GlobalMembersPm3d.cb2gray(avgC);
+							if (pm3d.direction != DefineConstants.PM3D_DEPTH)
+							{
+								GlobalMembersColor.set_color(gray);
+								//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+								//ORIGINAL LINE: filled_quadrangle(corners);
+								GlobalMembersColor.filled_quadrangle(new gpdPoint(corners));
+							}
+							else
+							{
+								/* copy quadrangle */
+								quadrangle qp = quadrangles + current_quadrangle;
+								//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+								//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+								memcpy(qp.corners, corners, 4 * sizeof(gpdPoint));
+								qp.gray = gray;
+								current_quadrangle++;
+							}
+						}
+					}
+				} // thus (interp_i == 1 && interp_j == 1)
 				else
 				{
-					/* copy quadrangle */
-					quadrangle qp = quadrangles + current_quadrangle;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-					memcpy(qp.corners, corners, 4 * sizeof(gpdPoint));
-					qp.gray = gray;
-					current_quadrangle++;
-				}
-				}
-			}
-			} // thus (interp_i == 1 && interp_j == 1)
-			else
-			{
-			if (pm3d.direction != DefineConstants.PM3D_DEPTH)
-			{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: filled_quadrangle(corners);
-				GlobalMembersColor.filled_quadrangle(new gpdPoint(corners));
-			}
-			else
-			{
-				/* copy quadrangle */
-				quadrangle qp = quadrangles + current_quadrangle;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				memcpy(qp.corners, corners, 4 * sizeof(gpdPoint));
-				qp.gray = gray;
-				current_quadrangle++;
-			}
-			} // interpolate between points
-	///#endif
-		} // loop quadrangles over points of two subsequent scans
+					if (pm3d.direction != DefineConstants.PM3D_DEPTH)
+					{
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+						//ORIGINAL LINE: filled_quadrangle(corners);
+						GlobalMembersColor.filled_quadrangle(new gpdPoint(corners));
+					}
+					else
+					{
+						/* copy quadrangle */
+						quadrangle qp = quadrangles + current_quadrangle;
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+						//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+						memcpy(qp.corners, corners, 4 * sizeof(gpdPoint));
+						qp.gray = gray;
+						current_quadrangle++;
+					}
+				} // interpolate between points
+				///#endif
+			} // loop quadrangles over points of two subsequent scans
 		} // loop over scans
 
 		if (bl_point != null)
 		{
-		for (i1 = 0; i1 <= interp_i; i1++)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(bl_point[i1]);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(bl_point);
+			for (i1 = 0; i1 <= interp_i; i1++)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(bl_point[i1]);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(bl_point);
 		}
 		/* free memory allocated by scan_array */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(scan_array);
 	} // end of pm3d splotting mode
 
-/* Display an error message for the routine get_pm3d_at_option() below.
- */
+	/* Display an error message for the routine get_pm3d_at_option() below.
+	 */
 
 	public static void pm3d_option_at_error()
 	{
 		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "parameter to `pm3d at` requires combination of up to 6 characters b,s,t\n\t(drawing at bottom, surface, top)");
 	}
 
-/*
- * Rearrange...
- */
+	/*
+	 * Rearrange...
+	 */
 	public static void pm3d_rearrange_part(iso_curve src, int len, iso_curve[][] dest, int invert)
 	{
 		iso_curve scanA;
@@ -1403,73 +1403,73 @@ public class GlobalMembersPm3d
 		   Scans are sorted in scan_array according to pm3d.direction (this can
 		   be PM3D_SCANS_FORWARD or PM3D_SCANS_BACKWARD).
 		 */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		scan_array = dest = GlobalMembersAlloc.gp_alloc(len * sizeof(scanA), "pm3d scan array");
 
 		if (pm3d.direction == DefineConstants.PM3D_SCANS_AUTOMATIC)
 		{
-		int cnt;
-		int len2 = len;
-		boolean exit_outer_loop = false;
+			int cnt;
+			int len2 = len;
+			boolean exit_outer_loop = false;
 
-		for (scanA = src; scanA && 0 == exit_outer_loop; scanA = scanA.next, len2--)
-		{
-
-			int from;
-			int i;
-			vertex vA = new vertex();
-			vertex vA2 = new vertex();
-
-			if ((cnt = scanA.p_count - 1) <= 0)
-			continue;
-
-			/* ordering within one scan */
-			for (from = 0; from <= cnt; from++) // find 1st non-undefined point
-			if (scanA.points[from].type != coord_type.UNDEFINED)
+			for (scanA = src; scanA && 0 == exit_outer_loop; scanA = scanA.next, len2--)
 			{
-				GlobalMembersUtil3d.map3d_xyz(scanA.points[from].x, scanA.points[from].y, 0, vA);
-				break;
-			}
-			for (i = cnt; i > from; i--) // find the last non-undefined point
-			if (scanA.points[i].type != coord_type.UNDEFINED)
-			{
-				GlobalMembersUtil3d.map3d_xyz(scanA.points[i].x, scanA.points[i].y, 0, vA2);
-				break;
-			}
 
-			if (i - from > cnt * 0.1)
-			/* it is completely arbitrary to request at least
-			 * 10% valid samples in this scan. (joze Jun-05-2002) */
-			invert = (vA2.z > vA.z) ? 0 : 1;
-			else
-			continue; // all points were undefined, so check next scan
+				int from;
+				int i;
+				vertex vA = new vertex();
+				vertex vA2 = new vertex();
+
+				if ((cnt = scanA.p_count - 1) <= 0)
+					continue;
+
+				/* ordering within one scan */
+				for (from = 0; from <= cnt; from++) // find 1st non-undefined point
+					if (scanA.points[from].type != coord_type.UNDEFINED)
+					{
+						GlobalMembersUtil3d.map3d_xyz(scanA.points[from].x, scanA.points[from].y, 0, vA);
+						break;
+					}
+				for (i = cnt; i > from; i--) // find the last non-undefined point
+					if (scanA.points[i].type != coord_type.UNDEFINED)
+					{
+						GlobalMembersUtil3d.map3d_xyz(scanA.points[i].x, scanA.points[i].y, 0, vA2);
+						break;
+					}
+
+				if (i - from > cnt * 0.1)
+					/* it is completely arbitrary to request at least
+					 * 10% valid samples in this scan. (joze Jun-05-2002) */
+					invert = (vA2.z > vA.z) ? 0 : 1;
+				else
+					continue; // all points were undefined, so check next scan
 
 
-			/* check the z ordering between scans
-			 * Find last scan. If this scan has all points undefined,
-			 * find last but one scan, an so on. */
+				/* check the z ordering between scans
+				 * Find last scan. If this scan has all points undefined,
+				 * find last but one scan, an so on. */
 
-			for (; len2 >= 3 && !exit_outer_loop; len2--)
-			{
-			for (scanB = scanA.next, i = len2 - 2; i && scanB != null; i--)
-				scanB = scanB.next; // skip over to last scan
-			if (scanB != null && scanB.p_count != 0)
-			{
-				vertex vB = new vertex();
-				for (i = from ; i < scanB.p_count; i++) // we compare vA.z with vB.z
+				for (; len2 >= 3 && !exit_outer_loop; len2--)
 				{
-					   /* find 1st non-undefined point */
-				if (scanB.points[i].type != coord_type.UNDEFINED)
-				{
-					GlobalMembersUtil3d.map3d_xyz(scanB.points[i].x, scanB.points[i].y, 0, vB);
-					invert_order = (vB.z > vA.z) ? 0 : 1;
-					exit_outer_loop = true;
-					break;
-				}
+					for (scanB = scanA.next, i = len2 - 2; i && scanB != null; i--)
+						scanB = scanB.next; // skip over to last scan
+					if (scanB != null && scanB.p_count != 0)
+					{
+						vertex vB = new vertex();
+						for (i = from ; i < scanB.p_count; i++) // we compare vA.z with vB.z
+						{
+							/* find 1st non-undefined point */
+							if (scanB.points[i].type != coord_type.UNDEFINED)
+							{
+								GlobalMembersUtil3d.map3d_xyz(scanB.points[i].x, scanB.points[i].y, 0, vB);
+								invert_order = (vB.z > vA.z) ? 0 : 1;
+								exit_outer_loop = true;
+								break;
+							}
+						}
+					}
 				}
 			}
-			}
-		}
 		}
 
 		GlobalMembersFit.a((stderr, "(pm3d_rearrange_part) invert       = %d\n", invert));
@@ -1477,30 +1477,30 @@ public class GlobalMembersPm3d
 
 		for (scanA = src, scan = len - 1, i = 0; scan >= 0; --scan, i++)
 		{
-		if (pm3d.direction == DefineConstants.PM3D_SCANS_AUTOMATIC)
-		{
-			switch (invert_order)
+			if (pm3d.direction == DefineConstants.PM3D_SCANS_AUTOMATIC)
 			{
-			case 1:
-			scan_array[scan] = scanA;
-			break;
-			case 0:
-			default:
-			scan_array[i] = scanA;
-			break;
+				switch (invert_order)
+				{
+				case 1:
+					scan_array[scan] = scanA;
+					break;
+				case 0:
+				default:
+					scan_array[i] = scanA;
+					break;
+				}
 			}
-		}
-		else if (pm3d.direction == DefineConstants.PM3D_SCANS_FORWARD)
-			scan_array[scan] = scanA;
-		else // PM3D_SCANS_BACKWARD: i counts scans
-			scan_array[i] = scanA;
-		scanA = scanA.next;
+			else if (pm3d.direction == DefineConstants.PM3D_SCANS_FORWARD)
+				scan_array[scan] = scanA;
+			else // PM3D_SCANS_BACKWARD: i counts scans
+				scan_array[i] = scanA;
+			scanA = scanA.next;
 		}
 	}
 
-/*
- *  Now the implementation of the filled color contour plot
-*/
+	/*
+	 *  Now the implementation of the filled color contour plot
+	 */
 	public static void filled_color_contour_plot(surface_points this_plot, int contours_where)
 	{
 		double gray;
@@ -1510,40 +1510,40 @@ public class GlobalMembersPm3d
 		boolean color_from_column = this_plot.pm3d_color_from_column;
 
 		if (this_plot == DefineConstants.NULL || this_plot.contours == DefineConstants.NULL)
-		return;
+			return;
 		if (contours_where != en_contour_placement.CONTOUR_SRF.getValue() && contours_where != en_contour_placement.CONTOUR_BASE.getValue())
-		return;
+			return;
 
 		/* return if the terminal does not support filled polygons */
 		if (!GlobalMembersTerm.term.filled_polygon)
-		return;
+			return;
 
 		/* TODO: CHECK FOR NUMBER OF POINTS IN CONTOUR: IF TOO SMALL, THEN IGNORE! */
 		cntr = this_plot.contours;
 		while (cntr != null)
 		{
-		System.out.printf("# Contour: points %i, z %g, label: %s\n", cntr.num_pts, cntr.coords[0].z, (cntr.label) ? cntr.label : "<no>");
-		if (cntr.isNewLevel != 0)
-		{
-			System.out.print("\t...it isNewLevel\n");
-			/* contour split across chunks */
-			/* fprintf(gpoutfile, "\n# Contour %d, label: %s\n", number++, c->label); */
-			/* What is the color? */
-			/* get the z-coordinate */
-			/* transform contour z-coordinate value to gray, i.e. to interval [0,1] */
-			if (color_from_column)
-			gray = GlobalMembersPm3d.cb2gray(cntr.coords[0].ylow);
-			else
-			gray = GlobalMembersPm3d.cb2gray(GlobalMembersPm3d.z2cb(cntr.coords[0].z));
-			GlobalMembersColor.set_color(gray);
-		}
-		/* draw one countour */
-		if (contours_where == en_contour_placement.CONTOUR_SRF.getValue()) // at CONTOUR_SRF
-			GlobalMembersColor.filled_polygon_3dcoords(cntr.num_pts, cntr.coords);
-		else // at CONTOUR_BASE
-			GlobalMembersColor.filled_polygon_3dcoords_zfixed(cntr.num_pts, cntr.coords, GlobalMembersGraph3d.base_z);
-		/* next contour */
-		cntr = cntr.next;
+			System.out.printf("# Contour: points %i, z %g, label: %s\n", cntr.num_pts, cntr.coords[0].z, (cntr.label) ? cntr.label : "<no>");
+			if (cntr.isNewLevel != 0)
+			{
+				System.out.print("\t...it isNewLevel\n");
+				/* contour split across chunks */
+				/* fprintf(gpoutfile, "\n# Contour %d, label: %s\n", number++, c->label); */
+				/* What is the color? */
+				/* get the z-coordinate */
+				/* transform contour z-coordinate value to gray, i.e. to interval [0,1] */
+				if (color_from_column)
+					gray = GlobalMembersPm3d.cb2gray(cntr.coords[0].ylow);
+				else
+					gray = GlobalMembersPm3d.cb2gray(GlobalMembersPm3d.z2cb(cntr.coords[0].z));
+				GlobalMembersColor.set_color(gray);
+			}
+			/* draw one countour */
+			if (contours_where == en_contour_placement.CONTOUR_SRF.getValue()) // at CONTOUR_SRF
+				GlobalMembersColor.filled_polygon_3dcoords(cntr.num_pts, cntr.coords);
+			else // at CONTOUR_BASE
+				GlobalMembersColor.filled_polygon_3dcoords_zfixed(cntr.num_pts, cntr.coords, GlobalMembersGraph3d.base_z);
+			/* next contour */
+			cntr = cntr.next;
 		}
 	} // end of filled color contour plot splot mode
 
@@ -1573,10 +1573,10 @@ public class GlobalMembersPm3d
 		final quadrangle q2 = (quadrangle)v2;
 
 		if (q1.z > q2.z)
-		return 1;
+			return 1;
 		else if (q1.z < q2.z)
-		return -1;
+			return -1;
 		else
-		return 0;
+			return 0;
 	}
 }

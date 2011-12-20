@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.RefObject;
+
 public class GlobalMembersPlot
 {
 	///#define __STDC__ 1
@@ -168,10 +170,10 @@ public class GlobalMembersPlot
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: plot.c,v 1.104.2.4 2010/02/18 05:52:49 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: plot.c,v 1.104.2.4 2010/02/18 05:52:49 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - plot.c */
@@ -687,64 +689,64 @@ public class GlobalMembersPlot
 
 	/* Variables of plot.c needed by other modules: */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean interactive;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean persist_cl;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern String user_shell;
 
-///#ifdef LINUXVGA
-// /* utility functions to ensure that setuid gnuplot
-//  * assumes root privileges only for those parts
-//  * of the code which require root rights.
-//  *
-//  * By "Dr. Werner Fink" <werner@suse.de>
-//  */
-//static uid_t euid, ruid;
-//static gid_t egid, rgid;
-//static int asked_privi = 0;
-//
-//void
-//drop_privilege()
-//{
-//    if (!asked_privi) {
-//	euid = geteuid();
-//	egid = getegid();
-//	ruid = getuid();
-//	rgid = getgid();
-//	asked_privi = 1;
-//    }
-//    if (setegid(rgid) == -1)
-//	(void) fprintf(stderr, "setegid(%d): %s\n",
-//		       (int) rgid, strerror(errno));
-//    if (seteuid(ruid) == -1)
-//	(void) fprintf(stderr, "seteuid(%d): %s\n",
-//		       (int) ruid, strerror(errno));
-//}
-//
-//void
-//take_privilege()
-//{
-//    if (!asked_privi) {
-//	euid = geteuid();
-//	egid = getegid();
-//	ruid = getuid();
-//	rgid = getgid();
-//	asked_privi = 1;
-//    }
-//    if (setegid(egid) == -1)
-//	(void) fprintf(stderr, "setegid(%d): %s\n",
-//		       (int) egid, strerror(errno));
-//    if (seteuid(euid) == -1)
-//	(void) fprintf(stderr, "seteuid(%d): %s\n",
-//		       (int) euid, strerror(errno));
-//}
-//
-///#endif // LINUXVGA 
+	///#ifdef LINUXVGA
+	// /* utility functions to ensure that setuid gnuplot
+	//  * assumes root privileges only for those parts
+	//  * of the code which require root rights.
+	//  *
+	//  * By "Dr. Werner Fink" <werner@suse.de>
+	//  */
+	//static uid_t euid, ruid;
+	//static gid_t egid, rgid;
+	//static int asked_privi = 0;
+	//
+	//void
+	//drop_privilege()
+	//{
+	//    if (!asked_privi) {
+	//	euid = geteuid();
+	//	egid = getegid();
+	//	ruid = getuid();
+	//	rgid = getgid();
+	//	asked_privi = 1;
+	//    }
+	//    if (setegid(rgid) == -1)
+	//	(void) fprintf(stderr, "setegid(%d): %s\n",
+	//		       (int) rgid, strerror(errno));
+	//    if (seteuid(ruid) == -1)
+	//	(void) fprintf(stderr, "seteuid(%d): %s\n",
+	//		       (int) ruid, strerror(errno));
+	//}
+	//
+	//void
+	//take_privilege()
+	//{
+	//    if (!asked_privi) {
+	//	euid = geteuid();
+	//	egid = getegid();
+	//	ruid = getuid();
+	//	rgid = getgid();
+	//	asked_privi = 1;
+	//    }
+	//    if (setegid(egid) == -1)
+	//	(void) fprintf(stderr, "setegid(%d): %s\n",
+	//		       (int) egid, strerror(errno));
+	//    if (seteuid(euid) == -1)
+	//	(void) fprintf(stderr, "seteuid(%d): %s\n",
+	//		       (int) euid, strerror(errno));
+	//}
+	//
+	///#endif // LINUXVGA 
 
-/* a wrapper for longjmp so we can keep everything local */
+	/* a wrapper for longjmp so we can keep everything local */
 
 	///#ifdef OS2
 	//extern TBOOLEAN CallFromRexx;
@@ -754,94 +756,94 @@ public class GlobalMembersPlot
 
 	public static void bail_to_command_line()
 	{
-	///#ifdef _Windows
-	//    call_kill_pending_Pause_dialog();
-	///#endif
+		///#ifdef _Windows
+		//    call_kill_pending_Pause_dialog();
+		///#endif
 		siglongjmp(command_line_env, true);
 	}
 
-/* Set up to catch interrupts */
+	/* Set up to catch interrupts */
 	public static void interrupt_setup()
 	{
-	///#ifdef __PUREC__
-	//    setmatherr(purec_matherr);
-	///#endif
+		///#ifdef __PUREC__
+		//    setmatherr(purec_matherr);
+		///#endif
 
-	///#if defined(WGP_CONSOLE)
-	// /* FIXME. CTRC+C crashes console mode gnuplot for windows.
-	//    Failure of longjmp() is not easy to fix so that the signal
-	//    of SIGINT is just ignored at the moment.
-	// */
-	//    (void) signal(SIGINT, SIG_IGN);
-	///#else
-		() signal(SIGINT, (sigfunc) GlobalMembersPlot.inter);
-	///#endif
+		///#if defined(WGP_CONSOLE)
+		// /* FIXME. CTRC+C crashes console mode gnuplot for windows.
+		//    Failure of longjmp() is not easy to fix so that the signal
+		//    of SIGINT is just ignored at the moment.
+		// */
+		//    (void) signal(SIGINT, SIG_IGN);
+		///#else
+		signal(SIGINT, (sigfunc) GlobalMembersPlot.inter);
+		///#endif
 
-	///#ifdef SIGPIPE
-	// /* ignore pipe errors, this might happen with set output "|head" */
-	//    (void) signal(SIGPIPE, SIG_IGN);
-	///#endif // SIGPIPE
+		///#ifdef SIGPIPE
+		// /* ignore pipe errors, this might happen with set output "|head" */
+		//    (void) signal(SIGPIPE, SIG_IGN);
+		///#endif // SIGPIPE
 	}
 
-/* expand tilde in path
- * path cannot be a static array!
- * tilde must be the first character in *pathp;
- * we may change that later
- */
-	public static void gp_expand_tilde(tangible.RefObject<String[]> pathp)
+	/* expand tilde in path
+	 * path cannot be a static array!
+	 * tilde must be the first character in *pathp;
+	 * we may change that later
+	 */
+	public static void gp_expand_tilde(RefObject<String[]> pathp)
 	{
 		if (pathp.argvalue == null)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Cannot expand empty path");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Cannot expand empty path");
 
 		if ((pathp.argvalue)[0] == '~' && (pathp.argvalue)[1] == DefineConstants.DIRSEP1)
 		{
-		if (user_homedir != null)
-		{
-			int n = String.valueOf(pathp.argvalue).length();
+			if (user_homedir != null)
+			{
+				int n = String.valueOf(pathp.argvalue).length();
 
-			pathp.argvalue = GlobalMembersAlloc.gp_realloc(pathp.argvalue, n + user_homedir.length(), "tilde expansion");
-			/* include null at the end ... */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memmove' has no equivalent in Java:
-			memmove(pathp.argvalue + user_homedir.length() - 1, pathp.argvalue, n + 1);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-			memcpy(pathp.argvalue, user_homedir, user_homedir.length());
-		}
-		else
-			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "HOME not set - cannot expand tilde");
+				pathp.argvalue = GlobalMembersAlloc.gp_realloc(pathp.argvalue, n + user_homedir.length(), "tilde expansion");
+				/* include null at the end ... */
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memmove' has no equivalent in Java:
+				memmove(pathp.argvalue + user_homedir.length() - 1, pathp.argvalue, n + 1);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+				memcpy(pathp.argvalue, user_homedir, user_homedir.length());
+			}
+			else
+				GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "HOME not set - cannot expand tilde");
 		}
 	}
 	public static void get_user_env()
 	{
 		if (user_homedir.equals(DefineConstants.NULL))
 		{
-		String env_home;
+			String env_home;
 
-	///#ifdef WIN32
-	//    if ((env_home = getenv(HOME))|| (env_home = appdata_directory())
-	//	    || (env_home = getenv("USERPROFILE"))
-	///#else
-	///#endif
-	///#ifndef VMS
-		if ((env_home = getenv(DefineConstants.HOME)) || (env_home = getenv("HOME")))
-	///#else
-	//    if ((env_home = getenv(HOME))
-	///#endif
-			user_homedir = (String) GlobalMembersUtil.gp_strdup(env_home);
-		else if (interactive)
-			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "no HOME found");
+			///#ifdef WIN32
+			//    if ((env_home = getenv(HOME))|| (env_home = appdata_directory())
+			//	    || (env_home = getenv("USERPROFILE"))
+			///#else
+			///#endif
+			///#ifndef VMS
+			if ((env_home = getenv(DefineConstants.HOME)) || (env_home = getenv("HOME")))
+				///#else
+				//    if ((env_home = getenv(HOME))
+				///#endif
+				user_homedir = (String) GlobalMembersUtil.gp_strdup(env_home);
+			else if (interactive)
+				GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "no HOME found");
 		}
 		/* Hhm ... what about VMS? */
 		if (user_shell.equals(DefineConstants.NULL))
 		{
-		String env_shell;
+			String env_shell;
 
-		if ((env_shell = getenv("SHELL")) == DefineConstants.NULL)
-	///#if defined(MSDOS) || defined(_Windows) || defined(DOS386) || defined(OS2)
-	//	    if ((env_shell = getenv("COMSPEC")) == NULL)
-	///#endif
-			env_shell = DefineConstants.SHELL;
+			if ((env_shell = getenv("SHELL")) == DefineConstants.NULL)
+				///#if defined(MSDOS) || defined(_Windows) || defined(DOS386) || defined(OS2)
+				//	    if ((env_shell = getenv("COMSPEC")) == NULL)
+				///#endif
+				env_shell = DefineConstants.SHELL;
 
-		user_shell = (String) GlobalMembersUtil.gp_strdup(env_shell);
+			user_shell = (String) GlobalMembersUtil.gp_strdup(env_shell);
 		}
 	}
 
@@ -1781,12 +1783,12 @@ public class GlobalMembersPlot
 	///#ifdef HAVE_LIBREADLINE
 	///#ifdef GNUPLOT_HISTORY
 	///#endif
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int rl_complete_with_tilde_expansion;
 	///#endif
 
 	/* BSD editline
-	*/
+	 */
 	///#ifdef HAVE_LIBEDITLINE
 	///#include <editline/readline.h>
 	///#endif
@@ -1805,168 +1807,168 @@ public class GlobalMembersPlot
 	 */
 	public static String expanded_history_filename;
 
-///#ifdef OS2
-//
-//int
-//ExecuteMacro(char *argv, int namelength)
-//{
-//    RXSTRING rxRc;
-//    RXSTRING rxArg[2];
-//    int rxArgCount = 0;
-//    char pszName[CCHMAXPATH];
-//    char *rxArgStr;
-//    short sRc;
-//    long rc;
-//
-//    if (namelength >= sizeof(pszName))
-//	return 1;
-// /* FIXME HBB 20010121: 3rd argument doesn't make sense. Either
-//  * this should be sizeof(pszName), or it shouldn't use
-//  * safe_strncpy(), here */
-//    safe_strncpy(pszName, argv, namelength + 1);
-//    rxArgStr = &argv[namelength];
-//    RXSTRPTR(rxRc) = NULL;
-//
-///#if 0
-// /*
-//    C-like calling of function: program name is first
-//    parameter.
-//    In REXX you would have to use
-//    Parse Arg param0, param1
-//    to get the program name in param0 and the arguments in param1.
-//
-//    Some versions before gnuplot 3.7pl1 used a similar approach but
-//    passed program name and arguments in a single string:
-//    (==> Parse Arg param0 param1)
-//  */
-//
-//    MAKERXSTRING(rxArg[0], pszName, strlen(pszName));
-//    rxArgCount++;
-//    if (*rxArgStr) {
-//	MAKERXSTRING(rxArg[1], rxArgStr, strlen(rxArgStr));
-//	rxArgCount++;
-//    }
-///#else
-// /*
-//    REXX standard calling (gnuplot 3.7pl1 and above):
-//    The program name is not supplied and so all actual arguments
-//    are in a single string:
-//    Parse Arg param
-//    We even handle blanks like cmd.exe when calling REXX programs.
-//  */
-//
-//    if (*rxArgStr) {
-//	MAKERXSTRING(rxArg[0], rxArgStr, strlen(rxArgStr));
-//	rxArgCount++;
-//    }
-///#endif
-//
-//    CallFromRexx = TRUE;
-//    rc = RexxStart(
-//		      rxArgCount,
-//		      rxArg,
-//		      pszName,
-//		      NULL,
-//		      "GNUPLOT",
-//		      RXCOMMAND,
-//		      NULL,
-//		      &sRc,
-//		      &rxRc);
-//    CallFromRexx = FALSE;
-//
-// /* am: a word WRT errors codes:
-//    the negative ones don't seem to have symbolic names, you can get
-//    them from the OREXX reference, they're not in REXX Programming Guide -
-//    no idea where to retrieve them from a Warp 3 reference ??
-//    The positive ones are somehow referenced in REXXPG
-// */
-//    if (rc < 0) {
-// /* REXX error */
-//    } else if (rc > 0) {
-// /* Interpreter couldn't be started */
-//	if (rc == -4)
-// /* run was cancelled, but don't give error message */
-//	    rc = 0;
-//    } else if (rc==0) {
-// /* all was fine */
-//    }
-//
-// /* We don't we try to use rxRc ?
-//    BTW, don't use free() instead since it's allocated inside RexxStart()
-//    and not in our executable using the EMX libraries */
-//   if (RXSTRPTR(rxRc))
-// /* I guess it's NULL if something major went wrong,
-// NULL strings are usually not part of the REXX language ... */
-//       DosFreeMem(rxRc.strptr);
-//
-//   return rc;
-//}
-//
-// /* Rexx command line interface */
-//ULONG
-//RexxInterface(PRXSTRING rxCmd, PUSHORT pusErr, PRXSTRING rxRc)
-//{
-//    int rc;
-//    static JMP_BUF keepenv;
-//    int cmdlen;
-//
-//    memcpy(keepenv, command_line_env, sizeof(JMP_BUF));
-//    if (!SETJMP(command_line_env, 1)) {
-// /* Set variable gp_input_line.
-//    Watch out for line length of NOT_ZERO_TERMINATED strings ! */
-//	cmdlen = rxCmd->strlength + 1;
-// /* FIXME HBB 20010121: 3rd argument doesn't make sense. Either
-//  * this should be gp_input_line_len, or it shouldn't use
-//  * safe_strncpy(), here */
-//	safe_strncpy(gp_input_line, rxCmd->strptr, cmdlen);
-//	gp_input_line[cmdlen] = NUL;
-//	rc = do_line();
-//	*pusErr = RXSUBCOM_OK;
-//	rxRc->strptr[0] = rc + '0';
-//	rxRc->strptr[1] = NUL;
-//	rxRc->strlength = strlen(rxRc->strptr);
-//    } else {
-// /*
-//    We end up here when bail_to_command_line() is called.
-//    Therefore sometimes this call should be avoided when
-//    executing a REXX program (e.g. 'Cancel' from
-//    PM GUI after a 'pause -1' command)
-// */
-//	*pusErr = RXSUBCOM_ERROR;
-//	RexxSetHalt(getpid(), 1);
-//    }
-//    memcpy(command_line_env, keepenv, sizeof(JMP_BUF));
-//    return 0;
-//}
-///#endif
+	///#ifdef OS2
+	//
+	//int
+	//ExecuteMacro(char *argv, int namelength)
+	//{
+	//    RXSTRING rxRc;
+	//    RXSTRING rxArg[2];
+	//    int rxArgCount = 0;
+	//    char pszName[CCHMAXPATH];
+	//    char *rxArgStr;
+	//    short sRc;
+	//    long rc;
+	//
+	//    if (namelength >= sizeof(pszName))
+	//	return 1;
+	// /* FIXME HBB 20010121: 3rd argument doesn't make sense. Either
+	//  * this should be sizeof(pszName), or it shouldn't use
+	//  * safe_strncpy(), here */
+	//    safe_strncpy(pszName, argv, namelength + 1);
+	//    rxArgStr = &argv[namelength];
+	//    RXSTRPTR(rxRc) = NULL;
+	//
+	///#if 0
+	// /*
+	//    C-like calling of function: program name is first
+	//    parameter.
+	//    In REXX you would have to use
+	//    Parse Arg param0, param1
+	//    to get the program name in param0 and the arguments in param1.
+	//
+	//    Some versions before gnuplot 3.7pl1 used a similar approach but
+	//    passed program name and arguments in a single string:
+	//    (==> Parse Arg param0 param1)
+	//  */
+	//
+	//    MAKERXSTRING(rxArg[0], pszName, strlen(pszName));
+	//    rxArgCount++;
+	//    if (*rxArgStr) {
+	//	MAKERXSTRING(rxArg[1], rxArgStr, strlen(rxArgStr));
+	//	rxArgCount++;
+	//    }
+	///#else
+	// /*
+	//    REXX standard calling (gnuplot 3.7pl1 and above):
+	//    The program name is not supplied and so all actual arguments
+	//    are in a single string:
+	//    Parse Arg param
+	//    We even handle blanks like cmd.exe when calling REXX programs.
+	//  */
+	//
+	//    if (*rxArgStr) {
+	//	MAKERXSTRING(rxArg[0], rxArgStr, strlen(rxArgStr));
+	//	rxArgCount++;
+	//    }
+	///#endif
+	//
+	//    CallFromRexx = TRUE;
+	//    rc = RexxStart(
+	//		      rxArgCount,
+	//		      rxArg,
+	//		      pszName,
+	//		      NULL,
+	//		      "GNUPLOT",
+	//		      RXCOMMAND,
+	//		      NULL,
+	//		      &sRc,
+	//		      &rxRc);
+	//    CallFromRexx = FALSE;
+	//
+	// /* am: a word WRT errors codes:
+	//    the negative ones don't seem to have symbolic names, you can get
+	//    them from the OREXX reference, they're not in REXX Programming Guide -
+	//    no idea where to retrieve them from a Warp 3 reference ??
+	//    The positive ones are somehow referenced in REXXPG
+	// */
+	//    if (rc < 0) {
+	// /* REXX error */
+	//    } else if (rc > 0) {
+	// /* Interpreter couldn't be started */
+	//	if (rc == -4)
+	// /* run was cancelled, but don't give error message */
+	//	    rc = 0;
+	//    } else if (rc==0) {
+	// /* all was fine */
+	//    }
+	//
+	// /* We don't we try to use rxRc ?
+	//    BTW, don't use free() instead since it's allocated inside RexxStart()
+	//    and not in our executable using the EMX libraries */
+	//   if (RXSTRPTR(rxRc))
+	// /* I guess it's NULL if something major went wrong,
+	// NULL strings are usually not part of the REXX language ... */
+	//       DosFreeMem(rxRc.strptr);
+	//
+	//   return rc;
+	//}
+	//
+	// /* Rexx command line interface */
+	//ULONG
+	//RexxInterface(PRXSTRING rxCmd, PUSHORT pusErr, PRXSTRING rxRc)
+	//{
+	//    int rc;
+	//    static JMP_BUF keepenv;
+	//    int cmdlen;
+	//
+	//    memcpy(keepenv, command_line_env, sizeof(JMP_BUF));
+	//    if (!SETJMP(command_line_env, 1)) {
+	// /* Set variable gp_input_line.
+	//    Watch out for line length of NOT_ZERO_TERMINATED strings ! */
+	//	cmdlen = rxCmd->strlength + 1;
+	// /* FIXME HBB 20010121: 3rd argument doesn't make sense. Either
+	//  * this should be gp_input_line_len, or it shouldn't use
+	//  * safe_strncpy(), here */
+	//	safe_strncpy(gp_input_line, rxCmd->strptr, cmdlen);
+	//	gp_input_line[cmdlen] = NUL;
+	//	rc = do_line();
+	//	*pusErr = RXSUBCOM_OK;
+	//	rxRc->strptr[0] = rc + '0';
+	//	rxRc->strptr[1] = NUL;
+	//	rxRc->strlength = strlen(rxRc->strptr);
+	//    } else {
+	// /*
+	//    We end up here when bail_to_command_line() is called.
+	//    Therefore sometimes this call should be avoided when
+	//    executing a REXX program (e.g. 'Cancel' from
+	//    PM GUI after a 'pause -1' command)
+	// */
+	//	*pusErr = RXSUBCOM_ERROR;
+	//	RexxSetHalt(getpid(), 1);
+	//    }
+	//    memcpy(command_line_env, keepenv, sizeof(JMP_BUF));
+	//    return 0;
+	//}
+	///#endif
 
-///#ifdef GNUPLOT_HISTORY
-///#if defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)
+	///#ifdef GNUPLOT_HISTORY
+	///#if defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)
 
 
 	public static void wrapper_for_write_history()
 	{
-	///#if 1
+		///#if 1
 		/* Alternative code, saves one disk access */
 		if (history_is_stifled())
-		unstifle_history();
+			unstifle_history();
 		if (GlobalMembersHistory.gnuplot_history_size >= 0)
-		stifle_history(GlobalMembersHistory.gnuplot_history_size);
+			stifle_history(GlobalMembersHistory.gnuplot_history_size);
 
 		/* returns 0 on success */
 		if (write_history(expanded_history_filename))
-		fprintf(stderr, "Warning:  Could not write history file!!!\n");
+			fprintf(stderr, "Warning:  Could not write history file!!!\n");
 
 		unstifle_history();
-	///#else
-	// /* if writing was successful, truncate history
-	//  *  to gnuplot_history_size lines
-	//  */
-	//    if (write_history(expanded_history_filename)) {
-	//	if (gnuplot_history_size >= 0)
-	//	    history_truncate_file(expanded_history_filename, gnuplot_history_size);
-	//    }
-	///#endif
+		///#else
+		// /* if writing was successful, truncate history
+		//  *  to gnuplot_history_size lines
+		//  */
+		//    if (write_history(expanded_history_filename)) {
+		//	if (gnuplot_history_size >= 0)
+		//	    history_truncate_file(expanded_history_filename, gnuplot_history_size);
+		//    }
+		///#endif
 	}
 
 	///#endif				// GNUPLOT_HISTORY 
@@ -1982,7 +1984,7 @@ public class GlobalMembersPlot
 	public static String user_shell = DefineConstants.NULL;
 
 	///#ifdef X11
-//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
+	//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
 	//extern int X11_args(int NamelessParameter1, tangible.RefObject<String[]> NamelessParameter2);
 	///#endif
 
@@ -2000,7 +2002,7 @@ public class GlobalMembersPlot
 	///#else
 	public static sigjmp_buf command_line_env = new sigjmp_buf();
 
-/* Look for a gnuplot init file in current or home directory */
+	/* Look for a gnuplot init file in current or home directory */
 	///#endif
 
 	public static void load_rcfile()
@@ -2008,76 +2010,76 @@ public class GlobalMembersPlot
 		FILE plotrc = DefineConstants.NULL;
 		String rcfile = DefineConstants.NULL;
 
-	///#ifdef NOCWDRC
-	// /* inhibit check of init file in current directory for security reasons */
-	///#else
+		///#ifdef NOCWDRC
+		// /* inhibit check of init file in current directory for security reasons */
+		///#else
 		plotrc = fopen(DefineConstants.PLOTRC, "r");
-	///#endif // !NOCWDRC
+		///#endif // !NOCWDRC
 
 		if (plotrc == DefineConstants.NULL)
 		{
-		if (user_homedir != null)
-		{
-			/* len of homedir + directory separator + len of file name + \0 */
-			rcfile = (String) GlobalMembersAlloc.gp_alloc((user_homedir != null ? user_homedir.length() : 0) + 1 + DefineConstants.PLOTRC.length() + 1, "rcfile");
-			rcfile = user_homedir;
+			if (user_homedir != null)
 			{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-				byte * p = rcfile;
-				p += rcfile.length();
-				if (!rcfile.equals(p))
-					p--;
+				/* len of homedir + directory separator + len of file name + \0 */
+				rcfile = (String) GlobalMembersAlloc.gp_alloc((user_homedir != null ? user_homedir.length() : 0) + 1 + DefineConstants.PLOTRC.length() + 1, "rcfile");
+				rcfile = user_homedir;
+				{
+					//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+					byte * p = rcfile;
+					p += rcfile.length();
+					if (!rcfile.equals(p))
+						p--;
 					if (*p && (*p != DefineConstants.DIRSEP1) && (*p != DefineConstants.NUL))
 					{
 						if (*p)
 							p++;
-							*p++= DefineConstants.DIRSEP1;
-							*p = DefineConstants.NUL;
+						*p++= DefineConstants.DIRSEP1;
+						*p = DefineConstants.NUL;
 					}
 					rcfile += DefineConstants.PLOTRC;
-			};
-			plotrc = fopen(rcfile, "r");
-		}
+				};
+				plotrc = fopen(rcfile, "r");
+			}
 		}
 		if (plotrc != null)
 		{
-		byte rc = GlobalMembersUtil.gp_strdup(rcfile != null ? rcfile : DefineConstants.PLOTRC);
-		GlobalMembersMisc.load_file(plotrc, rc, false);
-		GlobalMembersMisc.push_terminal(0); // needed if terminal or its options were changed
+			byte rc = GlobalMembersUtil.gp_strdup(rcfile != null ? rcfile : DefineConstants.PLOTRC);
+			GlobalMembersMisc.load_file(plotrc, rc, false);
+			GlobalMembersMisc.push_terminal(0); // needed if terminal or its options were changed
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(rcfile);
 	}
 
-///#ifdef OS2
-///#include <process.h>
-//static ULONG RexxInterface(PRXSTRING, PUSHORT, PRXSTRING);
-//TBOOLEAN CallFromRexx = FALSE;
-///#endif // OS2 
+	///#ifdef OS2
+	///#include <process.h>
+	//static ULONG RexxInterface(PRXSTRING, PUSHORT, PRXSTRING);
+	//TBOOLEAN CallFromRexx = FALSE;
+	///#endif // OS2 
 
 	public static void inter(int anint)
 	{
 		() anint; // aovid -Wunused warning
 		() signal(SIGINT, (sigfunc) GlobalMembersPlot.inter);
 
-	///#ifndef DOSX286
+		///#ifndef DOSX286
 		() signal(SIGFPE, SIG_DFL); // turn off FPE trapping
-	///#endif
+		///#endif
 
-	///#ifdef OS2
-	//    if (!strcmp(term->name,"pm")) {
-	//	PM_intc_cleanup();
-	// /* ??
-	//   putc('\n', stderr);
-	//   LONGJMP(command_line_env, TRUE);
-	//  */
-	//    } else
-	///#endif
+		///#ifdef OS2
+		//    if (!strcmp(term->name,"pm")) {
+		//	PM_intc_cleanup();
+		// /* ??
+		//   putc('\n', stderr);
+		//   LONGJMP(command_line_env, TRUE);
+		//  */
+		//    } else
+		///#endif
 		{
-		GlobalMembersTerm.term_reset();
-		() putc('\n', stderr);
-		GlobalMembersPlot.bail_to_command_line(); // return to prompt
+			GlobalMembersTerm.term_reset();
+			() putc('\n', stderr);
+			GlobalMembersPlot.bail_to_command_line(); // return to prompt
 		}
 	}
 	public static void init_memory()
@@ -2099,133 +2101,133 @@ public class GlobalMembersPlot
 	{
 		int i;
 
-	///#ifdef LINUXVGA
-	//    LINUX_setup();		// setup VGA before dropping privilege DBT 4/5/99 
-	//    drop_privilege();
-	///#endif
-	/* make sure that we really have revoked root access, this might happen if
+		///#ifdef LINUXVGA
+		//    LINUX_setup();		// setup VGA before dropping privilege DBT 4/5/99 
+		//    drop_privilege();
+		///#endif
+		/* make sure that we really have revoked root access, this might happen if
 	   gnuplot is compiled without vga support but is installed suid by mistake */
-	///#ifdef __linux__
+		///#ifdef __linux__
 		setuid(getuid());
-	///#endif
+		///#endif
 
-	///#if defined(MSDOS) && !defined(_Windows) && !defined(__GNUC__)
-	//    PC_setup();
-	///#endif // MSDOS !Windows 
+		///#if defined(MSDOS) && !defined(_Windows) && !defined(__GNUC__)
+		//    PC_setup();
+		///#endif // MSDOS !Windows 
 
-	/* HBB: Seems this isn't needed any more for DJGPP V2? */
-	/* HBB: disable all floating point exceptions, just keep running... */
-	///#if defined(DJGPP) && (DJGPP!=2)
-	//    _control87(MCW_EM, MCW_EM);
-	///#endif
+		/* HBB: Seems this isn't needed any more for DJGPP V2? */
+		/* HBB: disable all floating point exceptions, just keep running... */
+		///#if defined(DJGPP) && (DJGPP!=2)
+		//    _control87(MCW_EM, MCW_EM);
+		///#endif
 
-	///#if defined(OS2)
-	//    int rc;
-	///#ifdef OS2_IPC
-	//    char semInputReadyName[40];
-	//    sprintf( semInputReadyName, "\\SEM32\\GP%i_Input_Ready", getpid() );
-	//    rc = DosCreateEventSem(semInputReadyName,&semInputReady,0,0);
-	//    if (rc != 0)
-	//      fputs("DosCreateEventSem error\n",stderr);
-	///#endif
-	//    rc = RexxRegisterSubcomExe("GNUPLOT", (PFN) RexxInterface, NULL);
-	///#endif
+		///#if defined(OS2)
+		//    int rc;
+		///#ifdef OS2_IPC
+		//    char semInputReadyName[40];
+		//    sprintf( semInputReadyName, "\\SEM32\\GP%i_Input_Ready", getpid() );
+		//    rc = DosCreateEventSem(semInputReadyName,&semInputReady,0,0);
+		//    if (rc != 0)
+		//      fputs("DosCreateEventSem error\n",stderr);
+		///#endif
+		//    rc = RexxRegisterSubcomExe("GNUPLOT", (PFN) RexxInterface, NULL);
+		///#endif
 
-	/* malloc large blocks, otherwise problems with fragmented mem */
-	///#ifdef OSK
-	//    _mallocmin(102400);
-	///#endif
+		/* malloc large blocks, otherwise problems with fragmented mem */
+		///#ifdef OSK
+		//    _mallocmin(102400);
+		///#endif
 
-	///#ifdef MALLOCDEBUG
-	//    malloc_debug(7);
-	///#endif
+		///#ifdef MALLOCDEBUG
+		//    malloc_debug(7);
+		///#endif
 
-	/* get helpfile from home directory */
-	///#ifndef DOSX286
-	///#ifndef _Windows
-	///#if defined (__TURBOC__) && (defined (MSDOS) || defined(DOS386))
-	//    strcpy(HelpFile, args[0]);
-	//    strcpy(strrchr(HelpFile, DIRSEP1), "\\gnuplot.gih");
-	///#endif			//   - DJL 
-	///#endif				// !_Windows 
-	///#endif // !DOSX286 
-	///#ifdef __DJGPP__
-	//    {
-	//	char *s;
-	//	strcpy(HelpFile, args[0]);
-	//	for (s = HelpFile; *s; s++)
-	//	    if (*s == DIRSEP1)
-	//		*s = DIRSEP2;	// '\\' to '/' 
-	//	strcpy(strrchr(HelpFile, DIRSEP2), "/gnuplot.gih");
-	//    }			// Add also some "paranoid" tests for '\\':  AP 
-	///#endif // DJGPP 
+		/* get helpfile from home directory */
+		///#ifndef DOSX286
+		///#ifndef _Windows
+		///#if defined (__TURBOC__) && (defined (MSDOS) || defined(DOS386))
+		//    strcpy(HelpFile, args[0]);
+		//    strcpy(strrchr(HelpFile, DIRSEP1), "\\gnuplot.gih");
+		///#endif			//   - DJL 
+		///#endif				// !_Windows 
+		///#endif // !DOSX286 
+		///#ifdef __DJGPP__
+		//    {
+		//	char *s;
+		//	strcpy(HelpFile, args[0]);
+		//	for (s = HelpFile; *s; s++)
+		//	    if (*s == DIRSEP1)
+		//		*s = DIRSEP2;	// '\\' to '/' 
+		//	strcpy(strrchr(HelpFile, DIRSEP2), "/gnuplot.gih");
+		//    }			// Add also some "paranoid" tests for '\\':  AP 
+		///#endif // DJGPP 
 
-	///#ifdef VMS
-	//    unsigned int status[2] = { 1, 0 };
-	///#endif
+		///#ifdef VMS
+		//    unsigned int status[2] = { 1, 0 };
+		///#endif
 
-	///#if defined(HAVE_LIBEDITLINE)
-	//    rl_getc_function = getc_wrapper;
-	///#endif
-	///#if defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)
+		///#if defined(HAVE_LIBEDITLINE)
+		//    rl_getc_function = getc_wrapper;
+		///#endif
+		///#if defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)
 		using_history();
 		/* T.Walter 1999-06-24: 'rl_readline_name' must be this fix name.
 		 * It is used to parse a 'gnuplot' specific section in '~/.inputrc' */
 		rl_readline_name = "Gnuplot";
 		rl_terminal_name = getenv("TERM");
-	///#endif
-	///#if defined(HAVE_LIBREADLINE)
+		///#endif
+		///#if defined(HAVE_LIBREADLINE)
 		rl_complete_with_tilde_expansion = 1;
-	///#endif
+		///#endif
 
 		for (i = 1; i < argc; i++)
 		{
-		if (args[i] == null)
-			continue;
+			if (args[i] == null)
+				continue;
 
-		if (!strcmp(args[i], "-V") || !strcmp(args[i], "--version"))
-		{
-			System.out.printf("gnuplot %s patchlevel %s\n", GlobalMembersVersion.gnuplot_version, GlobalMembersVersion.gnuplot_patchlevel);
+			if (!strcmp(args[i], "-V") || !strcmp(args[i], "--version"))
+			{
+				System.out.printf("gnuplot %s patchlevel %s\n", GlobalMembersVersion.gnuplot_version, GlobalMembersVersion.gnuplot_patchlevel);
 
-		}
-		else if (!strcmp(args[i], "-h") || !strcmp(args[i], "--help"))
-		{
-	///#ifdef X11
-	///#ifdef DIST_CONTACT
-	///#else
-	//        printf( "Usage: gnuplot [OPTION]... [FILE]\n"
-	///#endif
-	//        printf( "Usage: gnuplot [OPTION]... [FILE]\n""for X11 options see 'help X11->command-line-options'\n" + "  -V, --version\n" + "  -h, --help\n" + "  -p  --persist\n" + "  -e  \"command1; command2; ...\"\n" + "gnuplot %s patchlevel %s\n""Report bugs to "DIST_CONTACT"\n"
-	//		    "            or %s\n",
-	///#else
-			System.out.printf("Usage: gnuplot [OPTION]... [FILE]\n""for X11 options see 'help X11->command-line-options'\n" + "  -V, --version\n" + "  -h, --help\n" + "  -p  --persist\n" + "  -e  \"command1; command2; ...\"\n" + "gnuplot %s patchlevel %s\n""Report bugs to %s\n", GlobalMembersVersion.gnuplot_version, GlobalMembersVersion.gnuplot_patchlevel, GlobalMembersVersion.bug_report);
-	///#endif
+			}
+			else if (!strcmp(args[i], "-h") || !strcmp(args[i], "--help"))
+			{
+				///#ifdef X11
+				///#ifdef DIST_CONTACT
+				///#else
+				//        printf( "Usage: gnuplot [OPTION]... [FILE]\n"
+				///#endif
+				//        printf( "Usage: gnuplot [OPTION]... [FILE]\n""for X11 options see 'help X11->command-line-options'\n" + "  -V, --version\n" + "  -h, --help\n" + "  -p  --persist\n" + "  -e  \"command1; command2; ...\"\n" + "gnuplot %s patchlevel %s\n""Report bugs to "DIST_CONTACT"\n"
+				//		    "            or %s\n",
+				///#else
+				System.out.printf("Usage: gnuplot [OPTION]... [FILE]\n""for X11 options see 'help X11->command-line-options'\n" + "  -V, --version\n" + "  -h, --help\n" + "  -p  --persist\n" + "  -e  \"command1; command2; ...\"\n" + "gnuplot %s patchlevel %s\n""Report bugs to %s\n", GlobalMembersVersion.gnuplot_version, GlobalMembersVersion.gnuplot_patchlevel, GlobalMembersVersion.bug_report);
+				///#endif
 
-		}
-		else if (!strncmp(args[i], "-persist", 2) || !strcmp(args[i], "--persist"))
-		{
-			persist_cl = true;
-		}
+			}
+			else if (!strncmp(args[i], "-persist", 2) || !strcmp(args[i], "--persist"))
+			{
+				persist_cl = true;
+			}
 		}
 
-	///#ifdef X11
+		///#ifdef X11
 		/* the X11 terminal removes tokens that it recognizes from args. */
 		{
-	tangible.RefObject<String[]> tempRef_args = new tangible.RefObject<String[]>(args);
-		int n = X11_args(argc, tempRef_args);
-		args = tempRef_args.argvalue;
-		args += n;
-		argc -= n;
+			tangible.RefObject<String[]> tempRef_args = new tangible.RefObject<String[]>(args);
+			int n = X11_args(argc, tempRef_args);
+			args = tempRef_args.argvalue;
+			args += n;
+			argc -= n;
 		}
-	///#endif
+		///#endif
 
-	///#ifdef APOLLO
-	//    apollo_pfm_catch();
-	///#endif
+		///#ifdef APOLLO
+		//    apollo_pfm_catch();
+		///#endif
 
 		setbuf(stderr, (String) DefineConstants.NULL);
 
-	///#ifdef HAVE_SETVBUF
+		///#ifdef HAVE_SETVBUF
 		/* this was once setlinebuf(). Docs say this is
 		 * identical to setvbuf(,NULL,_IOLBF,0), but MS C
 		 * faults this (size out of range), so we try with
@@ -2234,9 +2236,9 @@ public class GlobalMembersPlot
 		 * ignore the return : its probably not a big deal
 		 */
 		if (setvbuf(stdout, (String) DefineConstants.NULL, _IOLBF, (int) 1024) != 0)
-		() fputs("Could not linebuffer stdout\n", stderr);
+			() fputs("Could not linebuffer stdout\n", stderr);
 
-	///#ifdef X11
+		///#ifdef X11
 		/* This call used to be in x11.trm, with the following comment:
 		 *   Multi-character inputs like escape sequences but also mouse-pasted
 		 *   text got buffered and therefore didn't trigger the select() function
@@ -2249,21 +2251,21 @@ public class GlobalMembersPlot
 		 * EAM - Jan 2004.
 		 */
 		setvbuf(stdin, (String) DefineConstants.NULL, _IONBF, 0);
-	///#endif
+		///#endif
 
-	///#endif
+		///#endif
 
 		GlobalMembersTerm.gpoutfile = stdout;
 
 		/* Initialize pre-loaded user variables */
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: () Gcomplex(&udv_pi.udv_value, DefineConstants.M_PI, 0.0);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: () Gcomplex(&udv_pi.udv_value, DefineConstants.M_PI, 0.0);
 		() GlobalMembersEval.Gcomplex(new value(GlobalMembersEval.udv_pi.udv_value), DefineConstants.M_PI, 0.0);
-	///#ifdef HAVE_ISNAN
+		///#ifdef HAVE_ISNAN
 		GlobalMembersEval.udv_NaN = GlobalMembersEval.add_udv_by_name("NaN");
 		() GlobalMembersEval.Gcomplex((GlobalMembersEval.udv_NaN.udv_value), GlobalMembersStdfn.not_a_number(), 0.0);
 		GlobalMembersEval.udv_NaN.udv_undef = false;
-	///#endif
+		///#endif
 
 		GlobalMembersPlot.init_memory();
 
@@ -2276,244 +2278,244 @@ public class GlobalMembersPlot
 		 * can be registered to be executed before the terminal is reset. */
 		atexit((GlobalMembersTerm.term_reset));
 
-	///#ifdef AMIGA_SC_6_1
-	//    if (IsInteractive(Input()) == DOSTRUE)
-	//	interactive = TRUE;
-	//    else
-	//	interactive = FALSE;
-	///#else
-	///#if ((defined(__MSC__) && defined(_Windows)) || defined(__WIN32__)) && ! defined(WGP_CONSOLE)
-	//    interactive = TRUE;
-	///#else
+		///#ifdef AMIGA_SC_6_1
+		//    if (IsInteractive(Input()) == DOSTRUE)
+		//	interactive = TRUE;
+		//    else
+		//	interactive = FALSE;
+		///#else
+		///#if ((defined(__MSC__) && defined(_Windows)) || defined(__WIN32__)) && ! defined(WGP_CONSOLE)
+		//    interactive = TRUE;
+		///#else
 		interactive = GlobalMembersOs9.isatty(fileno(stdin));
-	///#endif
-	///#endif // !AMIGA_SC_6_1 
+		///#endif
+		///#endif // !AMIGA_SC_6_1 
 
 		if (argc > 1)
-		interactive = noinputfiles = false;
+			interactive = noinputfiles = false;
 		else
-		noinputfiles = true;
+			noinputfiles = true;
 
 		/* Need this before show_version is called for the first time */
 
-	///#ifdef HAVE_SYS_UTSNAME_H
+		///#ifdef HAVE_SYS_UTSNAME_H
 		{
-		utsname uts = new utsname();
+			utsname uts = new utsname();
 
-		/* something is fundamentally wrong if this fails ... */
-		if (uname(uts) > -1)
-		{
-	///#ifdef _AIX
-	//	    strcpy(os_name, uts.sysname);
-	//	    sprintf(os_name, "%s.%s", uts.version, uts.release);
-	///#elif defined(SCO)
-	//	    strcpy(os_name, "SCO");
-	//	    strcpy(os_rel, uts.release);
-	///#elif defined(DJGPP)
-	//	    if (!strncmp(uts.sysname, "??Un", 4)) // don't print ??Unknow" 
-	//		strcpy(os_name, "Unknown");
-	//	    else {
-	//		strcpy(os_name, uts.sysname);
-	//		strcpy(os_rel, uts.release);
-	//	    }
-	///#else
-			GlobalMembersVersion.os_name = uts.sysname;
-			GlobalMembersVersion.os_rel = uts.release;
-	///#ifdef OS2
-	//	    if (!strchr(os_rel,'.'))
-	// /* write either "2.40" or "4.0", or empty -- don't print "OS/2 1" */
-	//		strcpy(os_rel, "");
-	///#endif
+			/* something is fundamentally wrong if this fails ... */
+			if (uname(uts) > -1)
+			{
+				///#ifdef _AIX
+				//	    strcpy(os_name, uts.sysname);
+				//	    sprintf(os_name, "%s.%s", uts.version, uts.release);
+				///#elif defined(SCO)
+				//	    strcpy(os_name, "SCO");
+				//	    strcpy(os_rel, uts.release);
+				///#elif defined(DJGPP)
+				//	    if (!strncmp(uts.sysname, "??Un", 4)) // don't print ??Unknow" 
+				//		strcpy(os_name, "Unknown");
+				//	    else {
+				//		strcpy(os_name, uts.sysname);
+				//		strcpy(os_rel, uts.release);
+				//	    }
+				///#else
+				GlobalMembersVersion.os_name = uts.sysname;
+				GlobalMembersVersion.os_rel = uts.release;
+				///#ifdef OS2
+				//	    if (!strchr(os_rel,'.'))
+				// /* write either "2.40" or "4.0", or empty -- don't print "OS/2 1" */
+				//		strcpy(os_rel, "");
+				///#endif
 
-	///#endif
+				///#endif
+			}
 		}
-		}
-	///#else // ! HAVE_SYS_UTSNAME_H 
-	//
-	//    strcpy(os_name, OS);
-	//    strcpy(os_rel, "");
-	//
-	///#endif // HAVE_SYS_UTSNAME_H 
+		///#else // ! HAVE_SYS_UTSNAME_H 
+		//
+		//    strcpy(os_name, OS);
+		//    strcpy(os_rel, "");
+		//
+		///#endif // HAVE_SYS_UTSNAME_H 
 
 		if (interactive)
-		GlobalMembersShow.show_version(stderr);
+			GlobalMembersShow.show_version(stderr);
 		else
-		GlobalMembersShow.show_version(DefineConstants.NULL); // Only load GPVAL_COMPILE_OPTIONS
+			GlobalMembersShow.show_version(DefineConstants.NULL); // Only load GPVAL_COMPILE_OPTIONS
 
 		GlobalMembersEval.update_gpval_variables(3); // update GPVAL_ variables available to user
 
-	///#ifdef VMS
-	// /* initialise screen management routines for command recall */
-	//    if (status[1] = smg$create_virtual_keyboard(&vms_vkid) != SS$_NORMAL)
-	//	done(status[1]);
-	//    if (status[1] = smg$create_key_table(&vms_ktid) != SS$_NORMAL)
-	//	done(status[1]);
-	///#endif // VMS 
+		///#ifdef VMS
+		// /* initialise screen management routines for command recall */
+		//    if (status[1] = smg$create_virtual_keyboard(&vms_vkid) != SS$_NORMAL)
+		//	done(status[1]);
+		//    if (status[1] = smg$create_key_table(&vms_ktid) != SS$_NORMAL)
+		//	done(status[1]);
+		///#endif // VMS 
 
 		if (!sigsetjmp(command_line_env, 1))
 		{
-		/* first time */
-		GlobalMembersPlot.interrupt_setup();
-		/* should move this stuff another initialisation routine,
-		 * something like init_set() maybe */
-		GlobalMembersPlot.get_user_env();
-		() GlobalMembersVariable.loadpath_handler(1 << 0, DefineConstants.NULL)();
-		() GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
-		/* HBB: make sure all variables start in the same mode 'reset'
-		 * would set them to. Since the axis variables aren't in
-		 * initialized arrays any more, this is now necessary... */
-		GlobalMembersUnset.reset_command();
-		GlobalMembersColor.init_color(); //  Initialization of color
-		GlobalMembersPlot.load_rcfile();
-		GlobalMembersFit.init_fit(); // Initialization of fitting module
+			/* first time */
+			GlobalMembersPlot.interrupt_setup();
+			/* should move this stuff another initialisation routine,
+			 * something like init_set() maybe */
+			GlobalMembersPlot.get_user_env();
+			() GlobalMembersVariable.loadpath_handler(1 << 0, DefineConstants.NULL)();
+			() GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
+			/* HBB: make sure all variables start in the same mode 'reset'
+			 * would set them to. Since the axis variables aren't in
+			 * initialized arrays any more, this is now necessary... */
+			GlobalMembersUnset.reset_command();
+			GlobalMembersColor.init_color(); //  Initialization of color
+			GlobalMembersPlot.load_rcfile();
+			GlobalMembersFit.init_fit(); // Initialization of fitting module
 
-		if (interactive && GlobalMembersTerm.term != 0) // not unknown
-		{
-	///#ifdef GNUPLOT_HISTORY
-			GlobalMembersFit.a((stderr, "Before read_history\n"));
-	///#if defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)
-			expanded_history_filename = tilde_expand(DefineConstants.GNUPLOT_HISTORY_FILE);
-	///#else
-	//	    expanded_history_filename = gp_strdup(GNUPLOT_HISTORY_FILE);
-	//	    gp_expand_tilde(&expanded_history_filename);
-	///#endif
-			GlobalMembersFit.a((stderr, "expanded_history_filename = %s\n", expanded_history_filename));
-			read_history(expanded_history_filename);
+			if (interactive && GlobalMembersTerm.term != 0) // not unknown
 			{
-			/* BEGIN: Go local to get environment variable */
-			String temp_env = getenv("GNUPLOT_HISTORY_SIZE");
-			if (temp_env != null)
-				GlobalMembersHistory.gnuplot_history_size = strtol(temp_env, (String) DefineConstants.NULL, 10);
-			} // END: Go local to get environment variable
+				///#ifdef GNUPLOT_HISTORY
+				GlobalMembersFit.a((stderr, "Before read_history\n"));
+				///#if defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)
+				expanded_history_filename = tilde_expand(DefineConstants.GNUPLOT_HISTORY_FILE);
+				///#else
+				//	    expanded_history_filename = gp_strdup(GNUPLOT_HISTORY_FILE);
+				//	    gp_expand_tilde(&expanded_history_filename);
+				///#endif
+				GlobalMembersFit.a((stderr, "expanded_history_filename = %s\n", expanded_history_filename));
+				read_history(expanded_history_filename);
+				{
+					/* BEGIN: Go local to get environment variable */
+					String temp_env = getenv("GNUPLOT_HISTORY_SIZE");
+					if (temp_env != null)
+						GlobalMembersHistory.gnuplot_history_size = strtol(temp_env, (String) DefineConstants.NULL, 10);
+				} // END: Go local to get environment variable
 
-			/*
-			 * It is safe to ignore the return values of 'atexit()' and
-			 * 'on_exit()'. In the worst case, there is no history of your
-			 * currrent session and you have to type all again in your next
-			 * session.
-			 * This is the default behaviour (traditional reasons), too.
-			 * In case you don't have one of these functions, or you don't
-			 * want to use them, 'write_history()' is called directly.
-			 */
-			atexit((GlobalMembersPlot.wrapper_for_write_history));
-	///#endif // GNUPLOT_HISTORY 
+				/*
+				 * It is safe to ignore the return values of 'atexit()' and
+				 * 'on_exit()'. In the worst case, there is no history of your
+				 * currrent session and you have to type all again in your next
+				 * session.
+				 * This is the default behaviour (traditional reasons), too.
+				 * In case you don't have one of these functions, or you don't
+				 * want to use them, 'write_history()' is called directly.
+				 */
+				atexit((GlobalMembersPlot.wrapper_for_write_history));
+				///#endif // GNUPLOT_HISTORY 
 
-			fprintf(stderr, "\nTerminal type set to '%s'\n", GlobalMembersTerm.term.name);
-		} // if (interactive && term != 0)
+				fprintf(stderr, "\nTerminal type set to '%s'\n", GlobalMembersTerm.term.name);
+			} // if (interactive && term != 0)
 		}
 		else
 		{
-		/* come back here from int_error() */
-		if (interactive == false)
-			exit_status = DefineConstants.EXIT_FAILURE;
-	///#ifdef HAVE_LIBREADLINE
-		else
-		{
-			/* reset properly readline after a SIGINT+longjmp */
-			rl_reset_after_signal();
-		}
-	///#endif
+			/* come back here from int_error() */
+			if (interactive == false)
+				exit_status = DefineConstants.EXIT_FAILURE;
+			///#ifdef HAVE_LIBREADLINE
+			else
+			{
+				/* reset properly readline after a SIGINT+longjmp */
+				rl_reset_after_signal();
+			}
+			///#endif
 
-	///#ifdef AMIGA_SC_6_1
-	//	(void) rawcon(0);
-	///#endif
-		GlobalMembersMisc.load_file_error(); // if we were in load_file(), cleanup
-		GlobalMembersCommand.reset_eval_depth(); // reset evaluate command recursion counter
-		;
+			///#ifdef AMIGA_SC_6_1
+			//	(void) rawcon(0);
+			///#endif
+			GlobalMembersMisc.load_file_error(); // if we were in load_file(), cleanup
+			GlobalMembersCommand.reset_eval_depth(); // reset evaluate command recursion counter
+			;
 
-	///#ifdef VMS
-	// /* after catching interrupt */
-	// /* VAX stuffs up stdout on SIGINT while writing to stdout,
-	//    so reopen stdout. */
-	//	if (gpoutfile == stdout) {
-	//	    if ((stdout = freopen("SYS$OUTPUT", "w", stdout)) == NULL) {
-	// /* couldn't reopen it so try opening it instead */
-	//		if ((stdout = fopen("SYS$OUTPUT", "w")) == NULL) {
-	// /* don't use int_error here - causes infinite loop! */
-	//		    fputs("Error opening SYS$OUTPUT as stdout\n", stderr);
-	//		}
-	//	    }
-	//	    gpoutfile = stdout;
-	//	}
-	///#endif // VMS 
-		if (!interactive && !noinputfiles)
-		{
-			GlobalMembersTerm.term_reset();
-			System.exit(DefineConstants.EXIT_FAILURE); // exit on non-interactive error
-		}
+			///#ifdef VMS
+			// /* after catching interrupt */
+			// /* VAX stuffs up stdout on SIGINT while writing to stdout,
+			//    so reopen stdout. */
+			//	if (gpoutfile == stdout) {
+			//	    if ((stdout = freopen("SYS$OUTPUT", "w", stdout)) == NULL) {
+			// /* couldn't reopen it so try opening it instead */
+			//		if ((stdout = fopen("SYS$OUTPUT", "w")) == NULL) {
+			// /* don't use int_error here - causes infinite loop! */
+			//		    fputs("Error opening SYS$OUTPUT as stdout\n", stderr);
+			//		}
+			//	    }
+			//	    gpoutfile = stdout;
+			//	}
+			///#endif // VMS 
+			if (!interactive && !noinputfiles)
+			{
+				GlobalMembersTerm.term_reset();
+				System.exit(DefineConstants.EXIT_FAILURE); // exit on non-interactive error
+			}
 		}
 
 		if (argc > 1)
 		{
-	///#ifdef _Windows
-	//	TBOOLEAN noend = persist_cl;
-	///#endif
+			///#ifdef _Windows
+			//	TBOOLEAN noend = persist_cl;
+			///#endif
 
-		/* load filenames given as arguments */
-		while (--argc > 0)
-		{
-			++args;
-			GlobalMembersCommand.c_token = DefineConstants.NO_CARET; // in case of file not found
-	///#ifdef _Windows
-	//	    if (stricmp(*args, "-noend") == 0 || stricmp(*args, "/noend") == 0
-	//	       	|| stricmp(*args, "-persist") == 0)
-	//		noend = TRUE;
-	//	    else
-	///#endif
-			if (!strncmp(args, "-persist", 2) || !strcmp(args, "--persist"))
+			/* load filenames given as arguments */
+			while (--argc > 0)
 			{
-			GlobalMembersFit.a((stderr,"'persist' command line option recognized\n"));
+				++args;
+				GlobalMembersCommand.c_token = DefineConstants.NO_CARET; // in case of file not found
+				///#ifdef _Windows
+				//	    if (stricmp(*args, "-noend") == 0 || stricmp(*args, "/noend") == 0
+				//	       	|| stricmp(*args, "-persist") == 0)
+				//		noend = TRUE;
+				//	    else
+				///#endif
+				if (!strncmp(args, "-persist", 2) || !strcmp(args, "--persist"))
+				{
+					GlobalMembersFit.a((stderr,"'persist' command line option recognized\n"));
 
+				}
+				else if (strcmp(args, "-") == 0)
+				{
+					/* DBT 10-7-98  go interactive if "-" on command line */
+
+					interactive = true;
+					/* will this work on all platforms? */
+
+					while (GlobalMembersCommand.com_line() == 0);
+
+					interactive = false;
+
+				}
+				else if (strcmp(args, "-e") == 0)
+				{
+					--argc;
+					++args;
+					if (argc <= 0)
+					{
+						fprintf(stderr, "syntax:  gnuplot -e \"commands\"\n");
+					}
+					GlobalMembersCommand.do_string(args, false);
+
+				}
+				else
+					GlobalMembersMisc.load_file(GlobalMembersMisc.loadpath_fopen(args, "r"), GlobalMembersUtil.gp_strdup(args), false);
 			}
-			else if (strcmp(args, "-") == 0)
-			{
-			/* DBT 10-7-98  go interactive if "-" on command line */
-
-			interactive = true;
-			/* will this work on all platforms? */
-
-			while (GlobalMembersCommand.com_line() == 0);
-
-			interactive = false;
-
-			}
-			else if (strcmp(args, "-e") == 0)
-			{
-			--argc;
-			++args;
-			if (argc <= 0)
-			{
-				fprintf(stderr, "syntax:  gnuplot -e \"commands\"\n");
-			}
-			GlobalMembersCommand.do_string(args, false);
-
-			}
-			else
-			GlobalMembersMisc.load_file(GlobalMembersMisc.loadpath_fopen(args, "r"), GlobalMembersUtil.gp_strdup(args), false);
-		}
-	///#ifdef _Windows
-	//	if (noend) {
-	//	    interactive = TRUE;
-	//	    while (!com_line());
-	//	}
-	///#endif
+			///#ifdef _Windows
+			//	if (noend) {
+			//	    interactive = TRUE;
+			//	    while (!com_line());
+			//	}
+			///#endif
 		}
 		else
 		{
-		/* take commands from stdin */
-		while (GlobalMembersCommand.com_line() == 0);
+			/* take commands from stdin */
+			while (GlobalMembersCommand.com_line() == 0);
 		}
 
-	///#if (defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)) && defined(GNUPLOT_HISTORY)
-	///#if !defined(HAVE_ATEXIT) && !defined(HAVE_ON_EXIT)
-	// /* You should be here if you neither have 'atexit()' nor 'on_exit()' */
-	//    wrapper_for_write_history();
-	///#endif // !HAVE_ATEXIT && !HAVE_ON_EXIT 
-	///#endif // (HAVE_LIBREADLINE || HAVE_LIBEDITLINE) && GNUPLOT_HISTORY 
+		///#if (defined(HAVE_LIBREADLINE) || defined(HAVE_LIBEDITLINE)) && defined(GNUPLOT_HISTORY)
+		///#if !defined(HAVE_ATEXIT) && !defined(HAVE_ON_EXIT)
+		// /* You should be here if you neither have 'atexit()' nor 'on_exit()' */
+		//    wrapper_for_write_history();
+		///#endif // !HAVE_ATEXIT && !HAVE_ON_EXIT 
+		///#endif // (HAVE_LIBREADLINE || HAVE_LIBEDITLINE) && GNUPLOT_HISTORY 
 
-	///#ifdef OS2
-	//    RexxDeregisterSubcom("GNUPLOT", NULL);
-	///#endif
+		///#ifdef OS2
+		//    RexxDeregisterSubcom("GNUPLOT", NULL);
+		///#endif
 
 		/* HBB 20040223: Not all compilers like exit() to end main() */
 		/* exit(exit_status); */

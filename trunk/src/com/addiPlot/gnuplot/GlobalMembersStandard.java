@@ -168,10 +168,10 @@ public class GlobalMembersStandard
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: standard.c,v 1.29 2008/05/31 20:03:40 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: standard.c,v 1.29 2008/05/31 20:03:40 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - standard.c */
@@ -689,57 +689,50 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersEval.real(GlobalMembersEval.pop_or_convert_from_string(a)), 0.0));
 	}
 	public static void f_imag(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersEval.imag(GlobalMembersEval.pop_or_convert_from_string(a)), 0.0));
 	}
 	public static void f_int(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) GlobalMembersEval.real(GlobalMembersEval.pop_or_convert_from_string(a))));
 	}
 
-/* ang2rad is 1 if we are in radians, or pi/180 if we are in degrees */
+	/* ang2rad is 1 if we are in radians, or pi/180 if we are in degrees */
 	public static void f_arg(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersEval.angle(GlobalMembersEval.pop_or_convert_from_string(a)) / GlobalMembersGadgets.ang2rad, 0.0));
 	}
 	public static void f_conjg(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersEval.real(a), -GlobalMembersEval.imag(a)));
 	}
 
-/* ang2rad is 1 if we are in radians, or pi/180 if we are in degrees */
+	/* ang2rad is 1 if we are in radians, or pi/180 if we are in degrees */
 
 	public static void f_sin(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.sin(GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) * Math.cosh(GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a)), Math.cos(GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) * Math.sinh(GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a))));
 	}
 	public static void f_cos(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.cos(GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) * Math.cosh(GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a)), -Math.sin(GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) * Math.sinh(GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a))));
 	}
 	public static void f_tan(argument arg)
@@ -747,20 +740,19 @@ public class GlobalMembersStandard
 		value a = new value();
 		double den;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (GlobalMembersEval.imag(a) == 0.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.tan(GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)), 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.tan(GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)), 0.0));
 		else
 		{
-		den = Math.cos(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) + Math.cosh(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a));
-		if (den == 0.0)
-		{
-			GlobalMembersEval.undefined = true;
-			GlobalMembersEval.push(a);
-		}
-		else
-			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.sin(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) / den, Math.sinh(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a)) / den));
+			den = Math.cos(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) + Math.cosh(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a));
+			if (den == 0.0)
+			{
+				GlobalMembersEval.undefined = true;
+				GlobalMembersEval.push(a);
+			}
+			else
+				GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.sin(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.real(a)) / den, Math.sinh(2 * GlobalMembersGadgets.ang2rad * GlobalMembersEval.imag(a)) / den));
 		}
 	}
 	public static void f_asin(argument arg)
@@ -771,25 +763,24 @@ public class GlobalMembersStandard
 		double x;
 		double y;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		x = GlobalMembersEval.real(a);
 		y = GlobalMembersEval.imag(a);
 		if (y == 0.0 && Math.abs(x) <= 1.0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.asin(x) / GlobalMembersGadgets.ang2rad, 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.asin(x) / GlobalMembersGadgets.ang2rad, 0.0));
 		}
 		else if (x == 0.0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, -Math.log(-y + Math.sqrt(y * y + 1)) / GlobalMembersGadgets.ang2rad));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, -Math.log(-y + Math.sqrt(y * y + 1)) / GlobalMembersGadgets.ang2rad));
 		}
 		else
 		{
-		beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		if (beta > 1)
-			beta = 1; // Avoid rounding error problems
-		alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.asin(beta) / GlobalMembersGadgets.ang2rad, -Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad));
+			beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			if (beta > 1)
+				beta = 1; // Avoid rounding error problems
+			alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.asin(beta) / GlobalMembersGadgets.ang2rad, -Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad));
 		}
 	}
 	public static void f_acos(argument arg)
@@ -798,24 +789,23 @@ public class GlobalMembersStandard
 		double x;
 		double y;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		x = GlobalMembersEval.real(a);
 		y = GlobalMembersEval.imag(a);
 		if (y == 0.0 && Math.abs(x) <= 1.0)
 		{
-		/* real result */
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.acos(x) / GlobalMembersGadgets.ang2rad, 0.0));
+			/* real result */
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.acos(x) / GlobalMembersGadgets.ang2rad, 0.0));
 		}
 		else
 		{
-		double alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		double beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		if (beta > 1)
-			beta = 1; // Avoid rounding error problems
-		else if (beta < -1)
-			beta = -1;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (y > 0? - 1: 1) * Math.acos(beta) / GlobalMembersGadgets.ang2rad, Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad));
+			double alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			double beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			if (beta > 1)
+				beta = 1; // Avoid rounding error problems
+			else if (beta < -1)
+				beta = -1;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (y > 0? - 1: 1) * Math.acos(beta) / GlobalMembersGadgets.ang2rad, Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad));
 		}
 	}
 	public static void f_atan(argument arg)
@@ -828,58 +818,56 @@ public class GlobalMembersStandard
 		double w;
 		double z;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		x = GlobalMembersEval.real(a);
 		y = GlobalMembersEval.imag(a);
 		if (y == 0.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.atan(x) / GlobalMembersGadgets.ang2rad, 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.atan(x) / GlobalMembersGadgets.ang2rad, 0.0));
 		else if (x == 0.0 && Math.abs(y) >= 1.0)
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
 		}
 		else
 		{
-		if (x >= 0)
-		{
-			u = x;
-			v = y;
-		}
-		else
-		{
-			u = -x;
-			v = -y;
-		}
+			if (x >= 0)
+			{
+				u = x;
+				v = y;
+			}
+			else
+			{
+				u = -x;
+				v = -y;
+			}
 
-		z = Math.atan(2 * u / (1 - u * u - v * v));
-		w = Math.log((u * u + (v + 1) * (v + 1)) / (u * u + (v - 1) * (v - 1))) / 4;
-		if (z < 0)
-			z = z + 2 * DefineConstants.PI_ON_TWO;
-		if (x < 0)
-		{
-			z = -z;
-			w = -w;
-		}
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.5 * z / GlobalMembersGadgets.ang2rad, w));
+			z = Math.atan(2 * u / (1 - u * u - v * v));
+			w = Math.log((u * u + (v + 1) * (v + 1)) / (u * u + (v - 1) * (v - 1))) / 4;
+			if (z < 0)
+				z = z + 2 * DefineConstants.PI_ON_TWO;
+			if (x < 0)
+			{
+				z = -z;
+				w = -w;
+			}
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.5 * z / GlobalMembersGadgets.ang2rad, w));
 		}
 	}
 
-/* real parts only */
+	/* real parts only */
 	public static void f_atan2(argument arg)
 	{
 		value a = new value();
 		double x;
 		double y;
 
-		() arg; // avoid -Wunused warning
 		x = GlobalMembersEval.real(GlobalMembersEval.pop_or_convert_from_string(a));
 		y = GlobalMembersEval.real(GlobalMembersEval.pop_or_convert_from_string(a));
 
 		if (x == 0.0 && y == 0.0)
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, 0));
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, 0));
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.atan2(y, x) / GlobalMembersGadgets.ang2rad, 0.0));
 	}
@@ -887,16 +875,14 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.sinh(GlobalMembersEval.real(a)) * Math.cos(GlobalMembersEval.imag(a)), Math.cosh(GlobalMembersEval.real(a)) * Math.sin(GlobalMembersEval.imag(a))));
 	}
 	public static void f_cosh(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.cosh(GlobalMembersEval.real(a)) * Math.cos(GlobalMembersEval.imag(a)), Math.sinh(GlobalMembersEval.real(a)) * Math.sin(GlobalMembersEval.imag(a))));
 	}
 	public static void f_tanh(argument arg)
@@ -906,30 +892,29 @@ public class GlobalMembersStandard
 		double real_2arg;
 		double imag_2arg;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		real_2arg = 2.* GlobalMembersEval.real(a);
 		imag_2arg = 2.* GlobalMembersEval.imag(a);
 
-	///#ifdef E_MINEXP
-	//    if (-fabs(real_2arg) < E_MINEXP) {
-	//	push(Gcomplex(&a, real_2arg < 0 ? -1.0 : 1.0, 0.0));
-	//	return;
-	//    }
-	///#else
+		///#ifdef E_MINEXP
+		//    if (-fabs(real_2arg) < E_MINEXP) {
+		//	push(Gcomplex(&a, real_2arg < 0 ? -1.0 : 1.0, 0.0));
+		//	return;
+		//    }
+		///#else
 		{
-		int old_errno = errno;
+			int old_errno = errno;
 
-		if (Math.exp(-Math.abs(real_2arg)) == 0.0)
-		{
-			/* some libm's will raise a silly ERANGE in cosh() and sin() */
-			errno = old_errno;
-			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, real_2arg < 0 ? - 1.0 : 1.0, 0.0));
-			return;
+			if (Math.exp(-Math.abs(real_2arg)) == 0.0)
+			{
+				/* some libm's will raise a silly ERANGE in cosh() and sin() */
+				errno = old_errno;
+				GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, real_2arg < 0 ? - 1.0 : 1.0, 0.0));
+				return;
+			}
 		}
-		}
-	///#endif
+		///#endif
 
 		den = Math.cosh(real_2arg) + Math.cos(imag_2arg);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.sinh(real_2arg) / den, Math.sin(imag_2arg) / den));
@@ -942,28 +927,27 @@ public class GlobalMembersStandard
 		double x;
 		double y;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		x = -GlobalMembersEval.imag(a);
 		y = GlobalMembersEval.real(a);
 		if (y == 0.0 && Math.abs(x) <= 1.0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, -Math.asin(x) / GlobalMembersGadgets.ang2rad));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, -Math.asin(x) / GlobalMembersGadgets.ang2rad));
 		}
 		else if (y == 0.0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
-		GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
+			GlobalMembersEval.undefined = true;
 		}
 		else if (x == 0.0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(y + Math.sqrt(y * y + 1)) / GlobalMembersGadgets.ang2rad, 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(y + Math.sqrt(y * y + 1)) / GlobalMembersGadgets.ang2rad, 0.0));
 		}
 		else
 		{
-		beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad, -Math.asin(beta) / GlobalMembersGadgets.ang2rad));
+			beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad, -Math.asin(beta) / GlobalMembersGadgets.ang2rad));
 		}
 	}
 	public static void f_acosh(argument arg)
@@ -974,23 +958,22 @@ public class GlobalMembersStandard
 		double x;
 		double y;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		x = GlobalMembersEval.real(a);
 		y = GlobalMembersEval.imag(a);
 		if (y == 0.0 && Math.abs(x) <= 1.0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, Math.acos(x) / GlobalMembersGadgets.ang2rad));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, Math.acos(x) / GlobalMembersGadgets.ang2rad));
 		}
 		else if (y == 0)
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(x + Math.sqrt(x * x - 1)) / GlobalMembersGadgets.ang2rad, 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(x + Math.sqrt(x * x - 1)) / GlobalMembersGadgets.ang2rad, 0.0));
 		}
 		else
 		{
-		alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad, (y < 0 ? - 1 : 1) * Math.acos(beta) / GlobalMembersGadgets.ang2rad));
+			alpha = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 + Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			beta = Math.sqrt((x + 1) * (x + 1) + y * y) / 2 - Math.sqrt((x - 1) * (x - 1) + y * y) / 2;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(alpha + Math.sqrt(alpha * alpha - 1)) / GlobalMembersGadgets.ang2rad, (y < 0 ? - 1 : 1) * Math.acos(beta) / GlobalMembersGadgets.ang2rad));
 		}
 	}
 	public static void f_atanh(argument arg)
@@ -1003,40 +986,39 @@ public class GlobalMembersStandard
 		double w;
 		double z;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		x = -GlobalMembersEval.imag(a);
 		y = GlobalMembersEval.real(a);
 		if (y == 0.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, -Math.atan(x) / GlobalMembersGadgets.ang2rad));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, -Math.atan(x) / GlobalMembersGadgets.ang2rad));
 		else if (x == 0.0 && Math.abs(y) >= 1.0)
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
 		}
 		else
 		{
-		if (x >= 0)
-		{
-			u = x;
-			v = y;
-		}
-		else
-		{
-			u = -x;
-			v = -y;
-		}
+			if (x >= 0)
+			{
+				u = x;
+				v = y;
+			}
+			else
+			{
+				u = -x;
+				v = -y;
+			}
 
-		z = Math.atan(2 * u / (1 - u * u - v * v));
-		w = Math.log((u * u + (v + 1) * (v + 1)) / (u * u + (v - 1) * (v - 1))) / 4;
-		if (z < 0)
-			z = z + 2 * DefineConstants.PI_ON_TWO;
-		if (x < 0)
-		{
-			z = -z;
-			w = -w;
-		}
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, w, -0.5 * z / GlobalMembersGadgets.ang2rad));
+			z = Math.atan(2 * u / (1 - u * u - v * v));
+			w = Math.log((u * u + (v + 1) * (v + 1)) / (u * u + (v - 1) * (v - 1))) / 4;
+			if (z < 0)
+				z = z + 2 * DefineConstants.PI_ON_TWO;
+			if (x < 0)
+			{
+				z = -z;
+				w = -w;
+			}
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, w, -0.5 * z / GlobalMembersGadgets.ang2rad));
 		}
 	}
 	public static void f_ellip_first(argument arg)
@@ -1045,19 +1027,18 @@ public class GlobalMembersStandard
 		double ak;
 		double q;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do elliptic integrals of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do elliptic integrals of reals");
 
 		ak = GlobalMembersEval.real(a);
 		q = (1.0 - ak) * (1.0 + ak);
 		if (q > 0.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.carlson_elliptic_rf(0.0, q, 1.0), 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.carlson_elliptic_rf(0.0, q, 1.0), 0.0));
 		else
 		{
-		GlobalMembersEval.push(a);
-		GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(a);
+			GlobalMembersEval.undefined = true;
 		}
 
 	}
@@ -1068,29 +1049,28 @@ public class GlobalMembersStandard
 		double q;
 		double e;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do elliptic integrals of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do elliptic integrals of reals");
 
 		ak = GlobalMembersEval.real(a);
 		q = (1.0 - ak) * (1.0 + ak);
 		if (q > 0.0)
 		{
-		e = GlobalMembersStandard.carlson_elliptic_rf(0.0, q, 1.0) - (ak * ak) * GlobalMembersStandard.carlson_elliptic_rd(0.0, q, 1.0) / 3.0;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, e, 0.0));
+			e = GlobalMembersStandard.carlson_elliptic_rf(0.0, q, 1.0) - (ak * ak) * GlobalMembersStandard.carlson_elliptic_rd(0.0, q, 1.0) / 3.0;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, e, 0.0));
 
 		}
 		else if (q < 0.0)
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(a);
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(a);
 
 		}
 		else
 		{
-		e = 1.0;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, e, 0.0));
+			e = 1.0;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, e, 0.0));
 		}
 
 
@@ -1103,40 +1083,38 @@ public class GlobalMembersStandard
 		double en;
 		double q;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a1);
-		() GlobalMembersEval.pop_or_convert_from_string(a2);
+		GlobalMembersEval.pop_or_convert_from_string(a1);
+		GlobalMembersEval.pop_or_convert_from_string(a2);
 		if (Math.abs(GlobalMembersEval.imag(a1)) > GlobalMembersGadgets.zero || Math.abs(GlobalMembersEval.imag(a2)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do elliptic integrals of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do elliptic integrals of reals");
 
 		ak = GlobalMembersEval.real(a1);
 		en = GlobalMembersEval.real(a2);
 		q = (1.0 - ak) * (1.0 + ak);
 		if (q > 0.0 && en < 1.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a2, GlobalMembersStandard.carlson_elliptic_rf(0.0, q, 1.0) + en * GlobalMembersStandard.carlson_elliptic_rj(0.0, q, 1.0, 1.0 - en) / 3.0, 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a2, GlobalMembersStandard.carlson_elliptic_rf(0.0, q, 1.0) + en * GlobalMembersStandard.carlson_elliptic_rj(0.0, q, 1.0, 1.0 - en) / 3.0, 0.0));
 		else
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(a1);
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(a1);
 		}
 
 	}
-//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
+	//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
 	//void f_void(argument x);
 	public static void f_abs(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, Math.abs(a.v.int_val)));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, Math.abs(a.v.int_val)));
+			break;
 		case CMPLX:
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersEval.magnitude(a), 0.0));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersEval.magnitude(a), 0.0));
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : argument neither INT or CMPLX");
 		}
 	}
@@ -1144,16 +1122,15 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.int_val > 0) ? 1 : (a.v.int_val < 0) ? - 1 : 0));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.int_val > 0) ? 1 : (a.v.int_val < 0) ? - 1 : 0));
+			break;
 		case CMPLX:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.cmplx_val.real > 0.0) ? 1 : (a.v.cmplx_val.real < 0.0) ? - 1 : 0));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.cmplx_val.real > 0.0) ? 1 : (a.v.cmplx_val.real < 0.0) ? - 1 : 0));
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : argument neither INT or CMPLX");
 		}
 	}
@@ -1162,21 +1139,20 @@ public class GlobalMembersStandard
 		value a = new value();
 		double mag;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		mag = Math.sqrt(GlobalMembersEval.magnitude(a));
 		if (GlobalMembersEval.imag(a) == 0.0)
 		{
-		if (GlobalMembersEval.real(a) < 0.0)
-			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, mag));
-		else
-			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, mag, 0.0));
+			if (GlobalMembersEval.real(a) < 0.0)
+				GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, mag));
+			else
+				GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, mag, 0.0));
 		}
 		else
 		{
-		/* -pi < ang < pi, so real(sqrt(z)) >= 0 */
-		double ang = GlobalMembersEval.angle(a) / 2.0;
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, mag * Math.cos(ang), mag * Math.sin(ang)));
+			/* -pi < ang < pi, so real(sqrt(z)) >= 0 */
+			double ang = GlobalMembersEval.angle(a) / 2.0;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, mag * Math.cos(ang), mag * Math.sin(ang)));
 		}
 	}
 	public static void f_exp(argument arg)
@@ -1185,8 +1161,7 @@ public class GlobalMembersStandard
 		double mag;
 		double ang;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		mag = GlobalMembersEval.gp_exp(GlobalMembersEval.real(a));
 		ang = GlobalMembersEval.imag(a);
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, mag * Math.cos(ang), mag * Math.sin(ang)));
@@ -1195,44 +1170,41 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (GlobalMembersEval.magnitude(a) == 0.0)
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(a);
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(a);
 		}
 		else
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(GlobalMembersEval.magnitude(a)) / DefineConstants.M_LN10, GlobalMembersEval.angle(a) / DefineConstants.M_LN10));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(GlobalMembersEval.magnitude(a)) / DefineConstants.M_LN10, GlobalMembersEval.angle(a) / DefineConstants.M_LN10));
 	}
 	public static void f_log(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (GlobalMembersEval.magnitude(a) == 0.0)
 		{
-		GlobalMembersEval.undefined = true;
-		GlobalMembersEval.push(a);
+			GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(a);
 		}
 		else
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(GlobalMembersEval.magnitude(a)), GlobalMembersEval.angle(a)));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, Math.log(GlobalMembersEval.magnitude(a)), GlobalMembersEval.angle(a)));
 	}
 	public static void f_floor(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.floor((double) a.v.int_val)));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.floor((double) a.v.int_val)));
+			break;
 		case CMPLX:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.floor(a.v.cmplx_val.real)));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.floor(a.v.cmplx_val.real)));
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : argument neither INT or CMPLX");
 		}
 	}
@@ -1240,97 +1212,91 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.ceil((double) a.v.int_val)));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.ceil((double) a.v.int_val)));
+			break;
 		case CMPLX:
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.ceil(a.v.cmplx_val.real)));
-		break;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (int) Math.ceil(a.v.cmplx_val.real)));
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : argument neither INT or CMPLX");
 		}
 	}
 
-/* FIXME HBB 20010726: should bessel functions really call int_error,
- * right in the middle of evaluating some mathematical expression?
- * Couldn't they just flag 'undefined', or ignore the real part of the
- * complex number? */
+	/* FIXME HBB 20010726: should bessel functions really call int_error,
+	 * right in the middle of evaluating some mathematical expression?
+	 * Couldn't they just flag 'undefined', or ignore the real part of the
+	 * complex number? */
 
 	public static void f_besj0(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.rj0(GlobalMembersEval.real(a)), 0.0));
 	}
 	public static void f_besj1(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.rj1(GlobalMembersEval.real(a)), 0.0));
 	}
 	public static void f_besy0(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
 		if (GlobalMembersEval.real(a) > 0.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.ry0(GlobalMembersEval.real(a)), 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.ry0(GlobalMembersEval.real(a)), 0.0));
 		else
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
-		GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
+			GlobalMembersEval.undefined = true;
 		}
 	}
 	public static void f_besy1(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		if (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only do bessel functions of reals");
 		if (GlobalMembersEval.real(a) > 0.0)
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.ry1(GlobalMembersEval.real(a)), 0.0));
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, GlobalMembersStandard.ry1(GlobalMembersEval.real(a)), 0.0));
 		else
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
-		GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, 0.0, 0.0));
+			GlobalMembersEval.undefined = true;
 		}
 	}
 
-/* EAM - replacement for defined(foo) + f_pushv + f_isvar
- *       implements      exists("foo") instead
- */
+	/* EAM - replacement for defined(foo) + f_pushv + f_isvar
+	 *       implements      exists("foo") instead
+	 */
 	public static void f_exists(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (a.type == DATA_TYPES.STRING)
 		{
-		udvt_entry udv = GlobalMembersEval.add_udv_by_name(a.v.string_val);
-		GlobalMembersEval.gpfree_string(a);
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, udv.udv_undef ? 0 : 1));
+			udvt_entry udv = GlobalMembersEval.add_udv_by_name(a.v.string_val);
+			GlobalMembersEval.gpfree_string(a);
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, udv.udv_undef ? 0 : 1));
 		}
 		else
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, 0));
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, 0));
 		}
 	}
 
@@ -1338,8 +1304,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1347,8 +1312,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1356,8 +1320,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1365,8 +1328,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1374,8 +1336,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1383,8 +1344,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1392,8 +1352,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1401,8 +1360,7 @@ public class GlobalMembersStandard
 	{
 		value a = new value();
 		tm tm = new tm();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		GlobalMembersTime.ggmtime(tm, GlobalMembersEval.real(a));
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, (double)tm.field, 0.0));
 	}
@@ -1890,24 +1848,24 @@ public class GlobalMembersStandard
 
 		if (y > 0.0)
 		{
-		xt = x;
-		yt = y;
-		w = 1.0;
+			xt = x;
+			yt = y;
+			w = 1.0;
 		}
 		else
 		{
-		xt = x - y;
-		yt = -y;
-		w = Math.sqrt(x) / Math.sqrt(xt);
+			xt = x - y;
+			yt = -y;
+			w = Math.sqrt(x) / Math.sqrt(xt);
 		}
 
 		do
 		{
-		alamb = 2.0 * Math.sqrt(xt) * Math.sqrt(yt) + yt;
-		xt = 0.25 * (xt + alamb);
-		yt = 0.25 * (yt + alamb);
-		ave = (1.0 / 3.0) * (xt + yt + yt);
-		s = (yt - ave) / ave;
+			alamb = 2.0 * Math.sqrt(xt) * Math.sqrt(yt) + yt;
+			xt = 0.25 * (xt + alamb);
+			yt = 0.25 * (yt + alamb);
+			ave = (1.0 / 3.0) * (xt + yt + yt);
+			s = (yt - ave) / ave;
 		} while (Math.abs(s) > 0.0012);
 
 		ans = w * (1.0 + s * s * (DefineConstants.C1 + s * (1.0 / 7.0 + s * (DefineConstants.C3 + s * 9.0 / 22.0)))) / Math.sqrt(ave);
@@ -1934,17 +1892,17 @@ public class GlobalMembersStandard
 		zt = z;
 		do
 		{
-		sqrtx = Math.sqrt(xt);
-		sqrty = Math.sqrt(yt);
-		sqrtz = Math.sqrt(zt);
-		alamb = sqrtx * (sqrty + sqrtz) + sqrty * sqrtz;
-		xt = 0.25 * (xt + alamb);
-		yt = 0.25 * (yt + alamb);
-		zt = 0.25 * (zt + alamb);
-		ave = (1.0 / 3.0) * (xt + yt + zt);
-		delx = (ave - xt) / ave;
-		dely = (ave - yt) / ave;
-		delz = (ave - zt) / ave;
+			sqrtx = Math.sqrt(xt);
+			sqrty = Math.sqrt(yt);
+			sqrtz = Math.sqrt(zt);
+			alamb = sqrtx * (sqrty + sqrtz) + sqrty * sqrtz;
+			xt = 0.25 * (xt + alamb);
+			yt = 0.25 * (yt + alamb);
+			zt = 0.25 * (zt + alamb);
+			ave = (1.0 / 3.0) * (xt + yt + zt);
+			delx = (ave - xt) / ave;
+			dely = (ave - yt) / ave;
+			delz = (ave - zt) / ave;
 		} while (Math.abs(delx) > 0.0025 || Math.abs(dely) > 0.0025 || Math.abs(delz) > 0.0025);
 		e2 = delx * dely - delz * delz;
 		e3 = delx * dely * delz;
@@ -1980,19 +1938,19 @@ public class GlobalMembersStandard
 		fac = 1.0;
 		do
 		{
-		sqrtx = Math.sqrt(xt);
-		sqrty = Math.sqrt(yt);
-		sqrtz = Math.sqrt(zt);
-		alamb = sqrtx * (sqrty + sqrtz) + sqrty * sqrtz;
-		sum += fac / (sqrtz * (zt + alamb));
-		fac = 0.25 * fac;
-		xt = 0.25 * (xt + alamb);
-		yt = 0.25 * (yt + alamb);
-		zt = 0.25 * (zt + alamb);
-		ave = 0.2 * (xt + yt + 3.0 * zt);
-		delx = (ave - xt) / ave;
-		dely = (ave - yt) / ave;
-		delz = (ave - zt) / ave;
+			sqrtx = Math.sqrt(xt);
+			sqrty = Math.sqrt(yt);
+			sqrtz = Math.sqrt(zt);
+			alamb = sqrtx * (sqrty + sqrtz) + sqrty * sqrtz;
+			sum += fac / (sqrtz * (zt + alamb));
+			fac = 0.25 * fac;
+			xt = 0.25 * (xt + alamb);
+			yt = 0.25 * (yt + alamb);
+			zt = 0.25 * (zt + alamb);
+			ave = 0.2 * (xt + yt + 3.0 * zt);
+			delx = (ave - xt) / ave;
+			dely = (ave - yt) / ave;
+			delz = (ave - zt) / ave;
 		} while (Math.abs(delx) > 0.0015 || Math.abs(dely) > 0.0015 || Math.abs(delz) > 0.0015);
 		ea = delx * dely;
 		eb = delz * delz;
@@ -2038,44 +1996,44 @@ public class GlobalMembersStandard
 		fac = 1.0;
 		if (p > 0.0)
 		{
-		xt = x;
-		yt = y;
-		zt = z;
-		pt = p;
-		a = b = rcx = 0.0;
+			xt = x;
+			yt = y;
+			zt = z;
+			pt = p;
+			a = b = rcx = 0.0;
 		}
 		else
 		{
-		xt = ((((x) < (y) ? (x) : (y))) < (z) ? (((x) < (y) ? (x) : (y))) : (z));
-		zt = ((((x) > (y) ? (x) : (y))) > (z) ? (((x) > (y) ? (x) : (y))) : (z));
-		yt = x + y + z - xt - zt;
-		a = 1.0 / (yt - p);
-		b = a * (zt - yt) * (yt - xt);
-		pt = yt + b;
-		rho = xt * zt / yt;
-		tau = p * pt / yt;
-		rcx = GlobalMembersStandard.carlson_elliptic_rc(rho, tau);
+			xt = ((((x) < (y) ? (x) : (y))) < (z) ? (((x) < (y) ? (x) : (y))) : (z));
+			zt = ((((x) > (y) ? (x) : (y))) > (z) ? (((x) > (y) ? (x) : (y))) : (z));
+			yt = x + y + z - xt - zt;
+			a = 1.0 / (yt - p);
+			b = a * (zt - yt) * (yt - xt);
+			pt = yt + b;
+			rho = xt * zt / yt;
+			tau = p * pt / yt;
+			rcx = GlobalMembersStandard.carlson_elliptic_rc(rho, tau);
 		}
 
 		do
 		{
-		sqrtx = Math.sqrt(xt);
-		sqrty = Math.sqrt(yt);
-		sqrtz = Math.sqrt(zt);
-		alamb = sqrtx * (sqrty + sqrtz) + sqrty * sqrtz;
-		alpha = ((pt * (sqrtx + sqrty + sqrtz) + sqrtx * sqrty * sqrtz) * (pt * (sqrtx + sqrty + sqrtz) + sqrtx * sqrty * sqrtz));
-		beta = pt * ((pt + alamb) * (pt + alamb));
-		sum += fac * GlobalMembersStandard.carlson_elliptic_rc(alpha, beta);
-		fac = 0.25 * fac;
-		xt = 0.25 * (xt + alamb);
-		yt = 0.25 * (yt + alamb);
-		zt = 0.25 * (zt + alamb);
-		pt = 0.25 * (pt + alamb);
-		ave = 0.2 * (xt + yt + zt + pt + pt);
-		delx = (ave - xt) / ave;
-		dely = (ave - yt) / ave;
-		delz = (ave - zt) / ave;
-		delp = (ave - pt) / ave;
+			sqrtx = Math.sqrt(xt);
+			sqrty = Math.sqrt(yt);
+			sqrtz = Math.sqrt(zt);
+			alamb = sqrtx * (sqrty + sqrtz) + sqrty * sqrtz;
+			alpha = ((pt * (sqrtx + sqrty + sqrtz) + sqrtx * sqrty * sqrtz) * (pt * (sqrtx + sqrty + sqrtz) + sqrtx * sqrty * sqrtz));
+			beta = pt * ((pt + alamb) * (pt + alamb));
+			sum += fac * GlobalMembersStandard.carlson_elliptic_rc(alpha, beta);
+			fac = 0.25 * fac;
+			xt = 0.25 * (xt + alamb);
+			yt = 0.25 * (yt + alamb);
+			zt = 0.25 * (zt + alamb);
+			pt = 0.25 * (pt + alamb);
+			ave = 0.2 * (xt + yt + zt + pt + pt);
+			delx = (ave - xt) / ave;
+			dely = (ave - yt) / ave;
+			delz = (ave - zt) / ave;
+			delp = (ave - pt) / ave;
 		} while (Math.abs(delx) > 0.0015 || Math.abs(dely) > 0.0015 || Math.abs(delz) > 0.0015 || Math.abs(delp) > 0.0015);
 
 		ea = delx * (dely + delz) + dely * delz;
@@ -2087,12 +2045,12 @@ public class GlobalMembersStandard
 		ans = 3.0 * sum + fac * (1.0 + ed * (-3.0 / 14.0 + 0.75 * 3.0 / 22.0 * ed - 1.5 * 3.0 / 26.0 * ee) + eb * (0.5 * 1.0 / 3.0 + delp * (-3.0 / 22.0 + 3.0 / 22.0 + delp * 3.0 / 26.0)) + delp * ea * (1.0 / 3.0 - delp * 3.0 / 22.0) - 1.0 / 3.0 * delp * ec) / (ave * Math.sqrt(ave));
 
 		if (p <= 0.0)
-		ans = a * (b * ans + 3.0 * (rcx - GlobalMembersStandard.carlson_elliptic_rf(xt, yt, zt)));
+			ans = a * (b * ans + 3.0 * (rcx - GlobalMembersStandard.carlson_elliptic_rf(xt, yt, zt)));
 
 		return (ans);
 	}
 
-/* bessel function approximations */
+	/* bessel function approximations */
 
 	public static double jzero(double x)
 	{
@@ -2106,8 +2064,8 @@ public class GlobalMembersStandard
 		q = qjzero[8];
 		for (n = 7; n >= 0; n--)
 		{
-		p = p * x2 + pjzero[n];
-		q = q * x2 + qjzero[n];
+			p = p * x2 + pjzero[n];
+			q = q * x2 + qjzero[n];
 		}
 		return (p / q);
 	}
@@ -2125,8 +2083,8 @@ public class GlobalMembersStandard
 		q = qpzero[5];
 		for (n = 4; n >= 0; n--)
 		{
-		p = p * z2 + ppzero[n];
-		q = q * z2 + qpzero[n];
+			p = p * z2 + ppzero[n];
+			q = q * z2 + qpzero[n];
 		}
 		return (p / q);
 	}
@@ -2144,8 +2102,8 @@ public class GlobalMembersStandard
 		q = qqzero[5];
 		for (n = 4; n >= 0; n--)
 		{
-		p = p * z2 + pqzero[n];
-		q = q * z2 + qqzero[n];
+			p = p * z2 + pqzero[n];
+			q = q * z2 + qqzero[n];
 		}
 		return (p / q);
 	}
@@ -2161,29 +2119,29 @@ public class GlobalMembersStandard
 		q = qyzero[8];
 		for (n = 7; n >= 0; n--)
 		{
-		p = p * x2 + pyzero[n];
-		q = q * x2 + qyzero[n];
+			p = p * x2 + pyzero[n];
+			q = q * x2 + qyzero[n];
 		}
 		return (p / q);
 	}
 	public static double rj0(double x)
 	{
 		if (x <= 0.0)
-		x = -x;
+			x = -x;
 		if (x < 8.0)
-		return (GlobalMembersStandard.jzero(x));
+			return (GlobalMembersStandard.jzero(x));
 		else
-		return (Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pzero(x) * Math.cos(x - DefineConstants.PI_ON_FOUR) - 8.0 / x * GlobalMembersStandard.qzero(x) * Math.sin(x - DefineConstants.PI_ON_FOUR)));
+			return (Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pzero(x) * Math.cos(x - DefineConstants.PI_ON_FOUR) - 8.0 / x * GlobalMembersStandard.qzero(x) * Math.sin(x - DefineConstants.PI_ON_FOUR)));
 
 	}
 	public static double ry0(double x)
 	{
 		if (x < 0.0)
-		return (dzero / dzero); // error
+			return (dzero / dzero); // error
 		if (x < 8.0)
-		return (GlobalMembersStandard.yzero(x) + DefineConstants.TWO_ON_PI * GlobalMembersStandard.rj0(x) * Math.log(x));
+			return (GlobalMembersStandard.yzero(x) + DefineConstants.TWO_ON_PI * GlobalMembersStandard.rj0(x) * Math.log(x));
 		else
-		return (Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pzero(x) * Math.sin(x - DefineConstants.PI_ON_FOUR) + (8.0 / x) * GlobalMembersStandard.qzero(x) * Math.cos(x - DefineConstants.PI_ON_FOUR)));
+			return (Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pzero(x) * Math.sin(x - DefineConstants.PI_ON_FOUR) + (8.0 / x) * GlobalMembersStandard.qzero(x) * Math.cos(x - DefineConstants.PI_ON_FOUR)));
 
 	}
 	public static double jone(double x)
@@ -2198,8 +2156,8 @@ public class GlobalMembersStandard
 		q = qjone[8];
 		for (n = 7; n >= 0; n--)
 		{
-		p = p * x2 + pjone[n];
-		q = q * x2 + qjone[n];
+			p = p * x2 + pjone[n];
+			q = q * x2 + qjone[n];
 		}
 		return (p / q);
 	}
@@ -2217,8 +2175,8 @@ public class GlobalMembersStandard
 		q = qpone[5];
 		for (n = 4; n >= 0; n--)
 		{
-		p = p * z2 + ppone[n];
-		q = q * z2 + qpone[n];
+			p = p * z2 + ppone[n];
+			q = q * z2 + qpone[n];
 		}
 		return (p / q);
 	}
@@ -2236,8 +2194,8 @@ public class GlobalMembersStandard
 		q = qqone[5];
 		for (n = 4; n >= 0; n--)
 		{
-		p = p * z2 + pqone[n];
-		q = q * z2 + qqone[n];
+			p = p * z2 + pqone[n];
+			q = q * z2 + qqone[n];
 		}
 		return (p / q);
 	}
@@ -2253,8 +2211,8 @@ public class GlobalMembersStandard
 		q = qyone[8];
 		for (n = 7; n >= 0; n--)
 		{
-		p = p * x2 + pyone[n];
-		q = q * x2 + qyone[n];
+			p = p * x2 + pyone[n];
+			q = q * x2 + qyone[n];
 		}
 		return (p / q);
 	}
@@ -2264,25 +2222,25 @@ public class GlobalMembersStandard
 		double w;
 		v = x;
 		if (x < 0.0)
-		x = -x;
+			x = -x;
 		if (x < 8.0)
-		return (v * GlobalMembersStandard.jone(x));
+			return (v * GlobalMembersStandard.jone(x));
 		else
 		{
-		w = Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pone(x) * Math.cos(x - DefineConstants.THREE_PI_ON_FOUR) - 8.0 / x * GlobalMembersStandard.qone(x) * Math.sin(x - DefineConstants.THREE_PI_ON_FOUR));
-		if (v < 0.0)
-			w = -w;
-		return (w);
+			w = Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pone(x) * Math.cos(x - DefineConstants.THREE_PI_ON_FOUR) - 8.0 / x * GlobalMembersStandard.qone(x) * Math.sin(x - DefineConstants.THREE_PI_ON_FOUR));
+			if (v < 0.0)
+				w = -w;
+			return (w);
 		}
 	}
 	public static double ry1(double x)
 	{
 		if (x <= 0.0)
-		return (dzero / dzero); // error
+			return (dzero / dzero); // error
 		if (x < 8.0)
-		return (x * GlobalMembersStandard.yone(x) + DefineConstants.TWO_ON_PI * (GlobalMembersStandard.rj1(x) * Math.log(x) - 1.0 / x));
+			return (x * GlobalMembersStandard.yone(x) + DefineConstants.TWO_ON_PI * (GlobalMembersStandard.rj1(x) * Math.log(x) - 1.0 / x));
 		else
-		return (Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pone(x) * Math.sin(x - DefineConstants.THREE_PI_ON_FOUR) + (8.0 / x) * GlobalMembersStandard.qone(x) * Math.cos(x - DefineConstants.THREE_PI_ON_FOUR)));
+			return (Math.sqrt(DefineConstants.TWO_ON_PI / x) * (GlobalMembersStandard.pone(x) * Math.sin(x - DefineConstants.THREE_PI_ON_FOUR) + (8.0 / x) * GlobalMembersStandard.qone(x) * Math.cos(x - DefineConstants.THREE_PI_ON_FOUR)));
 	}
 
 	/* The bessel function approximations here are from
@@ -2309,62 +2267,62 @@ public class GlobalMembersStandard
 	/* jzero for x in [0,8]
 	 * Index 5849, 19.22 digits precision
 	 */
-	public static double[] pjzero = {0.4933787251794133561816813446e + 21, -0.11791576291076105360384408e + 21, 0.6382059341072356562289432465e + 19, -0.1367620353088171386865416609e + 18, 0.1434354939140346111664316553e + 16, -0.8085222034853793871199468171e + 13, 0.2507158285536881945555156435e + 11, -0.4050412371833132706360663322e + 8, 0.2685786856980014981415848441e + 5};
+	public static double[] pjzero = {0.4933787251794133561816813446e+21, -0.11791576291076105360384408e+21, 0.6382059341072356562289432465e+19, -0.1367620353088171386865416609e+18, 0.1434354939140346111664316553e+16, -0.8085222034853793871199468171e+13, 0.2507158285536881945555156435e+11, -0.4050412371833132706360663322e+8, 0.2685786856980014981415848441e+5};
 
-	public static double[] qjzero = {0.4933787251794133562113278438e + 21, 0.5428918384092285160200195092e + 19, 0.3024635616709462698627330784e + 17, 0.1127756739679798507056031594e + 15, 0.3123043114941213172572469442e + 12, 0.669998767298223967181402866e + 9, 0.1114636098462985378182402543e + 7, 0.1363063652328970604442810507e + 4, 0.1e + 1};
+	public static double[] qjzero = {0.4933787251794133562113278438e+21, 0.5428918384092285160200195092e+19, 0.3024635616709462698627330784e+17, 0.1127756739679798507056031594e+15, 0.3123043114941213172572469442e+12, 0.669998767298223967181402866e+9, 0.1114636098462985378182402543e+7, 0.1363063652328970604442810507e+4, 0.1e+1};
 
 	/* pzero for x in [8,inf]
 	 * Index 6548, 18.16 digits precision
 	 */
-	public static double[] ppzero = {0.2277909019730468430227002627e + 5, 0.4134538663958076579678016384e + 5, 0.2117052338086494432193395727e + 5, 0.348064864432492703474453111e + 4, 0.15376201909008354295771715e + 3, 0.889615484242104552360748e + 0};
+	public static double[] ppzero = {0.2277909019730468430227002627e+5, 0.4134538663958076579678016384e+5, 0.2117052338086494432193395727e+5, 0.348064864432492703474453111e+4, 0.15376201909008354295771715e+3, 0.889615484242104552360748e+0};
 
-	public static double[] qpzero = {0.2277909019730468431768423768e + 5, 0.4137041249551041663989198384e + 5, 0.2121535056188011573042256764e + 5, 0.350287351382356082073561423e + 4, 0.15711159858080893649068482e + 3, 0.1e + 1};
+	public static double[] qpzero = {0.2277909019730468431768423768e+5, 0.4137041249551041663989198384e+5, 0.2121535056188011573042256764e+5, 0.350287351382356082073561423e+4, 0.15711159858080893649068482e+3, 0.1e+1};
 
 	/* qzero for x in [8,inf]
 	 * Index 6948, 18.33 digits precision
 	 */
-	public static double[] pqzero = {-0.8922660020080009409846916e + 2, -0.18591953644342993800252169e + 3, -0.11183429920482737611262123e + 3, -0.2230026166621419847169915e + 2, -0.124410267458356384591379e + 1, -0.8803330304868075181663e-2};
+	public static double[] pqzero = {-0.8922660020080009409846916e+2, -0.18591953644342993800252169e+3, -0.11183429920482737611262123e+3, -0.2230026166621419847169915e+2, -0.124410267458356384591379e+1, -0.8803330304868075181663e-2};
 
-	public static double[] qqzero = {0.571050241285120619052476459e + 4, 0.1195113154343461364695265329e + 5, 0.726427801692110188369134506e + 4, 0.148872312322837565816134698e + 4, 0.9059376959499312585881878e + 2, 0.1e + 1};
+	public static double[] qqzero = {0.571050241285120619052476459e+4, 0.1195113154343461364695265329e+5, 0.726427801692110188369134506e+4, 0.148872312322837565816134698e+4, 0.9059376959499312585881878e+2, 0.1e+1};
 
 
 	/* yzero for x in [0,8]
 	 * Index 6245, 18.78 digits precision
 	 */
-	public static double[] pyzero = {-0.2750286678629109583701933175e + 20, 0.6587473275719554925999402049e + 20, -0.5247065581112764941297350814e + 19, 0.1375624316399344078571335453e + 18, -0.1648605817185729473122082537e + 16, 0.1025520859686394284509167421e + 14, -0.3436371222979040378171030138e + 11, 0.5915213465686889654273830069e + 8, -0.4137035497933148554125235152e + 5};
+	public static double[] pyzero = {-0.2750286678629109583701933175e+20, 0.6587473275719554925999402049e+20, -0.5247065581112764941297350814e+19, 0.1375624316399344078571335453e+18, -0.1648605817185729473122082537e+16, 0.1025520859686394284509167421e+14, -0.3436371222979040378171030138e+11, 0.5915213465686889654273830069e+8, -0.4137035497933148554125235152e+5};
 
-	public static double[] qyzero = {0.3726458838986165881989980739e + 21, 0.4192417043410839973904769661e + 19, 0.2392883043499781857439356652e + 17, 0.9162038034075185262489147968e + 14, 0.2613065755041081249568482092e + 12, 0.5795122640700729537380087915e + 9, 0.1001702641288906265666651753e + 7, 0.1282452772478993804176329391e + 4, 0.1e + 1};
+	public static double[] qyzero = {0.3726458838986165881989980739e+21, 0.4192417043410839973904769661e+19, 0.2392883043499781857439356652e+17, 0.9162038034075185262489147968e+14, 0.2613065755041081249568482092e+12, 0.5795122640700729537380087915e+9, 0.1001702641288906265666651753e+7, 0.1282452772478993804176329391e+4, 0.1e+1};
 
 
 	/* jone for x in [0,8]
 	 * Index 6050, 20.98 digits precision
 	 */
-	public static double[] pjone = {0.581199354001606143928050809e + 21, -0.6672106568924916298020941484e + 20, 0.2316433580634002297931815435e + 19, -0.3588817569910106050743641413e + 17, 0.2908795263834775409737601689e + 15, -0.1322983480332126453125473247e + 13, 0.3413234182301700539091292655e + 10, -0.4695753530642995859767162166e + 7, 0.270112271089232341485679099e + 4};
+	public static double[] pjone = {0.581199354001606143928050809e+21, -0.6672106568924916298020941484e+20, 0.2316433580634002297931815435e+19, -0.3588817569910106050743641413e+17, 0.2908795263834775409737601689e+15, -0.1322983480332126453125473247e+13, 0.3413234182301700539091292655e+10, -0.4695753530642995859767162166e+7, 0.270112271089232341485679099e+4};
 
-	public static double[] qjone = {0.11623987080032122878585294e + 22, 0.1185770712190320999837113348e + 20, 0.6092061398917521746105196863e + 17, 0.2081661221307607351240184229e + 15, 0.5243710262167649715406728642e + 12, 0.1013863514358673989967045588e + 10, 0.1501793594998585505921097578e + 7, 0.1606931573481487801970916749e + 4, 0.1e + 1};
+	public static double[] qjone = {0.11623987080032122878585294e+22, 0.1185770712190320999837113348e+20, 0.6092061398917521746105196863e+17, 0.2081661221307607351240184229e+15, 0.5243710262167649715406728642e+12, 0.1013863514358673989967045588e+10, 0.1501793594998585505921097578e+7, 0.1606931573481487801970916749e+4, 0.1e+1};
 
 
 	/* pone for x in [8,inf]
 	 * Index 6749, 18.11 digits precision
 	 */
-	public static double[] ppone = {0.352246649133679798341724373e + 5, 0.62758845247161281269005675e + 5, 0.313539631109159574238669888e + 5, 0.49854832060594338434500455e + 4, 0.2111529182853962382105718e + 3, 0.12571716929145341558495e + 1};
+	public static double[] ppone = {0.352246649133679798341724373e+5, 0.62758845247161281269005675e+5, 0.313539631109159574238669888e+5, 0.49854832060594338434500455e+4, 0.2111529182853962382105718e+3, 0.12571716929145341558495e+1};
 
-	public static double[] qpone = {0.352246649133679798068390431e + 5, 0.626943469593560511888833731e + 5, 0.312404063819041039923015703e + 5, 0.4930396490181088979386097e + 4, 0.2030775189134759322293574e + 3, 0.1e + 1};
+	public static double[] qpone = {0.352246649133679798068390431e+5, 0.626943469593560511888833731e+5, 0.312404063819041039923015703e+5, 0.4930396490181088979386097e+4, 0.2030775189134759322293574e+3, 0.1e+1};
 
 	/* qone for x in [8,inf]
 	 * Index 7149, 18.28 digits precision
 	 */
-	public static double[] pqone = {0.3511751914303552822533318e + 3, 0.7210391804904475039280863e + 3, 0.4259873011654442389886993e + 3, 0.831898957673850827325226e + 2, 0.45681716295512267064405e + 1, 0.3532840052740123642735e-1};
+	public static double[] pqone = {0.3511751914303552822533318e+3, 0.7210391804904475039280863e+3, 0.4259873011654442389886993e+3, 0.831898957673850827325226e+2, 0.45681716295512267064405e+1, 0.3532840052740123642735e-1};
 
-	public static double[] qqone = {0.74917374171809127714519505e + 4, 0.154141773392650970499848051e + 5, 0.91522317015169922705904727e + 4, 0.18111867005523513506724158e + 4, 0.1038187585462133728776636e + 3, 0.1e + 1};
+	public static double[] qqone = {0.74917374171809127714519505e+4, 0.154141773392650970499848051e+5, 0.91522317015169922705904727e+4, 0.18111867005523513506724158e+4, 0.1038187585462133728776636e+3, 0.1e+1};
 
 
 	/* yone for x in [0,8]
 	 * Index 6444, 18.24 digits precision
 	 */
-	public static double[] pyone = {-0.2923821961532962543101048748e + 20, 0.7748520682186839645088094202e + 19, -0.3441048063084114446185461344e + 18, 0.5915160760490070618496315281e + 16, -0.4863316942567175074828129117e + 14, 0.2049696673745662182619800495e + 12, -0.4289471968855248801821819588e + 9, 0.3556924009830526056691325215e + 6};
+	public static double[] pyone = {-0.2923821961532962543101048748e+20, 0.7748520682186839645088094202e+19, -0.3441048063084114446185461344e+18, 0.5915160760490070618496315281e+16, -0.4863316942567175074828129117e+14, 0.2049696673745662182619800495e+12, -0.4289471968855248801821819588e+9, 0.3556924009830526056691325215e+6};
 
-	public static double[] qyone = {0.1491311511302920350174081355e + 21, 0.1818662841706134986885065935e + 19, 0.113163938269888452690508283e + 17, 0.4755173588888137713092774006e + 14, 0.1500221699156708987166369115e + 12, 0.3716660798621930285596927703e + 9, 0.726914730719888456980191315e + 6, 0.10726961437789255233221267e + 4, 0.1e + 1};
+	public static double[] qyone = {0.1491311511302920350174081355e+21, 0.1818662841706134986885065935e+19, 0.113163938269888452690508283e+17, 0.4755173588888137713092774006e+14, 0.1500221699156708987166369115e+12, 0.3716660798621930285596927703e+9, 0.726914730719888456980191315e+6, 0.10726961437789255233221267e+4, 0.1e+1};
 }
 /*
  * Make all the following internal routines perform autoconversion

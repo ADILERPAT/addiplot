@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.RefObject;
+
 public class GlobalMembersParse
 {
 	///#define __STDC__ 1
@@ -168,10 +170,10 @@ public class GlobalMembersParse
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: parse.c,v 1.57 2009/04/01 00:02:40 vanzandt Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: parse.c,v 1.57 2009/04/01 00:02:40 vanzandt Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - parse.c */
@@ -683,16 +685,16 @@ public class GlobalMembersParse
 
 	/* The choice of dummy variables, as set by 'set dummy', 'set polar'
 	 * and 'set parametric' */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte set_dummy_var[DefineConstants.MAX_NUM_VAR][DefineConstants.MAX_ID_LEN+1];
 	/* the currently used 'dummy' variables. Usually a copy of
 	 * set_dummy_var, but may be changed by the '(s)plot' command
 	 * containing an explicit range (--> 'plot [phi=0..pi]') */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte c_dummy_var[DefineConstants.MAX_NUM_VAR][DefineConstants.MAX_ID_LEN+1];
 
 	/* This is used by the using_spec parsing code in plot_option_using() */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int at_highest_column_used;
 
 	/* Prototypes of exported functions in parse.c */
@@ -703,18 +705,18 @@ public class GlobalMembersParse
 	}
 	public static double real_expression()
 	{
-	   double result;
-	   value a = new value();
-	   result = GlobalMembersEval.real(GlobalMembersParse.const_express(a));
-	   GlobalMembersEval.gpfree_string(a);
-	   return result;
+		double result;
+		value a = new value();
+		result = GlobalMembersEval.real(GlobalMembersParse.const_express(a));
+		GlobalMembersEval.gpfree_string(a);
+		return result;
 	}
 
-/* JW 20051126:
- * Wrapper around const_express() called by try_to_get_string().
- * Disallows top level + and - operators.
- * This enables things like set xtics ('-\pi' -pi, '-\pi/2' -pi/2.)
- */
+	/* JW 20051126:
+	 * Wrapper around const_express() called by try_to_get_string().
+	 * Disallows top level + and - operators.
+	 * This enables things like set xtics ('-\pi' -pi, '-\pi/2' -pi/2.)
+	 */
 	public static value const_string_express(value valptr)
 	{
 		string_result_only = true;
@@ -727,51 +729,51 @@ public class GlobalMembersParse
 		int tkn = GlobalMembersCommand.c_token;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "constant expression required");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "constant expression required");
 
 		/* div - no dummy variables in a constant expression */
-		GlobalMembersCommand.dummy_func = DefineConstants.NULL;
+		GlobalMembersCommand.dummy_func = null;
 
 		GlobalMembersEval.evaluate_at(GlobalMembersParse.temp_at(), valptr); // run it and send answer back
 
 		if (GlobalMembersEval.undefined)
 		{
-		GlobalMembersBf_test.int_error(tkn, "undefined value");
+			GlobalMembersBf_test.int_error(tkn, "undefined value");
 		}
 		return (valptr);
 	}
 
-/* Used by plot2d/plot3d/fit:
- * Parse an expression that may return a string or may return a constant or may
- * be a dummy function using dummy variables x, y, ...
- * If any dummy variables are present, set (*atptr) to point to an action table
- * corresponding to the parsed expression, and return NULL.
- * Otherwise evaluate the expression and return a string if there is one.
- * The return value "str" and "*atptr" both point to locally-managed memory,
- * which must not be freed by the caller!
- */
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static String string_or_express_str = DefineConstants.NULL;
+	/* Used by plot2d/plot3d/fit:
+	 * Parse an expression that may return a string or may return a constant or may
+	 * be a dummy function using dummy variables x, y, ...
+	 * If any dummy variables are present, set (*atptr) to point to an action table
+	 * corresponding to the parsed expression, and return NULL.
+	 * Otherwise evaluate the expression and return a string if there is one.
+	 * The return value "str" and "*atptr" both point to locally-managed memory,
+	 * which must not be freed by the caller!
+	 */
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static String string_or_express_str = null;
 	public static String string_or_express(at_type[] atptr)
 	{
 		int i;
 		boolean has_dummies;
 
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static sbyte* str = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+		//	static sbyte* str = DefineConstants.NULL;
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(string_or_express_str);
-		string_or_express_str = DefineConstants.NULL;
+		string_or_express_str = null;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expression expected");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expression expected");
 
 		if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
 		{
-		if (atptr != null)
-			atptr = DefineConstants.NULL;
-		string_or_express_str = GlobalMembersUtil.try_to_get_string();
-		return string_or_express_str;
+			if (atptr != null)
+				atptr = null;
+			string_or_express_str = GlobalMembersUtil.try_to_get_string();
+			return string_or_express_str;
 		}
 
 		/* parse expression */
@@ -781,45 +783,45 @@ private static String string_or_express_str = DefineConstants.NULL;
 		has_dummies = false;
 		for (i = 0; i < at.a_count; i++)
 		{
-		operators op_index = at.actions[i].index;
-		if (op_index == operators.PUSHD1 || op_index == operators.PUSHD2 || op_index == operators.PUSHD)
-		{
-			has_dummies = true;
-			break;
-		}
+			operators op_index = at.actions[i].index;
+			if (op_index == operators.PUSHD1 || op_index == operators.PUSHD2 || op_index == operators.PUSHD)
+			{
+				has_dummies = true;
+				break;
+			}
 		}
 
 		if (!has_dummies)
 		{
-		/* no dummy variables: evaluate expression */
-		value val = new value();
+			/* no dummy variables: evaluate expression */
+			value val = new value();
 
-		GlobalMembersEval.evaluate_at(at, val);
-		if (!GlobalMembersEval.undefined && val.type == DATA_TYPES.STRING)
-			string_or_express_str = val.v.string_val;
+			GlobalMembersEval.evaluate_at(at, val);
+			if (!GlobalMembersEval.undefined && val.type == DATA_TYPES.STRING)
+				string_or_express_str = val.v.string_val;
 		}
 
 		/* prepare return */
 		if (atptr != null)
-		atptr = at;
+			atptr = at;
 		return string_or_express_str;
 	}
 
-/* build an action table and return its pointer, but keep a pointer in at
- * so that we can free it later if the caller hasn't taken over management
- * of this table.
- */
+	/* build an action table and return its pointer, but keep a pointer in at
+	 * so that we can free it later if the caller hasn't taken over management
+	 * of this table.
+	 */
 
 	public static at_type temp_at()
 	{
-		if (at != DefineConstants.NULL)
-		GlobalMembersEval.free_at(at);
+		if (at != null)
+			GlobalMembersEval.free_at(at);
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		at = (GlobalMembersMouse.struct at_type *) GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct at_type), "action table");
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memset' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memset' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memset(at, 0, sizeof(at)); // reset action table !!!
 		at_size = DefineConstants.MAX_AT_LEN;
 
@@ -828,22 +830,22 @@ private static String string_or_express_str = DefineConstants.NULL;
 		return (at);
 	}
 
-/* build an action table, put it in dynamic memory, and return its pointer */
+	/* build an action table, put it in dynamic memory, and return its pointer */
 
 	public static at_type perm_at()
 	{
 		at_type at_ptr;
 		int len;
 
-		() GlobalMembersParse.temp_at();
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		GlobalMembersParse.temp_at();
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		len = sizeof(GlobalMembersMouse.struct at_type) + (at.a_count - DefineConstants.MAX_AT_LEN) * sizeof(GlobalMembersMouse.struct at_entry);
 		at_ptr = (GlobalMembersMouse.struct at_type *) GlobalMembersAlloc.gp_realloc(at, len, "perm_at");
-		at = DefineConstants.NULL; // invalidate at pointer
+		at = null; // invalidate at pointer
 		return (at_ptr);
 	}
 
-/* find or add value and return pointer */
+	/* find or add value and return pointer */
 	public static udvt_entry add_udv(int t_num)
 	{
 		String varname = new String(new char[DefineConstants.MAX_ID_LEN + 1]);
@@ -851,7 +853,7 @@ private static String string_or_express_str = DefineConstants.NULL;
 		return GlobalMembersEval.add_udv_by_name(varname);
 	}
 
-/* find or add function at index <t_num>, and return pointer */
+	/* find or add function at index <t_num>, and return pointer */
 	public static udft_entry add_udf(int t_num)
 	{
 		udft_entry[] udf_ptr = GlobalMembersEval.first_udf;
@@ -859,9 +861,9 @@ private static String string_or_express_str = DefineConstants.NULL;
 		int i;
 		while (udf_ptr != null)
 		{
-		if (GlobalMembersUtil.equals(t_num, (udf_ptr).udf_name) != 0)
-			return (udf_ptr);
-		udf_ptr = &((udf_ptr).next_udf);
+			if (GlobalMembersUtil.equals(t_num, (udf_ptr).udf_name) != 0)
+				return (udf_ptr);
+			udf_ptr = &((udf_ptr).next_udf);
 		}
 
 		/* get here => not found. udf_ptr points at first_udf or
@@ -869,11 +871,11 @@ private static String string_or_express_str = DefineConstants.NULL;
 		 */
 
 		if (GlobalMembersParse.is_builtin_function(t_num) != 0)
-		GlobalMembersUtil.int_warn(t_num, "Warning : udf shadowed by built-in function of the same name");
+			GlobalMembersUtil.int_warn(t_num, "Warning : udf shadowed by built-in function of the same name");
 
 		/* create and return a new udf slot */
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		udf_ptr = (GlobalMembersMouse.struct udft_entry *) GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct udft_entry), "function");
 		udf_ptr.next_udf = (GlobalMembersMouse.struct udft_entry *) DefineConstants.NULL;
 		udf_ptr.definition = DefineConstants.NULL;
@@ -881,98 +883,98 @@ private static String string_or_express_str = DefineConstants.NULL;
 		udf_ptr.udf_name = GlobalMembersAlloc.gp_alloc(GlobalMembersUtil.token_len(t_num) + 1, "user func");
 		GlobalMembersUtil.copy_str((udf_ptr).udf_name, t_num, GlobalMembersUtil.token_len(t_num) + 1);
 		for (i = 0; i < DefineConstants.MAX_NUM_VAR; i++)
-		() GlobalMembersEval.Ginteger(((udf_ptr).dummy_values[i]), 0);
+			() GlobalMembersEval.Ginteger(((udf_ptr).dummy_values[i]), 0);
 		return (udf_ptr);
 	}
-//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
+	//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
 	//void cleanup_udvlist();
 
-/* Look for an iterate-over-plot construct, of the form
- *    {s}plot  for [<var> = <start> : <end> { : <increment>}] ...
- */
+	/* Look for an iterate-over-plot construct, of the form
+	 *    {s}plot  for [<var> = <start> : <end> { : <increment>}] ...
+	 */
 
 	/* These are used by the iterate-over-plot code */
 	public static void check_for_iteration()
 	{
 		String errormsg = "Expecting iterator \tfor [<var> = <start> : <end>]\n\t\t\tor\tfor [<var> in \"string of words\"]";
 
-		iteration_udv = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		iteration_udv = null;
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(iteration_string);
-		iteration_string = DefineConstants.NULL;
+		iteration_string = null;
 		iteration_increment = 1;
 		iteration = 0;
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "for") == 0)
-		return;
+			return;
 
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "[") == 0 || GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
 		iteration_udv = GlobalMembersParse.add_udv(GlobalMembersCommand.c_token++);
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "=") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		iteration_start = GlobalMembersParse.int_expression();
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, ":") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
-		iteration_end = GlobalMembersParse.int_expression();
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") != 0)
-		{
 			GlobalMembersCommand.c_token++;
-			iteration_increment = GlobalMembersParse.int_expression();
-		}
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "]") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
-		if (iteration_udv.udv_undef == false)
-			GlobalMembersEval.gpfree_string(iteration_udv.udv_value);
-		GlobalMembersEval.Ginteger((iteration_udv.udv_value), iteration_start);
-		iteration_udv.udv_undef = false;
+			iteration_start = GlobalMembersParse.int_expression();
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, ":") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
+			iteration_end = GlobalMembersParse.int_expression();
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				iteration_increment = GlobalMembersParse.int_expression();
+			}
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "]") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
+			if (iteration_udv.udv_undef == false)
+				GlobalMembersEval.gpfree_string(iteration_udv.udv_value);
+			GlobalMembersEval.Ginteger((iteration_udv.udv_value), iteration_start);
+			iteration_udv.udv_undef = false;
 		}
 
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "in") != 0)
 		{
-		iteration_string = GlobalMembersUtil.try_to_get_string();
-		if (iteration_string == null)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "]") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
-		iteration_start = 1;
-		iteration_end = GlobalMembersEval.gp_words(iteration_string);
-		if (iteration_udv.udv_undef == false)
-			GlobalMembersEval.gpfree_string(iteration_udv.udv_value);
-		GlobalMembersEval.Gstring((iteration_udv.udv_value), GlobalMembersEval.gp_word(iteration_string, 1));
-		iteration_udv.udv_undef = false;
+			iteration_string = GlobalMembersUtil.try_to_get_string();
+			if (iteration_string == null)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "]") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
+			iteration_start = 1;
+			iteration_end = GlobalMembersEval.gp_words(iteration_string);
+			if (iteration_udv.udv_undef == false)
+				GlobalMembersEval.gpfree_string(iteration_udv.udv_value);
+			GlobalMembersEval.Gstring((iteration_udv.udv_value), GlobalMembersEval.gp_word(iteration_string, 1));
+			iteration_udv.udv_undef = false;
 		}
 
 		else // Neither [i=B:E] or [s in "foo"]
-		 GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, errormsg);
 
 		iteration_current = iteration_start;
 
 	}
 
-/* Set up next iteration.
- * Return TRUE if there is one, FALSE if we're done
- */
+	/* Set up next iteration.
+	 * Return TRUE if there is one, FALSE if we're done
+	 */
 	public static boolean next_iteration()
 	{
 		if (iteration_udv == null)
 		{
-		iteration = 0;
-		return false;
+			iteration = 0;
+			return false;
 		}
 		iteration++;
 		iteration_current += iteration_increment;
 		if (iteration_string != null)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(iteration_udv.udv_value.v.string_val);
-		iteration_udv.udv_value.v.string_val = GlobalMembersEval.gp_word(iteration_string, iteration_current);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(iteration_udv.udv_value.v.string_val);
+			iteration_udv.udv_value.v.string_val = GlobalMembersEval.gp_word(iteration_string, iteration_current);
 		}
 		else
-		iteration_udv.udv_value.v.int_val = iteration_current;
+			iteration_udv.udv_value.v.int_val = iteration_current;
 		return iteration_increment && ((iteration_end - iteration_current) * iteration_increment >= 0); // no infinite loops!
 	}
 	public static boolean empty_iteration()
@@ -986,7 +988,7 @@ private static String string_or_express_str = DefineConstants.NULL;
 	/* Some commands, e.g. set xtics, need to know if this is the first time
 	 * or a subsequent time through the iteration.  Export a counter.
 	 */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int iteration;
 
 
@@ -1375,12 +1377,12 @@ private static String string_or_express_str = DefineConstants.NULL;
 	public static int at_highest_column_used = -1;
 
 	/* These are used by the iterate-over-plot code */
-	public static udvt_entry iteration_udv = DefineConstants.NULL;
+	public static udvt_entry iteration_udv = null;
 	public static int iteration_start = 0;
 	public static int iteration_end = 0;
 	public static int iteration_increment = 1;
 	public static int iteration_current = 0;
-	public static String iteration_string = DefineConstants.NULL;
+	public static String iteration_string = null;
 	public static int iteration = 0;
 
 	/* Internal prototypes: */
@@ -1391,7 +1393,7 @@ private static String string_or_express_str = DefineConstants.NULL;
 	}
 	public static void extend_at()
 	{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		int newsize = sizeof(GlobalMembersMouse.struct at_type) + at_size * sizeof(GlobalMembersMouse.struct at_entry);
 
 		at = GlobalMembersAlloc.gp_realloc(at, newsize, "extend_at");
@@ -1399,24 +1401,24 @@ private static String string_or_express_str = DefineConstants.NULL;
 		GlobalMembersFit.a((stderr, "Extending at size to %d\n", at_size));
 	}
 
-/* Add function number <sf_index> to the current action table */
+	/* Add function number <sf_index> to the current action table */
 	public static argument add_action(operators sf_index)
 	{
 		if (at.a_count >= at_size)
 		{
-		GlobalMembersParse.extend_at();
+			GlobalMembersParse.extend_at();
 		}
 		at.actions[at.a_count].index = sf_index;
 		return ((at.actions[at.a_count++].arg));
 	}
 
-/* For external calls to parse_expressions() 
- * parse_recursion_level is expected to be 0 */
+	/* For external calls to parse_expressions() 
+	 * parse_recursion_level is expected to be 0 */
 	public static void parse_expression()
 	{ // full expressions
 
 		if (GlobalMembersParse.parse_assignment_expression() != 0)
-		return;
+			return;
 
 		parse_recursion_level++;
 		GlobalMembersParse.accept_logical_OR_expression();
@@ -1469,213 +1471,213 @@ private static String string_or_express_str = DefineConstants.NULL;
 		GlobalMembersParse.parse_multiplicative_expression(); // * / %
 	}
 
-/* add action table entries for primary expressions, i.e. either a
- * parenthesized expression, a variable names, a numeric constant, a
- * function evaluation, a power operator or postfix '!' (factorial)
- * expression */
+	/* add action table entries for primary expressions, i.e. either a
+	 * parenthesized expression, a variable names, a numeric constant, a
+	 * function evaluation, a power operator or postfix '!' (factorial)
+	 * expression */
 	public static void parse_primary_expression()
 	{
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "(") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.parse_expression();
-
-		/* Expressions may be separated by a comma */
-		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-		{
 			GlobalMembersCommand.c_token++;
-			() GlobalMembersParse.add_action(operators.POP);
 			GlobalMembersParse.parse_expression();
-		}
 
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "')' expected");
-		GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "$") != 0)
-		{
-		value a = new value();
-
-		if (GlobalMembersUtil.isanumber(++GlobalMembersCommand.c_token) == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Column number expected");
-		GlobalMembersParse.convert(a, GlobalMembersCommand.c_token++);
-		if (a.type != DATA_TYPES.INTGR || a.v.int_val < 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Positive integer expected");
-		if (at_highest_column_used < a.v.int_val)
-			at_highest_column_used = a.v.int_val;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: add_action(DOLLARS)->v_arg = a;
-		GlobalMembersParse.add_action(operators.DOLLARS).v_arg.copyFrom(a);
-		}
-		else if (GlobalMembersUtil.isanumber(GlobalMembersCommand.c_token) != 0)
-		{
-		/* work around HP 9000S/300 HP-UX 9.10 cc limitation ... */
-		/* HBB 20010724: use this code for all platforms, then */
-		argument foo = GlobalMembersParse.add_action(operators.PUSHC);
-
-		GlobalMembersParse.convert((foo.v_arg), GlobalMembersCommand.c_token);
-		GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) != 0)
-		{
-		/* Found an identifier --- check whether its a function or a
-		 * variable by looking for the parentheses of a function
-		 * argument list */
-		if ((GlobalMembersCommand.c_token + 1 < GlobalMembersCommand.num_tokens) && GlobalMembersUtil.equals(GlobalMembersCommand.c_token + 1, "(") != 0)
-		{
-			operators whichfunc = GlobalMembersParse.is_builtin_function(GlobalMembersCommand.c_token);
-			value num_params = new value();
-			num_params.type = DATA_TYPES.INTGR;
-
-			if (((int)whichfunc) != 0)
-			{
-	///#ifdef BACKWARDS_COMPATIBLE
-	// /* Deprecated syntax:   if (defined(foo)) ...  */
-	// /* New syntax:          if (exists("foo")) ... */
-	//		if (strcmp(ft[whichfunc].f_name,"defined")==0) {
-	//		    struct udvt_entry *udv = add_udv(c_token+2);
-	//		    union argument *foo = add_action(PUSHC);
-	//		    foo->v_arg.type = INTGR;
-	//		    foo->v_arg.v.int_val = udv->udv_undef ? 0 : 1;
-	//		    c_token += 4;  // skip past "defined ( <foo> ) "
-	//		    return;
-	//		}
-	///#endif
-			GlobalMembersCommand.c_token += 2; // skip fnc name and '('
-			GlobalMembersParse.parse_expression(); // parse fnc argument
-			num_params.v.int_val = 1;
+			/* Expressions may be separated by a comma */
 			while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
 			{
 				GlobalMembersCommand.c_token++;
-				num_params.v.int_val++;
+				GlobalMembersParse.add_action(operators.POP);
 				GlobalMembersParse.parse_expression();
 			}
 
 			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
 				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "')' expected");
 			GlobalMembersCommand.c_token++;
-
-			/* So far sprintf is the only built-in function */
-			/* with a variable number of arguments.         */
-			if (!strcmp(GlobalMembersEval.ft[whichfunc.getValue()].f_name,"sprintf"))
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
-				GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
-			/* And "words(s)" is implemented as "word(s,-1)" */
-			if (!strcmp(GlobalMembersEval.ft[whichfunc.getValue()].f_name,"words"))
-			{
-				num_params.v.int_val = -1;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
-				GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
-			}
-
-			() GlobalMembersParse.add_action(whichfunc);
-
-			}
-			else
-			{
-			/* it's a call to a user-defined function */
-			operators call_type =  operators.CALL.getValue();
-			int tok = GlobalMembersCommand.c_token;
-
-			GlobalMembersCommand.c_token += 2; // skip func name and '('
-			GlobalMembersParse.parse_expression();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0) // more than 1 argument?
-			{
-				num_params.v.int_val = 1;
-				while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-				{
-				num_params.v.int_val += 1;
-				GlobalMembersCommand.c_token += 1;
-				GlobalMembersParse.parse_expression();
-				}
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
-				GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
-				call_type =  operators.CALLN.getValue();
-			}
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "')' expected");
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.add_action(call_type).udf_arg = GlobalMembersParse.add_udf(tok);
-			}
-			/* dummy_func==NULL is a flag to say no dummy variables active */
 		}
-		else if (GlobalMembersCommand.dummy_func != null)
+		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "$") != 0)
 		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, c_dummy_var[0]) != 0)
-			{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.add_action(operators.PUSHD1).udf_arg = GlobalMembersCommand.dummy_func;
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, c_dummy_var[1]) != 0)
-			{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.add_action(operators.PUSHD2).udf_arg = GlobalMembersCommand.dummy_func;
-			}
-			else
-			{
-			int i;
-			int param = 0;
+			value a = new value();
 
-			for (i = 2; i < DefineConstants.MAX_NUM_VAR; i++)
+			if (GlobalMembersUtil.isanumber(++GlobalMembersCommand.c_token) == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Column number expected");
+			GlobalMembersParse.convert(a, GlobalMembersCommand.c_token++);
+			if (a.type != DATA_TYPES.INTGR || a.v.int_val < 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Positive integer expected");
+			if (at_highest_column_used < a.v.int_val)
+				at_highest_column_used = a.v.int_val;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: add_action(DOLLARS)->v_arg = a;
+			GlobalMembersParse.add_action(operators.DOLLARS).v_arg.copyFrom(a);
+		}
+		else if (GlobalMembersUtil.isanumber(GlobalMembersCommand.c_token) != 0)
+		{
+			/* work around HP 9000S/300 HP-UX 9.10 cc limitation ... */
+			/* HBB 20010724: use this code for all platforms, then */
+			argument foo = GlobalMembersParse.add_action(operators.PUSHC);
+
+			GlobalMembersParse.convert((foo.v_arg), GlobalMembersCommand.c_token);
+			GlobalMembersCommand.c_token++;
+		}
+		else if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) != 0)
+		{
+			/* Found an identifier --- check whether its a function or a
+			 * variable by looking for the parentheses of a function
+			 * argument list */
+			if ((GlobalMembersCommand.c_token + 1 < GlobalMembersCommand.num_tokens) && GlobalMembersUtil.equals(GlobalMembersCommand.c_token + 1, "(") != 0)
 			{
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, c_dummy_var[i]) != 0)
-				{
+				operators whichfunc = GlobalMembersParse.is_builtin_function(GlobalMembersCommand.c_token);
 				value num_params = new value();
 				num_params.type = DATA_TYPES.INTGR;
-				num_params.v.int_val = i;
-				param = 1;
-				GlobalMembersCommand.c_token++;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
-				GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
-				GlobalMembersParse.add_action(operators.PUSHD).udf_arg = GlobalMembersCommand.dummy_func;
-				break;
+
+				if (((int)whichfunc) != 0)
+				{
+					///#ifdef BACKWARDS_COMPATIBLE
+					// /* Deprecated syntax:   if (defined(foo)) ...  */
+					// /* New syntax:          if (exists("foo")) ... */
+					//		if (strcmp(ft[whichfunc].f_name,"defined")==0) {
+					//		    struct udvt_entry *udv = add_udv(c_token+2);
+					//		    union argument *foo = add_action(PUSHC);
+					//		    foo->v_arg.type = INTGR;
+					//		    foo->v_arg.v.int_val = udv->udv_undef ? 0 : 1;
+					//		    c_token += 4;  // skip past "defined ( <foo> ) "
+					//		    return;
+					//		}
+					///#endif
+					GlobalMembersCommand.c_token += 2; // skip fnc name and '('
+					GlobalMembersParse.parse_expression(); // parse fnc argument
+					num_params.v.int_val = 1;
+					while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						num_params.v.int_val++;
+						GlobalMembersParse.parse_expression();
+					}
+
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "')' expected");
+					GlobalMembersCommand.c_token++;
+
+					/* So far sprintf is the only built-in function */
+					/* with a variable number of arguments.         */
+					if (!strcmp(GlobalMembersEval.ft[whichfunc.getValue()].f_name,"sprintf"))
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
+						GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
+					/* And "words(s)" is implemented as "word(s,-1)" */
+					if (!strcmp(GlobalMembersEval.ft[whichfunc.getValue()].f_name,"words"))
+					{
+						num_params.v.int_val = -1;
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
+						GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
+					}
+
+					GlobalMembersParse.add_action(whichfunc);
+
 				}
+				else
+				{
+					/* it's a call to a user-defined function */
+					operators call_type =  operators.CALL.getValue();
+					int tok = GlobalMembersCommand.c_token;
+
+					GlobalMembersCommand.c_token += 2; // skip func name and '('
+					GlobalMembersParse.parse_expression();
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0) // more than 1 argument?
+					{
+						num_params.v.int_val = 1;
+						while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+						{
+							num_params.v.int_val += 1;
+							GlobalMembersCommand.c_token += 1;
+							GlobalMembersParse.parse_expression();
+						}
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
+						GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
+						call_type =  operators.CALLN.getValue();
+					}
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "')' expected");
+					GlobalMembersCommand.c_token++;
+					GlobalMembersParse.add_action(call_type).udf_arg = GlobalMembersParse.add_udf(tok);
+				}
+				/* dummy_func==NULL is a flag to say no dummy variables active */
 			}
-			if (param == 0) // defined variable
+			else if (GlobalMembersCommand.dummy_func != null)
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, c_dummy_var[0]) != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					GlobalMembersParse.add_action(operators.PUSHD1).udf_arg = GlobalMembersCommand.dummy_func;
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, c_dummy_var[1]) != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					GlobalMembersParse.add_action(operators.PUSHD2).udf_arg = GlobalMembersCommand.dummy_func;
+				}
+				else
+				{
+					int i;
+					int param = 0;
+
+					for (i = 2; i < DefineConstants.MAX_NUM_VAR; i++)
+					{
+						if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, c_dummy_var[i]) != 0)
+						{
+							value num_params = new value();
+							num_params.type = DATA_TYPES.INTGR;
+							num_params.v.int_val = i;
+							param = 1;
+							GlobalMembersCommand.c_token++;
+							//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+							//ORIGINAL LINE: add_action(PUSHC)->v_arg = num_params;
+							GlobalMembersParse.add_action(operators.PUSHC).v_arg.copyFrom(num_params);
+							GlobalMembersParse.add_action(operators.PUSHD).udf_arg = GlobalMembersCommand.dummy_func;
+							break;
+						}
+					}
+					if (param == 0) // defined variable
+					{
+						GlobalMembersParse.add_action(operators.PUSH).udv_arg = GlobalMembersParse.add_udv(GlobalMembersCommand.c_token);
+						GlobalMembersCommand.c_token++;
+					}
+				}
+				/* its a variable, with no dummies active - div */
+			}
+			else
 			{
 				GlobalMembersParse.add_action(operators.PUSH).udv_arg = GlobalMembersParse.add_udv(GlobalMembersCommand.c_token);
 				GlobalMembersCommand.c_token++;
 			}
-			}
-			/* its a variable, with no dummies active - div */
-		}
-		else
-		{
-			GlobalMembersParse.add_action(operators.PUSH).udv_arg = GlobalMembersParse.add_udv(GlobalMembersCommand.c_token);
-			GlobalMembersCommand.c_token++;
-		}
 		}
 		/* end if letter */
 
 		/* Maybe it's a string constant */
 		else if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
 		{
-		argument foo = GlobalMembersParse.add_action(operators.PUSHC);
-		foo.v_arg.type = DATA_TYPES.STRING;
-		foo.v_arg.v.string_val = DefineConstants.NULL;
-		/* this dynamically allocated string will be freed by free_at() */
-		GlobalMembersUtil.m_quote_capture((foo.v_arg.v.string_val), GlobalMembersCommand.c_token, GlobalMembersCommand.c_token);
-		GlobalMembersCommand.c_token++;
+			argument foo = GlobalMembersParse.add_action(operators.PUSHC);
+			foo.v_arg.type = DATA_TYPES.STRING;
+			foo.v_arg.v.string_val = DefineConstants.NULL;
+			/* this dynamically allocated string will be freed by free_at() */
+			GlobalMembersUtil.m_quote_capture((foo.v_arg.v.string_val), GlobalMembersCommand.c_token, GlobalMembersCommand.c_token);
+			GlobalMembersCommand.c_token++;
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid expression ");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid expression ");
 
 		/* add action code for ! (factorial) operator */
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "!") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		() GlobalMembersParse.add_action(operators.FACTORIAL);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.add_action(operators.FACTORIAL);
 		}
 		/* add action code for ** operator */
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "**") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.parse_unary_expression();
-		() GlobalMembersParse.add_action(operators.POWER);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.parse_unary_expression();
+			GlobalMembersParse.add_action(operators.POWER);
 		}
 
 		/* Parse and add actions for range specifier applying to previous entity.
@@ -1684,40 +1686,40 @@ private static String string_or_express_str = DefineConstants.NULL;
 		 */
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
 		{
-		/* handle '*' or empty start of range */
-		if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "*") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") != 0)
-		{
-			argument empty = GlobalMembersParse.add_action(operators.PUSHC);
-			empty.v_arg.type = DATA_TYPES.INTGR;
-			empty.v_arg.v.int_val = 1;
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "*") != 0)
+			/* handle '*' or empty start of range */
+			if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "*") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") != 0)
+			{
+				argument empty = GlobalMembersParse.add_action(operators.PUSHC);
+				empty.v_arg.type = DATA_TYPES.INTGR;
+				empty.v_arg.v.int_val = 1;
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "*") != 0)
+					GlobalMembersCommand.c_token++;
+			}
+			else
+				GlobalMembersParse.parse_expression();
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "':' expected");
+			/* handle '*' or empty end of range */
+			if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "*") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") != 0)
+			{
+				argument empty = GlobalMembersParse.add_action(operators.PUSHC);
+				empty.v_arg.type = DATA_TYPES.INTGR;
+				empty.v_arg.v.int_val = 65535; // should be MAXINT
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "*") != 0)
+					GlobalMembersCommand.c_token++;
+			}
+			else
+				GlobalMembersParse.parse_expression();
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
 			GlobalMembersCommand.c_token++;
-		}
-		else
-			GlobalMembersParse.parse_expression();
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "':' expected");
-		/* handle '*' or empty end of range */
-		if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "*") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") != 0)
-		{
-			argument empty = GlobalMembersParse.add_action(operators.PUSHC);
-			empty.v_arg.type = DATA_TYPES.INTGR;
-			empty.v_arg.v.int_val = 65535; // should be MAXINT
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "*") != 0)
-			GlobalMembersCommand.c_token++;
-		}
-		else
-			GlobalMembersParse.parse_expression();
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-		GlobalMembersCommand.c_token++;
-		() GlobalMembersParse.add_action(operators.RANGE);
+			GlobalMembersParse.add_action(operators.RANGE);
 		}
 	}
 
-/* HBB 20010309: Here and below: can't store pointers into the middle
- * of at->actions[]. That array may be realloc()ed by add_action() or
- * express() calls!. Access via index savepc1/savepc2, instead. */
+	/* HBB 20010309: Here and below: can't store pointers into the middle
+	 * of at->actions[]. That array may be realloc()ed by add_action() or
+	 * express() calls!. Access via index savepc1/savepc2, instead. */
 
 	public static void parse_conditional_expression()
 	{
@@ -1725,30 +1727,30 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "?") != 0)
 		{
-		int savepc1;
-		int savepc2;
+			int savepc1;
+			int savepc2;
 
-		/* Fake same recursion level for alternatives
-		 *   set xlabel a>b ? 'foo' : 'bar' -1, 1
-		 * FIXME: This won't work:
-		 *   set xlabel a-b>c ? 'foo' : 'bar'  offset -1, 1
-		 */
-		parse_recursion_level--;
+			/* Fake same recursion level for alternatives
+			 *   set xlabel a>b ? 'foo' : 'bar' -1, 1
+			 * FIXME: This won't work:
+			 *   set xlabel a-b>c ? 'foo' : 'bar'  offset -1, 1
+			 */
+			parse_recursion_level--;
 
-		GlobalMembersCommand.c_token++;
-		savepc1 = at.a_count;
-		GlobalMembersParse.add_action(operators.JTERN);
-		GlobalMembersParse.parse_expression();
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting ':'");
+			GlobalMembersCommand.c_token++;
+			savepc1 = at.a_count;
+			GlobalMembersParse.add_action(operators.JTERN);
+			GlobalMembersParse.parse_expression();
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ":") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting ':'");
 
-		GlobalMembersCommand.c_token++;
-		savepc2 = at.a_count;
-		GlobalMembersParse.add_action(operators.JUMP);
-		at.actions[savepc1].arg.j_arg = at.a_count - savepc1;
-		GlobalMembersParse.parse_expression();
-		at.actions[savepc2].arg.j_arg = at.a_count - savepc2;
-		parse_recursion_level++;
+			GlobalMembersCommand.c_token++;
+			savepc2 = at.a_count;
+			GlobalMembersParse.add_action(operators.JUMP);
+			at.actions[savepc1].arg.j_arg = at.a_count - savepc1;
+			GlobalMembersParse.parse_expression();
+			at.actions[savepc2].arg.j_arg = at.a_count - savepc2;
+			parse_recursion_level++;
 		}
 	}
 	public static void parse_logical_OR_expression()
@@ -1757,15 +1759,15 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "||") != 0)
 		{
-		int savepc;
+			int savepc;
 
-		GlobalMembersCommand.c_token++;
-		savepc = at.a_count;
-		GlobalMembersParse.add_action(operators.JUMPNZ); // short-circuit if already TRUE
-		GlobalMembersParse.accept_logical_AND_expression();
-		/* offset for jump */
-		at.actions[savepc].arg.j_arg = at.a_count - savepc;
-		() GlobalMembersParse.add_action(operators.BOOLE);
+			GlobalMembersCommand.c_token++;
+			savepc = at.a_count;
+			GlobalMembersParse.add_action(operators.JUMPNZ); // short-circuit if already TRUE
+			GlobalMembersParse.accept_logical_AND_expression();
+			/* offset for jump */
+			at.actions[savepc].arg.j_arg = at.a_count - savepc;
+			GlobalMembersParse.add_action(operators.BOOLE);
 		}
 	}
 	public static void parse_logical_AND_expression()
@@ -1774,14 +1776,14 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "&&") != 0)
 		{
-		int savepc;
+			int savepc;
 
-		GlobalMembersCommand.c_token++;
-		savepc = at.a_count;
-		GlobalMembersParse.add_action(operators.JUMPZ); // short-circuit if already FALSE
-		GlobalMembersParse.accept_inclusive_OR_expression();
-		at.actions[savepc].arg.j_arg = at.a_count - savepc; // offset for jump
-		() GlobalMembersParse.add_action(operators.BOOLE);
+			GlobalMembersCommand.c_token++;
+			savepc = at.a_count;
+			GlobalMembersParse.add_action(operators.JUMPZ); // short-circuit if already FALSE
+			GlobalMembersParse.accept_inclusive_OR_expression();
+			at.actions[savepc].arg.j_arg = at.a_count - savepc; // offset for jump
+			GlobalMembersParse.add_action(operators.BOOLE);
 		}
 	}
 	public static void parse_inclusive_OR_expression()
@@ -1790,9 +1792,9 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "|") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.accept_exclusive_OR_expression();
-		() GlobalMembersParse.add_action(operators.BOR);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.accept_exclusive_OR_expression();
+			GlobalMembersParse.add_action(operators.BOR);
 		}
 	}
 	public static void parse_exclusive_OR_expression()
@@ -1801,9 +1803,9 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "^") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.accept_AND_expression();
-		() GlobalMembersParse.add_action(operators.XOR);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.accept_AND_expression();
+			GlobalMembersParse.add_action(operators.XOR);
 		}
 	}
 	public static void parse_AND_expression()
@@ -1812,9 +1814,9 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "&") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.accept_equality_expression();
-		() GlobalMembersParse.add_action(operators.BAND);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.accept_equality_expression();
+			GlobalMembersParse.add_action(operators.BAND);
 		}
 	}
 	public static void parse_equality_expression()
@@ -1824,32 +1826,32 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (true)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "==") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_relational_expression();
-			() GlobalMembersParse.add_action(operators.EQ);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "!=") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_relational_expression();
-			() GlobalMembersParse.add_action(operators.NE);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "eq") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_relational_expression();
-			() GlobalMembersParse.add_action(operators.EQS);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "ne") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_relational_expression();
-			() GlobalMembersParse.add_action(operators.NES);
-		}
-		else
-			break;
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "==") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_relational_expression();
+				GlobalMembersParse.add_action(operators.EQ);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "!=") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_relational_expression();
+				GlobalMembersParse.add_action(operators.NE);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "eq") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_relational_expression();
+				GlobalMembersParse.add_action(operators.EQS);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "ne") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_relational_expression();
+				GlobalMembersParse.add_action(operators.NES);
+			}
+			else
+				break;
 		}
 	}
 	public static void parse_relational_expression()
@@ -1859,33 +1861,33 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (true)
 		{
-		/* I hate "else if" statements */
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ">") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_additive_expression();
-			() GlobalMembersParse.add_action(operators.GT);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "<") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_additive_expression();
-			() GlobalMembersParse.add_action(operators.LT);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ">=") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_additive_expression();
-			() GlobalMembersParse.add_action(operators.GE);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "<=") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_additive_expression();
-			() GlobalMembersParse.add_action(operators.LE);
-		}
-		else
-			break;
+			/* I hate "else if" statements */
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ">") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_additive_expression();
+				GlobalMembersParse.add_action(operators.GT);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "<") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_additive_expression();
+				GlobalMembersParse.add_action(operators.LT);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ">=") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_additive_expression();
+				GlobalMembersParse.add_action(operators.GE);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "<=") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_additive_expression();
+				GlobalMembersParse.add_action(operators.LE);
+			}
+			else
+				break;
 		}
 
 	}
@@ -1894,30 +1896,30 @@ private static String string_or_express_str = DefineConstants.NULL;
 		/* create action codes for +, - and . operators */
 		while (true)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ".") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_multiplicative_expression();
-			() GlobalMembersParse.add_action(operators.CONCATENATE);
-		/* If only string results are wanted
-		 * do not accept '-' or '+' at the top level. */
-		}
-		else if (string_result_only && parse_recursion_level == 1)
-			break;
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "+") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_multiplicative_expression();
-			() GlobalMembersParse.add_action(operators.PLUS);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "-") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.accept_multiplicative_expression();
-			() GlobalMembersParse.add_action(operators.MINUS);
-		}
-		else
-			break;
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ".") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_multiplicative_expression();
+				GlobalMembersParse.add_action(operators.CONCATENATE);
+				/* If only string results are wanted
+				 * do not accept '-' or '+' at the top level. */
+			}
+			else if (string_result_only && parse_recursion_level == 1)
+				break;
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "+") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_multiplicative_expression();
+				GlobalMembersParse.add_action(operators.PLUS);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "-") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.accept_multiplicative_expression();
+				GlobalMembersParse.add_action(operators.MINUS);
+			}
+			else
+				break;
 		}
 	}
 	public static void parse_multiplicative_expression()
@@ -1926,26 +1928,26 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		while (true)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "*") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.parse_unary_expression();
-			() GlobalMembersParse.add_action(operators.MULT);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "/") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.parse_unary_expression();
-			() GlobalMembersParse.add_action(operators.DIV);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "%") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.parse_unary_expression();
-			() GlobalMembersParse.add_action(operators.MOD);
-		}
-		else
-			break;
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "*") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.parse_unary_expression();
+				GlobalMembersParse.add_action(operators.MULT);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "/") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.parse_unary_expression();
+				GlobalMembersParse.add_action(operators.DIV);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "%") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.parse_unary_expression();
+				GlobalMembersParse.add_action(operators.MOD);
+			}
+			else
+				break;
 		}
 	}
 	public static void parse_unary_expression()
@@ -1954,68 +1956,68 @@ private static String string_or_express_str = DefineConstants.NULL;
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "!") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.parse_unary_expression();
-		() GlobalMembersParse.add_action(operators.LNOT);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.parse_unary_expression();
+			GlobalMembersParse.add_action(operators.LNOT);
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "~") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.parse_unary_expression();
-		() GlobalMembersParse.add_action(operators.BNOT);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.parse_unary_expression();
+			GlobalMembersParse.add_action(operators.BNOT);
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "-") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.parse_unary_expression();
-		() GlobalMembersParse.add_action(operators.UMINUS);
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.parse_unary_expression();
+			GlobalMembersParse.add_action(operators.UMINUS);
 		} // unary + is no-op
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "+") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersParse.parse_unary_expression();
+			GlobalMembersCommand.c_token++;
+			GlobalMembersParse.parse_unary_expression();
 		}
 		else
-		GlobalMembersParse.parse_primary_expression();
+			GlobalMembersParse.parse_primary_expression();
 	}
 	public static int parse_assignment_expression()
 	{
 		/* Check for assignment operator */
 		if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) != 0 && (GlobalMembersCommand.c_token + 1 < GlobalMembersCommand.num_tokens) && GlobalMembersUtil.equals(GlobalMembersCommand.c_token + 1, "=") != 0)
 		{
-		/* push the variable name */
-		argument foo = GlobalMembersParse.add_action(operators.PUSHC);
-		String varname = DefineConstants.NULL;
-	tangible.RefObject<String[]> tempRef_varname = new tangible.RefObject<String[]>(varname);
-		GlobalMembersUtil.m_capture(tempRef_varname, GlobalMembersCommand.c_token, GlobalMembersCommand.c_token);
-		varname = tempRef_varname.argvalue;
-		foo.v_arg.type = DATA_TYPES.STRING;
-		foo.v_arg.v.string_val = varname;
-		GlobalMembersCommand.c_token += 2;
-		/* and the expression whose value it will get */
-		GlobalMembersParse.parse_expression();
-		/* and the actual assignment operation */
-		() GlobalMembersParse.add_action(operators.ASSIGN);
-		return 1;
+			/* push the variable name */
+			argument foo = GlobalMembersParse.add_action(operators.PUSHC);
+			String varname = null;
+			RefObject<String[]> tempRef_varname = new RefObject<String[]>(varname);
+			GlobalMembersUtil.m_capture(tempRef_varname, GlobalMembersCommand.c_token, GlobalMembersCommand.c_token);
+			varname = tempRef_varname.argvalue;
+			foo.v_arg.type = DATA_TYPES.STRING;
+			foo.v_arg.v.string_val = varname;
+			GlobalMembersCommand.c_token += 2;
+			/* and the expression whose value it will get */
+			GlobalMembersParse.parse_expression();
+			/* and the actual assignment operation */
+			GlobalMembersParse.add_action(operators.ASSIGN);
+			return 1;
 		}
 		return 0;
 	}
 
-/* return standard function index or 0 */
+	/* return standard function index or 0 */
 	public static int is_builtin_function(int t_num)
 	{
 		int i;
 
 		for (i =  operators.SF_START.getValue(); !GlobalMembersEval.ft[i].f_name.equals(DefineConstants.NULL); i++)
 		{
-		if (GlobalMembersUtil.equals(t_num, GlobalMembersEval.ft[i].f_name) != 0)
-			return (i);
+			if (GlobalMembersUtil.equals(t_num, GlobalMembersEval.ft[i].f_name) != 0)
+				return (i);
 		}
 		return (0);
 	}
 
 	/* Internal variables: */
 
-	public static at_type at = DefineConstants.NULL;
+	public static at_type at = null;
 	public static int at_size = 0;
 }

@@ -119,4 +119,21 @@ public final class StringFunctions
 			return 1;
 		}
 	}
+	
+	public static String strncpy(String destination, String source, int num) {
+		
+		if (num <= 0) {
+			destination = "";
+		} else if (num > source.length()) {
+			destination = source;
+		} else { 
+			destination = source.substring(0, num-1);
+		}
+		return destination;
+	}
+	
+	public static double strtod(String str, RefObject<String[]> endptr) { 
+		//CCX need to figure out
+		return 0;
+	}
  }

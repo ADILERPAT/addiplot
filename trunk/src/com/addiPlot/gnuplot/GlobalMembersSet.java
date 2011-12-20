@@ -168,10 +168,10 @@ public class GlobalMembersSet
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: set.c,v 1.299.2.7 2010/02/13 06:35:21 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: set.c,v 1.299.2.7 2010/02/13 06:35:21 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - set.c */
@@ -1575,40 +1575,40 @@ public class GlobalMembersSet
 
 	public static palette_color_mode pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_NONE;
 
-/* process 'set angles' command */
+	/* process 'set angles' command */
 
 	public static void set_angles()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* assuming same as defaults */
-		GlobalMembersGadgets.ang2rad = 1;
+			/* assuming same as defaults */
+			GlobalMembersGadgets.ang2rad = 1;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$adians") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersGadgets.ang2rad = 1;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersGadgets.ang2rad = 1;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "d$egrees") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersGadgets.ang2rad = DefineConstants.M_PI / 180.0;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersGadgets.ang2rad = DefineConstants.M_PI / 180.0;
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'radians' or 'degrees'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'radians' or 'degrees'");
 
 		if (GlobalMembersGadgets.polar && ((int)GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale) != 0)
 		{
-		/* set trange if in polar mode and no explicit range */
-		GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = 0;
-		GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_max = 2 * DefineConstants.M_PI / GlobalMembersGadgets.ang2rad;
+			/* set trange if in polar mode and no explicit range */
+			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = 0;
+			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_max = 2 * DefineConstants.M_PI / GlobalMembersGadgets.ang2rad;
 		}
 	}
 
-/* process a 'set arrow' command */
-/* set arrow {tag} {from x,y} {to x,y} {{no}head} ... */
-/* allow any order of options - pm 25.11.2001 */
+	/* process a 'set arrow' command */
+	/* set arrow {tag} {from x,y} {to x,y} {{no}head} ... */
+	/* allow any order of options - pm 25.11.2001 */
 	public static void set_arrow()
 	{
 		arrow_def this_arrow = DefineConstants.NULL;
@@ -1625,118 +1625,118 @@ public class GlobalMembersSet
 		/* get tag */
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "back$head") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "filled") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "empty") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "as") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "arrowstyle") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "head$s") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "nohead") != 0)
 		{
-		tag = GlobalMembersSet.assign_arrow_tag();
+			tag = GlobalMembersSet.assign_arrow_tag();
 
 		}
 		else
-		tag = GlobalMembersParse.int_expression();
+			tag = GlobalMembersParse.int_expression();
 
 		if (tag <= 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > 0");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > 0");
 
 		/* OK! add arrow */
-		if (GlobalMembersGadgets.first_arrow != DefineConstants.NULL) // skip to last arrow
+		if (GlobalMembersGadgets.first_arrow != null) // skip to last arrow
 		{
-		for (this_arrow = GlobalMembersGadgets.first_arrow; this_arrow != DefineConstants.NULL; prev_arrow = this_arrow, this_arrow = this_arrow.next)
-			/* is this the arrow we want? */
-			if (tag <= this_arrow.tag)
-			break;
+			for (this_arrow = GlobalMembersGadgets.first_arrow; this_arrow != null; prev_arrow = this_arrow, this_arrow = this_arrow.next)
+				/* is this the arrow we want? */
+				if (tag <= this_arrow.tag)
+					break;
 		}
-		if (this_arrow == DefineConstants.NULL || tag != this_arrow.tag)
+		if (this_arrow == null || tag != this_arrow.tag)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		new_arrow = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct arrow_def), "arrow");
-		if (prev_arrow == DefineConstants.NULL)
-			GlobalMembersGadgets.first_arrow = new_arrow;
-		else
-			prev_arrow.next = new_arrow;
-		new_arrow.tag = tag;
-		new_arrow.next = this_arrow;
-		this_arrow = new_arrow;
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			new_arrow = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct arrow_def), "arrow");
+			if (prev_arrow == null)
+				GlobalMembersGadgets.first_arrow = new_arrow;
+			else
+				prev_arrow.next = new_arrow;
+			new_arrow.tag = tag;
+			new_arrow.next = this_arrow;
+			this_arrow = new_arrow;
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_arrow->start = default_position;
-		this_arrow.start.copyFrom(default_position);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_arrow->end = default_position;
-		this_arrow.end.copyFrom(default_position);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: this_arrow->start = default_position;
+			this_arrow.start.copyFrom(default_position);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: this_arrow->end = default_position;
+			this_arrow.end.copyFrom(default_position);
 
-		GlobalMembersGadgets.default_arrow_style((new_arrow.arrow_properties));
+			GlobalMembersGadgets.default_arrow_style((new_arrow.arrow_properties));
 		}
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
 
-		/* get start position */
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0)
-		{
-			if (set_start)
+			/* get start position */
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0)
 			{
-				duplication = true;
-				break;
+				if (set_start)
+				{
+					duplication = true;
+					break;
+				}
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "start coordinates expected");
+				/* get coordinates */
+				GlobalMembersAxis.get_position(this_arrow.start);
+				set_start = true;
+				continue;
 			}
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "start coordinates expected");
-			/* get coordinates */
-			GlobalMembersAxis.get_position(this_arrow.start);
-			set_start = true;
-			continue;
-		}
 
-		/* get end or relative end position */
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0)
-		{
-			if (set_end)
+			/* get end or relative end position */
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0)
 			{
-				duplication = true;
-				break;
+				if (set_end)
+				{
+					duplication = true;
+					break;
+				}
+				this_arrow.relative = (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto")) ? true : false;
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "end coordinates expected");
+				/* get coordinates */
+				GlobalMembersAxis.get_position(this_arrow.end);
+				set_end = true;
+				continue;
 			}
-			this_arrow.relative = (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto")) ? true : false;
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "end coordinates expected");
-			/* get coordinates */
-			GlobalMembersAxis.get_position(this_arrow.end);
-			set_end = true;
-			continue;
-		}
 
-		/* Allow interspersed style commands */
-		save_token = GlobalMembersCommand.c_token;
-		GlobalMembersMisc.arrow_parse(this_arrow.arrow_properties, true);
-		if (save_token != GlobalMembersCommand.c_token)
-			continue;
+			/* Allow interspersed style commands */
+			save_token = GlobalMembersCommand.c_token;
+			GlobalMembersMisc.arrow_parse(this_arrow.arrow_properties, true);
+			if (save_token != GlobalMembersCommand.c_token)
+				continue;
 
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "wrong argument in set arrow");
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "wrong argument in set arrow");
 
 		} // while (!END_OF_COMMAND)
 
 		if (duplication)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "duplicate or contradictory arguments");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "duplicate or contradictory arguments");
 
 	}
 
-/* assign a new arrow tag
- * arrows are kept sorted by tag number, so this is easy
- * returns the lowest unassigned tag number
- */
+	/* assign a new arrow tag
+	 * arrows are kept sorted by tag number, so this is easy
+	 * returns the lowest unassigned tag number
+	 */
 	public static int assign_arrow_tag()
 	{
 		arrow_def this_arrow;
 		int last = 0; // previous tag value
 
-		for (this_arrow = GlobalMembersGadgets.first_arrow; this_arrow != DefineConstants.NULL; this_arrow = this_arrow.next)
-		if (this_arrow.tag == last + 1)
-			last++;
-		else
-			break;
+		for (this_arrow = GlobalMembersGadgets.first_arrow; this_arrow != null; this_arrow = this_arrow.next)
+			if (this_arrow.tag == last + 1)
+				last++;
+			else
+				break;
 
 		return (last + 1);
 	}
 
-/* process 'set autoscale' command */
+	/* process 'set autoscale' command */
 	public static void set_autoscale()
 	{
 		String min_string = new String(new char[20]);
@@ -1745,43 +1745,43 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		do
-		{
-			int tmp;
-			for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
-				GlobalMembersAxis.axis_array[tmp].field = (e_autoscale.AUTOSCALE_BOTH);
-		} while (0);
-		return;
+			do
+			{
+				int tmp;
+				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
+					GlobalMembersAxis.axis_array[tmp].field = (e_autoscale.AUTOSCALE_BOTH);
+			} while (0);
+			return;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "yx") != 0)
 		{
-		GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].set_autoscale = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale = e_autoscale.AUTOSCALE_BOTH;
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].set_autoscale = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale = e_autoscale.AUTOSCALE_BOTH;
+			GlobalMembersCommand.c_token++;
+			return;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "fix") != 0)
 		{
-		int a = 0;
-		while (a < DefineConstants.AXIS_ARRAY_SIZE)
-		{
-			GlobalMembersAxis.axis_array[a].set_autoscale |= e_autoscale.AUTOSCALE_FIXMIN | e_autoscale.AUTOSCALE_FIXMAX;
-			a++;
-		}
-		GlobalMembersCommand.c_token++;
-		return;
+			int a = 0;
+			while (a < DefineConstants.AXIS_ARRAY_SIZE)
+			{
+				GlobalMembersAxis.axis_array[a].set_autoscale |= e_autoscale.AUTOSCALE_FIXMIN | e_autoscale.AUTOSCALE_FIXMAX;
+				a++;
+			}
+			GlobalMembersCommand.c_token++;
+			return;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ke$epfix") != 0)
 		{
-		int a = 0;
-		while (a < DefineConstants.AXIS_ARRAY_SIZE)
-			GlobalMembersAxis.axis_array[a++].set_autoscale |= e_autoscale.AUTOSCALE_BOTH;
-		GlobalMembersCommand.c_token++;
-		return;
+			int a = 0;
+			while (a < DefineConstants.AXIS_ARRAY_SIZE)
+				GlobalMembersAxis.axis_array[a++].set_autoscale |= e_autoscale.AUTOSCALE_BOTH;
+			GlobalMembersCommand.c_token++;
+			return;
 		}
 
 		/* save on replication with a macro */
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define PROCESS_AUTO_LETTER(axis) do { axis *this = axis_array + axis; if (equals(c_token, axis_defaults[axis].name)) { this->set_autoscale = AUTOSCALE_BOTH; ++c_token; return; } sprintf(min_string, "%smi$n", axis_defaults[axis].name); if (almost_equals(c_token, min_string)) { this->set_autoscale |= AUTOSCALE_MIN; ++c_token; return; } sprintf(max_string, "%sma$x", axis_defaults[axis].name); if (almost_equals(c_token, max_string)) { this->set_autoscale |= AUTOSCALE_MAX; ++c_token; return; } sprintf(min_string, "%sfix", axis_defaults[axis].name); if (equals(c_token, min_string)) { this->set_autoscale |= AUTOSCALE_FIXMIN | AUTOSCALE_FIXMAX; ++c_token; return; } sprintf(min_string, "%sfixmi$n", axis_defaults[axis].name); if (almost_equals(c_token, min_string)) { this->set_autoscale |= AUTOSCALE_FIXMIN; ++c_token; return; } sprintf(max_string, "%sfixma$x", axis_defaults[axis].name); if (almost_equals(c_token, max_string)) { this->set_autoscale |= AUTOSCALE_FIXMAX; ++c_token; return; } } while(0)
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define PROCESS_AUTO_LETTER(axis) do { axis *this = axis_array + axis; if (equals(c_token, axis_defaults[axis].name)) { this->set_autoscale = AUTOSCALE_BOTH; ++c_token; return; } sprintf(min_string, "%smi$n", axis_defaults[axis].name); if (almost_equals(c_token, min_string)) { this->set_autoscale |= AUTOSCALE_MIN; ++c_token; return; } sprintf(max_string, "%sma$x", axis_defaults[axis].name); if (almost_equals(c_token, max_string)) { this->set_autoscale |= AUTOSCALE_MAX; ++c_token; return; } sprintf(min_string, "%sfix", axis_defaults[axis].name); if (equals(c_token, min_string)) { this->set_autoscale |= AUTOSCALE_FIXMIN | AUTOSCALE_FIXMAX; ++c_token; return; } sprintf(min_string, "%sfixmi$n", axis_defaults[axis].name); if (almost_equals(c_token, min_string)) { this->set_autoscale |= AUTOSCALE_FIXMIN; ++c_token; return; } sprintf(max_string, "%sfixma$x", axis_defaults[axis].name); if (almost_equals(c_token, max_string)) { this->set_autoscale |= AUTOSCALE_FIXMAX; ++c_token; return; } } while(0)
 
 		do
 		{
@@ -2237,7 +2237,7 @@ public class GlobalMembersSet
 		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Invalid range");
 	}
 
-/* process 'set bars' command */
+	/* process 'set bars' command */
 	public static void set_bars()
 	{
 
@@ -2245,77 +2245,77 @@ public class GlobalMembersSet
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$mall") != 0)
-		{
-			GlobalMembersGraphics.bar_size = 0.0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "l$arge") != 0)
-		{
-			GlobalMembersGraphics.bar_size = 1.0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "full$width") != 0)
-		{
-			GlobalMembersGraphics.bar_size = -1.0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
-		{
-			GlobalMembersGraphics.bar_layer = DefineConstants.LAYER_FRONT;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
-		{
-			GlobalMembersGraphics.bar_layer = DefineConstants.LAYER_BACK;
-			++GlobalMembersCommand.c_token;
-		}
-		else
-		{
-			GlobalMembersGraphics.bar_size = GlobalMembersParse.real_expression();
-		}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$mall") != 0)
+			{
+				GlobalMembersGraphics.bar_size = 0.0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "l$arge") != 0)
+			{
+				GlobalMembersGraphics.bar_size = 1.0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "full$width") != 0)
+			{
+				GlobalMembersGraphics.bar_size = -1.0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
+			{
+				GlobalMembersGraphics.bar_layer = DefineConstants.LAYER_FRONT;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
+			{
+				GlobalMembersGraphics.bar_layer = DefineConstants.LAYER_BACK;
+				++GlobalMembersCommand.c_token;
+			}
+			else
+			{
+				GlobalMembersGraphics.bar_size = GlobalMembersParse.real_expression();
+			}
 		}
 
 		if (save_token == GlobalMembersCommand.c_token)
-		GlobalMembersGraphics.bar_size = 1.0;
+			GlobalMembersGraphics.bar_size = 1.0;
 
 	}
 
-/* process 'set border' command */
+	/* process 'set border' command */
 	public static void set_border()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersGadgets.draw_border = 31;
-		GlobalMembersGadgets.border_layer = 1;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: border_lp = default_border_lp;
-		GlobalMembersGadgets.border_lp.copyFrom(GlobalMembersGadgets.default_border_lp);
+			GlobalMembersGadgets.draw_border = 31;
+			GlobalMembersGadgets.border_layer = 1;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: border_lp = default_border_lp;
+			GlobalMembersGadgets.border_lp.copyFrom(GlobalMembersGadgets.default_border_lp);
 		}
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
-		{
-			GlobalMembersGadgets.border_layer = 1;
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
-		{
-			GlobalMembersGadgets.border_layer = 0;
-			GlobalMembersCommand.c_token++;
-		}
-		else
-		{
-			int save_token = GlobalMembersCommand.c_token;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: lp_parse(&border_lp, true, false);
-			GlobalMembersMisc.lp_parse(new lp_style_type(GlobalMembersGadgets.border_lp), true, false);
-			if (save_token != GlobalMembersCommand.c_token)
-			continue;
-			GlobalMembersGadgets.draw_border = GlobalMembersParse.int_expression();
-		}
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
+			{
+				GlobalMembersGadgets.border_layer = 1;
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
+			{
+				GlobalMembersGadgets.border_layer = 0;
+				GlobalMembersCommand.c_token++;
+			}
+			else
+			{
+				int save_token = GlobalMembersCommand.c_token;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: lp_parse(&border_lp, true, false);
+				GlobalMembersMisc.lp_parse(new lp_style_type(GlobalMembersGadgets.border_lp), true, false);
+				if (save_token != GlobalMembersCommand.c_token)
+					continue;
+				GlobalMembersGadgets.draw_border = GlobalMembersParse.int_expression();
+			}
 		}
 
 		/* This is the only place the user can change the border	*/
@@ -2324,34 +2324,34 @@ public class GlobalMembersSet
 		GlobalMembersGadgets.user_border = GlobalMembersGadgets.draw_border;
 	}
 
-/* process 'set boxwidth' command */
+	/* process 'set boxwidth' command */
 	public static void set_boxwidth()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersPlot2d.boxwidth = -1.0;
-		GlobalMembersPlot2d.boxwidth_is_absolute = true;
+			GlobalMembersPlot2d.boxwidth = -1.0;
+			GlobalMembersPlot2d.boxwidth_is_absolute = true;
 		}
 		else
 		{
-		GlobalMembersPlot2d.boxwidth = GlobalMembersParse.real_expression();
+			GlobalMembersPlot2d.boxwidth = GlobalMembersParse.real_expression();
 		}
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		return;
+			return;
 		else
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "a$bsolute") != 0)
-			GlobalMembersPlot2d.boxwidth_is_absolute = true;
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$elative") != 0)
-			GlobalMembersPlot2d.boxwidth_is_absolute = false;
-		else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'absolute' or 'relative' ");
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "a$bsolute") != 0)
+				GlobalMembersPlot2d.boxwidth_is_absolute = true;
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$elative") != 0)
+				GlobalMembersPlot2d.boxwidth_is_absolute = false;
+			else
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'absolute' or 'relative' ");
 		}
 		GlobalMembersCommand.c_token++;
 	}
 
-/* process 'set clabel' command */
+	/* process 'set clabel' command */
 	public static void set_clabel()
 	{
 		String new_format;
@@ -2360,178 +2360,178 @@ public class GlobalMembersSet
 		GlobalMembersGraph3d.label_contours = true;
 		if ((new_format = GlobalMembersUtil.try_to_get_string()))
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		GlobalMembersContour.contour_format = new_format.substring(0, sizeof(GlobalMembersContour.contour_format));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(new_format);
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			GlobalMembersContour.contour_format = new_format.substring(0, sizeof(GlobalMembersContour.contour_format));
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(new_format);
 		}
 	}
 
-/* process 'set clip' command */
+	/* process 'set clip' command */
 	public static void set_clip()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		/* assuming same as points */
-		GlobalMembersGadgets.clip_points = true;
+			/* assuming same as points */
+			GlobalMembersGadgets.clip_points = true;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "p$oints") != 0)
-		GlobalMembersGadgets.clip_points = true;
+			GlobalMembersGadgets.clip_points = true;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "o$ne") != 0)
-		GlobalMembersGadgets.clip_lines1 = true;
+			GlobalMembersGadgets.clip_lines1 = true;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$wo") != 0)
-		GlobalMembersGadgets.clip_lines2 = true;
+			GlobalMembersGadgets.clip_lines2 = true;
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'points', 'one', or 'two'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'points', 'one', or 'two'");
 		GlobalMembersCommand.c_token++;
 	}
 
-/* process 'set cntrparam' command */
+	/* process 'set cntrparam' command */
 	public static void set_cntrparam()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* assuming same as defaults */
-		GlobalMembersContour.contour_pts = DefineConstants.DEFAULT_NUM_APPROX_PTS;
-		GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_LINEAR;
-		GlobalMembersContour.contour_order = DefineConstants.DEFAULT_CONTOUR_ORDER;
-		GlobalMembersContour.contour_levels = DefineConstants.DEFAULT_CONTOUR_LEVELS;
-		GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_AUTO;
+			/* assuming same as defaults */
+			GlobalMembersContour.contour_pts = DefineConstants.DEFAULT_NUM_APPROX_PTS;
+			GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_LINEAR;
+			GlobalMembersContour.contour_order = DefineConstants.DEFAULT_CONTOUR_ORDER;
+			GlobalMembersContour.contour_levels = DefineConstants.DEFAULT_CONTOUR_LEVELS;
+			GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_AUTO;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "p$oints") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersContour.contour_pts = GlobalMembersParse.int_expression();
+			GlobalMembersCommand.c_token++;
+			GlobalMembersContour.contour_pts = GlobalMembersParse.int_expression();
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "li$near") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_LINEAR;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_LINEAR;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$ubicspline") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_CUBIC_SPL;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_CUBIC_SPL;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "b$spline") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_BSPLINE;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersContour.contour_kind = en_contour_kind.CONTOUR_KIND_BSPLINE;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "le$vels") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-
-		if (GlobalMembersParse.iteration == 0)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: free_dynarray(&dyn_contour_levels_list);
-			GlobalMembersDynarray.free_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: init_dynarray(&dyn_contour_levels_list, sizeof(double), 5, 10);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			GlobalMembersDynarray.init_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list), sizeof(double), 5, 10);
-		}
-
-		/*  RKC: I have modified the next two:
-		 *   to use commas to separate list elements as in xtics
-		 *   so that incremental lists start,incr[,end]as in "
-		 */
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "di$screte") != 0)
-		{
-			GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_DISCRETE;
 			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting discrete level");
-			else
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: *(double *)nextfrom_dynarray(&dyn_contour_levels_list) = real_expression();
-			(Double)GlobalMembersDynarray.nextfrom_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list)) = GlobalMembersParse.real_expression();
 
-			while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			if (GlobalMembersParse.iteration == 0)
 			{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting comma to separate discrete levels");
-			GlobalMembersCommand.c_token++;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: *(double *)nextfrom_dynarray(&dyn_contour_levels_list) = real_expression();
-			(Double)GlobalMembersDynarray.nextfrom_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list)) = GlobalMembersParse.real_expression();
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: free_dynarray(&dyn_contour_levels_list);
+				GlobalMembersDynarray.free_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list));
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: init_dynarray(&dyn_contour_levels_list, sizeof(double), 5, 10);
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				GlobalMembersDynarray.init_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list), sizeof(double), 5, 10);
 			}
-			GlobalMembersContour.contour_levels = GlobalMembersContour.dyn_contour_levels_list.end;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "in$cremental") != 0)
-		{
-			int i = 0; // local counter
 
-			GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_INCREMENTAL;
-			GlobalMembersCommand.c_token++;
-			(double)GlobalMembersContour.dyn_contour_levels_list.v[i++] = GlobalMembersParse.real_expression();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting comma to separate start,incr levels");
-			GlobalMembersCommand.c_token++;
-			if (((double)GlobalMembersContour.dyn_contour_levels_list.v[i++] = GlobalMembersParse.real_expression()) == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "increment cannot be 0");
-			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting comma to separate incr,stop levels");
-			GlobalMembersCommand.c_token++;
-			/* need to round up, since 10,10,50 is 5 levels, not four,
-			 * but 10,10,49 is four
+			/*  RKC: I have modified the next two:
+			 *   to use commas to separate list elements as in xtics
+			 *   so that incremental lists start,incr[,end]as in "
 			 */
-			GlobalMembersContour.dyn_contour_levels_list.end = i;
-			GlobalMembersContour.contour_levels = (int)((GlobalMembersParse.real_expression() - (double)GlobalMembersContour.dyn_contour_levels_list.v[0]) / (double)GlobalMembersContour.dyn_contour_levels_list.v[1] + 1.0);
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "di$screte") != 0)
+			{
+				GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_DISCRETE;
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting discrete level");
+				else
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: *(double *)nextfrom_dynarray(&dyn_contour_levels_list) = real_expression();
+					(Double)GlobalMembersDynarray.nextfrom_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list)) = GlobalMembersParse.real_expression();
+
+				while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				{
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting comma to separate discrete levels");
+					GlobalMembersCommand.c_token++;
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: *(double *)nextfrom_dynarray(&dyn_contour_levels_list) = real_expression();
+					(Double)GlobalMembersDynarray.nextfrom_dynarray(new dynarray(GlobalMembersContour.dyn_contour_levels_list)) = GlobalMembersParse.real_expression();
+				}
+				GlobalMembersContour.contour_levels = GlobalMembersContour.dyn_contour_levels_list.end;
 			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "au$to") != 0)
-		{
-			GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_AUTO;
-			GlobalMembersCommand.c_token++;
-			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersContour.contour_levels = GlobalMembersParse.int_expression();
-		}
-		else
-		{
-			if (GlobalMembersContour.contour_levels_kind == en_contour_levels_kind.LEVELS_DISCRETE)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Levels type is discrete, ignoring new number of contour levels");
-			GlobalMembersContour.contour_levels = GlobalMembersParse.int_expression();
-		}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "in$cremental") != 0)
+			{
+				int i = 0; // local counter
+
+				GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_INCREMENTAL;
+				GlobalMembersCommand.c_token++;
+				(double)GlobalMembersContour.dyn_contour_levels_list.v[i++] = GlobalMembersParse.real_expression();
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting comma to separate start,incr levels");
+				GlobalMembersCommand.c_token++;
+				if (((double)GlobalMembersContour.dyn_contour_levels_list.v[i++] = GlobalMembersParse.real_expression()) == 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "increment cannot be 0");
+				if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				{
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting comma to separate incr,stop levels");
+					GlobalMembersCommand.c_token++;
+					/* need to round up, since 10,10,50 is 5 levels, not four,
+					 * but 10,10,49 is four
+					 */
+					GlobalMembersContour.dyn_contour_levels_list.end = i;
+					GlobalMembersContour.contour_levels = (int)((GlobalMembersParse.real_expression() - (double)GlobalMembersContour.dyn_contour_levels_list.v[0]) / (double)GlobalMembersContour.dyn_contour_levels_list.v[1] + 1.0);
+				}
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "au$to") != 0)
+			{
+				GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_AUTO;
+				GlobalMembersCommand.c_token++;
+				if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersContour.contour_levels = GlobalMembersParse.int_expression();
+			}
+			else
+			{
+				if (GlobalMembersContour.contour_levels_kind == en_contour_levels_kind.LEVELS_DISCRETE)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Levels type is discrete, ignoring new number of contour levels");
+				GlobalMembersContour.contour_levels = GlobalMembersParse.int_expression();
+			}
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "o$rder") != 0)
 		{
-		int order;
-		GlobalMembersCommand.c_token++;
-		order = GlobalMembersParse.int_expression();
-		if (order < 2 || order > DefineConstants.MAX_BSPLINE_ORDER)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "bspline order must be in [2..10] range.");
-		GlobalMembersContour.contour_order = order;
+			int order;
+			GlobalMembersCommand.c_token++;
+			order = GlobalMembersParse.int_expression();
+			if (order < 2 || order > DefineConstants.MAX_BSPLINE_ORDER)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "bspline order must be in [2..10] range.");
+			GlobalMembersContour.contour_order = order;
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'linear', 'cubicspline', 'bspline', 'points', 'levels' or 'order'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'linear', 'cubicspline', 'bspline', 'points', 'levels' or 'order'");
 	}
 
-/* process 'set contour' command */
+	/* process 'set contour' command */
 	public static void set_contour()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		/* assuming same as points */
-		GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_BASE;
+			/* assuming same as points */
+			GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_BASE;
 		else
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ba$se") != 0)
-			GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_BASE;
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$urface") != 0)
-			GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_SRF;
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bo$th") != 0)
-			GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_BOTH;
-		else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'base', 'surface', or 'both'");
-		GlobalMembersCommand.c_token++;
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ba$se") != 0)
+				GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_BASE;
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$urface") != 0)
+				GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_SRF;
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bo$th") != 0)
+				GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_BOTH;
+			else
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'base', 'surface', or 'both'");
+			GlobalMembersCommand.c_token++;
 		}
 	}
 
-/* process 'set dgrid3d' command */
+	/* process 'set dgrid3d' command */
 	public static void set_dgrid3d()
 	{
 		int token_cnt = 0; // Number of comma-separated values read in
@@ -2549,41 +2549,41 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		while (!(GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0))
 		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: int tmp_mode = lookup_table(&dgrid3d_mode_tbl[0],c_token);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: int tmp_mode = lookup_table(&dgrid3d_mode_tbl[0],c_token);
 			int tmp_mode = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.dgrid3d_mode_tbl[0]), GlobalMembersCommand.c_token);
-		if (tmp_mode != en_dgrid3d_mode.DGRID3D_OTHER.getValue())
-		{
-			GlobalMembersPlot3d.dgrid3d_mode = tmp_mode;
-			GlobalMembersCommand.c_token++;
-		}
+			if (tmp_mode != en_dgrid3d_mode.DGRID3D_OTHER.getValue())
+			{
+				GlobalMembersPlot3d.dgrid3d_mode = tmp_mode;
+				GlobalMembersCommand.c_token++;
+			}
 
-		switch (tmp_mode)
-		{
-		case DGRID3D_QNORM:
-					if (!(GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0))
-						normval = GlobalMembersParse.int_expression();
-					break;
-		case DGRID3D_SPLINES:
-					break;
-		case DGRID3D_GAUSS:
-		case DGRID3D_CAUCHY:
-		case DGRID3D_EXP:
-		case DGRID3D_BOX:
-		case DGRID3D_HANN:
-					if (!(GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0))
+			switch (tmp_mode)
+			{
+			case DGRID3D_QNORM:
+				if (!(GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0))
+					normval = GlobalMembersParse.int_expression();
+				break;
+			case DGRID3D_SPLINES:
+				break;
+			case DGRID3D_GAUSS:
+			case DGRID3D_CAUCHY:
+			case DGRID3D_EXP:
+			case DGRID3D_BOX:
+			case DGRID3D_HANN:
+				if (!(GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0))
+				{
+					scalex = GlobalMembersParse.real_expression();
+					scaley = scalex;
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
 					{
-						scalex = GlobalMembersParse.real_expression();
-						scaley = scalex;
-						if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-						{
-							GlobalMembersCommand.c_token++;
-							scaley = GlobalMembersParse.real_expression();
-						}
+						GlobalMembersCommand.c_token++;
+						scaley = GlobalMembersParse.real_expression();
 					}
-					break;
+				}
+				break;
 
-		default: // {rows}{,cols{,norm}}}
+			default: // {rows}{,cols{,norm}}}
 
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
 				{
@@ -2592,21 +2592,21 @@ public class GlobalMembersSet
 				}
 				else if (token_cnt == 0)
 				{
-						gridx = GlobalMembersParse.int_expression();
-						gridy = gridx; // gridy defaults to gridx, unless overridden below
+					gridx = GlobalMembersParse.int_expression();
+					gridy = gridx; // gridy defaults to gridx, unless overridden below
 				}
 				else if (token_cnt == 1)
 				{
-						gridy = GlobalMembersParse.int_expression();
+					gridy = GlobalMembersParse.int_expression();
 				}
 				else if (token_cnt == 2)
 				{
-						normval = GlobalMembersParse.int_expression();
+					normval = GlobalMembersParse.int_expression();
 				}
 				else
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognize keyword or unexpected value");
 				break;
-		}
+			}
 
 		}
 
@@ -2629,571 +2629,571 @@ public class GlobalMembersSet
 		GlobalMembersPlot3d.dgrid3d = true;
 	}
 
-/* process 'set decimalsign' command */
+	/* process 'set decimalsign' command */
 	public static void set_decimalsign()
 	{
 		GlobalMembersCommand.c_token++;
 
 		/* Clear current setting */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersUtil.decimalsign);
 		GlobalMembersUtil.decimalsign = DefineConstants.NULL;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersUtil.numeric_locale);
-		GlobalMembersUtil.numeric_locale = DefineConstants.NULL;
-	///#ifdef HAVE_LOCALE_H
+			() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersUtil.numeric_locale);
+			GlobalMembersUtil.numeric_locale = DefineConstants.NULL;
+			///#ifdef HAVE_LOCALE_H
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "locale") != 0)
 		{
-		String newlocale = DefineConstants.NULL;
-		GlobalMembersCommand.c_token++;
-		newlocale = GlobalMembersUtil.try_to_get_string();
-		if (newlocale == null)
-			newlocale = GlobalMembersUtil.gp_strdup(getenv("LC_ALL"));
-		if (newlocale == null)
-			newlocale = GlobalMembersUtil.gp_strdup(getenv("LC_NUMERIC"));
-		if (newlocale == null)
-			newlocale = GlobalMembersUtil.gp_strdup(getenv("LANG"));
-		if (!setlocale(LC_NUMERIC, newlocale != null ? newlocale : ""))
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Could not find requested locale");
-		GlobalMembersUtil.decimalsign = GlobalMembersUtil.gp_strdup(()(localeconv().decimal_point)());
-		fprintf(stderr,"decimal_sign in locale is %s\n", GlobalMembersUtil.decimalsign);
-		/* Save this locale for later use, but return to "C" for now */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersUtil.numeric_locale);
-		GlobalMembersUtil.numeric_locale = newlocale;
-		setlocale(LC_NUMERIC,"C");
-	///#endif
+			String newlocale = DefineConstants.NULL;
+			GlobalMembersCommand.c_token++;
+			newlocale = GlobalMembersUtil.try_to_get_string();
+			if (newlocale == null)
+				newlocale = GlobalMembersUtil.gp_strdup(getenv("LC_ALL"));
+			if (newlocale == null)
+				newlocale = GlobalMembersUtil.gp_strdup(getenv("LC_NUMERIC"));
+			if (newlocale == null)
+				newlocale = GlobalMembersUtil.gp_strdup(getenv("LANG"));
+			if (!setlocale(LC_NUMERIC, newlocale != null ? newlocale : ""))
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Could not find requested locale");
+			GlobalMembersUtil.decimalsign = GlobalMembersUtil.gp_strdup(()(localeconv().decimal_point)());
+			fprintf(stderr,"decimal_sign in locale is %s\n", GlobalMembersUtil.decimalsign);
+			/* Save this locale for later use, but return to "C" for now */
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersUtil.numeric_locale);
+			GlobalMembersUtil.numeric_locale = newlocale;
+			setlocale(LC_NUMERIC,"C");
+			///#endif
 		}
 		else if (!(GlobalMembersUtil.decimalsign = GlobalMembersUtil.try_to_get_string()))
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting string");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting string");
 	}
 
-/* process 'set dummy' command */
+	/* process 'set dummy' command */
 	public static void set_dummy()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting dummy variable name");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting dummy variable name");
 		else
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			GlobalMembersUtil.copy_str(GlobalMembersParse.set_dummy_var[0], GlobalMembersCommand.c_token++, DefineConstants.MAX_ID_LEN);
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting second dummy variable name");
-			GlobalMembersUtil.copy_str(GlobalMembersParse.set_dummy_var[1], GlobalMembersCommand.c_token++, DefineConstants.MAX_ID_LEN);
-		}
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+				GlobalMembersUtil.copy_str(GlobalMembersParse.set_dummy_var[0], GlobalMembersCommand.c_token++, DefineConstants.MAX_ID_LEN);
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting second dummy variable name");
+				GlobalMembersUtil.copy_str(GlobalMembersParse.set_dummy_var[1], GlobalMembersCommand.c_token++, DefineConstants.MAX_ID_LEN);
+			}
 		}
 	}
 
-/* process 'set encoding' command */
+	/* process 'set encoding' command */
 	public static void set_encoding()
 	{
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersGplt_x11.encoding = set_encoding_id.S_ENC_DEFAULT;
-	///#ifdef HAVE_LOCALE_H
+			GlobalMembersGplt_x11.encoding = set_encoding_id.S_ENC_DEFAULT;
+			///#ifdef HAVE_LOCALE_H
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "locale") != 0)
 		{
-		byte l = setlocale(LC_CTYPE,"");
-		if (l != 0 && (tangible.StringFunctions.strStr(l,"utf") || tangible.StringFunctions.strStr(l,"UTF")))
-			GlobalMembersGplt_x11.encoding = set_encoding_id.S_ENC_UTF8;
-		GlobalMembersCommand.c_token++;
-	///#endif
+			byte l = setlocale(LC_CTYPE,"");
+			if (l != 0 && (tangible.StringFunctions.strStr(l,"utf") || tangible.StringFunctions.strStr(l,"UTF")))
+				GlobalMembersGplt_x11.encoding = set_encoding_id.S_ENC_UTF8;
+			GlobalMembersCommand.c_token++;
+			///#endif
 		}
 		else
 		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: int temp = lookup_table(&set_encoding_tbl[0],c_token);
-		int temp = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTerm.set_encoding_tbl[0]), GlobalMembersCommand.c_token);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: int temp = lookup_table(&set_encoding_tbl[0],c_token);
+			int temp = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTerm.set_encoding_tbl[0]), GlobalMembersCommand.c_token);
 
-		if (temp == set_encoding_id.S_ENC_INVALID.getValue())
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unrecognized encoding specification; see 'help encoding'.");
-		GlobalMembersGplt_x11.encoding = temp;
-		GlobalMembersCommand.c_token++;
+			if (temp == set_encoding_id.S_ENC_INVALID.getValue())
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unrecognized encoding specification; see 'help encoding'.");
+			GlobalMembersGplt_x11.encoding = temp;
+			GlobalMembersCommand.c_token++;
 		}
 	}
 
-/* process 'set fit' command */
+	/* process 'set fit' command */
 	public static void set_fit()
 	{
 		GlobalMembersCommand.c_token++;
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "log$file") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "log$file") != 0)
 			{
-			if (!GlobalMembersFit.fitlogfile.equals(DefineConstants.NULL))
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(GlobalMembersFit.fitlogfile);
-			GlobalMembersFit.fitlogfile = DefineConstants.NULL;
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				{
+					if (!GlobalMembersFit.fitlogfile.equals(DefineConstants.NULL))
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(GlobalMembersFit.fitlogfile);
+					GlobalMembersFit.fitlogfile = DefineConstants.NULL;
+				}
+				else if (!(GlobalMembersFit.fitlogfile = GlobalMembersUtil.try_to_get_string()))
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting string");
+				///#if GP_FIT_ERRVARS
 			}
-			else if (!(GlobalMembersFit.fitlogfile = GlobalMembersUtil.try_to_get_string()))
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting string");
-	///#if GP_FIT_ERRVARS
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "err$orvariables") != 0)
-		{
-			GlobalMembersFit.fit_errorvariables = true;
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noerr$orvariables") != 0)
-		{
-			GlobalMembersFit.fit_errorvariables = false;
-			GlobalMembersCommand.c_token++;
-	///#endif // GP_FIT_ERRVARS
-		}
-		else
-		{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown --- expected 'logfile' or [no]errorvariables");
-		}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "err$orvariables") != 0)
+			{
+				GlobalMembersFit.fit_errorvariables = true;
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noerr$orvariables") != 0)
+			{
+				GlobalMembersFit.fit_errorvariables = false;
+				GlobalMembersCommand.c_token++;
+				///#endif // GP_FIT_ERRVARS
+			}
+			else
+			{
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown --- expected 'logfile' or [no]errorvariables");
+			}
 		} // while (!end)
 	}
 
-/* process 'set format' command */
+	/* process 'set format' command */
 	public static void set_format()
 	{
 		boolean[] set_for_axis = {false, false, false, false, false, false, false, false, false, false, false};
 		int axis;
 
 		GlobalMembersCommand.c_token++;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: if ((axis = lookup_table(axisname_tbl, c_token)) >= 0)
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: if ((axis = lookup_table(axisname_tbl, c_token)) >= 0)
 		if ((axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token)) >= 0)
 		{
-		set_for_axis[axis] = true;
-		GlobalMembersCommand.c_token++;
+			set_for_axis[axis] = true;
+			GlobalMembersCommand.c_token++;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "yx") != 0)
 		{
-		set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] = set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()] = true;
-		GlobalMembersCommand.c_token++;
+			set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] = set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()] = true;
+			GlobalMembersCommand.c_token++;
 		}
 		else
 		{
-		/* Assume he wants all */
-		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			set_for_axis[axis] = true;
+			/* Assume he wants all */
+			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+				set_for_axis[axis] = true;
 		}
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = true;
-		};
+			if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = true;
+			};
 		}
 		else
 		{
-		byte format = GlobalMembersUtil.try_to_get_string();
-		if (format == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting format string");
+			byte format = GlobalMembersUtil.try_to_get_string();
+			if (format == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting format string");
 
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define SET_FORMATSTRING(axis) if (set_for_axis[axis]) { strncpy(axis_array[axis].formatstring, format, MAX_ID_LEN); axis_array[axis].format_is_numeric = looks_like_numeric(format); }
-		if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
-		{
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
-		};
-		if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
-		{
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
-		};
-		if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
-		{
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
-		};
-		if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
-		{
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
-		};
-		if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
-		{
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
-		};
-		if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
-		{
-			GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
-		};
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef SET_FORMATSTRING
+			//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+			///#define SET_FORMATSTRING(axis) if (set_for_axis[axis]) { strncpy(axis_array[axis].formatstring, format, MAX_ID_LEN); axis_array[axis].format_is_numeric = looks_like_numeric(format); }
+			if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
+			{
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
+			};
+			if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
+			{
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
+			};
+			if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
+			{
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
+			};
+			if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
+			{
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
+			};
+			if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
+			{
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
+			};
+			if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
+			{
+				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring = format.substring(0, DefineConstants.MAX_ID_LEN);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(format);
+			};
+			//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+			///#undef SET_FORMATSTRING
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(format);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(format);
 		}
 	}
 
-/* process 'set grid' command */
+	/* process 'set grid' command */
 
 	public static void set_grid()
 	{
 		boolean explicit_change = false;
 		GlobalMembersCommand.c_token++;
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define GRID_MATCH(axis, string) if (almost_equals(c_token, string+2)) { if (string[2] == 'm') axis_array[axis].gridminor = TRUE; else axis_array[axis].gridmajor = TRUE; explicit_change = TRUE; ++c_token; } else if (almost_equals(c_token, string)) { if (string[2] == 'm') axis_array[axis].gridminor = FALSE; else axis_array[axis].gridmajor = FALSE; explicit_change = TRUE; ++c_token; }
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define GRID_MATCH(axis, string) if (almost_equals(c_token, string+2)) { if (string[2] == 'm') axis_array[axis].gridminor = TRUE; else axis_array[axis].gridmajor = TRUE; explicit_change = TRUE; ++c_token; } else if (almost_equals(c_token, string)) { if (string[2] == 'm') axis_array[axis].gridminor = FALSE; else axis_array[axis].gridmajor = FALSE; explicit_change = TRUE; ++c_token; }
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox$tics" + 2) != 0)
-		{
-			if ("nox$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox$tics") != 0)
-		{
-			if ("nox$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy$tics" + 2) != 0)
-		{
-			if ("noy$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy$tics") != 0)
-		{
-			if ("noy$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noz$tics" + 2) != 0)
-		{
-			if ("noz$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noz$tics") != 0)
-		{
-			if ("noz$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox2$tics" + 2) != 0)
-		{
-			if ("nox2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox2$tics") != 0)
-		{
-			if ("nox2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy2$tics" + 2) != 0)
-		{
-			if ("noy2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy2$tics") != 0)
-		{
-			if ("noy2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx$tics" + 2) != 0)
-		{
-			if ("nomx$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx$tics") != 0)
-		{
-			if ("nomx$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy$tics" + 2) != 0)
-		{
-			if ("nomy$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy$tics") != 0)
-		{
-			if ("nomy$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomz$tics" + 2) != 0)
-		{
-			if ("nomz$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomz$tics") != 0)
-		{
-			if ("nomz$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx2$tics" + 2) != 0)
-		{
-			if ("nomx2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx2$tics") != 0)
-		{
-			if ("nomx2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy2$tics" + 2) != 0)
-		{
-			if ("nomy2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy2$tics") != 0)
-		{
-			if ("nomy2$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nocb$tics" + 2) != 0)
-		{
-			if ("nocb$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nocb$tics") != 0)
-		{
-			if ("nocb$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomcb$tics" + 2) != 0)
-		{
-			if ("nomcb$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = true;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = true;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomcb$tics") != 0)
-		{
-			if ("nomcb$tics"[2] == 'm')
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = false;
-				else
-					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = false;
-					explicit_change = true;
-					++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "po$lar") != 0)
-		{
-			if (!GlobalMembersAxis.some_grid_selected())
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox$tics" + 2) != 0)
 			{
-			/* grid_selection = GRID_X; */
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
+				if ("nox$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
 			}
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox$tics") != 0)
 			{
-			GlobalMembersAxis.polar_grid_angle = 30 * DefineConstants.M_PI / 180.0;
+				if ("nox$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy$tics" + 2) != 0)
+			{
+				if ("noy$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy$tics") != 0)
+			{
+				if ("noy$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noz$tics" + 2) != 0)
+			{
+				if ("noz$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noz$tics") != 0)
+			{
+				if ("noz$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox2$tics" + 2) != 0)
+			{
+				if ("nox2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nox2$tics") != 0)
+			{
+				if ("nox2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy2$tics" + 2) != 0)
+			{
+				if ("noy2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noy2$tics") != 0)
+			{
+				if ("noy2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx$tics" + 2) != 0)
+			{
+				if ("nomx$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx$tics") != 0)
+			{
+				if ("nomx$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy$tics" + 2) != 0)
+			{
+				if ("nomy$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy$tics") != 0)
+			{
+				if ("nomy$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomz$tics" + 2) != 0)
+			{
+				if ("nomz$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomz$tics") != 0)
+			{
+				if ("nomz$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx2$tics" + 2) != 0)
+			{
+				if ("nomx2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomx2$tics") != 0)
+			{
+				if ("nomx2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy2$tics" + 2) != 0)
+			{
+				if ("nomy2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomy2$tics") != 0)
+			{
+				if ("nomy2$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nocb$tics" + 2) != 0)
+			{
+				if ("nocb$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nocb$tics") != 0)
+			{
+				if ("nocb$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomcb$tics" + 2) != 0)
+			{
+				if ("nomcb$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = true;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = true;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomcb$tics") != 0)
+			{
+				if ("nomcb$tics"[2] == 'm')
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridminor = false;
+				else
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].gridmajor = false;
+				explicit_change = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "po$lar") != 0)
+			{
+				if (!GlobalMembersAxis.some_grid_selected())
+				{
+					/* grid_selection = GRID_X; */
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
+				}
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				{
+					GlobalMembersAxis.polar_grid_angle = 30 * DefineConstants.M_PI / 180.0;
+				}
+				else
+				{
+					/* get radial interval */
+					GlobalMembersAxis.polar_grid_angle = GlobalMembersGadgets.ang2rad * GlobalMembersParse.real_expression();
+				}
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nopo$lar") != 0)
+			{
+				GlobalMembersAxis.polar_grid_angle = 0; // not polar grid
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
+			{
+				GlobalMembersAxis.grid_layer = 0;
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
+			{
+				GlobalMembersAxis.grid_layer = 1;
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "layerd$efault") != 0)
+			{
+				GlobalMembersAxis.grid_layer = -1;
+				GlobalMembersCommand.c_token++;
 			}
 			else
-			{
-			/* get radial interval */
-			GlobalMembersAxis.polar_grid_angle = GlobalMembersGadgets.ang2rad * GlobalMembersParse.real_expression();
-			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nopo$lar") != 0)
-		{
-			GlobalMembersAxis.polar_grid_angle = 0; // not polar grid
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
-		{
-			GlobalMembersAxis.grid_layer = 0;
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
-		{
-			GlobalMembersAxis.grid_layer = 1;
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "layerd$efault") != 0)
-		{
-			GlobalMembersAxis.grid_layer = -1;
-			GlobalMembersCommand.c_token++;
-		}
-		else
-			break; // might be a linetype
+				break; // might be a linetype
 		}
 
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		int old_token = GlobalMembersCommand.c_token;
+			int old_token = GlobalMembersCommand.c_token;
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: lp_parse(&grid_lp, true, false);
-		GlobalMembersMisc.lp_parse(new lp_style_type(GlobalMembersAxis.grid_lp), true, false);
-		if (GlobalMembersCommand.c_token == old_token) // nothing parseable found...
-		{
-			GlobalMembersAxis.grid_lp.l_type = GlobalMembersParse.int_expression() - 1;
-		}
-
-		/* probably just  set grid <linetype> */
-
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			memcpy(GlobalMembersAxis.mgrid_lp,GlobalMembersAxis.grid_lp,sizeof(GlobalMembersMouse.struct lp_style_type));
-		}
-		else
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-			GlobalMembersCommand.c_token++;
-			old_token = GlobalMembersCommand.c_token;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: lp_parse(&mgrid_lp, true, false);
-			GlobalMembersMisc.lp_parse(new lp_style_type(GlobalMembersAxis.mgrid_lp), true, false);
-			if (GlobalMembersCommand.c_token == old_token)
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: lp_parse(&grid_lp, true, false);
+			GlobalMembersMisc.lp_parse(new lp_style_type(GlobalMembersAxis.grid_lp), true, false);
+			if (GlobalMembersCommand.c_token == old_token) // nothing parseable found...
 			{
-			GlobalMembersAxis.mgrid_lp.l_type = GlobalMembersParse.int_expression() - 1;
+				GlobalMembersAxis.grid_lp.l_type = GlobalMembersParse.int_expression() - 1;
 			}
-		}
+
+			/* probably just  set grid <linetype> */
+
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				memcpy(GlobalMembersAxis.mgrid_lp,GlobalMembersAxis.grid_lp,sizeof(GlobalMembersMouse.struct lp_style_type));
+			}
+			else
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+					GlobalMembersCommand.c_token++;
+				old_token = GlobalMembersCommand.c_token;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: lp_parse(&mgrid_lp, true, false);
+				GlobalMembersMisc.lp_parse(new lp_style_type(GlobalMembersAxis.mgrid_lp), true, false);
+				if (GlobalMembersCommand.c_token == old_token)
+				{
+					GlobalMembersAxis.mgrid_lp.l_type = GlobalMembersParse.int_expression() - 1;
+				}
+			}
 		}
 
 		if (!explicit_change && !GlobalMembersAxis.some_grid_selected())
 		{
-		/* no axis specified, thus select default grid */
-		GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
-		GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = true;
+			/* no axis specified, thus select default grid */
+			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].gridmajor = true;
+			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].gridmajor = true;
 		}
 	}
 
-/* process 'set hidden3d' command */
+	/* process 'set hidden3d' command */
 	public static void set_hidden3d()
 	{
 		GlobalMembersCommand.c_token++;
-	///#ifdef LITE
-	//    printf(" Hidden Line Removal Not Supported in LITE version\n");
-	///#else
+		///#ifdef LITE
+		//    printf(" Hidden Line Removal Not Supported in LITE version\n");
+		///#else
 		/* HBB 970618: new parsing engine for hidden3d options */
 		GlobalMembersHidden3d.set_hidden3doptions();
 		GlobalMembersGraph3d.hidden3d = true;
-	///#endif
+		///#endif
 	}
 
-///#ifdef GNUPLOT_HISTORY
-/* process 'set historysize' command */
+	///#ifdef GNUPLOT_HISTORY
+	/* process 'set historysize' command */
 	///#ifdef GNUPLOT_HISTORY
 	public static void set_historysize()
 	{
@@ -3202,13 +3202,13 @@ public class GlobalMembersSet
 		GlobalMembersHistory.gnuplot_history_size = GlobalMembersParse.int_expression();
 		if (GlobalMembersHistory.gnuplot_history_size < 0)
 		{
-		GlobalMembersHistory.gnuplot_history_size = 0;
+			GlobalMembersHistory.gnuplot_history_size = 0;
 		}
 	}
-///#endif
+	///#endif
 
 
-/* process 'set isosamples' command */
+	/* process 'set isosamples' command */
 	///#endif
 	public static void set_isosamples()
 	{
@@ -3220,29 +3220,29 @@ public class GlobalMembersSet
 		tsamp2 = tsamp1;
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
-		GlobalMembersCommand.c_token++;
-		tsamp2 = Math.abs(GlobalMembersParse.int_expression());
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
+			GlobalMembersCommand.c_token++;
+			tsamp2 = Math.abs(GlobalMembersParse.int_expression());
 		}
 		if (tsamp1 < 2 || tsamp2 < 2)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "sampling rate must be > 1; sampling unchanged");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "sampling rate must be > 1; sampling unchanged");
 		else
 		{
-		curve_points f_p = GlobalMembersPlot2d.first_plot;
-		surface_points f_3dp = GlobalMembersPlot3d.first_3dplot;
+			curve_points f_p = GlobalMembersPlot2d.first_plot;
+			surface_points f_3dp = GlobalMembersPlot3d.first_3dplot;
 
-		GlobalMembersPlot2d.first_plot = DefineConstants.NULL;
-		GlobalMembersPlot3d.first_3dplot = DefineConstants.NULL;
-		GlobalMembersPlot2d.cp_free(f_p);
-		GlobalMembersPlot3d.sp_free(f_3dp);
+			GlobalMembersPlot2d.first_plot = DefineConstants.NULL;
+			GlobalMembersPlot3d.first_3dplot = DefineConstants.NULL;
+			GlobalMembersPlot2d.cp_free(f_p);
+			GlobalMembersPlot3d.sp_free(f_3dp);
 
-		GlobalMembersGraph3d.iso_samples_1 = tsamp1;
-		GlobalMembersGraph3d.iso_samples_2 = tsamp2;
+			GlobalMembersGraph3d.iso_samples_1 = tsamp1;
+			GlobalMembersGraph3d.iso_samples_2 = tsamp2;
 		}
 	}
 
-/* process 'set key' command */
+	/* process 'set key' command */
 	public static void set_key()
 	{
 		boolean vpos_set = false;
@@ -3258,302 +3258,302 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		key.visible = true;
 
-	///#ifdef BACKWARDS_COMPATIBLE
-	//    if (END_OF_COMMAND) {
-	//	free(key->font);
-	//	reset_key();
-	//	if (interactive)
-	//	    int_warn(c_token, "deprecated syntax, use \"set key default\"");
-	//    }
-	///#endif
+		///#ifdef BACKWARDS_COMPATIBLE
+		//    if (END_OF_COMMAND) {
+		//	free(key->font);
+		//	reset_key();
+		//	if (interactive)
+		//	    int_warn(c_token, "deprecated syntax, use \"set key default\"");
+		//    }
+		///#endif
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch(lookup_table(&set_key_tbl[0],c_token))
-		switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_key_tbl[0]), GlobalMembersCommand.c_token))
-		{
-		case S_KEY_ON:
-			key.visible = true;
-			break;
-		case S_KEY_OFF:
-			key.visible = false;
-			break;
-		case S_KEY_DEFAULT:
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(key.font);
-			GlobalMembersUnset.reset_key();
-			break;
-		case S_KEY_TOP:
-			if (vpos_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, vpos_warn);
-			key.vpos = VERT_JUSTIFY.JUST_TOP;
-			vpos_set = true;
-			break;
-		case S_KEY_BOTTOM:
-			if (vpos_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, vpos_warn);
-			key.vpos = VERT_JUSTIFY.JUST_BOT;
-			vpos_set = true;
-			break;
-		case S_KEY_LEFT:
-			if (hpos_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, hpos_warn);
-			key.hpos = JUSTIFY.LEFT;
-			hpos_set = true;
-			break;
-		case S_KEY_RIGHT:
-			if (hpos_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, hpos_warn);
-			key.hpos = JUSTIFY.RIGHT;
-			hpos_set = true;
-			break;
-		case S_KEY_CENTER:
-			if (!vpos_set)
-				key.vpos = VERT_JUSTIFY.JUST_CENTRE;
-			if (!hpos_set)
-				key.hpos = JUSTIFY.CENTRE;
-			if (vpos_set || hpos_set)
-			vpos_set = hpos_set = true;
-			break;
-		case S_KEY_VERTICAL:
-			if (sdir_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, sdir_warn);
-			key.stack_dir = en_key_stack_direction.GPKEY_VERTICAL;
-			sdir_set = true;
-			break;
-		case S_KEY_HORIZONTAL:
-			if (sdir_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, sdir_warn);
-			key.stack_dir = en_key_stack_direction.GPKEY_HORIZONTAL;
-			sdir_set = true;
-			break;
-		case S_KEY_OVER:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			/* Fall through */
-		case S_KEY_ABOVE:
-			if (!hpos_set)
-			key.hpos = JUSTIFY.CENTRE;
-			if (!sdir_set)
-			key.stack_dir = en_key_stack_direction.GPKEY_HORIZONTAL;
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
-			key.margin = en_key_ext_region.GPKEY_TMARGIN;
-			reg_set = true;
-			break;
-		case S_KEY_UNDER:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			/* Fall through */
-		case S_KEY_BELOW:
-			if (!hpos_set)
-			key.hpos = JUSTIFY.CENTRE;
-			if (!sdir_set)
-			key.stack_dir = en_key_stack_direction.GPKEY_HORIZONTAL;
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
-			key.margin = en_key_ext_region.GPKEY_BMARGIN;
-			reg_set = true;
-			break;
-		case S_KEY_INSIDE:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			key.region = en_key_region.GPKEY_AUTO_INTERIOR_LRTBC;
-			reg_set = true;
-			break;
-		case S_KEY_OUTSIDE:
-	///#ifdef BACKWARDS_COMPATIBLE
-	//	    if (!hpos_set)
-	//		key->hpos = RIGHT;
-	//	    if (!sdir_set)
-	//		key->stack_dir = GPKEY_VERTICAL;
-	///#endif
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_LRTBC;
-			reg_set = true;
-			break;
-		case S_KEY_TMARGIN:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
-			key.margin = en_key_ext_region.GPKEY_TMARGIN;
-			reg_set = true;
-			break;
-		case S_KEY_BMARGIN:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
-			key.margin = en_key_ext_region.GPKEY_BMARGIN;
-			reg_set = true;
-			break;
-		case S_KEY_LMARGIN:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
-			key.margin = en_key_ext_region.GPKEY_LMARGIN;
-			reg_set = true;
-			break;
-		case S_KEY_RMARGIN:
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
-			key.margin = en_key_ext_region.GPKEY_RMARGIN;
-			reg_set = true;
-			break;
-		case S_KEY_LLEFT:
-			key.just = en_key_sample_positioning.GPKEY_LEFT;
-			break;
-		case S_KEY_RRIGHT:
-			key.just = en_key_sample_positioning.GPKEY_RIGHT;
-			break;
-		case S_KEY_REVERSE:
-			key.reverse = true;
-			break;
-		case S_KEY_NOREVERSE:
-			key.reverse = false;
-			break;
-		case S_KEY_INVERT:
-			key.invert = true;
-			break;
-		case S_KEY_NOINVERT:
-			key.invert = false;
-			break;
-		case S_KEY_ENHANCED:
-			key.enhanced = true;
-			break;
-		case S_KEY_NOENHANCED:
-			key.enhanced = false;
-			break;
-		case S_KEY_BOX:
-			GlobalMembersCommand.c_token++;
-			key.box.l_type = DefineConstants.LT_BLACK;
-			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: switch(lookup_table(&set_key_tbl[0],c_token))
+			switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_key_tbl[0]), GlobalMembersCommand.c_token))
 			{
-			int old_token = GlobalMembersCommand.c_token;
-			GlobalMembersMisc.lp_parse(key.box, true, false);
-			if (old_token == GlobalMembersCommand.c_token && GlobalMembersUtil.isanumber(GlobalMembersCommand.c_token) != 0)
-			{
-				key.box.l_type = GlobalMembersParse.int_expression() - 1;
+			case S_KEY_ON:
+				key.visible = true;
+				break;
+			case S_KEY_OFF:
+				key.visible = false;
+				break;
+			case S_KEY_DEFAULT:
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(key.font);
+				GlobalMembersUnset.reset_key();
+				break;
+			case S_KEY_TOP:
+				if (vpos_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, vpos_warn);
+				key.vpos = VERT_JUSTIFY.JUST_TOP;
+				vpos_set = true;
+				break;
+			case S_KEY_BOTTOM:
+				if (vpos_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, vpos_warn);
+				key.vpos = VERT_JUSTIFY.JUST_BOT;
+				vpos_set = true;
+				break;
+			case S_KEY_LEFT:
+				if (hpos_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, hpos_warn);
+				key.hpos = JUSTIFY.LEFT;
+				hpos_set = true;
+				break;
+			case S_KEY_RIGHT:
+				if (hpos_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, hpos_warn);
+				key.hpos = JUSTIFY.RIGHT;
+				hpos_set = true;
+				break;
+			case S_KEY_CENTER:
+				if (!vpos_set)
+					key.vpos = VERT_JUSTIFY.JUST_CENTRE;
+				if (!hpos_set)
+					key.hpos = JUSTIFY.CENTRE;
+				if (vpos_set || hpos_set)
+					vpos_set = hpos_set = true;
+				break;
+			case S_KEY_VERTICAL:
+				if (sdir_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, sdir_warn);
+				key.stack_dir = en_key_stack_direction.GPKEY_VERTICAL;
+				sdir_set = true;
+				break;
+			case S_KEY_HORIZONTAL:
+				if (sdir_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, sdir_warn);
+				key.stack_dir = en_key_stack_direction.GPKEY_HORIZONTAL;
+				sdir_set = true;
+				break;
+			case S_KEY_OVER:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				/* Fall through */
+			case S_KEY_ABOVE:
+				if (!hpos_set)
+					key.hpos = JUSTIFY.CENTRE;
+				if (!sdir_set)
+					key.stack_dir = en_key_stack_direction.GPKEY_HORIZONTAL;
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
+				key.margin = en_key_ext_region.GPKEY_TMARGIN;
+				reg_set = true;
+				break;
+			case S_KEY_UNDER:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				/* Fall through */
+			case S_KEY_BELOW:
+				if (!hpos_set)
+					key.hpos = JUSTIFY.CENTRE;
+				if (!sdir_set)
+					key.stack_dir = en_key_stack_direction.GPKEY_HORIZONTAL;
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
+				key.margin = en_key_ext_region.GPKEY_BMARGIN;
+				reg_set = true;
+				break;
+			case S_KEY_INSIDE:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				key.region = en_key_region.GPKEY_AUTO_INTERIOR_LRTBC;
+				reg_set = true;
+				break;
+			case S_KEY_OUTSIDE:
+				///#ifdef BACKWARDS_COMPATIBLE
+				//	    if (!hpos_set)
+				//		key->hpos = RIGHT;
+				//	    if (!sdir_set)
+				//		key->stack_dir = GPKEY_VERTICAL;
+				///#endif
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_LRTBC;
+				reg_set = true;
+				break;
+			case S_KEY_TMARGIN:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
+				key.margin = en_key_ext_region.GPKEY_TMARGIN;
+				reg_set = true;
+				break;
+			case S_KEY_BMARGIN:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
+				key.margin = en_key_ext_region.GPKEY_BMARGIN;
+				reg_set = true;
+				break;
+			case S_KEY_LMARGIN:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
+				key.margin = en_key_ext_region.GPKEY_LMARGIN;
+				reg_set = true;
+				break;
+			case S_KEY_RMARGIN:
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				key.region = en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN;
+				key.margin = en_key_ext_region.GPKEY_RMARGIN;
+				reg_set = true;
+				break;
+			case S_KEY_LLEFT:
+				key.just = en_key_sample_positioning.GPKEY_LEFT;
+				break;
+			case S_KEY_RRIGHT:
+				key.just = en_key_sample_positioning.GPKEY_RIGHT;
+				break;
+			case S_KEY_REVERSE:
+				key.reverse = true;
+				break;
+			case S_KEY_NOREVERSE:
+				key.reverse = false;
+				break;
+			case S_KEY_INVERT:
+				key.invert = true;
+				break;
+			case S_KEY_NOINVERT:
+				key.invert = false;
+				break;
+			case S_KEY_ENHANCED:
+				key.enhanced = true;
+				break;
+			case S_KEY_NOENHANCED:
+				key.enhanced = false;
+				break;
+			case S_KEY_BOX:
 				GlobalMembersCommand.c_token++;
-			}
-			}
-			GlobalMembersCommand.c_token--; // is incremented after loop
-			break;
-		case S_KEY_NOBOX:
-			key.box.l_type = DefineConstants.LT_NODRAW;
-			break;
-		case S_KEY_SAMPLEN:
-			GlobalMembersCommand.c_token++;
-			key.swidth = GlobalMembersParse.real_expression();
-			GlobalMembersCommand.c_token--; // it is incremented after loop
-			break;
-		case S_KEY_SPACING:
-			GlobalMembersCommand.c_token++;
-			key.vert_factor = GlobalMembersParse.real_expression();
-			if (key.vert_factor < 0.0)
-			key.vert_factor = 0.0;
-			GlobalMembersCommand.c_token--; // it is incremented after loop
-			break;
-		case S_KEY_WIDTH:
-			GlobalMembersCommand.c_token++;
-			key.width_fix = GlobalMembersParse.real_expression();
-			GlobalMembersCommand.c_token--; // it is incremented after loop
-			break;
-		case S_KEY_HEIGHT:
-			GlobalMembersCommand.c_token++;
-			key.height_fix = GlobalMembersParse.real_expression();
-			GlobalMembersCommand.c_token--; // it is incremented after loop
-			break;
-		case S_KEY_AUTOTITLES:
-			if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "col$umnheader") != 0)
-			key.auto_titles = keytitle_type.COLUMNHEAD_KEYTITLES;
-			else
+				key.box.l_type = DefineConstants.LT_BLACK;
+				if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				{
+					int old_token = GlobalMembersCommand.c_token;
+					GlobalMembersMisc.lp_parse(key.box, true, false);
+					if (old_token == GlobalMembersCommand.c_token && GlobalMembersUtil.isanumber(GlobalMembersCommand.c_token) != 0)
+					{
+						key.box.l_type = GlobalMembersParse.int_expression() - 1;
+						GlobalMembersCommand.c_token++;
+					}
+				}
+				GlobalMembersCommand.c_token--; // is incremented after loop
+				break;
+			case S_KEY_NOBOX:
+				key.box.l_type = DefineConstants.LT_NODRAW;
+				break;
+			case S_KEY_SAMPLEN:
+				GlobalMembersCommand.c_token++;
+				key.swidth = GlobalMembersParse.real_expression();
+				GlobalMembersCommand.c_token--; // it is incremented after loop
+				break;
+			case S_KEY_SPACING:
+				GlobalMembersCommand.c_token++;
+				key.vert_factor = GlobalMembersParse.real_expression();
+				if (key.vert_factor < 0.0)
+					key.vert_factor = 0.0;
+				GlobalMembersCommand.c_token--; // it is incremented after loop
+				break;
+			case S_KEY_WIDTH:
+				GlobalMembersCommand.c_token++;
+				key.width_fix = GlobalMembersParse.real_expression();
+				GlobalMembersCommand.c_token--; // it is incremented after loop
+				break;
+			case S_KEY_HEIGHT:
+				GlobalMembersCommand.c_token++;
+				key.height_fix = GlobalMembersParse.real_expression();
+				GlobalMembersCommand.c_token--; // it is incremented after loop
+				break;
+			case S_KEY_AUTOTITLES:
+				if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "col$umnheader") != 0)
+					key.auto_titles = keytitle_type.COLUMNHEAD_KEYTITLES;
+				else
+				{
+					key.auto_titles = keytitle_type.FILENAME_KEYTITLES;
+					GlobalMembersCommand.c_token--;
+				}
+				break;
+			case S_KEY_NOAUTOTITLES:
+				key.auto_titles = keytitle_type.NOAUTO_KEYTITLES;
+				break;
+			case S_KEY_TITLE:
 			{
-			key.auto_titles = keytitle_type.FILENAME_KEYTITLES;
-			GlobalMembersCommand.c_token--;
+				String s;
+				GlobalMembersCommand.c_token++;
+				if ((s = GlobalMembersUtil.try_to_get_string()))
+				{
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					key.title = s.substring(0, sizeof(key.title));
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(s);
+				}
+				else
+					key.title = tangible.StringFunctions.changeCharacter(key.title, 0, '\0');
+				GlobalMembersCommand.c_token--;
 			}
 			break;
-		case S_KEY_NOAUTOTITLES:
-			key.auto_titles = keytitle_type.NOAUTO_KEYTITLES;
-			break;
-		case S_KEY_TITLE:
-		{
-			String s;
-			GlobalMembersCommand.c_token++;
-			if ((s = GlobalMembersUtil.try_to_get_string()))
-			{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				key.title = s.substring(0, sizeof(key.title));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(s);
-			}
-			else
+			case S_KEY_NOTITLE:
 				key.title = tangible.StringFunctions.changeCharacter(key.title, 0, '\0');
-			GlobalMembersCommand.c_token--;
-		}
-			break;
-		case S_KEY_NOTITLE:
-			key.title = tangible.StringFunctions.changeCharacter(key.title, 0, '\0');
-			break;
-		case S_KEY_FONT:
-			GlobalMembersCommand.c_token++;
-			/* Make sure they've specified a font */
-			if (!(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected font");
-			else
+				break;
+			case S_KEY_FONT:
+				GlobalMembersCommand.c_token++;
+				/* Make sure they've specified a font */
+				if (!(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected font");
+				else
+				{
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(key.font);
+					key.font = GlobalMembersUtil.try_to_get_string();
+					GlobalMembersCommand.c_token--;
+				}
+				break;
+			case S_KEY_TEXTCOLOR:
 			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(key.font);
-			key.font = GlobalMembersUtil.try_to_get_string();
-			GlobalMembersCommand.c_token--;
+				t_colorspec lcolor = new t_colorspec(DefineConstants.TC_DEFAULT, 0, 0.0);
+				GlobalMembersMisc.parse_colorspec(lcolor, DefineConstants.TC_FRAC);
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+				//ORIGINAL LINE: key->textcolor = lcolor;
+				key.textcolor.copyFrom(lcolor);
 			}
-			break;
-		case S_KEY_TEXTCOLOR:
-		{
-			t_colorspec lcolor = new t_colorspec(DefineConstants.TC_DEFAULT, 0, 0.0);
-			GlobalMembersMisc.parse_colorspec(lcolor, DefineConstants.TC_FRAC);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: key->textcolor = lcolor;
-			key.textcolor.copyFrom(lcolor);
-		}
 			GlobalMembersCommand.c_token--;
 			break;
 
-		case S_KEY_MANUAL:
+			case S_KEY_MANUAL:
+				GlobalMembersCommand.c_token++;
+				///#ifdef BACKWARDS_COMPATIBLE
+				//	case S_KEY_INVALID:
+				//	default:
+				///#endif
+				if (reg_set)
+					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
+				GlobalMembersAxis.get_position(key.user_pos);
+				key.region = en_key_region.GPKEY_USER_PLACEMENT;
+				reg_set = true;
+				GlobalMembersCommand.c_token--; // will be incremented again soon
+				break;
+				///#ifndef BACKWARDS_COMPATIBLE
+			case S_KEY_INVALID:
+			default:
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown key option");
+				break;
+				///#endif
+			}
 			GlobalMembersCommand.c_token++;
-	///#ifdef BACKWARDS_COMPATIBLE
-	//	case S_KEY_INVALID:
-	//	default:
-	///#endif
-			if (reg_set)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, reg_warn);
-			GlobalMembersAxis.get_position(key.user_pos);
-			key.region = en_key_region.GPKEY_USER_PLACEMENT;
-			reg_set = true;
-			GlobalMembersCommand.c_token--; // will be incremented again soon
-			break;
-	///#ifndef BACKWARDS_COMPATIBLE
-		case S_KEY_INVALID:
-		default:
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown key option");
-			break;
-	///#endif
-		}
-		GlobalMembersCommand.c_token++;
 		}
 
 		if (key.region == en_key_region.GPKEY_AUTO_EXTERIOR_LRTBC)
-		GlobalMembersSet.set_key_position_from_stack_direction(key);
+			GlobalMembersSet.set_key_position_from_stack_direction(key);
 		else if (key.region == en_key_region.GPKEY_AUTO_EXTERIOR_MARGIN)
 		{
-		if (vpos_set && (key.margin == en_key_ext_region.GPKEY_TMARGIN || key.margin == en_key_ext_region.GPKEY_BMARGIN))
-			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "ignoring top/center/bottom; incompatible with tmargin/bmargin.");
-		else if (hpos_set && (key.margin == en_key_ext_region.GPKEY_LMARGIN || key.margin == en_key_ext_region.GPKEY_RMARGIN))
-			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "ignoring left/center/right; incompatible with lmargin/tmargin.");
+			if (vpos_set && (key.margin == en_key_ext_region.GPKEY_TMARGIN || key.margin == en_key_ext_region.GPKEY_BMARGIN))
+				GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "ignoring top/center/bottom; incompatible with tmargin/bmargin.");
+			else if (hpos_set && (key.margin == en_key_ext_region.GPKEY_LMARGIN || key.margin == en_key_ext_region.GPKEY_RMARGIN))
+				GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "ignoring left/center/right; incompatible with lmargin/tmargin.");
 		}
 	}
 
-/* process 'set keytitle' command */
+	/* process 'set keytitle' command */
 	public static void set_keytitle()
 	{
 		legend_key key = GlobalMembersGadgets.keyT;
@@ -3561,24 +3561,24 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // set to default
 		{
-		key.title = tangible.StringFunctions.changeCharacter(key.title, 0, DefineConstants.NUL);
+			key.title = tangible.StringFunctions.changeCharacter(key.title, 0, DefineConstants.NUL);
 		}
 		else
 		{
-		String s;
-		if ((s = GlobalMembersUtil.try_to_get_string()))
-		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			key.title = s.substring(0, sizeof(key.title));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(s);
-		}
+			String s;
+			if ((s = GlobalMembersUtil.try_to_get_string()))
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				key.title = s.substring(0, sizeof(key.title));
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(s);
+			}
 		}
 	}
 
-/* process 'set label' command */
-/* set label {tag} {"label_text"{,<value>{,...}}} {<label options>} */
-/* EAM Mar 2003 - option parsing broken out into separate routine */
+	/* process 'set label' command */
+	/* set label {tag} {"label_text"{,<value>{,...}}} {<label options>} */
+	/* EAM Mar 2003 - option parsing broken out into separate routine */
 	public static void set_label()
 	{
 		text_label this_label = DefineConstants.NULL;
@@ -3591,96 +3591,96 @@ public class GlobalMembersSet
 
 		/* get tag */
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && !(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING) && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "left") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "center") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "centre") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "right") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") == 0 && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rot$ate") == 0 && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norot$ate") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "lt") == 0 && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "linet$ype") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "pt") == 0 && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "pointt$ype") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") == 0 && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "font") == 0)
-		/* FIXME - Are these tests really still needed? */
+			/* FIXME - Are these tests really still needed? */
 		{
 
-		/* must be an expression, but is it a tag or is it the label itself? */
-		int save_token = GlobalMembersCommand.c_token;
-		GlobalMembersParse.const_express(a);
-		if (a.type == DATA_TYPES.STRING)
-		{
-			GlobalMembersCommand.c_token = save_token;
-			tag = GlobalMembersSet.assign_label_tag();
-			GlobalMembersEval.gpfree_string(a);
-		}
-		else
-			tag = (int) GlobalMembersEval.real(a);
+			/* must be an expression, but is it a tag or is it the label itself? */
+			int save_token = GlobalMembersCommand.c_token;
+			GlobalMembersParse.const_express(a);
+			if (a.type == DATA_TYPES.STRING)
+			{
+				GlobalMembersCommand.c_token = save_token;
+				tag = GlobalMembersSet.assign_label_tag();
+				GlobalMembersEval.gpfree_string(a);
+			}
+			else
+				tag = (int) GlobalMembersEval.real(a);
 
 		}
 		else
-		tag = GlobalMembersSet.assign_label_tag(); // default next tag
+			tag = GlobalMembersSet.assign_label_tag(); // default next tag
 
 		if (tag <= 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
 
 		if (GlobalMembersGadgets.first_label != DefineConstants.NULL) // skip to last label
 		{
-		for (this_label = GlobalMembersGadgets.first_label; this_label != DefineConstants.NULL; prev_label = this_label, this_label = this_label.next)
-			/* is this the label we want? */
-			if (tag <= this_label.tag)
-			break;
+			for (this_label = GlobalMembersGadgets.first_label; this_label != DefineConstants.NULL; prev_label = this_label, this_label = this_label.next)
+				/* is this the label we want? */
+				if (tag <= this_label.tag)
+					break;
 		}
 		/* Insert this label into the list if it is a new one */
 		if (this_label == DefineConstants.NULL || tag != this_label.tag)
 		{
-		position default_offset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
-		new_label = GlobalMembersSet.new_text_label(tag);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: new_label->offset = default_offset;
-		new_label.offset.copyFrom(default_offset);
-		if (prev_label == DefineConstants.NULL)
-			GlobalMembersGadgets.first_label = new_label;
-		else
-			prev_label.next = new_label;
-		new_label.next = this_label;
-		this_label = new_label;
+			position default_offset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
+			new_label = GlobalMembersSet.new_text_label(tag);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: new_label->offset = default_offset;
+			new_label.offset.copyFrom(default_offset);
+			if (prev_label == DefineConstants.NULL)
+				GlobalMembersGadgets.first_label = new_label;
+			else
+				prev_label.next = new_label;
+			new_label.next = this_label;
+			this_label = new_label;
 		}
 
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		String text;
-		GlobalMembersSet.parse_label_options(this_label);
-		text = GlobalMembersUtil.try_to_get_string();
-		if (text != null)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(this_label.text);
-			this_label.text = text;
-		}
+			String text;
+			GlobalMembersSet.parse_label_options(this_label);
+			text = GlobalMembersUtil.try_to_get_string();
+			if (text != null)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(this_label.text);
+				this_label.text = text;
+			}
 
-		/* HBB 20001021: new functionality. If next token is a ','
-		 * treat it as a numeric expression whose value is to be
-		 * sprintf()ed into the label string (which contains an
-		 * appropriate %f format string) */
-		/* EAM Oct 2004 - this is superseded by general string variable
-		 * handling, but left in for backward compatibility */
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-			this_label.text = GlobalMembersSet.fill_numbers_into_string(this_label.text);
+			/* HBB 20001021: new functionality. If next token is a ','
+			 * treat it as a numeric expression whose value is to be
+			 * sprintf()ed into the label string (which contains an
+			 * appropriate %f format string) */
+			/* EAM Oct 2004 - this is superseded by general string variable
+			 * handling, but left in for backward compatibility */
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				this_label.text = GlobalMembersSet.fill_numbers_into_string(this_label.text);
 		}
 
 		/* Now parse the label format and style options */
 		GlobalMembersSet.parse_label_options(this_label);
 	}
 
-/* assign a new label tag
- * labels are kept sorted by tag number, so this is easy
- * returns the lowest unassigned tag number
- */
+	/* assign a new label tag
+	 * labels are kept sorted by tag number, so this is easy
+	 * returns the lowest unassigned tag number
+	 */
 	public static int assign_label_tag()
 	{
 		text_label this_label;
 		int last = 0; // previous tag value
 
 		for (this_label = GlobalMembersGadgets.first_label; this_label != DefineConstants.NULL; this_label = this_label.next)
-		if (this_label.tag == last + 1)
-			last++;
-		else
-			break;
+			if (this_label.tag == last + 1)
+				last++;
+			else
+				break;
 
 		return (last + 1);
 	}
 
-/* process 'set loadpath' command */
+	/* process 'set loadpath' command */
 	public static void set_loadpath()
 	{
 		/* We pick up all loadpath elements here before passing
@@ -3691,43 +3691,43 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		() GlobalMembersVariable.loadpath_handler(1 << 5, DefineConstants.NULL)();
+			() GlobalMembersVariable.loadpath_handler(1 << 5, DefineConstants.NULL)();
 		}
 		else
 			while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 			{
-		if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
-		{
-			int len;
-			byte ss = GlobalMembersAlloc.gp_alloc(GlobalMembersUtil.token_len(GlobalMembersCommand.c_token), "tmp storage");
-			len = (collect != null? collect.length() : 0);
-			GlobalMembersUtil.quote_str(ss, GlobalMembersCommand.c_token, GlobalMembersUtil.token_len(GlobalMembersCommand.c_token));
-			collect = GlobalMembersAlloc.gp_realloc(collect, len + 1 + ss.length() + 1, "tmp loadpath");
-			if (len != 0)
-			{
-			collect + len + 1 = ss;
-			*(collect + len) = DefineConstants.PATHSEP;
-			}
-			else
-			collect = ss;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(ss);
-			++GlobalMembersCommand.c_token;
-		}
-		else
-		{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string");
-		}
+				if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
+				{
+					int len;
+					byte ss = GlobalMembersAlloc.gp_alloc(GlobalMembersUtil.token_len(GlobalMembersCommand.c_token), "tmp storage");
+					len = (collect != null? collect.length() : 0);
+					GlobalMembersUtil.quote_str(ss, GlobalMembersCommand.c_token, GlobalMembersUtil.token_len(GlobalMembersCommand.c_token));
+					collect = GlobalMembersAlloc.gp_realloc(collect, len + 1 + ss.length() + 1, "tmp loadpath");
+					if (len != 0)
+					{
+						collect + len + 1 = ss;
+						*(collect + len) = DefineConstants.PATHSEP;
+					}
+					else
+						collect = ss;
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(ss);
+					++GlobalMembersCommand.c_token;
+				}
+				else
+				{
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string");
+				}
 			}
 		if (collect != null)
 		{
-		GlobalMembersVariable.loadpath_handler(1 << 2, (collect));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(collect);
+			GlobalMembersVariable.loadpath_handler(1 << 2, (collect));
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(collect);
 		}
 	}
 
-/* process 'set fontpath' command */
+	/* process 'set fontpath' command */
 	public static void set_fontpath()
 	{
 		/* We pick up all fontpath elements here before passing
@@ -3738,43 +3738,43 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		() GlobalMembersVariable.fontpath_handler(1 << 5, DefineConstants.NULL)();
+			() GlobalMembersVariable.fontpath_handler(1 << 5, DefineConstants.NULL)();
 		}
 		else
 			while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 			{
-		if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
-		{
-			int len;
-			byte ss = GlobalMembersAlloc.gp_alloc(GlobalMembersUtil.token_len(GlobalMembersCommand.c_token), "tmp storage");
-			len = (collect != null? collect.length() : 0);
-			GlobalMembersUtil.quote_str(ss, GlobalMembersCommand.c_token, GlobalMembersUtil.token_len(GlobalMembersCommand.c_token));
-			collect = GlobalMembersAlloc.gp_realloc(collect, len + 1 + ss.length() + 1, "tmp fontpath");
-			if (len != 0)
-			{
-			collect + len + 1 = ss;
-			*(collect + len) = DefineConstants.PATHSEP;
-			}
-			else
-			collect = ss;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(ss);
-			++GlobalMembersCommand.c_token;
-		}
-		else
-		{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string");
-		}
+				if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
+				{
+					int len;
+					byte ss = GlobalMembersAlloc.gp_alloc(GlobalMembersUtil.token_len(GlobalMembersCommand.c_token), "tmp storage");
+					len = (collect != null? collect.length() : 0);
+					GlobalMembersUtil.quote_str(ss, GlobalMembersCommand.c_token, GlobalMembersUtil.token_len(GlobalMembersCommand.c_token));
+					collect = GlobalMembersAlloc.gp_realloc(collect, len + 1 + ss.length() + 1, "tmp fontpath");
+					if (len != 0)
+					{
+						collect + len + 1 = ss;
+						*(collect + len) = DefineConstants.PATHSEP;
+					}
+					else
+						collect = ss;
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(ss);
+					++GlobalMembersCommand.c_token;
+				}
+				else
+				{
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string");
+				}
 			}
 		if (collect != null)
 		{
-		GlobalMembersVariable.fontpath_handler(1 << 2, (collect));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(collect);
+			GlobalMembersVariable.fontpath_handler(1 << 2, (collect));
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(collect);
 		}
 	}
 
-/* process 'set locale' command */
+	/* process 'set locale' command */
 	public static void set_locale()
 	{
 		String s;
@@ -3782,111 +3782,111 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		() GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
+			() GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
 		}
 		else if ((s = GlobalMembersUtil.try_to_get_string()))
 		{
-		GlobalMembersVariable.locale_handler(1 << 2, (s));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(s);
+			GlobalMembersVariable.locale_handler(1 << 2, (s));
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(s);
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string");
 	}
 
-/* process 'set logscale' command */
+	/* process 'set logscale' command */
 	public static void set_logscale()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		do
-		{
-			int tmp;
-			for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
-				GlobalMembersAxis.axis_array[tmp].field = (true);
-		} while (0);
-		do
-		{
-			int tmp;
-			for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
-				GlobalMembersAxis.axis_array[tmp].field = (10.0);
-		} while (0);
+			do
+			{
+				int tmp;
+				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
+					GlobalMembersAxis.axis_array[tmp].field = (true);
+			} while (0);
+			do
+			{
+				int tmp;
+				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
+					GlobalMembersAxis.axis_array[tmp].field = (10.0);
+			} while (0);
 		}
 		else
 		{
-		boolean[] set_for_axis = {false, false, false, false, false, false, false, false, false, false, false};
-		int axis;
-		double newbase = 10;
+			boolean[] set_for_axis = {false, false, false, false, false, false, false, false, false, false, false};
+			int axis;
+			double newbase = 10;
 
-		/* do reverse search because of "x", "x1", "x2" sequence in axisname_tbl */
-		int i = 0;
-		while (i < GlobalMembersCommand.token[GlobalMembersCommand.c_token].length)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: axis = lookup_table_nth_reverse(axisname_tbl, DefineConstants.AXIS_ARRAY_SIZE, gp_input_line + token[c_token].start_index + i);
-			axis = GlobalMembersTables.lookup_table_nth_reverse(new gen_table(GlobalMembersAxis.axisname_tbl), DefineConstants.AXIS_ARRAY_SIZE, GlobalMembersCommand.gp_input_line + GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + i);
-			if (axis < 0)
+			/* do reverse search because of "x", "x1", "x2" sequence in axisname_tbl */
+			int i = 0;
+			while (i < GlobalMembersCommand.token[GlobalMembersCommand.c_token].length)
 			{
-			GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index += i;
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown axis");
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: axis = lookup_table_nth_reverse(axisname_tbl, DefineConstants.AXIS_ARRAY_SIZE, gp_input_line + token[c_token].start_index + i);
+				axis = GlobalMembersTables.lookup_table_nth_reverse(new gen_table(GlobalMembersAxis.axisname_tbl), DefineConstants.AXIS_ARRAY_SIZE, GlobalMembersCommand.gp_input_line + GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + i);
+				if (axis < 0)
+				{
+					GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index += i;
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown axis");
+				}
+				set_for_axis[GlobalMembersAxis.axisname_tbl[axis].value] = true;
+				i += String.valueOf(GlobalMembersAxis.axisname_tbl[axis].key).length();
 			}
-			set_for_axis[GlobalMembersAxis.axisname_tbl[axis].value] = true;
-			i += String.valueOf(GlobalMembersAxis.axisname_tbl[axis].key).length();
-		}
-		GlobalMembersCommand.c_token++;
+			GlobalMembersCommand.c_token++;
 
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			newbase = Math.abs(GlobalMembersParse.real_expression());
-			if (newbase < 1.1)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "log base must be >= 1.1; logscale unchanged");
-		}
-
-		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			if (set_for_axis[axis])
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 			{
-			GlobalMembersAxis.axis_array[axis].log = true;
-			GlobalMembersAxis.axis_array[axis].base = newbase;
+				newbase = Math.abs(GlobalMembersParse.real_expression());
+				if (newbase < 1.1)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "log base must be >= 1.1; logscale unchanged");
 			}
+
+			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+				if (set_for_axis[axis])
+				{
+					GlobalMembersAxis.axis_array[axis].log = true;
+					GlobalMembersAxis.axis_array[axis].base = newbase;
+				}
 		}
 
-	///#ifdef VOLATILE_REFRESH
+		///#ifdef VOLATILE_REFRESH
 		/* Because the log scaling is applied during data input, a quick refresh */
 		/* using existing stored data will not work if the log setting changes.  */
 		GlobalMembersGadgets.refresh_ok = 0;
-	///#endif
+		///#endif
 	}
 
-///#ifdef GP_MACROS
+	///#ifdef GP_MACROS
 	///#ifdef GP_MACROS
 	public static void set_macros()
 	{
-	   GlobalMembersCommand.c_token++;
-	   GlobalMembersCommand.expand_macros = true;
+		GlobalMembersCommand.c_token++;
+		GlobalMembersCommand.expand_macros = true;
 	}
-///#endif
+	///#endif
 
-/* process 'set mapping3d' command */
+	/* process 'set mapping3d' command */
 	///#endif
 	public static void set_mapping()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		/* assuming same as points */
-		GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CARTESIAN;
+			/* assuming same as points */
+			GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CARTESIAN;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ca$rtesian") != 0)
-		GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CARTESIAN;
+			GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CARTESIAN;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$pherical") != 0)
-		GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_SPHERICAL;
+			GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_SPHERICAL;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cy$lindrical") != 0)
-		GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CYLINDRICAL;
+			GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CYLINDRICAL;
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'cartesian', 'spherical', or 'cylindrical'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'cartesian', 'spherical', or 'cylindrical'");
 		GlobalMembersCommand.c_token++;
 	}
 
-/* process 'set {blrt}margin' command */
+	/* process 'set {blrt}margin' command */
 	public static void set_margin(position margin)
 	{
 		margin.scalex = position_type.character;
@@ -3894,61 +3894,61 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		return;
+			return;
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 && GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "sc$reen") == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'screen <fraction>'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'screen <fraction>'");
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sc$reen") != 0)
 		{
-		margin.scalex = position_type.screen;
-		GlobalMembersCommand.c_token++;
+			margin.scalex = position_type.screen;
+			GlobalMembersCommand.c_token++;
 		}
 
 		margin.x = GlobalMembersParse.real_expression();
 		if (margin.x < 0)
-		margin.x = -1;
+			margin.x = -1;
 
 		if (margin.scalex == position_type.screen)
 		{
-		if (margin.x < 0)
-			margin.x = 0;
-		if (margin.x > 1)
-			margin.x = 1;
+			if (margin.x < 0)
+				margin.x = 0;
+			if (margin.x > 1)
+				margin.x = 1;
 		}
 
 	}
 
-/* process 'set missing' command */
+	/* process 'set missing' command */
 	public static void set_missing()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersDatafile.missing_val);
-		GlobalMembersDatafile.missing_val = DefineConstants.NULL;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersDatafile.missing_val);
+			GlobalMembersDatafile.missing_val = DefineConstants.NULL;
 		}
 		else if (!(GlobalMembersDatafile.missing_val = GlobalMembersUtil.try_to_get_string()))
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected missing-value string");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected missing-value string");
 	}
 	public static void set_separator()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersDatafile.df_separator = (byte)'\0';
-		return;
+			GlobalMembersDatafile.df_separator = (byte)'\0';
+			return;
 		}
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "white$space") != 0)
-		GlobalMembersDatafile.df_separator = (byte)'\0';
+			GlobalMembersDatafile.df_separator = (byte)'\0';
 		else if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected \"<separator_char>\"");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected \"<separator_char>\"");
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "\"\\t\"") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "\'\\t\'") != 0)
-		GlobalMembersDatafile.df_separator = (byte)'\t';
+			GlobalMembersDatafile.df_separator = (byte)'\t';
 		else if (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index) != GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + 2))
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extra chars after <separation_char>");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extra chars after <separation_char>");
 		else
-		GlobalMembersDatafile.df_separator = GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + 1);
+			GlobalMembersDatafile.df_separator = GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + 1);
 		GlobalMembersCommand.c_token++;
 	}
 	public static void set_datafile_commentschars()
@@ -3959,21 +3959,21 @@ public class GlobalMembersSet
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersDatafile.df_commentschars);
-		GlobalMembersDatafile.df_commentschars = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_COMMENTS_CHARS);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersDatafile.df_commentschars);
+			GlobalMembersDatafile.df_commentschars = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_COMMENTS_CHARS);
 		}
 		else if ((s = GlobalMembersUtil.try_to_get_string()))
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersDatafile.df_commentschars);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersDatafile.df_commentschars);
 			GlobalMembersDatafile.df_commentschars = s;
 		} // Leave it the way it was
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string with comments chars");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected string with comments chars");
 	}
 
-///#ifdef USE_MOUSE
+	///#ifdef USE_MOUSE
 	///#ifdef USE_MOUSE
 	public static void set_mouse()
 	{
@@ -3982,512 +3982,512 @@ public class GlobalMembersSet
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "do$ubleclick") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			mouse_setting.doubleclick = GlobalMembersParse.real_expression();
-			if (mouse_setting.doubleclick < 0)
-			mouse_setting.doubleclick = 0;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nodo$ubleclick") != 0)
-		{
-			mouse_setting.doubleclick = 0; // double click off
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "zoomco$ordinates") != 0)
-		{
-			mouse_setting.annotate_zoom_box = 1;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nozoomco$ordinates") != 0)
-		{
-			mouse_setting.annotate_zoom_box = 0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "po$lardistancedeg") != 0)
-		{
-			mouse_setting.polardistance = 1;
-			GlobalMembersMouse.UpdateStatusline();
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "polardistancet$an") != 0)
-		{
-			mouse_setting.polardistance = 2;
-			GlobalMembersMouse.UpdateStatusline();
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nopo$lardistance") != 0)
-		{
-			mouse_setting.polardistance = 0;
-			GlobalMembersMouse.UpdateStatusline();
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "label$s") != 0)
-		{
-			mouse_setting.label = 1;
-			++GlobalMembersCommand.c_token;
-			/* check if the optional argument "<label options>" is present */
-			if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "do$ubleclick") != 0)
 			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(mouse_setting.labelopts);
-			mouse_setting.labelopts = GlobalMembersUtil.try_to_get_string();
+				++GlobalMembersCommand.c_token;
+				mouse_setting.doubleclick = GlobalMembersParse.real_expression();
+				if (mouse_setting.doubleclick < 0)
+					mouse_setting.doubleclick = 0;
 			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nola$bels") != 0)
-		{
-			mouse_setting.label = 0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ve$rbose") != 0)
-		{
-			mouse_setting.verbose = 1;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nove$rbose") != 0)
-		{
-			mouse_setting.verbose = 0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "zoomju$mp") != 0)
-		{
-			mouse_setting.warp_pointer = 1;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nozoomju$mp") != 0)
-		{
-			mouse_setting.warp_pointer = 0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fo$rmat") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nodo$ubleclick") != 0)
 			{
-			if (!GlobalMembersMouse.mouse_fmt_default.equals(mouse_setting.fmt))
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(mouse_setting.fmt);
-			mouse_setting.fmt = GlobalMembersUtil.try_to_get_string();
+				mouse_setting.doubleclick = 0; // double click off
+				++GlobalMembersCommand.c_token;
 			}
-			else
-			mouse_setting.fmt = GlobalMembersMouse.mouse_fmt_default;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cl$ipboardformat") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "zoomco$ordinates") != 0)
 			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(GlobalMembersMouse.clipboard_alt_string);
-			GlobalMembersMouse.clipboard_alt_string = GlobalMembersUtil.try_to_get_string();
-			if (!GlobalMembersMouse.clipboard_alt_string.length())
-			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(GlobalMembersMouse.clipboard_alt_string);
-				GlobalMembersMouse.clipboard_alt_string = DefineConstants.NULL;
-				if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == GlobalMembersMouse.mouse_mode)
-				GlobalMembersMouse.mouse_mode = AnonymousEnum.MOUSE_COORDINATES_REAL.getValue();
+				mouse_setting.annotate_zoom_box = 1;
+				++GlobalMembersCommand.c_token;
 			}
-			else
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nozoomco$ordinates") != 0)
 			{
-				GlobalMembersMouse.clipboard_mode = AnonymousEnum.MOUSE_COORDINATES_ALT.getValue();
+				mouse_setting.annotate_zoom_box = 0;
+				++GlobalMembersCommand.c_token;
 			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "po$lardistancedeg") != 0)
+			{
+				mouse_setting.polardistance = 1;
+				GlobalMembersMouse.UpdateStatusline();
+				++GlobalMembersCommand.c_token;
 			}
-			else
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "polardistancet$an") != 0)
 			{
-			int itmp = GlobalMembersParse.int_expression();
-			if (itmp >= AnonymousEnum.MOUSE_COORDINATES_REAL && itmp <= AnonymousEnum.MOUSE_COORDINATES_XDATETIME)
+				mouse_setting.polardistance = 2;
+				GlobalMembersMouse.UpdateStatusline();
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nopo$lardistance") != 0)
 			{
-				if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == itmp && GlobalMembersMouse.clipboard_alt_string == null)
+				mouse_setting.polardistance = 0;
+				GlobalMembersMouse.UpdateStatusline();
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "label$s") != 0)
+			{
+				mouse_setting.label = 1;
+				++GlobalMembersCommand.c_token;
+				/* check if the optional argument "<label options>" is present */
+				if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
 				{
-				fprintf(stderr, "please 'set mouse clipboard <fmt>' first.\n");
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(mouse_setting.labelopts);
+					mouse_setting.labelopts = GlobalMembersUtil.try_to_get_string();
+				}
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nola$bels") != 0)
+			{
+				mouse_setting.label = 0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ve$rbose") != 0)
+			{
+				mouse_setting.verbose = 1;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nove$rbose") != 0)
+			{
+				mouse_setting.verbose = 0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "zoomju$mp") != 0)
+			{
+				mouse_setting.warp_pointer = 1;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nozoomju$mp") != 0)
+			{
+				mouse_setting.warp_pointer = 0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fo$rmat") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+				{
+					if (!GlobalMembersMouse.mouse_fmt_default.equals(mouse_setting.fmt))
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(mouse_setting.fmt);
+					mouse_setting.fmt = GlobalMembersUtil.try_to_get_string();
+				}
+				else
+					mouse_setting.fmt = GlobalMembersMouse.mouse_fmt_default;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cl$ipboardformat") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+				{
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(GlobalMembersMouse.clipboard_alt_string);
+					GlobalMembersMouse.clipboard_alt_string = GlobalMembersUtil.try_to_get_string();
+					if (!GlobalMembersMouse.clipboard_alt_string.length())
+					{
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(GlobalMembersMouse.clipboard_alt_string);
+						GlobalMembersMouse.clipboard_alt_string = DefineConstants.NULL;
+						if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == GlobalMembersMouse.mouse_mode)
+							GlobalMembersMouse.mouse_mode = AnonymousEnum.MOUSE_COORDINATES_REAL.getValue();
+					}
+					else
+					{
+						GlobalMembersMouse.clipboard_mode = AnonymousEnum.MOUSE_COORDINATES_ALT.getValue();
+					}
 				}
 				else
 				{
-				GlobalMembersMouse.clipboard_mode = itmp;
+					int itmp = GlobalMembersParse.int_expression();
+					if (itmp >= AnonymousEnum.MOUSE_COORDINATES_REAL && itmp <= AnonymousEnum.MOUSE_COORDINATES_XDATETIME)
+					{
+						if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == itmp && GlobalMembersMouse.clipboard_alt_string == null)
+						{
+							fprintf(stderr, "please 'set mouse clipboard <fmt>' first.\n");
+						}
+						else
+						{
+							GlobalMembersMouse.clipboard_mode = itmp;
+						}
+					}
+					else
+					{
+						fprintf(stderr, "should be: %d <= clipboardformat <= %d\n", AnonymousEnum.MOUSE_COORDINATES_REAL, AnonymousEnum.MOUSE_COORDINATES_XDATETIME);
+					}
 				}
 			}
-			else
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "mo$useformat") != 0)
 			{
-				fprintf(stderr, "should be: %d <= clipboardformat <= %d\n", AnonymousEnum.MOUSE_COORDINATES_REAL, AnonymousEnum.MOUSE_COORDINATES_XDATETIME);
-			}
-			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "mo$useformat") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(GlobalMembersMouse.mouse_alt_string);
-			GlobalMembersMouse.mouse_alt_string = GlobalMembersUtil.try_to_get_string();
-			if (!GlobalMembersMouse.mouse_alt_string.length())
-			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(GlobalMembersMouse.mouse_alt_string);
-				GlobalMembersMouse.mouse_alt_string = DefineConstants.NULL;
-				if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == GlobalMembersMouse.mouse_mode)
-				GlobalMembersMouse.mouse_mode = AnonymousEnum.MOUSE_COORDINATES_REAL.getValue();
-			}
-			else
-			{
-				GlobalMembersMouse.mouse_mode = AnonymousEnum.MOUSE_COORDINATES_ALT.getValue();
-			}
-			GlobalMembersCommand.c_token++;
-			}
-			else
-			{
-			int itmp = GlobalMembersParse.int_expression();
-			if (itmp >= AnonymousEnum.MOUSE_COORDINATES_REAL && itmp <= AnonymousEnum.MOUSE_COORDINATES_XDATETIME)
-			{
-				if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == itmp && GlobalMembersMouse.mouse_alt_string == null)
+				++GlobalMembersCommand.c_token;
+				if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
 				{
-				fprintf(stderr, "please 'set mouse mouseformat <fmt>' first.\n");
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(GlobalMembersMouse.mouse_alt_string);
+					GlobalMembersMouse.mouse_alt_string = GlobalMembersUtil.try_to_get_string();
+					if (!GlobalMembersMouse.mouse_alt_string.length())
+					{
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(GlobalMembersMouse.mouse_alt_string);
+						GlobalMembersMouse.mouse_alt_string = DefineConstants.NULL;
+						if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == GlobalMembersMouse.mouse_mode)
+							GlobalMembersMouse.mouse_mode = AnonymousEnum.MOUSE_COORDINATES_REAL.getValue();
+					}
+					else
+					{
+						GlobalMembersMouse.mouse_mode = AnonymousEnum.MOUSE_COORDINATES_ALT.getValue();
+					}
+					GlobalMembersCommand.c_token++;
 				}
 				else
 				{
-				GlobalMembersMouse.mouse_mode = itmp;
+					int itmp = GlobalMembersParse.int_expression();
+					if (itmp >= AnonymousEnum.MOUSE_COORDINATES_REAL && itmp <= AnonymousEnum.MOUSE_COORDINATES_XDATETIME)
+					{
+						if (AnonymousEnum.MOUSE_COORDINATES_ALT.getValue() == itmp && GlobalMembersMouse.mouse_alt_string == null)
+						{
+							fprintf(stderr, "please 'set mouse mouseformat <fmt>' first.\n");
+						}
+						else
+						{
+							GlobalMembersMouse.mouse_mode = itmp;
+						}
+					}
+					else
+					{
+						fprintf(stderr, "should be: %d <= mouseformat <= %d\n", AnonymousEnum.MOUSE_COORDINATES_REAL, AnonymousEnum.MOUSE_COORDINATES_XDATETIME);
+					}
 				}
 			}
-			else
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noru$ler") != 0)
 			{
-				fprintf(stderr, "should be: %d <= mouseformat <= %d\n", AnonymousEnum.MOUSE_COORDINATES_REAL, AnonymousEnum.MOUSE_COORDINATES_XDATETIME);
+				GlobalMembersCommand.c_token++;
+				GlobalMembersMouse.set_ruler(false, -1, -1);
 			}
-			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noru$ler") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersMouse.set_ruler(false, -1, -1);
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ru$ler") != 0)
-		{
-			GlobalMembersCommand.c_token++;
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ru$ler") != 0)
+			{
+				GlobalMembersCommand.c_token++;
 				if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") == 0)
 				{
-			GlobalMembersMouse.set_ruler(true, -1, -1);
+					GlobalMembersMouse.set_ruler(true, -1, -1);
 				} // set mouse ruler at ...
+				else
+				{
+					position where = new position();
+					int x;
+					int y;
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting ruler coordinates");
+					GlobalMembersAxis.get_position(where);
+					GlobalMembersGraphics.map_position(where, x, y, "ruler at");
+					GlobalMembersMouse.set_ruler(true, (int)x, (int)y);
+				}
+			}
 			else
 			{
-			position where = new position();
-			int x;
-			int y;
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting ruler coordinates");
-			GlobalMembersAxis.get_position(where);
-			GlobalMembersGraphics.map_position(where, x, y, "ruler at");
-			GlobalMembersMouse.set_ruler(true, (int)x, (int)y);
+				if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "wrong option");
+				break;
 			}
 		}
-		else
-		{
-			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "wrong option");
-			break;
-		}
-		}
-	///#ifdef OS2
-	//    PM_update_menu_items();
-	///#endif
+		///#ifdef OS2
+		//    PM_update_menu_items();
+		///#endif
 	}
-///#endif
+	///#endif
 
-/* process 'set offsets' command */
+	/* process 'set offsets' command */
 	///#endif
 	public static void set_offsets()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersGraphics.loff.x = GlobalMembersGraphics.roff.x = GlobalMembersGraphics.toff.y = GlobalMembersGraphics.boff.y = 0.0;
-		return;
+			GlobalMembersGraphics.loff.x = GlobalMembersGraphics.roff.x = GlobalMembersGraphics.toff.y = GlobalMembersGraphics.boff.y = 0.0;
+			return;
 		}
 
 		GlobalMembersGraphics.loff.scalex = position_type.first_axes;
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "gr$aph") != 0)
 		{
-		GlobalMembersGraphics.loff.scalex = position_type.graph;
-		GlobalMembersCommand.c_token++;
+			GlobalMembersGraphics.loff.scalex = position_type.graph;
+			GlobalMembersCommand.c_token++;
 		}
 		GlobalMembersGraphics.loff.x = GlobalMembersParse.real_expression();
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		return;
+			return;
 
 		GlobalMembersGraphics.roff.scalex = position_type.first_axes;
 		if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "gr$aph") != 0)
 		{
-		GlobalMembersGraphics.roff.scalex = position_type.graph;
-		GlobalMembersCommand.c_token++;
+			GlobalMembersGraphics.roff.scalex = position_type.graph;
+			GlobalMembersCommand.c_token++;
 		}
 		GlobalMembersGraphics.roff.x = GlobalMembersParse.real_expression();
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		return;
+			return;
 
 		GlobalMembersGraphics.toff.scaley = position_type.first_axes;
 		if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "gr$aph") != 0)
 		{
-		GlobalMembersGraphics.toff.scaley = position_type.graph;
-		GlobalMembersCommand.c_token++;
+			GlobalMembersGraphics.toff.scaley = position_type.graph;
+			GlobalMembersCommand.c_token++;
 		}
 		GlobalMembersGraphics.toff.y = GlobalMembersParse.real_expression();
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		return;
+			return;
 
 		GlobalMembersGraphics.boff.scaley = position_type.first_axes;
 		if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "gr$aph") != 0)
 		{
-		GlobalMembersGraphics.boff.scaley = position_type.graph;
-		GlobalMembersCommand.c_token++;
+			GlobalMembersGraphics.boff.scaley = position_type.graph;
+			GlobalMembersCommand.c_token++;
 		}
 		GlobalMembersGraphics.boff.y = GlobalMembersParse.real_expression();
 	}
 
-/* process 'set origin' command */
+	/* process 'set origin' command */
 	public static void set_origin()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersGadgets.xoffset = 0.0F;
-		GlobalMembersGadgets.yoffset = 0.0F;
+			GlobalMembersGadgets.xoffset = 0.0F;
+			GlobalMembersGadgets.yoffset = 0.0F;
 		}
 		else
 		{
-		GlobalMembersGadgets.xoffset = GlobalMembersParse.real_expression();
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
-		GlobalMembersCommand.c_token++;
-		GlobalMembersGadgets.yoffset = GlobalMembersParse.real_expression();
+			GlobalMembersGadgets.xoffset = GlobalMembersParse.real_expression();
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
+			GlobalMembersCommand.c_token++;
+			GlobalMembersGadgets.yoffset = GlobalMembersParse.real_expression();
 		}
 	}
 
-/* process 'set output' command */
+	/* process 'set output' command */
 	public static void set_output()
 	{
 		String testfile;
 
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersTerm.multiplot)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "you can't change the output in multiplot mode");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "you can't change the output in multiplot mode");
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // no file specified
 		{
-		GlobalMembersTerm.term_set_output(DefineConstants.NULL);
-		if (GlobalMembersTerm.outstr != null)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(GlobalMembersTerm.outstr);
-			GlobalMembersTerm.outstr = DefineConstants.NULL; // means STDOUT
-		}
+			GlobalMembersTerm.term_set_output(DefineConstants.NULL);
+			if (GlobalMembersTerm.outstr != null)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(GlobalMembersTerm.outstr);
+				GlobalMembersTerm.outstr = DefineConstants.NULL; // means STDOUT
+			}
 		}
 		else if ((testfile = GlobalMembersUtil.try_to_get_string()))
 		{
-	tangible.RefObject<String[]> tempRef_testfile = new tangible.RefObject<String[]>(testfile);
-		GlobalMembersPlot.gp_expand_tilde(tempRef_testfile);
-		testfile = tempRef_testfile.argvalue;
-		GlobalMembersTerm.term_set_output(testfile);
-		if (!GlobalMembersTerm.outstr.equals(testfile))
-		{
-			if (testfile != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(testfile);
-			testfile = GlobalMembersTerm.outstr;
-		}
-		/* if we get here then it worked, and outstr now = testfile */
+			tangible.RefObject<String[]> tempRef_testfile = new tangible.RefObject<String[]>(testfile);
+			GlobalMembersPlot.gp_expand_tilde(tempRef_testfile);
+			testfile = tempRef_testfile.argvalue;
+			GlobalMembersTerm.term_set_output(testfile);
+			if (!GlobalMembersTerm.outstr.equals(testfile))
+			{
+				if (testfile != null)
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(testfile);
+				testfile = GlobalMembersTerm.outstr;
+			}
+			/* if we get here then it worked, and outstr now = testfile */
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting filename");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting filename");
 
 		/* Invalidate previous palette */
 		GlobalMembersColor.invalidate_palette();
 
 	}
 
-/* process 'set parametric' command */
+	/* process 'set parametric' command */
 	public static void set_parametric()
 	{
 		GlobalMembersCommand.c_token++;
 
 		if (!GlobalMembersGadgets.parametric)
 		{
-		GlobalMembersGadgets.parametric = true;
-		if (!GlobalMembersGadgets.polar) // already done for polar
-		{
-			GlobalMembersParse.set_dummy_var[0] = "t";
-			GlobalMembersParse.set_dummy_var[1] = "y";
-			if (GlobalMembersPlot.interactive)
-			() fprintf(stderr,"\n\tdummy variable is t for curves, u/v for surfaces\n");
-		}
+			GlobalMembersGadgets.parametric = true;
+			if (!GlobalMembersGadgets.polar) // already done for polar
+			{
+				GlobalMembersParse.set_dummy_var[0] = "t";
+				GlobalMembersParse.set_dummy_var[1] = "y";
+				if (GlobalMembersPlot.interactive)
+					() fprintf(stderr,"\n\tdummy variable is t for curves, u/v for surfaces\n");
+			}
 		}
 	}
 
-/* process 'set pm3d' command */
+	/* process 'set pm3d' command */
 	public static void set_pm3d()
 	{
 		int c_token0 = ++GlobalMembersCommand.c_token;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // assume default settings
 		{
-		GlobalMembersPm3d.pm3d_reset(); // sets pm3d.implicit to PM3D_IMPLICIT and pm3d.where to "s"
-		GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_IMPLICIT; // for historical reasons
+			GlobalMembersPm3d.pm3d_reset(); // sets pm3d.implicit to PM3D_IMPLICIT and pm3d.where to "s"
+			GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_IMPLICIT; // for historical reasons
 		}
 		else // go through all options of 'set pm3d'
 		{
-		for (; !GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0; GlobalMembersCommand.c_token++)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch (lookup_table(&set_pm3d_tbl[0],c_token))
-			switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_pm3d_tbl[0]), GlobalMembersCommand.c_token))
+			for (; !GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0; GlobalMembersCommand.c_token++)
 			{
-			/* where to plot */
-			case S_PM3D_AT: // "at"
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersPm3d.get_pm3d_at_option(GlobalMembersPm3d.pm3d.where.charAt(0)) != 0)
-				return; // error
-			GlobalMembersCommand.c_token--;
-	///#if 1
-			if (GlobalMembersCommand.c_token == c_token0 + 1)
-				/* for historical reasons: if "at" is the first option of pm3d,
-				 * like "set pm3d at X other_opts;", then implicit is switched on */
-				GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_IMPLICIT;
-	///#endif
-			continue;
-			case S_PM3D_INTERPOLATE: // "interpolate"
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: switch (lookup_table(&set_pm3d_tbl[0],c_token))
+				switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_pm3d_tbl[0]), GlobalMembersCommand.c_token))
+				{
+				/* where to plot */
+				case S_PM3D_AT: // "at"
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersPm3d.get_pm3d_at_option(GlobalMembersPm3d.pm3d.where.charAt(0)) != 0)
+						return; // error
+					GlobalMembersCommand.c_token--;
+					///#if 1
+					if (GlobalMembersCommand.c_token == c_token0 + 1)
+						/* for historical reasons: if "at" is the first option of pm3d,
+						 * like "set pm3d at X other_opts;", then implicit is switched on */
+						GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_IMPLICIT;
+					///#endif
+					continue;
+				case S_PM3D_INTERPOLATE: // "interpolate"
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					{
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting step values i,j");
+					}
+					else
+					{
+						GlobalMembersPm3d.pm3d.interp_i = GlobalMembersParse.int_expression();
+						if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
+						GlobalMembersCommand.c_token++;
+						GlobalMembersPm3d.pm3d.interp_j = GlobalMembersParse.int_expression();
+						GlobalMembersCommand.c_token--;
+					}
+					continue;
+					/* forward and backward drawing direction */
+				case S_PM3D_SCANSFORWARD: // "scansfor$ward"
+					GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_FORWARD;
+					continue;
+				case S_PM3D_SCANSBACKWARD: // "scansback$ward"
+					GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_BACKWARD;
+					continue;
+				case S_PM3D_SCANS_AUTOMATIC: // "scansauto$matic"
+					GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_AUTOMATIC;
+					continue;
+				case S_PM3D_DEPTH: // "dep$thorder"
+					GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_DEPTH;
+					continue;
+					/* flush scans: left, right or center */
+				case S_PM3D_FLUSH: // "fl$ush"
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "b$egin") != 0)
+						GlobalMembersPm3d.pm3d.flush = DefineConstants.PM3D_FLUSH_BEGIN;
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$enter") != 0)
+						GlobalMembersPm3d.pm3d.flush = DefineConstants.PM3D_FLUSH_CENTER;
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "e$nd") != 0)
+						GlobalMembersPm3d.pm3d.flush = DefineConstants.PM3D_FLUSH_END;
+					else
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting flush 'begin', 'center' or 'end'");
+					continue;
+					/* clipping method */
+				case S_PM3D_CLIP_1IN: // "clip1$in"
+					GlobalMembersPm3d.pm3d.clip = DefineConstants.PM3D_CLIP_1IN;
+					continue;
+				case S_PM3D_CLIP_4IN: // "clip4$in"
+					GlobalMembersPm3d.pm3d.clip = DefineConstants.PM3D_CLIP_4IN;
+					continue;
+					/* setup everything for plotting a map */
+				case S_PM3D_MAP: // "map"
+					GlobalMembersPm3d.pm3d.where = tangible.StringFunctions.changeCharacter(GlobalMembersPm3d.pm3d.where, 0, 'b'); // set pm3d at b
+					GlobalMembersPm3d.pm3d.where = GlobalMembersPm3d.pm3d.where.substring(0, 1);
+					GlobalMembersGadgets.data_style = PLOT_STYLE.PM3DSURFACE;
+					GlobalMembersGadgets.func_style = PLOT_STYLE.PM3DSURFACE;
+					GlobalMembersGraph3d.splot_map = true;
+					continue;
+					/* flushing triangles */
+				case S_PM3D_FTRIANGLES: // "ftr$iangles"
+					GlobalMembersPm3d.pm3d.ftriangles = 1;
+					continue;
+				case S_PM3D_NOFTRIANGLES: // "noftr$iangles"
+					GlobalMembersPm3d.pm3d.ftriangles = 0;
+					continue;
+					/* pm3d-specific hidden line overwrite */
+				case S_PM3D_HIDDEN: // "hi$dden3d"
+				{
+					GlobalMembersCommand.c_token++;
+					GlobalMembersPm3d.pm3d.hidden3d_tag = GlobalMembersParse.int_expression();
+					--GlobalMembersCommand.c_token;
+					if (GlobalMembersPm3d.pm3d.hidden3d_tag <= 0)
+					{
+						GlobalMembersPm3d.pm3d.hidden3d_tag = 0;
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be strictly positive (see `help set style line')");
+					}
+				}
+				continue;
+				case S_PM3D_NOHIDDEN: // "nohi$dden3d"
+					GlobalMembersPm3d.pm3d.hidden3d_tag = 0;
+					continue;
+				case S_PM3D_SOLID: // "so$lid"
+				case S_PM3D_NOTRANSPARENT: // "notr$ansparent"
+				case S_PM3D_NOSOLID: // "noso$lid"
+				case S_PM3D_TRANSPARENT: // "tr$ansparent"
+					if (GlobalMembersPlot.interactive)
+						GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "Deprecated syntax --- ignored");
+				case S_PM3D_IMPLICIT: // "i$mplicit"
+				case S_PM3D_NOEXPLICIT: // "noe$xplicit"
+					GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_IMPLICIT;
+					continue;
+				case S_PM3D_NOIMPLICIT: // "noi$mplicit"
+				case S_PM3D_EXPLICIT: // "e$xplicit"
+					GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_EXPLICIT;
+					continue;
+				case S_PM3D_WHICH_CORNER: // "corners2color"
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "mean") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MEAN;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "geomean") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_GEOMEAN;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "median") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MEDIAN;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "min") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MIN;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "max") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MAX;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c1") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C1;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c2") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C2;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c3") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C3;
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c4") != 0)
+						GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C4;
+					else
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'mean', 'geomean', 'median', 'c1', 'c2', 'c3' or 'c4'");
+					continue;
+				} // switch over pm3d lookup table
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid pm3d option");
+			} // end of while !end of command over pm3d options
+			if (DefineConstants.PM3D_SCANS_AUTOMATIC == GlobalMembersPm3d.pm3d.direction && DefineConstants.PM3D_FLUSH_BEGIN != GlobalMembersPm3d.pm3d.flush)
 			{
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting step values i,j");
+				GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_FORWARD;
+				///#if 0
+				//// /* be silent, don't print this warning */
+				//// /* Rather FIXME that this combination is supported? Shouldn't be
+				////    so big problem, I guess, just it is not implemented. */
+				////	    fprintf(stderr, "pm3d: `scansautomatic' and `flush %s' are incompatible\n",
+				////		PM3D_FLUSH_END == pm3d.flush ? "end": "center");
+				////	    fputs("   => setting `scansforward'\n", stderr);
+				///#endif
 			}
-			else
-			{
-				GlobalMembersPm3d.pm3d.interp_i = GlobalMembersParse.int_expression();
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
-				GlobalMembersCommand.c_token++;
-				GlobalMembersPm3d.pm3d.interp_j = GlobalMembersParse.int_expression();
-				GlobalMembersCommand.c_token--;
-			}
-			continue;
-			/* forward and backward drawing direction */
-			case S_PM3D_SCANSFORWARD: // "scansfor$ward"
-			GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_FORWARD;
-			continue;
-			case S_PM3D_SCANSBACKWARD: // "scansback$ward"
-			GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_BACKWARD;
-			continue;
-			case S_PM3D_SCANS_AUTOMATIC: // "scansauto$matic"
-			GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_AUTOMATIC;
-			continue;
-			case S_PM3D_DEPTH: // "dep$thorder"
-			GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_DEPTH;
-			continue;
-			/* flush scans: left, right or center */
-			case S_PM3D_FLUSH: // "fl$ush"
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "b$egin") != 0)
-				GlobalMembersPm3d.pm3d.flush = DefineConstants.PM3D_FLUSH_BEGIN;
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$enter") != 0)
-				GlobalMembersPm3d.pm3d.flush = DefineConstants.PM3D_FLUSH_CENTER;
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "e$nd") != 0)
-				GlobalMembersPm3d.pm3d.flush = DefineConstants.PM3D_FLUSH_END;
-			else
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting flush 'begin', 'center' or 'end'");
-			continue;
-			/* clipping method */
-			case S_PM3D_CLIP_1IN: // "clip1$in"
-			GlobalMembersPm3d.pm3d.clip = DefineConstants.PM3D_CLIP_1IN;
-			continue;
-			case S_PM3D_CLIP_4IN: // "clip4$in"
-			GlobalMembersPm3d.pm3d.clip = DefineConstants.PM3D_CLIP_4IN;
-			continue;
-			/* setup everything for plotting a map */
-			case S_PM3D_MAP: // "map"
-			GlobalMembersPm3d.pm3d.where = tangible.StringFunctions.changeCharacter(GlobalMembersPm3d.pm3d.where, 0, 'b'); // set pm3d at b
-			GlobalMembersPm3d.pm3d.where = GlobalMembersPm3d.pm3d.where.substring(0, 1);
-			GlobalMembersGadgets.data_style = PLOT_STYLE.PM3DSURFACE;
-			GlobalMembersGadgets.func_style = PLOT_STYLE.PM3DSURFACE;
-			GlobalMembersGraph3d.splot_map = true;
-			continue;
-			/* flushing triangles */
-			case S_PM3D_FTRIANGLES: // "ftr$iangles"
-			GlobalMembersPm3d.pm3d.ftriangles = 1;
-			continue;
-			case S_PM3D_NOFTRIANGLES: // "noftr$iangles"
-			GlobalMembersPm3d.pm3d.ftriangles = 0;
-			continue;
-			/* pm3d-specific hidden line overwrite */
-			case S_PM3D_HIDDEN: // "hi$dden3d"
-			{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersPm3d.pm3d.hidden3d_tag = GlobalMembersParse.int_expression();
-			--GlobalMembersCommand.c_token;
-			if (GlobalMembersPm3d.pm3d.hidden3d_tag <= 0)
-			{
-				GlobalMembersPm3d.pm3d.hidden3d_tag = 0;
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be strictly positive (see `help set style line')");
-			}
-			}
-			continue;
-			case S_PM3D_NOHIDDEN: // "nohi$dden3d"
-			GlobalMembersPm3d.pm3d.hidden3d_tag = 0;
-			continue;
-			case S_PM3D_SOLID: // "so$lid"
-			case S_PM3D_NOTRANSPARENT: // "notr$ansparent"
-			case S_PM3D_NOSOLID: // "noso$lid"
-			case S_PM3D_TRANSPARENT: // "tr$ansparent"
-			if (GlobalMembersPlot.interactive)
-				GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "Deprecated syntax --- ignored");
-			case S_PM3D_IMPLICIT: // "i$mplicit"
-			case S_PM3D_NOEXPLICIT: // "noe$xplicit"
-			GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_IMPLICIT;
-			continue;
-			case S_PM3D_NOIMPLICIT: // "noi$mplicit"
-			case S_PM3D_EXPLICIT: // "e$xplicit"
-			GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_EXPLICIT;
-			continue;
-			case S_PM3D_WHICH_CORNER: // "corners2color"
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "mean") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MEAN;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "geomean") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_GEOMEAN;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "median") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MEDIAN;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "min") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MIN;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "max") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_MAX;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c1") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C1;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c2") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C2;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c3") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C3;
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "c4") != 0)
-				GlobalMembersPm3d.pm3d.which_corner_color = PM3D_WHICH_CORNERS2COLOR.PM3D_WHICHCORNER_C4;
-			else
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'mean', 'geomean', 'median', 'c1', 'c2', 'c3' or 'c4'");
-			continue;
-			} // switch over pm3d lookup table
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid pm3d option");
-		} // end of while !end of command over pm3d options
-		if (DefineConstants.PM3D_SCANS_AUTOMATIC == GlobalMembersPm3d.pm3d.direction && DefineConstants.PM3D_FLUSH_BEGIN != GlobalMembersPm3d.pm3d.flush)
-		{
-			GlobalMembersPm3d.pm3d.direction = DefineConstants.PM3D_SCANS_FORWARD;
-	///#if 0
-	//// /* be silent, don't print this warning */
-	//// /* Rather FIXME that this combination is supported? Shouldn't be
-	////    so big problem, I guess, just it is not implemented. */
-	////	    fprintf(stderr, "pm3d: `scansautomatic' and `flush %s' are incompatible\n",
-	////		PM3D_FLUSH_END == pm3d.flush ? "end": "center");
-	////	    fputs("   => setting `scansforward'\n", stderr);
-	///#endif
-		}
 		}
 	}
 
-/* Process 'set palette' command */
+	/* Process 'set palette' command */
 	public static void set_palette()
 	{
 		int transform_defined;
@@ -4496,297 +4496,297 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // reset to default settings
-		GlobalMembersSet.reset_palette();
+			GlobalMembersSet.reset_palette();
 		else // go through all options of 'set palette'
 		{
-		for (; !GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0; GlobalMembersCommand.c_token++)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch (lookup_table(&set_palette_tbl[0],c_token))
-			switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_palette_tbl[0]), GlobalMembersCommand.c_token))
+			for (; !GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0; GlobalMembersCommand.c_token++)
 			{
-			/* positive and negative picture */
-			case S_PALETTE_POSITIVE: // "pos$itive"
-			GlobalMembersColor.sm_palette.positive = DefineConstants.SMPAL_POSITIVE;
-			continue;
-			case S_PALETTE_NEGATIVE: // "neg$ative"
-			GlobalMembersColor.sm_palette.positive = DefineConstants.SMPAL_NEGATIVE;
-			continue;
-			/* Now the options that determine the palette of smooth colours */
-			/* gray or rgb-coloured */
-			case S_PALETTE_GRAY: // "gray"
-			GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_GRAY;
-			continue;
-			case S_PALETTE_GAMMA: // "gamma"
-			++GlobalMembersCommand.c_token;
-			GlobalMembersColor.sm_palette.gamma = GlobalMembersParse.real_expression();
-			--GlobalMembersCommand.c_token;
-			continue;
-			case S_PALETTE_COLOR: // "col$or"
-			if (pm3d_last_set_palette_mode != palette_color_mode.SMPAL_COLOR_MODE_NONE)
-			{
-				GlobalMembersColor.sm_palette.colorMode = pm3d_last_set_palette_mode;
-			}
-			else
-			{
-			GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
-			}
-			continue;
-			/* rgb color mapping formulae: rgb$formulae r,g,b (3 integers) */
-			case S_PALETTE_RGBFORMULAE: // "rgb$formulae"
-			{
-			int i;
-
-			do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
-			do
-			{
-				GlobalMembersCommand.c_token++;
-				i = GlobalMembersParse.int_expression();
-				if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
-					GlobalMembersColor.sm_palette.formulaR = i;
-			} while (0);
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			{
-				GlobalMembersCommand.c_token--;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: switch (lookup_table(&set_palette_tbl[0],c_token))
+				switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_palette_tbl[0]), GlobalMembersCommand.c_token))
+				{
+				/* positive and negative picture */
+				case S_PALETTE_POSITIVE: // "pos$itive"
+					GlobalMembersColor.sm_palette.positive = DefineConstants.SMPAL_POSITIVE;
+					continue;
+				case S_PALETTE_NEGATIVE: // "neg$ative"
+					GlobalMembersColor.sm_palette.positive = DefineConstants.SMPAL_NEGATIVE;
+					continue;
+					/* Now the options that determine the palette of smooth colours */
+					/* gray or rgb-coloured */
+				case S_PALETTE_GRAY: // "gray"
+					GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_GRAY;
+					continue;
+				case S_PALETTE_GAMMA: // "gamma"
+				++GlobalMembersCommand.c_token;
+				GlobalMembersColor.sm_palette.gamma = GlobalMembersParse.real_expression();
+				--GlobalMembersCommand.c_token;
 				continue;
-			}
-			do
-			{
-				GlobalMembersCommand.c_token++;
-				i = GlobalMembersParse.int_expression();
-				if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
-					GlobalMembersColor.sm_palette.formulaG = i;
-			} while (0);
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			{
-				GlobalMembersCommand.c_token--;
-				continue;
-			}
-			do
-			{
-				GlobalMembersCommand.c_token++;
-				i = GlobalMembersParse.int_expression();
-				if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
-					GlobalMembersColor.sm_palette.formulaB = i;
-			} while (0);
-			GlobalMembersCommand.c_token--;
-			GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
-			pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
-			continue;
-			} // rgbformulae
-			case S_PALETTE_DEFINED: // "def$ine"
-			{
-			do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
-			++GlobalMembersCommand.c_token;
-			named_color = GlobalMembersSet.set_palette_defined();
-			GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
-			pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
-			continue;
-			}
-			case S_PALETTE_FILE: // "file"
-			{
-			do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
-			GlobalMembersSet.set_palette_file();
-			GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
-			pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
-			--GlobalMembersCommand.c_token;
-			continue;
-			}
-			case S_PALETTE_FUNCTIONS: // "func$tions"
-			{
-			do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
-			GlobalMembersSet.set_palette_function();
-			GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_FUNCTIONS;
-			pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_FUNCTIONS;
-			--GlobalMembersCommand.c_token;
-			continue;
-			}
-			case S_PALETTE_MODEL: // "mo$del"
-			{
-			int model;
+				case S_PALETTE_COLOR: // "col$or"
+					if (pm3d_last_set_palette_mode != palette_color_mode.SMPAL_COLOR_MODE_NONE)
+					{
+						GlobalMembersColor.sm_palette.colorMode = pm3d_last_set_palette_mode;
+					}
+					else
+					{
+						GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
+					}
+					continue;
+					/* rgb color mapping formulae: rgb$formulae r,g,b (3 integers) */
+				case S_PALETTE_RGBFORMULAE: // "rgb$formulae"
+				{
+					int i;
 
-			++GlobalMembersCommand.c_token;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected color model.");
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: model = lookup_table(&color_model_tbl[0],c_token);
-			model = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.color_model_tbl[0]), GlobalMembersCommand.c_token);
-			if (model == -1)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unknown color model.");
-			GlobalMembersColor.sm_palette.cmodel = model;
-			continue;
-			}
-			/* ps_allcF: write all rgb formulae into PS file? */
-			case S_PALETTE_NOPS_ALLCF: // "nops_allcF"
-			GlobalMembersColor.sm_palette.ps_allcF = 0;
-			continue;
-			case S_PALETTE_PS_ALLCF: // "ps_allcF"
-			GlobalMembersColor.sm_palette.ps_allcF = 1;
-			continue;
-			/* max colors used */
-			case S_PALETTE_MAXCOLORS: // "maxc$olors"
-			{
-			int i;
+					do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
+					do
+					{
+						GlobalMembersCommand.c_token++;
+						i = GlobalMembersParse.int_expression();
+						if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
+						GlobalMembersColor.sm_palette.formulaR = i;
+					} while (0);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+					{
+						GlobalMembersCommand.c_token--;
+						continue;
+					}
+					do
+					{
+						GlobalMembersCommand.c_token++;
+						i = GlobalMembersParse.int_expression();
+						if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
+						GlobalMembersColor.sm_palette.formulaG = i;
+					} while (0);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+					{
+						GlobalMembersCommand.c_token--;
+						continue;
+					}
+					do
+					{
+						GlobalMembersCommand.c_token++;
+						i = GlobalMembersParse.int_expression();
+						if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
+						GlobalMembersColor.sm_palette.formulaB = i;
+					} while (0);
+					GlobalMembersCommand.c_token--;
+					GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
+					pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
+					continue;
+				} // rgbformulae
+				case S_PALETTE_DEFINED: // "def$ine"
+				{
+					do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
+					++GlobalMembersCommand.c_token;
+					named_color = GlobalMembersSet.set_palette_defined();
+					GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
+					pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
+					continue;
+				}
+				case S_PALETTE_FILE: // "file"
+				{
+					do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
+					GlobalMembersSet.set_palette_file();
+					GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
+					pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_GRADIENT;
+					--GlobalMembersCommand.c_token;
+					continue;
+				}
+				case S_PALETTE_FUNCTIONS: // "func$tions"
+				{
+					do {if (transform_defined) GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Use either `rgbformulae`, `defined`, `file` or `formulae`."); transform_defined = 1;} while (0);
+					GlobalMembersSet.set_palette_function();
+					GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_FUNCTIONS;
+					pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_FUNCTIONS;
+					--GlobalMembersCommand.c_token;
+					continue;
+				}
+				case S_PALETTE_MODEL: // "mo$del"
+				{
+					int model;
 
-			GlobalMembersCommand.c_token++;
-			i = GlobalMembersParse.int_expression();
-			if (i < 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "non-negative number required");
-			GlobalMembersColor.sm_palette.use_maxcolors = i;
-			--GlobalMembersCommand.c_token;
-			continue;
-			}
-			} // switch over palette lookup table
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid palette option");
-		} // end of while !end of command over palette options
+					++GlobalMembersCommand.c_token;
+					if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected color model.");
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: model = lookup_table(&color_model_tbl[0],c_token);
+					model = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.color_model_tbl[0]), GlobalMembersCommand.c_token);
+					if (model == -1)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unknown color model.");
+					GlobalMembersColor.sm_palette.cmodel = model;
+					continue;
+				}
+				/* ps_allcF: write all rgb formulae into PS file? */
+				case S_PALETTE_NOPS_ALLCF: // "nops_allcF"
+					GlobalMembersColor.sm_palette.ps_allcF = 0;
+					continue;
+				case S_PALETTE_PS_ALLCF: // "ps_allcF"
+					GlobalMembersColor.sm_palette.ps_allcF = 1;
+					continue;
+					/* max colors used */
+				case S_PALETTE_MAXCOLORS: // "maxc$olors"
+				{
+					int i;
+
+					GlobalMembersCommand.c_token++;
+					i = GlobalMembersParse.int_expression();
+					if (i < 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "non-negative number required");
+					GlobalMembersColor.sm_palette.use_maxcolors = i;
+					--GlobalMembersCommand.c_token;
+					continue;
+				}
+				} // switch over palette lookup table
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid palette option");
+			} // end of while !end of command over palette options
 		} // else(arguments found)
 
 		if (named_color != 0 && GlobalMembersColor.sm_palette.cmodel != color_models_id.C_MODEL_RGB.getValue() && GlobalMembersPlot.interactive)
-		GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "Named colors will produce strange results if not in color mode RGB.");
+			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "Named colors will produce strange results if not in color mode RGB.");
 
 		/* Invalidate previous palette */
 		GlobalMembersColor.invalidate_palette();
 	}
 
-/* process 'set colorbox' command */
+	/* process 'set colorbox' command */
 	public static void set_colorbox()
 	{
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // reset to default position
-		GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_DEFAULT;
+			GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_DEFAULT;
 		else // go through all options of 'set colorbox'
 		{
-		for (; !GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0; GlobalMembersCommand.c_token++)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch (lookup_table(&set_colorbox_tbl[0],c_token))
-			switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_colorbox_tbl[0]), GlobalMembersCommand.c_token))
+			for (; !GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0; GlobalMembersCommand.c_token++)
 			{
-			/* vertical or horizontal color gradient */
-			case S_COLORBOX_VERTICAL: // "v$ertical"
-			GlobalMembersGadgets.color_box.rotation = (byte)'v';
-			continue;
-			case S_COLORBOX_HORIZONTAL: // "h$orizontal"
-			GlobalMembersGadgets.color_box.rotation = (byte)'h';
-			continue;
-			/* color box where: default position */
-			case S_COLORBOX_DEFAULT: // "def$ault"
-			GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_DEFAULT;
-			continue;
-			/* color box where: position by user */
-			case S_COLORBOX_USER: // "u$ser"
-			GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_USER;
-			continue;
-			/* color box layer: front or back */
-			case S_COLORBOX_FRONT: // "fr$ont"
-			GlobalMembersGadgets.color_box.layer = DefineConstants.LAYER_FRONT;
-			continue;
-			case S_COLORBOX_BACK: // "ba$ck"
-			GlobalMembersGadgets.color_box.layer = DefineConstants.LAYER_BACK;
-			continue;
-			/* border of the color box */
-			case S_COLORBOX_BORDER: // "bo$rder"
-
-			GlobalMembersGadgets.color_box.border = 1;
-			GlobalMembersCommand.c_token++;
-
-			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			{
-				/* expecting a border line type */
-				GlobalMembersGadgets.color_box.border_lt_tag = GlobalMembersParse.int_expression();
-				if (GlobalMembersGadgets.color_box.border_lt_tag <= 0)
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: switch (lookup_table(&set_colorbox_tbl[0],c_token))
+				switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_colorbox_tbl[0]), GlobalMembersCommand.c_token))
 				{
-				GlobalMembersGadgets.color_box.border_lt_tag = 0;
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be strictly positive (see `help set style line')");
-				}
-				--GlobalMembersCommand.c_token;
-			}
-			continue;
-			case S_COLORBOX_BDEFAULT: // "bd$efault"
-			GlobalMembersGadgets.color_box.border_lt_tag = -1; // use default border
-			continue;
-			case S_COLORBOX_NOBORDER: // "nobo$rder"
-			GlobalMembersGadgets.color_box.border = 0;
-			continue;
-			/* colorbox origin */
-			case S_COLORBOX_ORIGIN: // "o$rigin"
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			{
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting screen value [0 - 1]");
-			}
-			else
-			{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: get_position_default(&color_box.origin, screen);
-				GlobalMembersAxis.get_position_default(new position(GlobalMembersGadgets.color_box.origin), position_type.screen);
-			}
-			GlobalMembersCommand.c_token--;
-			continue;
-			/* colorbox size */
-			case S_COLORBOX_SIZE: // "s$ize"
-			GlobalMembersCommand.c_token++;
-			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			{
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting screen value [0 - 1]");
-			}
-			else
-			{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: get_position_default(&color_box.size, screen);
-				GlobalMembersAxis.get_position_default(new position(GlobalMembersGadgets.color_box.size), position_type.screen);
-			}
-			GlobalMembersCommand.c_token--;
-			continue;
-			} // switch over colorbox lookup table
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid colorbox option");
-		} // end of while !end of command over colorbox options
-		if (GlobalMembersGadgets.color_box.where == DefineConstants.SMCOLOR_BOX_NO) // default: draw at default position
-		GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_DEFAULT;
+				/* vertical or horizontal color gradient */
+				case S_COLORBOX_VERTICAL: // "v$ertical"
+					GlobalMembersGadgets.color_box.rotation = (byte)'v';
+					continue;
+				case S_COLORBOX_HORIZONTAL: // "h$orizontal"
+					GlobalMembersGadgets.color_box.rotation = (byte)'h';
+					continue;
+					/* color box where: default position */
+				case S_COLORBOX_DEFAULT: // "def$ault"
+					GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_DEFAULT;
+					continue;
+					/* color box where: position by user */
+				case S_COLORBOX_USER: // "u$ser"
+					GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_USER;
+					continue;
+					/* color box layer: front or back */
+				case S_COLORBOX_FRONT: // "fr$ont"
+					GlobalMembersGadgets.color_box.layer = DefineConstants.LAYER_FRONT;
+					continue;
+				case S_COLORBOX_BACK: // "ba$ck"
+					GlobalMembersGadgets.color_box.layer = DefineConstants.LAYER_BACK;
+					continue;
+					/* border of the color box */
+				case S_COLORBOX_BORDER: // "bo$rder"
+
+					GlobalMembersGadgets.color_box.border = 1;
+					GlobalMembersCommand.c_token++;
+
+					if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					{
+						/* expecting a border line type */
+						GlobalMembersGadgets.color_box.border_lt_tag = GlobalMembersParse.int_expression();
+						if (GlobalMembersGadgets.color_box.border_lt_tag <= 0)
+						{
+							GlobalMembersGadgets.color_box.border_lt_tag = 0;
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be strictly positive (see `help set style line')");
+						}
+						--GlobalMembersCommand.c_token;
+					}
+					continue;
+				case S_COLORBOX_BDEFAULT: // "bd$efault"
+					GlobalMembersGadgets.color_box.border_lt_tag = -1; // use default border
+					continue;
+				case S_COLORBOX_NOBORDER: // "nobo$rder"
+					GlobalMembersGadgets.color_box.border = 0;
+					continue;
+					/* colorbox origin */
+				case S_COLORBOX_ORIGIN: // "o$rigin"
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					{
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting screen value [0 - 1]");
+					}
+					else
+					{
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+						//ORIGINAL LINE: get_position_default(&color_box.origin, screen);
+						GlobalMembersAxis.get_position_default(new position(GlobalMembersGadgets.color_box.origin), position_type.screen);
+					}
+					GlobalMembersCommand.c_token--;
+					continue;
+					/* colorbox size */
+				case S_COLORBOX_SIZE: // "s$ize"
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					{
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting screen value [0 - 1]");
+					}
+					else
+					{
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+						//ORIGINAL LINE: get_position_default(&color_box.size, screen);
+						GlobalMembersAxis.get_position_default(new position(GlobalMembersGadgets.color_box.size), position_type.screen);
+					}
+					GlobalMembersCommand.c_token--;
+					continue;
+				} // switch over colorbox lookup table
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "invalid colorbox option");
+			} // end of while !end of command over colorbox options
+			if (GlobalMembersGadgets.color_box.where == DefineConstants.SMCOLOR_BOX_NO) // default: draw at default position
+				GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_DEFAULT;
 		}
 	}
 
-/* process 'set pointsize' command */
+	/* process 'set pointsize' command */
 	public static void set_pointsize()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersGadgets.pointsize = 1.0;
+			GlobalMembersGadgets.pointsize = 1.0;
 		else
-		GlobalMembersGadgets.pointsize = GlobalMembersParse.real_expression();
+			GlobalMembersGadgets.pointsize = GlobalMembersParse.real_expression();
 		if (GlobalMembersGadgets.pointsize <= 0)
 			GlobalMembersGadgets.pointsize = 1;
 	}
 
-/* process 'set polar' command */
+	/* process 'set polar' command */
 	public static void set_polar()
 	{
 		GlobalMembersCommand.c_token++;
 
 		if (!GlobalMembersGadgets.polar)
 		{
-		if (!GlobalMembersGadgets.parametric)
-		{
-			if (GlobalMembersPlot.interactive)
-			() fprintf(stderr,"\n\tdummy variable is t for curves\n");
-			GlobalMembersParse.set_dummy_var[0] = "t";
-		}
-		GlobalMembersGadgets.polar = true;
-		if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale) != 0)
-		{
-			/* only if user has not set a range manually */
-			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = 0.0;
-			/* 360 if degrees, 2pi if radians */
-			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_max = 2 * DefineConstants.M_PI / GlobalMembersGadgets.ang2rad;
-		}
+			if (!GlobalMembersGadgets.parametric)
+			{
+				if (GlobalMembersPlot.interactive)
+					fprintf(stderr,"\n\tdummy variable is t for curves\n");
+				GlobalMembersParse.set_dummy_var[0] = "t";
+			}
+			GlobalMembersGadgets.polar = true;
+			if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale) != 0)
+			{
+				/* only if user has not set a range manually */
+				GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = 0.0;
+				/* 360 if degrees, 2pi if radians */
+				GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_max = 2 * DefineConstants.M_PI / GlobalMembersGadgets.ang2rad;
+			}
 		}
 	}
 
-/* process 'set print' command */
+	/* process 'set print' command */
 	public static void set_print()
 	{
 		boolean append_p = false;
@@ -4795,41 +4795,41 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // no file specified
 		{
-		GlobalMembersCommand.print_set_output(DefineConstants.NULL, append_p);
+			GlobalMembersCommand.print_set_output(DefineConstants.NULL, append_p);
 		}
 		else if ((testfile = GlobalMembersUtil.try_to_get_string()))
 		{
-	tangible.RefObject<String[]> tempRef_testfile = new tangible.RefObject<String[]>(testfile);
-		GlobalMembersPlot.gp_expand_tilde(tempRef_testfile);
-		testfile = tempRef_testfile.argvalue;
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "append") != 0)
+			tangible.RefObject<String[]> tempRef_testfile = new tangible.RefObject<String[]>(testfile);
+			GlobalMembersPlot.gp_expand_tilde(tempRef_testfile);
+			testfile = tempRef_testfile.argvalue;
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 			{
-			append_p = true;
-			GlobalMembersCommand.c_token++;
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "append") != 0)
+				{
+					append_p = true;
+					GlobalMembersCommand.c_token++;
+				}
+				else
+				{
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting keyword \'append\'");
+				}
 			}
-			else
-			{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting keyword \'append\'");
-			}
-		}
-		GlobalMembersCommand.print_set_output(testfile, append_p);
+			GlobalMembersCommand.print_set_output(testfile, append_p);
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting filename");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting filename");
 	}
 
-///#ifdef EAM_OBJECTS
-/* 
- * Process command     'set object <tag> {rectangle|ellipse|circle|polygon}'
- * set object {tag} rectangle {from <bottom_left> {to|rto} <top_right>}
- *                     {{at|center} <xcen>,<ycen> size <w>,<h>}
- *                     {fc|fillcolor <colorspec>} {lw|linewidth <lw>}
- *                     {fs <fillstyle>} {front|back|behind}
- *                     {default}
- * EAM Jan 2005
- */
+	///#ifdef EAM_OBJECTS
+	/* 
+	 * Process command     'set object <tag> {rectangle|ellipse|circle|polygon}'
+	 * set object {tag} rectangle {from <bottom_left> {to|rto} <top_right>}
+	 *                     {{at|center} <xcen>,<ycen> size <w>,<h>}
+	 *                     {fc|fillcolor <colorspec>} {lw|linewidth <lw>}
+	 *                     {fs <fillstyle>} {front|back|behind}
+	 *                     {default}
+	 * EAM Jan 2005
+	 */
 
 	///#ifdef EAM_OBJECTS
 	public static void set_object()
@@ -4839,52 +4839,52 @@ public class GlobalMembersSet
 		/* The next token must either be a tag or the object type */
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rect$angle") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "ellipse") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "circle") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "poly$gon") != 0)
-		tag = -1; // We'll figure out what it really is later
+			tag = -1; // We'll figure out what it really is later
 		else
 		{
-		tag = GlobalMembersParse.int_expression();
-		if (tag <= 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
+			tag = GlobalMembersParse.int_expression();
+			if (tag <= 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
 		}
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rect$angle") != 0)
 		{
-		GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_RECTANGLE);
+			GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_RECTANGLE);
 
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "ellipse") != 0)
 		{
-		GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_ELLIPSE);
+			GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_ELLIPSE);
 
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "circle") != 0)
 		{
-		GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_CIRCLE);
+			GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_CIRCLE);
 
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "poly$gon") != 0)
 		{
-		GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_POLYGON);
+			GlobalMembersSet.set_obj(tag, DefineConstants.OBJ_POLYGON);
 
 		}
 		else if (tag > 0)
 		{
-		/* Look for existing object with this tag */
-		object this_object = GlobalMembersGadgets.first_object;
-		for (; this_object != DefineConstants.NULL; this_object = this_object.next)
-			 if (tag == this_object.tag)
-			break;
-		if (this_object != null && tag == this_object.tag)
-		{
-			GlobalMembersCommand.c_token--;
-			GlobalMembersSet.set_obj(tag, this_object.object_type);
-		}
-		else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown object");
+			/* Look for existing object with this tag */
+			object this_object = GlobalMembersGadgets.first_object;
+			for (; this_object != DefineConstants.NULL; this_object = this_object.next)
+				if (tag == this_object.tag)
+					break;
+			if (this_object != null && tag == this_object.tag)
+			{
+				GlobalMembersCommand.c_token--;
+				GlobalMembersSet.set_obj(tag, this_object.object_type);
+			}
+			else
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown object");
 
 		}
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unrecognized object type");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unrecognized object type");
 
 	}
 	public static void set_obj(int tag, int obj_type)
@@ -4909,341 +4909,341 @@ public class GlobalMembersSet
 		/* We are setting the default, not any particular rectangle */
 		if (tag < -1)
 		{
-		GlobalMembersCommand.c_token--;
-		if (obj_type == DefineConstants.OBJ_RECTANGLE)
-		{
-			this_object = GlobalMembersGadgets.default_rectangle;
-			this_rect = this_object.o.rectangle;
-		}
-		else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unknown object type");
-
-		}
-		else
-		{
-		/* Look for existing object with this tag */
-		for (this_object = GlobalMembersGadgets.first_object; this_object != DefineConstants.NULL; prev_object = this_object, this_object = this_object.next)
-			 /* is this the one we want? */
-			 if (0 < tag && tag <= this_object.tag)
-			break;
-
-		/* Insert this rect into the list if it is a new one */
-		if (this_object == DefineConstants.NULL || tag != this_object.tag)
-		{
-			if (tag == -1)
-			tag = (prev_object) ? prev_object.tag + 1 : 1;
-			new_obj = GlobalMembersSet.new_object(tag, obj_type, DefineConstants.NULL);
-			if (prev_object == DefineConstants.NULL)
-			GlobalMembersGadgets.first_object = new_obj;
+			GlobalMembersCommand.c_token--;
+			if (obj_type == DefineConstants.OBJ_RECTANGLE)
+			{
+				this_object = GlobalMembersGadgets.default_rectangle;
+				this_rect = this_object.o.rectangle;
+			}
 			else
-			prev_object.next = new_obj;
-			new_obj.next = this_object;
-			this_object = new_obj;
-		}
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unknown object type");
 
-		/* Over-write old object if the type has changed */
-		else if (this_object.object_type != obj_type)
+		}
+		else
 		{
-			object save_link = this_object.next;
-			new_obj = GlobalMembersSet.new_object(tag, obj_type, this_object);
-			this_object.next = save_link;
-		}
+			/* Look for existing object with this tag */
+			for (this_object = GlobalMembersGadgets.first_object; this_object != DefineConstants.NULL; prev_object = this_object, this_object = this_object.next)
+				/* is this the one we want? */
+				if (0 < tag && tag <= this_object.tag)
+					break;
 
-		this_rect = this_object.o.rectangle;
-		this_ellipse = this_object.o.ellipse;
-		this_circle = this_object.o.circle;
-		this_polygon = this_object.o.polygon;
+			/* Insert this rect into the list if it is a new one */
+			if (this_object == DefineConstants.NULL || tag != this_object.tag)
+			{
+				if (tag == -1)
+					tag = (prev_object) ? prev_object.tag + 1 : 1;
+				new_obj = GlobalMembersSet.new_object(tag, obj_type, DefineConstants.NULL);
+				if (prev_object == DefineConstants.NULL)
+					GlobalMembersGadgets.first_object = new_obj;
+				else
+					prev_object.next = new_obj;
+				new_obj.next = this_object;
+				this_object = new_obj;
+			}
+
+			/* Over-write old object if the type has changed */
+			else if (this_object.object_type != obj_type)
+			{
+				object save_link = this_object.next;
+				new_obj = GlobalMembersSet.new_object(tag, obj_type, this_object);
+				this_object.next = save_link;
+			}
+
+			this_rect = this_object.o.rectangle;
+			this_ellipse = this_object.o.ellipse;
+			this_circle = this_object.o.circle;
+			this_polygon = this_object.o.polygon;
 
 		}
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		int save_token = GlobalMembersCommand.c_token;
+			int save_token = GlobalMembersCommand.c_token;
 
-		switch (obj_type)
-		{
-		case DefineConstants.OBJ_RECTANGLE:
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0)
+			switch (obj_type)
 			{
-				/* Read in the bottom left and upper right corners */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_rect.bl);
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0)
+			case DefineConstants.OBJ_RECTANGLE:
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0)
 				{
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_rect.tr);
-				}
-				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0)
-				{
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position_default(this_rect.tr, this_rect.bl.scalex);
-				if (this_rect.bl.scalex != this_rect.tr.scalex || this_rect.bl.scaley != this_rect.tr.scaley)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "relative coordinates must match in type");
-				this_rect.tr.x += this_rect.bl.x;
-				this_rect.tr.y += this_rect.bl.y;
-				}
-				else
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expecting to or rto");
-				got_corners = true;
-				this_rect.type = 0;
-				continue;
-
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cen$ter") != 0)
-			{
-				/* Read in the center position */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_rect.center);
-				got_center = true;
-				this_rect.type = 1;
-				continue;
-
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0)
-			{
-				/* Read in the width and height */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_rect.extent);
-				got_center = true;
-				this_rect.type = 1;
-				continue;
-			}
-			break;
-
-		case DefineConstants.OBJ_CIRCLE:
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cen$ter") != 0)
-			{
-				/* Read in the center position */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_circle.center);
-				continue;
-
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "radius") != 0)
-			{
-				/* Read in the radius */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_circle.extent);
-				continue;
-
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "arc") != 0)
-			{
-				/* Start and end angle for arc */
-				if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "[") != 0)
-				{
-				double arc;
-				GlobalMembersCommand.c_token++;
-				arc = GlobalMembersParse.real_expression();
-				if (Math.abs(arc) > 1000.)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Angle out of range");
-				else
-					this_circle.arc_begin = arc;
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, ":") != 0)
-				{
-					arc = GlobalMembersParse.real_expression();
-					if (Math.abs(arc) > 1000.)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Angle out of range");
+					/* Read in the bottom left and upper right corners */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_rect.bl);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						GlobalMembersAxis.get_position(this_rect.tr);
+					}
+					else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						GlobalMembersAxis.get_position_default(this_rect.tr, this_rect.bl.scalex);
+						if (this_rect.bl.scalex != this_rect.tr.scalex || this_rect.bl.scaley != this_rect.tr.scaley)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "relative coordinates must match in type");
+						this_rect.tr.x += this_rect.bl.x;
+						this_rect.tr.y += this_rect.bl.y;
+					}
 					else
-					this_circle.arc_end = arc;
-					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "]") != 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expecting to or rto");
+					got_corners = true;
+					this_rect.type = 0;
+					continue;
+
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cen$ter") != 0)
+				{
+					/* Read in the center position */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_rect.center);
+					got_center = true;
+					this_rect.type = 1;
+					continue;
+
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0)
+				{
+					/* Read in the width and height */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_rect.extent);
+					got_center = true;
+					this_rect.type = 1;
 					continue;
 				}
-				}
-				GlobalMembersBf_test.int_error(--GlobalMembersCommand.c_token, "Expecting arc [<begin>:<end>]");
-			}
-			break;
+				break;
 
-		case DefineConstants.OBJ_ELLIPSE:
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cen$ter") != 0)
-			{
-				/* Read in the center position */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_ellipse.center);
-				continue;
-
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0)
-			{
-				/* Read in the width and height */
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.get_position(this_ellipse.extent);
-				continue;
-
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "angle") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-				this_ellipse.orientation = GlobalMembersParse.real_expression();
-				continue;
-			}
-			break;
-
-		case DefineConstants.OBJ_POLYGON:
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				this_polygon.vertex = GlobalMembersAlloc.gp_realloc(this_polygon.vertex, sizeof(GlobalMembersMouse.struct position), "polygon vertex");
-				GlobalMembersAxis.get_position(this_polygon.vertex[0]);
-				this_polygon.type = 1;
-				got_origin = true;
-			}
-			while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0)
-			{
-				if (!got_origin)
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto polygon_error;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				this_polygon.vertex = GlobalMembersAlloc.gp_realloc(this_polygon.vertex, (this_polygon.type + 1) * sizeof(GlobalMembersMouse.struct position), "polygon vertex");
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "to") != 0)
+			case DefineConstants.OBJ_CIRCLE:
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cen$ter") != 0)
 				{
-				GlobalMembersAxis.get_position(this_polygon.vertex[this_polygon.type]);
-				} // "rto"
-				else
-				{
-				int v = this_polygon.type;
-				GlobalMembersAxis.get_position_default(this_polygon.vertex[v], this_polygon.vertex.scalex);
-				if (this_polygon.vertex[v].scalex != this_polygon.vertex[v - 1].scalex || this_polygon.vertex[v].scaley != this_polygon.vertex[v - 1].scaley)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "relative coordinates must match in type");
-				this_polygon.vertex[v].x += this_polygon.vertex[v - 1].x;
-				this_polygon.vertex[v].y += this_polygon.vertex[v - 1].y;
+					/* Read in the center position */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_circle.center);
+					continue;
+
 				}
-				this_polygon.type++;
-				got_corners = true;
-			}
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcmp' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			if (got_corners && memcmp(this_polygon.vertex[this_polygon.type-1], this_polygon.vertex[0], sizeof(GlobalMembersMouse.struct position)))
-			{
-				fprintf(stderr,"Polygon is not closed - adding extra vertex\n");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				this_polygon.vertex = GlobalMembersAlloc.gp_realloc(this_polygon.vertex, (this_polygon.type + 1) * sizeof(GlobalMembersMouse.struct position), "polygon vertex");
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				memcpy(this_polygon.vertex[this_polygon.type], this_polygon.vertex[0], sizeof(GlobalMembersMouse.struct position));
-				this_polygon.type++;
-			}
-			break;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			polygon_error:
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(this_polygon.vertex);
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "radius") != 0)
+				{
+					/* Read in the radius */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_circle.extent);
+					continue;
+
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "arc") != 0)
+				{
+					/* Start and end angle for arc */
+					if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "[") != 0)
+					{
+						double arc;
+						GlobalMembersCommand.c_token++;
+						arc = GlobalMembersParse.real_expression();
+						if (Math.abs(arc) > 1000.)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Angle out of range");
+						else
+							this_circle.arc_begin = arc;
+						if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, ":") != 0)
+						{
+							arc = GlobalMembersParse.real_expression();
+							if (Math.abs(arc) > 1000.)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Angle out of range");
+							else
+								this_circle.arc_end = arc;
+							if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "]") != 0)
+								continue;
+						}
+					}
+					GlobalMembersBf_test.int_error(--GlobalMembersCommand.c_token, "Expecting arc [<begin>:<end>]");
+				}
+				break;
+
+			case DefineConstants.OBJ_ELLIPSE:
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "cen$ter") != 0)
+				{
+					/* Read in the center position */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_ellipse.center);
+					continue;
+
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "size") != 0)
+				{
+					/* Read in the width and height */
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.get_position(this_ellipse.extent);
+					continue;
+
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "angle") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					this_ellipse.orientation = GlobalMembersParse.real_expression();
+					continue;
+				}
+				break;
+
+			case DefineConstants.OBJ_POLYGON:
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "from") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					this_polygon.vertex = GlobalMembersAlloc.gp_realloc(this_polygon.vertex, sizeof(GlobalMembersMouse.struct position), "polygon vertex");
+					GlobalMembersAxis.get_position(this_polygon.vertex[0]);
+					this_polygon.type = 1;
+					got_origin = true;
+				}
+				while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "to") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "rto") != 0)
+				{
+					if (!got_origin)
+						//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+						goto polygon_error;
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					this_polygon.vertex = GlobalMembersAlloc.gp_realloc(this_polygon.vertex, (this_polygon.type + 1) * sizeof(GlobalMembersMouse.struct position), "polygon vertex");
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "to") != 0)
+					{
+						GlobalMembersAxis.get_position(this_polygon.vertex[this_polygon.type]);
+					} // "rto"
+					else
+					{
+						int v = this_polygon.type;
+						GlobalMembersAxis.get_position_default(this_polygon.vertex[v], this_polygon.vertex.scalex);
+						if (this_polygon.vertex[v].scalex != this_polygon.vertex[v - 1].scalex || this_polygon.vertex[v].scaley != this_polygon.vertex[v - 1].scaley)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "relative coordinates must match in type");
+						this_polygon.vertex[v].x += this_polygon.vertex[v - 1].x;
+						this_polygon.vertex[v].y += this_polygon.vertex[v - 1].y;
+					}
+					this_polygon.type++;
+					got_corners = true;
+				}
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcmp' has no equivalent in Java:
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				if (got_corners && memcmp(this_polygon.vertex[this_polygon.type-1], this_polygon.vertex[0], sizeof(GlobalMembersMouse.struct position)))
+				{
+					fprintf(stderr,"Polygon is not closed - adding extra vertex\n");
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					this_polygon.vertex = GlobalMembersAlloc.gp_realloc(this_polygon.vertex, (this_polygon.type + 1) * sizeof(GlobalMembersMouse.struct position), "polygon vertex");
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					memcpy(this_polygon.vertex[this_polygon.type], this_polygon.vertex[0], sizeof(GlobalMembersMouse.struct position));
+					this_polygon.type++;
+				}
+				break;
+				//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+				polygon_error:
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(this_polygon.vertex);
 				this_polygon.vertex = DefineConstants.NULL;
 				this_polygon.type = 0;
 				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized polygon syntax");
 
-		default:
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecoginized object type");
-		} // End of object-specific options
+			default:
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecoginized object type");
+			} // End of object-specific options
 
-		/* The rest of the options apply to any type of object */
+			/* The rest of the options apply to any type of object */
 
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
-		{
-			this_object.layer = 1;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
-		{
-			this_object.layer = 0;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "behind") != 0)
-		{
-			this_object.layer = -1;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
-		{
-			if (tag < 0)
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
 			{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Invalid command - did you mean 'unset style rectangle'?");
+				this_object.layer = 1;
+				GlobalMembersCommand.c_token++;
+				continue;
 			}
-			else
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
 			{
-			this_object.lp_properties.l_type = DefineConstants.LT_DEFAULT;
-			this_object.fillstyle.fillstyle = t_fillstyle.FS_DEFAULT.getValue();
+				this_object.layer = 0;
+				GlobalMembersCommand.c_token++;
+				continue;
 			}
-			got_fill = got_lt = true;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-
-		/* Now parse the style options; default to whatever the global style is  */
-		if (!got_fill)
-		{
-			fill_style_type default_style;
-			if (this_object.object_type == DefineConstants.OBJ_RECTANGLE)
-			default_style = GlobalMembersGadgets.default_rectangle.fillstyle;
-			else
-			default_style = GlobalMembersGadgets.default_fillstyle;
-
-			if (new_obj != null)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_fillstyle(&this_object->fillstyle, default_style->fillstyle, default_style->filldensity, default_style->fillpattern, default_style->border_color);
-			GlobalMembersMisc.parse_fillstyle(this_object.fillstyle, default_style.fillstyle, default_style.filldensity, default_style.fillpattern, new t_colorspec(default_style.border_color));
-			else
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_fillstyle(&this_object->fillstyle, this_object->fillstyle.fillstyle, this_object->fillstyle.filldensity, this_object->fillstyle.fillpattern, this_object->fillstyle.border_color);
-			GlobalMembersMisc.parse_fillstyle(this_object.fillstyle, this_object.fillstyle.fillstyle, this_object.fillstyle.filldensity, this_object.fillstyle.fillpattern, new t_colorspec(this_object.fillstyle.border_color));
-			if (GlobalMembersCommand.c_token != save_token)
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "behind") != 0)
 			{
-			got_fill = true;
-			continue;
+				this_object.layer = -1;
+				GlobalMembersCommand.c_token++;
+				continue;
 			}
-		}
-
-		/* Parse the colorspec */
-		if (!got_lt)
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "fc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fillc$olor") != 0)
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
 			{
-			this_object.lp_properties.use_palette = true;
-			this_object.lp_properties.l_type = DefineConstants.LT_BLACK; // Anything but LT_DEFAULT
-			GlobalMembersMisc.parse_colorspec(this_object.lp_properties.pm3d_color, DefineConstants.TC_FRAC);
-			if (this_object.lp_properties.pm3d_color.type == DefineConstants.TC_DEFAULT)
-				this_object.lp_properties.l_type = DefineConstants.LT_DEFAULT;
+				if (tag < 0)
+				{
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Invalid command - did you mean 'unset style rectangle'?");
+				}
+				else
+				{
+					this_object.lp_properties.l_type = DefineConstants.LT_DEFAULT;
+					this_object.fillstyle.fillstyle = t_fillstyle.FS_DEFAULT.getValue();
+				}
+				got_fill = got_lt = true;
+				GlobalMembersCommand.c_token++;
+				continue;
 			}
 
-			if (GlobalMembersCommand.c_token != save_token)
+			/* Now parse the style options; default to whatever the global style is  */
+			if (!got_fill)
 			{
-			got_lt = true;
-			continue;
-			}
-		}
+				fill_style_type default_style;
+				if (this_object.object_type == DefineConstants.OBJ_RECTANGLE)
+					default_style = GlobalMembersGadgets.default_rectangle.fillstyle;
+				else
+					default_style = GlobalMembersGadgets.default_fillstyle;
 
-		/* And linewidth */
-		if (!got_lw)
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "lw") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "linew$idth") != 0)
-			{
-			GlobalMembersCommand.c_token++;
-			lw = GlobalMembersParse.real_expression();
+				if (new_obj != null)
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: parse_fillstyle(&this_object->fillstyle, default_style->fillstyle, default_style->filldensity, default_style->fillpattern, default_style->border_color);
+					GlobalMembersMisc.parse_fillstyle(this_object.fillstyle, default_style.fillstyle, default_style.filldensity, default_style.fillpattern, new t_colorspec(default_style.border_color));
+				else
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: parse_fillstyle(&this_object->fillstyle, this_object->fillstyle.fillstyle, this_object->fillstyle.filldensity, this_object->fillstyle.fillpattern, this_object->fillstyle.border_color);
+					GlobalMembersMisc.parse_fillstyle(this_object.fillstyle, this_object.fillstyle.fillstyle, this_object.fillstyle.filldensity, this_object.fillstyle.fillpattern, new t_colorspec(this_object.fillstyle.border_color));
+				if (GlobalMembersCommand.c_token != save_token)
+				{
+					got_fill = true;
+					continue;
+				}
 			}
-			if (GlobalMembersCommand.c_token != save_token)
-			{
-			got_lw = true;
-			continue;
-			}
-		}
 
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized or duplicate option");
+			/* Parse the colorspec */
+			if (!got_lt)
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "fc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fillc$olor") != 0)
+				{
+					this_object.lp_properties.use_palette = true;
+					this_object.lp_properties.l_type = DefineConstants.LT_BLACK; // Anything but LT_DEFAULT
+					GlobalMembersMisc.parse_colorspec(this_object.lp_properties.pm3d_color, DefineConstants.TC_FRAC);
+					if (this_object.lp_properties.pm3d_color.type == DefineConstants.TC_DEFAULT)
+						this_object.lp_properties.l_type = DefineConstants.LT_DEFAULT;
+				}
+
+				if (GlobalMembersCommand.c_token != save_token)
+				{
+					got_lt = true;
+					continue;
+				}
+			}
+
+			/* And linewidth */
+			if (!got_lw)
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "lw") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "linew$idth") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					lw = GlobalMembersParse.real_expression();
+				}
+				if (GlobalMembersCommand.c_token != save_token)
+				{
+					got_lw = true;
+					continue;
+				}
+			}
+
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized or duplicate option");
 		}
 
 		if (got_lw)
-		this_object.lp_properties.l_width = lw;
+			this_object.lp_properties.l_width = lw;
 
 		if (got_center && got_corners)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Inconsistent options");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Inconsistent options");
 
 	}
-///#endif
+	///#endif
 
-/* process 'set samples' command */
+	/* process 'set samples' command */
 	///#endif
 	public static void set_samples()
 	{
@@ -5255,154 +5255,154 @@ public class GlobalMembersSet
 		tsamp2 = tsamp1;
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
-		GlobalMembersCommand.c_token++;
-		tsamp2 = Math.abs(GlobalMembersParse.int_expression());
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
+			GlobalMembersCommand.c_token++;
+			tsamp2 = Math.abs(GlobalMembersParse.int_expression());
 		}
 		if (tsamp1 < 2 || tsamp2 < 2)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "sampling rate must be > 1; sampling unchanged");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "sampling rate must be > 1; sampling unchanged");
 		else
 		{
-		surface_points f_3dp = GlobalMembersPlot3d.first_3dplot;
+			surface_points f_3dp = GlobalMembersPlot3d.first_3dplot;
 
-		GlobalMembersPlot3d.first_3dplot = DefineConstants.NULL;
-		GlobalMembersPlot3d.sp_free(f_3dp);
+			GlobalMembersPlot3d.first_3dplot = DefineConstants.NULL;
+			GlobalMembersPlot3d.sp_free(f_3dp);
 
-		GlobalMembersGadgets.samples_1 = tsamp1;
-		GlobalMembersGadgets.samples_2 = tsamp2;
+			GlobalMembersGadgets.samples_1 = tsamp1;
+			GlobalMembersGadgets.samples_2 = tsamp2;
 		}
 	}
 
-/* process 'set size' command */
+	/* process 'set size' command */
 	public static void set_size()
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersGadgets.xsize = 1.0F;
-		GlobalMembersGadgets.ysize = 1.0F;
+			GlobalMembersGadgets.xsize = 1.0F;
+			GlobalMembersGadgets.ysize = 1.0F;
 		}
 		else
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sq$uare") != 0)
-		{
-			GlobalMembersGadgets.aspect_ratio = 1.0F;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ra$tio") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersGadgets.aspect_ratio = GlobalMembersParse.real_expression();
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nora$tio") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nosq$uare") != 0)
-		{
-			GlobalMembersGadgets.aspect_ratio = 0.0F;
-			++GlobalMembersCommand.c_token;
-		}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sq$uare") != 0)
+			{
+				GlobalMembersGadgets.aspect_ratio = 1.0F;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ra$tio") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				GlobalMembersGadgets.aspect_ratio = GlobalMembersParse.real_expression();
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nora$tio") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nosq$uare") != 0)
+			{
+				GlobalMembersGadgets.aspect_ratio = 0.0F;
+				++GlobalMembersCommand.c_token;
+			}
 
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			GlobalMembersGadgets.xsize = GlobalMembersParse.real_expression();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 			{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersGadgets.ysize = GlobalMembersParse.real_expression();
+				GlobalMembersGadgets.xsize = GlobalMembersParse.real_expression();
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					GlobalMembersGadgets.ysize = GlobalMembersParse.real_expression();
+				}
+				else
+				{
+					GlobalMembersGadgets.ysize = GlobalMembersGadgets.xsize;
+				}
 			}
-			else
-			{
-			GlobalMembersGadgets.ysize = GlobalMembersGadgets.xsize;
-			}
-		}
 		}
 		if (GlobalMembersGadgets.xsize <= 0 || GlobalMembersGadgets.ysize <= 0)
 		{
-		GlobalMembersGadgets.xsize = GlobalMembersGadgets.ysize = 1.0F;
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Illegal value for size");
+			GlobalMembersGadgets.xsize = GlobalMembersGadgets.ysize = 1.0F;
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Illegal value for size");
 		}
 	}
 
-/* process 'set style' command */
+	/* process 'set style' command */
 	public static void set_style()
 	{
 		GlobalMembersCommand.c_token++;
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch(lookup_table(&show_style_tbl[0],c_token))
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: switch(lookup_table(&show_style_tbl[0],c_token))
 		switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.show_style_tbl[0]), GlobalMembersCommand.c_token))
 		{
 		case SHOW_STYLE_DATA:
-		GlobalMembersGadgets.data_style = GlobalMembersMisc.get_style();
-		if (GlobalMembersGadgets.data_style == PLOT_STYLE.FILLEDCURVES)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: get_filledcurves_style_options(&filledcurves_opts_data);
-			GlobalMembersMisc.get_filledcurves_style_options(new filledcurves_opts(GlobalMembersGadgets.filledcurves_opts_data));
-			if (GlobalMembersGadgets.filledcurves_opts_data.opt_given == 0) // default value
-			GlobalMembersGadgets.filledcurves_opts_data.closeto = filledcurves_opts_id.FILLEDCURVES_CLOSED.getValue();
-		}
-		break;
+			GlobalMembersGadgets.data_style = GlobalMembersMisc.get_style();
+			if (GlobalMembersGadgets.data_style == PLOT_STYLE.FILLEDCURVES)
+			{
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: get_filledcurves_style_options(&filledcurves_opts_data);
+				GlobalMembersMisc.get_filledcurves_style_options(new filledcurves_opts(GlobalMembersGadgets.filledcurves_opts_data));
+				if (GlobalMembersGadgets.filledcurves_opts_data.opt_given == 0) // default value
+					GlobalMembersGadgets.filledcurves_opts_data.closeto = filledcurves_opts_id.FILLEDCURVES_CLOSED.getValue();
+			}
+			break;
 		case SHOW_STYLE_FUNCTION:
 		{
 			PLOT_STYLE temp_style = GlobalMembersMisc.get_style();
 
 			if ((temp_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_ERRORBAR) || (temp_style == PLOT_STYLE.LABELPOINTS) || (temp_style == PLOT_STYLE.HISTOGRAMS))
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "style not usable for function plots, left unchanged");
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "style not usable for function plots, left unchanged");
 			else
-			GlobalMembersGadgets.func_style = temp_style;
+				GlobalMembersGadgets.func_style = temp_style;
 			if (GlobalMembersGadgets.func_style == PLOT_STYLE.FILLEDCURVES)
 			{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: get_filledcurves_style_options(&filledcurves_opts_func);
-			GlobalMembersMisc.get_filledcurves_style_options(new filledcurves_opts(GlobalMembersGadgets.filledcurves_opts_func));
-			if (GlobalMembersGadgets.filledcurves_opts_func.opt_given == 0) // default value
-				GlobalMembersGadgets.filledcurves_opts_func.closeto = filledcurves_opts_id.FILLEDCURVES_CLOSED.getValue();
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: get_filledcurves_style_options(&filledcurves_opts_func);
+				GlobalMembersMisc.get_filledcurves_style_options(new filledcurves_opts(GlobalMembersGadgets.filledcurves_opts_func));
+				if (GlobalMembersGadgets.filledcurves_opts_func.opt_given == 0) // default value
+					GlobalMembersGadgets.filledcurves_opts_func.closeto = filledcurves_opts_id.FILLEDCURVES_CLOSED.getValue();
 			}
 			break;
 		}
 		case SHOW_STYLE_LINE:
-		GlobalMembersSet.set_linestyle();
-		break;
+			GlobalMembersSet.set_linestyle();
+			break;
 		case SHOW_STYLE_FILLING:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_fillstyle(&default_fillstyle, default_fillstyle.fillstyle, default_fillstyle.filldensity, default_fillstyle.fillpattern, default_fillstyle.border_color);
-		GlobalMembersMisc.parse_fillstyle(GlobalMembersGadgets.default_fillstyle, GlobalMembersGadgets.default_fillstyle.fillstyle, GlobalMembersGadgets.default_fillstyle.filldensity, GlobalMembersGadgets.default_fillstyle.fillpattern, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
-		break;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: parse_fillstyle(&default_fillstyle, default_fillstyle.fillstyle, default_fillstyle.filldensity, default_fillstyle.fillpattern, default_fillstyle.border_color);
+			GlobalMembersMisc.parse_fillstyle(GlobalMembersGadgets.default_fillstyle, GlobalMembersGadgets.default_fillstyle.fillstyle, GlobalMembersGadgets.default_fillstyle.filldensity, GlobalMembersGadgets.default_fillstyle.fillpattern, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
+			break;
 		case SHOW_STYLE_ARROW:
-		GlobalMembersSet.set_arrowstyle();
-		break;
-	///#ifdef EAM_OBJECTS
+			GlobalMembersSet.set_arrowstyle();
+			break;
+			///#ifdef EAM_OBJECTS
 		case SHOW_STYLE_RECTANGLE:
-		GlobalMembersCommand.c_token++;
-		GlobalMembersSet.set_obj(-2, DefineConstants.OBJ_RECTANGLE);
-		break;
-	///#endif
+			GlobalMembersCommand.c_token++;
+			GlobalMembersSet.set_obj(-2, DefineConstants.OBJ_RECTANGLE);
+			break;
+			///#endif
 		case SHOW_STYLE_HISTOGRAM:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_histogramstyle(&histogram_opts,HT_CLUSTERED,histogram_opts.gap);
-		GlobalMembersSet.parse_histogramstyle(new histogram_style(GlobalMembersGadgets.histogram_opts), histogram_type.HT_CLUSTERED, GlobalMembersGadgets.histogram_opts.gap);
-		break;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: parse_histogramstyle(&histogram_opts,HT_CLUSTERED,histogram_opts.gap);
+			GlobalMembersSet.parse_histogramstyle(new histogram_style(GlobalMembersGadgets.histogram_opts), histogram_type.HT_CLUSTERED, GlobalMembersGadgets.histogram_opts.gap);
+			break;
 		case SHOW_STYLE_INCREMENT:
-		GlobalMembersCommand.c_token++;
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
-			GlobalMembersGadgets.prefer_line_styles = false;
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "u$serstyles") != 0)
-			GlobalMembersGadgets.prefer_line_styles = true;
-		GlobalMembersCommand.c_token++;
-		break;
+			GlobalMembersCommand.c_token++;
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
+				GlobalMembersGadgets.prefer_line_styles = false;
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "u$serstyles") != 0)
+				GlobalMembersGadgets.prefer_line_styles = true;
+			GlobalMembersCommand.c_token++;
+			break;
 		default:
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'data', 'function', 'line', 'fill', 'rectangle', or 'arrow'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'data', 'function', 'line', 'fill', 'rectangle', or 'arrow'");
 		}
 	}
 
-/* process 'set surface' command */
+	/* process 'set surface' command */
 	public static void set_surface()
 	{
 		GlobalMembersCommand.c_token++;
 		GlobalMembersGraph3d.draw_surface = true;
 	}
 
-/* process 'set table' command */
+	/* process 'set table' command */
 	public static void set_table()
 	{
 		String tablefile;
@@ -5411,72 +5411,72 @@ public class GlobalMembersSet
 
 		if (GlobalMembersGadgets.table_outfile != null)
 		{
-		fclose(GlobalMembersGadgets.table_outfile);
-		GlobalMembersGadgets.table_outfile = DefineConstants.NULL;
+			fclose(GlobalMembersGadgets.table_outfile);
+			GlobalMembersGadgets.table_outfile = DefineConstants.NULL;
 		}
 
 		if ((tablefile = GlobalMembersUtil.try_to_get_string()))
 		{
-		/* 'set table "foo"' creates a new output file */
-		if (!(GlobalMembersGadgets.table_outfile = fopen(tablefile, "w")))
-		   GlobalMembersUtil.os_error(GlobalMembersCommand.c_token, "cannot open table output file");
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(tablefile);
+			/* 'set table "foo"' creates a new output file */
+			if (!(GlobalMembersGadgets.table_outfile = fopen(tablefile, "w")))
+				GlobalMembersUtil.os_error(GlobalMembersCommand.c_token, "cannot open table output file");
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(tablefile);
 		}
 
 		GlobalMembersGadgets.table_mode = true;
 
 	}
 
-/* process 'set terminal' comamnd */
+	/* process 'set terminal' comamnd */
 	public static void set_terminal()
 	{
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersTerm.multiplot)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "You can't change the terminal in multiplot mode");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "You can't change the terminal in multiplot mode");
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersTerm.list_terms();
-		GlobalMembersUtil.screen_ok = false;
-		return;
+			GlobalMembersTerm.list_terms();
+			GlobalMembersUtil.screen_ok = false;
+			return;
 		}
 
-	///#ifdef BACKWARDS_COMPATIBLE
-	//    if (equals(c_token,"table")) {
-	//	set_table();
-	//	if (interactive)
-	//	    int_warn(NO_CARET,"The command 'set term table' is deprecated.\n\t Please use 'set table \"outfile\"' instead.\n");
-	//	return;
-	//    } else
-	//	table_mode = FALSE;
-	///#endif
+		///#ifdef BACKWARDS_COMPATIBLE
+		//    if (equals(c_token,"table")) {
+		//	set_table();
+		//	if (interactive)
+		//	    int_warn(NO_CARET,"The command 'set term table' is deprecated.\n\t Please use 'set table \"outfile\"' instead.\n");
+		//	return;
+		//    } else
+		//	table_mode = FALSE;
+		///#endif
 
 		/* `set term push' */
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "push") != 0)
 		{
-		GlobalMembersMisc.push_terminal(GlobalMembersPlot.interactive);
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersMisc.push_terminal(GlobalMembersPlot.interactive);
+			GlobalMembersCommand.c_token++;
+			return;
 		} // set term push
 
-	///#ifdef EXTENDED_COLOR_SPECS
-	// /* each terminal is supposed to turn this on, probably
-	//  * somewhere when the graphics is initialized */
-	//    supply_extended_color_specs = 0;
-	///#endif
-	///#ifdef USE_MOUSE
+		///#ifdef EXTENDED_COLOR_SPECS
+		// /* each terminal is supposed to turn this on, probably
+		//  * somewhere when the graphics is initialized */
+		//    supply_extended_color_specs = 0;
+		///#endif
+		///#ifdef USE_MOUSE
 		GlobalMembersMouse.event_reset((Object)1); // cancel zoombox etc.
-	///#endif
+		///#endif
 		GlobalMembersTerm.term_reset();
 
 		/* `set term pop' */
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "pop") != 0)
 		{
-		GlobalMembersMisc.pop_terminal();
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersMisc.pop_terminal();
+			GlobalMembersCommand.c_token++;
+			return;
 		} // set term pop
 
 		/* `set term <normal terminal>' */
@@ -5488,21 +5488,21 @@ public class GlobalMembersSet
 		 */
 		GlobalMembersTerm.term_options = 0;
 		if (GlobalMembersTerm.term != null)
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*GlobalMembersTerm.term.options)();
-		if (GlobalMembersPlot.interactive && GlobalMembersTerm.term_options != null)
-		fprintf(stderr,"Options are '%s'\n",GlobalMembersTerm.term_options);
+			//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
+			//	(*GlobalMembersTerm.term.options)();
+			if (GlobalMembersPlot.interactive && GlobalMembersTerm.term_options != null)
+				fprintf(stderr,"Options are '%s'\n",GlobalMembersTerm.term_options);
 	}
 
-/* 
- * Accept a single terminal option to apply to the current terminal if possible.
- * If the current terminal cannot support this option, we silently ignore it.
- * Only reasonably common terminal options are supported.
- *
- * If necessary, the code in term->options() can detect that it was called
- * from here because in this case (c_token == 2), whereas when called from 
- * 'set term foo ...' it will see (c_token == 3).
- */
+	/* 
+	 * Accept a single terminal option to apply to the current terminal if possible.
+	 * If the current terminal cannot support this option, we silently ignore it.
+	 * Only reasonably common terminal options are supported.
+	 *
+	 * If necessary, the code in term->options() can detect that it was called
+	 * from here because in this case (c_token == 2), whereas when called from 
+	 * 'set term foo ...' it will see (c_token == 3).
+	 */
 
 	public static void set_termoptions()
 	{
@@ -5511,58 +5511,58 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersTerm.term == null)
-		return;
+			return;
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "enh$anced") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noenh$anced") != 0)
 		{
-		GlobalMembersCommand.num_tokens = ((GlobalMembersCommand.num_tokens) < (GlobalMembersCommand.c_token + 1) ? (GlobalMembersCommand.num_tokens) : (GlobalMembersCommand.c_token + 1));
-		if (GlobalMembersTerm.term.enhanced_open)
-			ok_to_call_terminal = true;
-		else
-			GlobalMembersCommand.c_token++;
+			GlobalMembersCommand.num_tokens = ((GlobalMembersCommand.num_tokens) < (GlobalMembersCommand.c_token + 1) ? (GlobalMembersCommand.num_tokens) : (GlobalMembersCommand.c_token + 1));
+			if (GlobalMembersTerm.term.enhanced_open)
+				ok_to_call_terminal = true;
+			else
+				GlobalMembersCommand.c_token++;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "font") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "fname") != 0)
 		{
-		GlobalMembersCommand.num_tokens = ((GlobalMembersCommand.num_tokens) < (GlobalMembersCommand.c_token + 2) ? (GlobalMembersCommand.num_tokens) : (GlobalMembersCommand.c_token + 2));
-		if (GlobalMembersTerm.term.set_font)
-			ok_to_call_terminal = true;
-		else
-			GlobalMembersCommand.c_token += 2;
+			GlobalMembersCommand.num_tokens = ((GlobalMembersCommand.num_tokens) < (GlobalMembersCommand.c_token + 2) ? (GlobalMembersCommand.num_tokens) : (GlobalMembersCommand.c_token + 2));
+			if (GlobalMembersTerm.term.set_font)
+				ok_to_call_terminal = true;
+			else
+				GlobalMembersCommand.c_token += 2;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "lw") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "linew$idth") != 0)
 		{
-		if (GlobalMembersTerm.term.flags & DefineConstants.TERM_LINEWIDTH != 0)
-			ok_to_call_terminal = true;
-		else
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.real_expression(); // Silently ignore the request
-		}
+			if (GlobalMembersTerm.term.flags & DefineConstants.TERM_LINEWIDTH != 0)
+				ok_to_call_terminal = true;
+			else
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.real_expression(); // Silently ignore the request
+			}
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "dash$ed") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "solid") != 0)
 		{
-		if (GlobalMembersTerm.term.flags & DefineConstants.TERM_CAN_DASH != 0)
-			ok_to_call_terminal = true;
-		else
-			GlobalMembersCommand.c_token++;
+			if (GlobalMembersTerm.term.flags & DefineConstants.TERM_CAN_DASH != 0)
+				ok_to_call_terminal = true;
+			else
+				GlobalMembersCommand.c_token++;
 		}
 		else if (!strcmp(GlobalMembersTerm.term.name,"gif") && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "delay") != 0 && GlobalMembersCommand.num_tokens == 4)
 		{
-		ok_to_call_terminal = true;
+			ok_to_call_terminal = true;
 		}
 		else
 		{
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "This option cannot be changed using 'set termoption'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "This option cannot be changed using 'set termoption'");
 		}
 		if (ok_to_call_terminal)
 		{
-		GlobalMembersTerm.term_options = 0;
-		(GlobalMembersTerm.term.options)();
+			GlobalMembersTerm.term_options = 0;
+			(GlobalMembersTerm.term.options)();
 		}
 		GlobalMembersCommand.num_tokens = save_end_of_line;
 	}
 
-/* process 'set tics' command */
+	/* process 'set tics' command */
 	public static void set_tics()
 	{
 		int i = 0;
@@ -5573,191 +5573,191 @@ public class GlobalMembersSet
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			GlobalMembersAxis.axis_array[i].tic_in = true;
+			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+				GlobalMembersAxis.axis_array[i].tic_in = true;
 		}
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$is") != 0)
-		{
-			axisset = true;
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$is") != 0)
 			{
-			GlobalMembersAxis.axis_array[i].ticmode &= ~DefineConstants.TICS_ON_BORDER;
-			GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_ON_AXIS;
+				axisset = true;
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+				{
+					GlobalMembersAxis.axis_array[i].ticmode &= ~DefineConstants.TICS_ON_BORDER;
+					GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_ON_AXIS;
+				}
+				++GlobalMembersCommand.c_token;
 			}
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bo$rder") != 0)
-		{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bo$rder") != 0)
 			{
-			GlobalMembersAxis.axis_array[i].ticmode &= ~DefineConstants.TICS_ON_AXIS;
-			GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_ON_BORDER;
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+				{
+					GlobalMembersAxis.axis_array[i].ticmode &= ~DefineConstants.TICS_ON_AXIS;
+					GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_ON_BORDER;
+				}
+				++GlobalMembersCommand.c_token;
 			}
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "mi$rror") != 0)
-		{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_MIRROR;
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "mi$rror") != 0)
+			{
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_MIRROR;
 				mirror_opt = true;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomi$rror") != 0)
-		{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			GlobalMembersAxis.axis_array[i].ticmode &= ~DefineConstants.TICS_MIRROR;
-			mirror_opt = true;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "in$wards") != 0)
-		{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			GlobalMembersAxis.axis_array[i].tic_in = true;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "out$wards") != 0)
-		{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			GlobalMembersAxis.axis_array[i].tic_in = false;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sc$ale") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
-			{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			{
-				GlobalMembersAxis.axis_array[i].ticscale = 1.0;
-				GlobalMembersAxis.axis_array[i].miniticscale = 0.5;
+				++GlobalMembersCommand.c_token;
 			}
-			++GlobalMembersCommand.c_token;
-			}
-			else
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomi$rror") != 0)
 			{
-			double lticscale;
-			double lminiticscale;
-			lticscale = GlobalMembersParse.real_expression();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					GlobalMembersAxis.axis_array[i].ticmode &= ~DefineConstants.TICS_MIRROR;
+				mirror_opt = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "in$wards") != 0)
+			{
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					GlobalMembersAxis.axis_array[i].tic_in = true;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "out$wards") != 0)
+			{
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					GlobalMembersAxis.axis_array[i].tic_in = false;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sc$ale") != 0)
 			{
 				++GlobalMembersCommand.c_token;
-				lminiticscale = GlobalMembersParse.real_expression();
+				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
+				{
+					for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					{
+						GlobalMembersAxis.axis_array[i].ticscale = 1.0;
+						GlobalMembersAxis.axis_array[i].miniticscale = 0.5;
+					}
+					++GlobalMembersCommand.c_token;
+				}
+				else
+				{
+					double lticscale;
+					double lminiticscale;
+					lticscale = GlobalMembersParse.real_expression();
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+					{
+						++GlobalMembersCommand.c_token;
+						lminiticscale = GlobalMembersParse.real_expression();
+					}
+					else
+						lminiticscale = 0.5 * lticscale;
+					for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					{
+						GlobalMembersAxis.axis_array[i].ticscale = lticscale;
+						GlobalMembersAxis.axis_array[i].miniticscale = lminiticscale;
+					}
+				}
 			}
-			else
-				lminiticscale = 0.5 * lticscale;
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ro$tate") != 0)
 			{
-				GlobalMembersAxis.axis_array[i].ticscale = lticscale;
-				GlobalMembersAxis.axis_array[i].miniticscale = lminiticscale;
+				GlobalMembersAxis.axis_array[i].tic_rotate = DefineConstants.TEXT_VERTICAL;
+				++GlobalMembersCommand.c_token;
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "by") != 0)
+				{
+					int langle;
+					++GlobalMembersCommand.c_token;
+					langle = GlobalMembersParse.int_expression();
+					for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+						GlobalMembersAxis.axis_array[i].tic_rotate = langle;
+				}
 			}
-			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ro$tate") != 0)
-		{
-			GlobalMembersAxis.axis_array[i].tic_rotate = DefineConstants.TEXT_VERTICAL;
-			++GlobalMembersCommand.c_token;
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "by") != 0)
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noro$tate") != 0)
 			{
-			int langle;
-			++GlobalMembersCommand.c_token;
-			langle = GlobalMembersParse.int_expression();
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-				GlobalMembersAxis.axis_array[i].tic_rotate = langle;
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					GlobalMembersAxis.axis_array[i].tic_rotate = 0;
+				++GlobalMembersCommand.c_token;
 			}
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noro$tate") != 0)
-		{
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-			GlobalMembersAxis.axis_array[i].tic_rotate = 0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "off$set") != 0)
-		{
-			position lpos = new position();
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.get_position_default(lpos, position_type.character);
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[i].ticdef.offset = lpos;
-			GlobalMembersAxis.axis_array[i].ticdef.offset.copyFrom(lpos);
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nooff$set") != 0)
-		{
-			position tics_nooffset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
-			++GlobalMembersCommand.c_token;
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[i].ticdef.offset = tics_nooffset;
-			GlobalMembersAxis.axis_array[i].ticdef.offset.copyFrom(tics_nooffset);
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "format") != 0)
-		{
-			GlobalMembersSet.set_format();
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "f$ont") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			/* Make sure they've specified a font */
-			if (!(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected font");
-			else
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "off$set") != 0)
 			{
-			byte lfont = GlobalMembersUtil.try_to_get_string();
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+				position lpos = new position();
+				++GlobalMembersCommand.c_token;
+				GlobalMembersAxis.get_position_default(lpos, position_type.character);
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+					//ORIGINAL LINE: axis_array[i].ticdef.offset = lpos;
+					GlobalMembersAxis.axis_array[i].ticdef.offset.copyFrom(lpos);
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nooff$set") != 0)
 			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(GlobalMembersAxis.axis_array[i].ticdef.font);
-				GlobalMembersAxis.axis_array[i].ticdef.font = GlobalMembersUtil.gp_strdup(lfont);
+				position tics_nooffset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
+				++GlobalMembersCommand.c_token;
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+					//ORIGINAL LINE: axis_array[i].ticdef.offset = tics_nooffset;
+					GlobalMembersAxis.axis_array[i].ticdef.offset.copyFrom(tics_nooffset);
 			}
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(lfont);
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "format") != 0)
+			{
+				GlobalMembersSet.set_format();
 			}
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") != 0)
-		{
-			t_colorspec lcolor = new t_colorspec();
-			GlobalMembersMisc.parse_colorspec(lcolor, DefineConstants.TC_FRAC);
-			for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[i].ticdef.textcolor = lcolor;
-			GlobalMembersAxis.axis_array[i].ticdef.textcolor.copyFrom(lcolor);
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
-		{
-			GlobalMembersAxis.grid_layer = 1;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
-		{
-			GlobalMembersAxis.grid_layer = 0;
-			++GlobalMembersCommand.c_token;
-		}
-		else if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments in set tics");
-		}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "f$ont") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				/* Make sure they've specified a font */
+				if (!(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected font");
+				else
+				{
+					byte lfont = GlobalMembersUtil.try_to_get_string();
+					for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					{
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(GlobalMembersAxis.axis_array[i].ticdef.font);
+						GlobalMembersAxis.axis_array[i].ticdef.font = GlobalMembersUtil.gp_strdup(lfont);
+					}
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(lfont);
+				}
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") != 0)
+			{
+				t_colorspec lcolor = new t_colorspec();
+				GlobalMembersMisc.parse_colorspec(lcolor, DefineConstants.TC_FRAC);
+				for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+					//ORIGINAL LINE: axis_array[i].ticdef.textcolor = lcolor;
+					GlobalMembersAxis.axis_array[i].ticdef.textcolor.copyFrom(lcolor);
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
+			{
+				GlobalMembersAxis.grid_layer = 1;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
+			{
+				GlobalMembersAxis.grid_layer = 0;
+				++GlobalMembersCommand.c_token;
+			}
+			else if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			{
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments in set tics");
+			}
 		}
 
 		/* if tics are off and not set by axis, reset to default (border) */
 		for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
 		{
-		if (((GlobalMembersAxis.axis_array[i].ticmode & DefineConstants.TICS_MASK) == DefineConstants.NO_TICS) && (!axisset))
-		{
-			if ((i == AXIS_INDEX.SECOND_X_AXIS.getValue()) || (i == AXIS_INDEX.SECOND_Y_AXIS.getValue()))
-			continue; // don't switch on secondary axes by default
-			GlobalMembersAxis.axis_array[i].ticmode = DefineConstants.TICS_ON_BORDER;
-			if ((mirror_opt == false) && ((i == AXIS_INDEX.FIRST_X_AXIS.getValue()) || (i == AXIS_INDEX.FIRST_Y_AXIS.getValue()) || (i == AXIS_INDEX.COLOR_AXIS.getValue())))
+			if (((GlobalMembersAxis.axis_array[i].ticmode & DefineConstants.TICS_MASK) == DefineConstants.NO_TICS) && (!axisset))
 			{
-			GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_MIRROR;
+				if ((i == AXIS_INDEX.SECOND_X_AXIS.getValue()) || (i == AXIS_INDEX.SECOND_Y_AXIS.getValue()))
+					continue; // don't switch on secondary axes by default
+				GlobalMembersAxis.axis_array[i].ticmode = DefineConstants.TICS_ON_BORDER;
+				if ((mirror_opt == false) && ((i == AXIS_INDEX.FIRST_X_AXIS.getValue()) || (i == AXIS_INDEX.FIRST_Y_AXIS.getValue()) || (i == AXIS_INDEX.COLOR_AXIS.getValue())))
+				{
+					GlobalMembersAxis.axis_array[i].ticmode |= DefineConstants.TICS_MIRROR;
+				}
 			}
-		}
 		}
 	}
 
-/* process 'set ticscale' command */
+	/* process 'set ticscale' command */
 	public static void set_ticscale()
 	{
 		double lticscale;
@@ -5769,33 +5769,33 @@ public class GlobalMembersSet
 		++GlobalMembersCommand.c_token;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		lticscale = 1.0;
-		lminiticscale = 0.5;
+			lticscale = 1.0;
+			lminiticscale = 0.5;
 		}
 		else
 		{
-		lticscale = GlobalMembersParse.real_expression();
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			lminiticscale = lticscale * 0.5;
-		}
-		else
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-			++GlobalMembersCommand.c_token;
-			lminiticscale = GlobalMembersParse.real_expression();
-		}
+			lticscale = GlobalMembersParse.real_expression();
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			{
+				lminiticscale = lticscale * 0.5;
+			}
+			else
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+					++GlobalMembersCommand.c_token;
+				lminiticscale = GlobalMembersParse.real_expression();
+			}
 		}
 		for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
 		{
-		GlobalMembersAxis.axis_array[i].ticscale = lticscale;
-		GlobalMembersAxis.axis_array[i].miniticscale = lminiticscale;
+			GlobalMembersAxis.axis_array[i].ticscale = lticscale;
+			GlobalMembersAxis.axis_array[i].miniticscale = lminiticscale;
 		}
 	}
 
-/* Process 'set timefmt' command */
-/* HBB 20000507: changed this to a per-axis setting. I.e. you can now
- * have separate timefmt parse strings, different axes */
+	/* Process 'set timefmt' command */
+	/* HBB 20000507: changed this to a per-axis setting. I.e. you can now
+	 * have separate timefmt parse strings, different axes */
 	public static void set_timefmt()
 	{
 		int axis;
@@ -5803,42 +5803,42 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* set all axes to default */
-		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			GlobalMembersAxis.axis_array[axis].timefmt = DefineConstants.TIMEFMT;
+			/* set all axes to default */
+			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+				GlobalMembersAxis.axis_array[axis].timefmt = DefineConstants.TIMEFMT;
 		}
 		else
 		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: if ((axis = lookup_table(axisname_tbl, c_token)) >= 0)
-		if ((axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token)) >= 0)
-		{
-			GlobalMembersCommand.c_token++;
-		if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
-		{
-			GlobalMembersUtil.quote_str(GlobalMembersAxis.axis_array[axis].timefmt, GlobalMembersCommand.c_token, DefineConstants.MAX_ID_LEN);
-			GlobalMembersCommand.c_token++;
-		}
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: if ((axis = lookup_table(axisname_tbl, c_token)) >= 0)
+			if ((axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token)) >= 0)
+			{
+				GlobalMembersCommand.c_token++;
+				if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
+				{
+					GlobalMembersUtil.quote_str(GlobalMembersAxis.axis_array[axis].timefmt, GlobalMembersCommand.c_token, DefineConstants.MAX_ID_LEN);
+					GlobalMembersCommand.c_token++;
+				}
+				else
+				{
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "time format string expected");
+				}
+			}
+			else if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
+			{
+				/* set the given parse string for all current timedata axes: */
+				for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+					GlobalMembersUtil.quote_str(GlobalMembersAxis.axis_array[axis].timefmt, GlobalMembersCommand.c_token, DefineConstants.MAX_ID_LEN);
+				GlobalMembersCommand.c_token++;
+			}
 			else
 			{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "time format string expected");
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "time format string expected");
 			}
-		}
-		else if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
-		{
-			/* set the given parse string for all current timedata axes: */
-			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			GlobalMembersUtil.quote_str(GlobalMembersAxis.axis_array[axis].timefmt, GlobalMembersCommand.c_token, DefineConstants.MAX_ID_LEN);
-		GlobalMembersCommand.c_token++;
-		}
-		else
-		{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "time format string expected");
-		}
 		}
 	}
 
-/* process 'set timestamp' command */
+	/* process 'set timestamp' command */
 	public static void set_timestamp()
 	{
 		boolean got_format = false;
@@ -5849,80 +5849,80 @@ public class GlobalMembersSet
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
 
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$op") != 0)
-		{
-			GlobalMembersGadgets.timelabel_bottom = false;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "b$ottom") != 0)
-		{
-			GlobalMembersGadgets.timelabel_bottom = true;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$op") != 0)
+			{
+				GlobalMembersGadgets.timelabel_bottom = false;
+				GlobalMembersCommand.c_token++;
+				continue;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "b$ottom") != 0)
+			{
+				GlobalMembersGadgets.timelabel_bottom = true;
+				GlobalMembersCommand.c_token++;
+				continue;
+			}
 
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$otate") != 0)
-		{
-			GlobalMembersGadgets.timelabel_rotate = true;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "n$orotate") != 0)
-		{
-			GlobalMembersGadgets.timelabel_rotate = false;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$otate") != 0)
+			{
+				GlobalMembersGadgets.timelabel_rotate = true;
+				GlobalMembersCommand.c_token++;
+				continue;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "n$orotate") != 0)
+			{
+				GlobalMembersGadgets.timelabel_rotate = false;
+				GlobalMembersCommand.c_token++;
+				continue;
+			}
 
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "off$set") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersAxis.get_position_default((GlobalMembersGadgets.timelabel.offset), position_type.character);
-			continue;
-		}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "off$set") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersAxis.get_position_default((GlobalMembersGadgets.timelabel.offset), position_type.character);
+				continue;
+			}
 
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "font") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			new() = GlobalMembersUtil.try_to_get_string();
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(GlobalMembersGadgets.timelabel.font);
-			GlobalMembersGadgets.timelabel.font = new_Renamed;
-			continue;
-		}
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "font") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				new() = GlobalMembersUtil.try_to_get_string();
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(GlobalMembersGadgets.timelabel.font);
+				GlobalMembersGadgets.timelabel.font = new_Renamed;
+				continue;
+			}
 
-		if (!got_format && ((new() = GlobalMembersUtil.try_to_get_string())))
-		{
-			/* we have a format string */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(GlobalMembersGadgets.timelabel.text);
-			GlobalMembersGadgets.timelabel.text = new_Renamed;
-			got_format = true;
-			continue;
-		}
+			if (!got_format && ((new() = GlobalMembersUtil.try_to_get_string())))
+			{
+				/* we have a format string */
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(GlobalMembersGadgets.timelabel.text);
+				GlobalMembersGadgets.timelabel.text = new_Renamed;
+				got_format = true;
+				continue;
+			}
 
-	///#ifdef BACKWARDS_COMPATIBLE
-	// /* The "font" keyword is new (v4.1), for backward compatibility we don't enforce it */
-	//	if (!END_OF_COMMAND && ((new = try_to_get_string()))) {
-	//	    free(timelabel.font);
-	//	    timelabel.font = new;
-	//	    continue;
-	//	}
-	// /* The "offset" keyword is new (v4.1); for backward compatibility we don't enforce it */
-	//	get_position_default(&(timelabel.offset),character);
-	///#else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unrecognized option");
-	///#endif
+			///#ifdef BACKWARDS_COMPATIBLE
+			// /* The "font" keyword is new (v4.1), for backward compatibility we don't enforce it */
+			//	if (!END_OF_COMMAND && ((new = try_to_get_string()))) {
+			//	    free(timelabel.font);
+			//	    timelabel.font = new;
+			//	    continue;
+			//	}
+			// /* The "offset" keyword is new (v4.1); for backward compatibility we don't enforce it */
+			//	get_position_default(&(timelabel.offset),character);
+			///#else
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unrecognized option");
+			///#endif
 
 		}
 
 		if (!(GlobalMembersGadgets.timelabel.text))
-		GlobalMembersGadgets.timelabel.text = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_TIMESTAMP_FORMAT);
+			GlobalMembersGadgets.timelabel.text = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_TIMESTAMP_FORMAT);
 
 	}
 
-/* process 'set view' command */
+	/* process 'set view' command */
 	public static void set_view()
 	{
 		int i;
@@ -5941,30 +5941,30 @@ public class GlobalMembersSet
 
 		if (GlobalMembersGraph3d.splot_map == true)
 		{
-		GlobalMembersCommand.splot_map_deactivate();
-		GlobalMembersGraph3d.splot_map = false; // default is no map
+			GlobalMembersCommand.splot_map_deactivate();
+			GlobalMembersGraph3d.splot_map = false; // default is no map
 		}
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "equal$_axes") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0)
-		{
-			GlobalMembersGadgets.aspect_ratio_3D = 2;
 			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xyz") != 0)
-		{
-			GlobalMembersGadgets.aspect_ratio_3D = 3;
-			GlobalMembersCommand.c_token++;
-		}
-		return;
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0)
+			{
+				GlobalMembersGadgets.aspect_ratio_3D = 2;
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xyz") != 0)
+			{
+				GlobalMembersGadgets.aspect_ratio_3D = 3;
+				GlobalMembersCommand.c_token++;
+			}
+			return;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noequal$_axes") != 0)
 		{
-		GlobalMembersGadgets.aspect_ratio_3D = 0;
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersGadgets.aspect_ratio_3D = 0;
+			GlobalMembersCommand.c_token++;
+			return;
 		}
 
 		local_vals[0] = GlobalMembersGraph3d.surface_rot_x;
@@ -5973,31 +5973,31 @@ public class GlobalMembersSet
 		local_vals[3] = GlobalMembersGraph3d.surface_zscale;
 		for (i = 0; i < 4 && !(GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0);)
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-		{
-			if (was_comma)
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+			{
+				if (was_comma)
+					i++;
+				was_comma = true;
+				GlobalMembersCommand.c_token++;
+			}
+			else
+			{
+				if (!was_comma)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
+				local_vals[i] = GlobalMembersParse.real_expression();
 				i++;
-			was_comma = true;
-			GlobalMembersCommand.c_token++;
-		}
-		else
-		{
-			if (!was_comma)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
-			local_vals[i] = GlobalMembersParse.real_expression();
-			i++;
-			was_comma = false;
-		}
+				was_comma = false;
+			}
 		}
 
 		if (local_vals[0] < 0 || local_vals[0] > 180)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg1, 'x', 180);
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg1, 'x', 180);
 		if (local_vals[1] < 0 || local_vals[1] > 360)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg1, 'z', 360);
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg1, 'z', 360);
 		if (local_vals[2] < 1e-6)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg2, "");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg2, "");
 		if (local_vals[3] < 1e-6)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg2, "z");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, errmsg2, "z");
 
 		GlobalMembersGraph3d.surface_rot_x = local_vals[0];
 		GlobalMembersGraph3d.surface_rot_z = local_vals[1];
@@ -6006,7 +6006,7 @@ public class GlobalMembersSet
 
 	}
 
-/* process 'set zero' command */
+	/* process 'set zero' command */
 	public static void set_zero()
 	{
 		value a = new value();
@@ -6014,18 +6014,18 @@ public class GlobalMembersSet
 		GlobalMembersGadgets.zero = GlobalMembersEval.magnitude(GlobalMembersParse.const_express(a));
 	}
 
-/* process 'set {x|y|z|x2|y2}data' command */
+	/* process 'set {x|y|z|x2|y2}data' command */
 	public static void set_timedata(AXIS_INDEX axis)
 	{
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersAxis.axis_array[axis.getValue()].is_timedata = false;
+			GlobalMembersAxis.axis_array[axis.getValue()].is_timedata = false;
 		}
 		else
 		{
-		if ((GlobalMembersAxis.axis_array[axis.getValue()].is_timedata = GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$ime")))
-			GlobalMembersCommand.c_token++;
+			if ((GlobalMembersAxis.axis_array[axis.getValue()].is_timedata = GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$ime")))
+				GlobalMembersCommand.c_token++;
 		}
 	}
 	public static void set_range(AXIS_INDEX axis)
@@ -6033,70 +6033,70 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 
 		if (GlobalMembersGraph3d.splot_map != 0)
-		GlobalMembersCommand.splot_map_deactivate();
+			GlobalMembersCommand.splot_map_deactivate();
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "re$store") != 0) // ULIG
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersAxis.axis_array[axis.getValue()].set_min = GlobalMembersAxis.get_writeback_min(axis);
-		GlobalMembersAxis.axis_array[axis.getValue()].set_max = GlobalMembersAxis.get_writeback_max(axis);
-		GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale = e_autoscale.AUTOSCALE_NONE;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersAxis.axis_array[axis.getValue()].set_min = GlobalMembersAxis.get_writeback_min(axis);
+			GlobalMembersAxis.axis_array[axis.getValue()].set_max = GlobalMembersAxis.get_writeback_max(axis);
+			GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale = e_autoscale.AUTOSCALE_NONE;
 		}
 		else
 		{
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting '[' or 'restore'");
-		GlobalMembersCommand.c_token++;
-		GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale = GlobalMembersAxis.load_range(axis, GlobalMembersAxis.axis_array[axis.getValue()].set_min, GlobalMembersAxis.axis_array[axis.getValue()].set_max, GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale);
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting ']'");
-		GlobalMembersCommand.c_token++;
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rev$erse") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.axis_array[axis.getValue()].range_flags |= DefineConstants.RANGE_REVERSE;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norev$erse") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.axis_array[axis.getValue()].range_flags &= ~DefineConstants.RANGE_REVERSE;
-		}
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "wr$iteback") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.axis_array[axis.getValue()].range_flags |= DefineConstants.RANGE_WRITEBACK;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nowri$teback") != 0)
-		{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.axis_array[axis.getValue()].range_flags &= ~DefineConstants.RANGE_WRITEBACK;
-		}
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting '[' or 'restore'");
+			GlobalMembersCommand.c_token++;
+			GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale = GlobalMembersAxis.load_range(axis, GlobalMembersAxis.axis_array[axis.getValue()].set_min, GlobalMembersAxis.axis_array[axis.getValue()].set_max, GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale);
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting ']'");
+			GlobalMembersCommand.c_token++;
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rev$erse") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				GlobalMembersAxis.axis_array[axis.getValue()].range_flags |= DefineConstants.RANGE_REVERSE;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norev$erse") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				GlobalMembersAxis.axis_array[axis.getValue()].range_flags &= ~DefineConstants.RANGE_REVERSE;
+			}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "wr$iteback") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				GlobalMembersAxis.axis_array[axis.getValue()].range_flags |= DefineConstants.RANGE_WRITEBACK;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nowri$teback") != 0)
+			{
+				++GlobalMembersCommand.c_token;
+				GlobalMembersAxis.axis_array[axis.getValue()].range_flags &= ~DefineConstants.RANGE_WRITEBACK;
+			}
 		}
 		if (GlobalMembersGraph3d.splot_map != 0)
-		GlobalMembersCommand.splot_map_activate();
+			GlobalMembersCommand.splot_map_activate();
 	}
 
-/* process 'set xyplane' command */
-/* is datatype 'time' relevant here ? */
+	/* process 'set xyplane' command */
+	/* is datatype 'time' relevant here ? */
 	public static void set_xyplane()
 	{
 		if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, "at") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		GlobalMembersGraph3d.xyplane.z = GlobalMembersParse.real_expression();
-		GlobalMembersGraph3d.xyplane.absolute = true;
-		return;
+			GlobalMembersCommand.c_token++;
+			GlobalMembersGraph3d.xyplane.z = GlobalMembersParse.real_expression();
+			GlobalMembersGraph3d.xyplane.absolute = true;
+			return;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rel$ative") == 0)
 		{
-		GlobalMembersCommand.c_token--;
-		/* int_warn(NO_CARET, "deprecated syntax"); */
+			GlobalMembersCommand.c_token--;
+			/* int_warn(NO_CARET, "deprecated syntax"); */
 		}
 		GlobalMembersSet.set_ticslevel();
 	}
 
-/* process 'set ticslevel' command */
-/* is datatype 'time' relevant here ? */
+	/* process 'set ticslevel' command */
+	/* is datatype 'time' relevant here ? */
 	public static void set_ticslevel()
 	{
 		GlobalMembersCommand.c_token++;
@@ -6104,36 +6104,36 @@ public class GlobalMembersSet
 		GlobalMembersGraph3d.xyplane.absolute = false;
 	}
 
-/* process 'set {xyz}zeroaxis' command */
+	/* process 'set {xyz}zeroaxis' command */
 	public static void set_zeroaxis(AXIS_INDEX axis)
 	{
 
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.l_type = -1;
+			GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.l_type = -1;
 		else
 		{
-		int old_token = GlobalMembersCommand.c_token;
-		GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.l_type = DefineConstants.LT_AXIS;
-		GlobalMembersMisc.lp_parse(GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis, true, false);
-		if (old_token == GlobalMembersCommand.c_token)
-			GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.l_type = GlobalMembersParse.int_expression() - 1;
+			int old_token = GlobalMembersCommand.c_token;
+			GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.l_type = DefineConstants.LT_AXIS;
+			GlobalMembersMisc.lp_parse(GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis, true, false);
+			if (old_token == GlobalMembersCommand.c_token)
+				GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.l_type = GlobalMembersParse.int_expression() - 1;
 		}
 
 	}
 
-/* process 'set zeroaxis' command */
+	/* process 'set zeroaxis' command */
 	public static void set_allzeroaxis()
 	{
 		GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_X_AXIS);
 		GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].zeroaxis = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].zeroaxis;
-	///#ifndef BACKWARDS_COMPATIBLE
+		///#ifndef BACKWARDS_COMPATIBLE
 		GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].zeroaxis = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].zeroaxis;
-	///#endif
+		///#endif
 	}
 
-/* process a 'set {x/y/z}label command */
-/* set {x/y/z}label {label_text} {offset {x}{,y}} {<fontspec>} {<textcolor>} */
+	/* process a 'set {x/y/z}label command */
+	/* set {x/y/z}label {label_text} {offset {x}{,y}} {<fontspec>} {<textcolor>} */
 
 
 	/******** Local functions ********/
@@ -6145,56 +6145,56 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // no label specified
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(label.text);
-		label.text = DefineConstants.NULL;
-		return;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(label.text);
+			label.text = DefineConstants.NULL;
+			return;
 		}
 
 		GlobalMembersSet.parse_label_options(label);
 
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		text = GlobalMembersUtil.try_to_get_string();
-		if (text != null)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(label.text);
-			label.text = text;
-		}
-	///#ifdef BACKWARDS_COMPATIBLE
-	//	if (isanumber(c_token) || equals(c_token, "-")) {
-	// /* Parse offset with missing keyword "set xlabel 'foo' 1,2 "*/
-	//	    get_position_default(&(label->offset),character);
-	//	}
-	///#endif
+			text = GlobalMembersUtil.try_to_get_string();
+			if (text != null)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(label.text);
+				label.text = text;
+			}
+			///#ifdef BACKWARDS_COMPATIBLE
+			//	if (isanumber(c_token) || equals(c_token, "-")) {
+			// /* Parse offset with missing keyword "set xlabel 'foo' 1,2 "*/
+			//	    get_position_default(&(label->offset),character);
+			//	}
+			///#endif
 		}
 
 		GlobalMembersSet.parse_label_options(label);
 
 	}
 
-/* For set [xy]tics... command */
+	/* For set [xy]tics... command */
 	public static void load_tics(AXIS_INDEX axis)
 	{
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "(") != 0) // set : TIC_USER
 		{
-		if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, ")") != 0)
-			GlobalMembersCommand.c_token++;
-		else
-			GlobalMembersSet.load_tic_user(axis);
+			if (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, ")") != 0)
+				GlobalMembersCommand.c_token++;
+			else
+				GlobalMembersSet.load_tic_user(axis);
 		} // series : TIC_SERIES
 		else
 		{
-		GlobalMembersSet.load_tic_series(axis);
+			GlobalMembersSet.load_tic_series(axis);
 		}
 	}
 
-/* load TIC_USER definition */
-/* (tic[,tic]...)
- * where tic is ["string"] value [level]
- * Left paren is already scanned off before entry.
- */
+	/* load TIC_USER definition */
+	/* (tic[,tic]...)
+	 * where tic is ["string"] value [level]
+	 * Left paren is already scanned off before entry.
+	 */
 	public static void load_tic_user(AXIS_INDEX axis)
 	{
 		String ticlabel;
@@ -6203,80 +6203,80 @@ public class GlobalMembersSet
 		/* Free any old tic labels */
 		if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix && GlobalMembersParse.iteration == 0)
 		{
-		GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
+			GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
 		}
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		int ticlevel = 0;
-		int save_token;
-		/* syntax is  (  {'format'} value {level} {, ...} )
-		 * but for timedata, the value itself is a string, which
-		 * complicates things somewhat
-		 */
+			int ticlevel = 0;
+			int save_token;
+			/* syntax is  (  {'format'} value {level} {, ...} )
+			 * but for timedata, the value itself is a string, which
+			 * complicates things somewhat
+			 */
 
-		/* has a string with it? */
-		save_token = GlobalMembersCommand.c_token;
-		ticlabel = GlobalMembersUtil.try_to_get_string();
-		if (ticlabel != null && GlobalMembersAxis.axis_array[axis.getValue()].is_timedata && (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") != 0))
-		{
-			GlobalMembersCommand.c_token = save_token;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(ticlabel);
-			ticlabel = DefineConstants.NULL;
-		}
+			/* has a string with it? */
+			save_token = GlobalMembersCommand.c_token;
+			ticlabel = GlobalMembersUtil.try_to_get_string();
+			if (ticlabel != null && GlobalMembersAxis.axis_array[axis.getValue()].is_timedata && (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") != 0))
+			{
+				GlobalMembersCommand.c_token = save_token;
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(ticlabel);
+				ticlabel = DefineConstants.NULL;
+			}
 
-		/* in any case get the value */
-		do
-		{
-			(ticposition) = 0;
+			/* in any case get the value */
 			do
 			{
-				if (((DefineConstants.FIRST_AXES) >= 0) && (GlobalMembersAxis.axis_array[(DefineConstants.FIRST_AXES) + (axis)].is_timedata) && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+				(ticposition) = 0;
+				do
 				{
-					tm tm = new tm();
-					byte ss = GlobalMembersUtil.try_to_get_string();
-					if (GlobalMembersTime.gstrptime(ss, GlobalMembersAxis.axis_array[axis.getValue()].timefmt, tm) != null)
-						(ticposition) = (double) GlobalMembersTime.gtimegm(tm);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					if (((DefineConstants.FIRST_AXES) >= 0) && (GlobalMembersAxis.axis_array[(DefineConstants.FIRST_AXES) + (axis)].is_timedata) && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+					{
+						tm tm = new tm();
+						byte ss = GlobalMembersUtil.try_to_get_string();
+						if (GlobalMembersTime.gstrptime(ss, GlobalMembersAxis.axis_array[axis.getValue()].timefmt, tm) != null)
+							(ticposition) = (double) GlobalMembersTime.gtimegm(tm);
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 						free(ss);
-				}
-				else
-				{
-					(ticposition) = GlobalMembersParse.real_expression();
-				}
+					}
+					else
+					{
+						(ticposition) = GlobalMembersParse.real_expression();
+					}
+				} while (0);
 			} while (0);
-		} while (0);
 
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
-		{
-		  ticlevel = GlobalMembersParse.int_expression(); // tic level
-		}
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
+			{
+				ticlevel = GlobalMembersParse.int_expression(); // tic level
+			}
 
-		/* add to list */
-		GlobalMembersAxis.add_tic_user(axis, ticlabel, ticposition, ticlevel);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(ticlabel);
+			/* add to list */
+			GlobalMembersAxis.add_tic_user(axis, ticlabel, ticposition, ticlevel);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(ticlabel);
 
-		/* expect "," or ")" here */
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-			GlobalMembersCommand.c_token++; // loop again
-		else
-			break; // hopefully ")"
+			/* expect "," or ")" here */
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				GlobalMembersCommand.c_token++; // loop again
+			else
+				break; // hopefully ")"
 		}
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") == 0)
 		{
-		GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting right parenthesis )");
+			GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting right parenthesis )");
 		}
 		GlobalMembersCommand.c_token++;
 	}
 
-/* load TIC_SERIES definition */
-/* [start,]incr[,end] */
+	/* load TIC_SERIES definition */
+	/* [start,]incr[,end] */
 	public static void load_tic_series(AXIS_INDEX axis)
 	{
 		double start;
@@ -6297,8 +6297,8 @@ public class GlobalMembersSet
 					byte ss = GlobalMembersUtil.try_to_get_string();
 					if (GlobalMembersTime.gstrptime(ss, GlobalMembersAxis.axis_array[axis.getValue()].timefmt, tm) != null)
 						(start) = (double) GlobalMembersTime.gtimegm(tm);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-						free(ss);
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(ss);
 				}
 				else
 				{
@@ -6309,47 +6309,18 @@ public class GlobalMembersSet
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
 		{
-		/* only step specified */
-		incr = start;
-		start = -DefineConstants.VERYLARGE;
-		end = DefineConstants.VERYLARGE;
-		}
-		else
-		{
-		GlobalMembersCommand.c_token++;
-		incr_token = GlobalMembersCommand.c_token;
-		do
-		{
-			(incr) = 0;
-			do
-			{
-				if (((DefineConstants.FIRST_AXES) >= 0) && (GlobalMembersAxis.axis_array[(DefineConstants.FIRST_AXES) + (axis)].is_timedata) && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-				{
-					tm tm = new tm();
-					byte ss = GlobalMembersUtil.try_to_get_string();
-					if (GlobalMembersTime.gstrptime(ss, GlobalMembersAxis.axis_array[axis.getValue()].timefmt, tm) != null)
-						(incr) = (double) GlobalMembersTime.gtimegm(tm);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-						free(ss);
-				}
-				else
-				{
-					(incr) = GlobalMembersParse.real_expression();
-				}
-			} while (0);
-		} while (0);
-
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		{
-			/* only step and increment specified */
+			/* only step specified */
+			incr = start;
+			start = -DefineConstants.VERYLARGE;
 			end = DefineConstants.VERYLARGE;
 		}
 		else
 		{
 			GlobalMembersCommand.c_token++;
+			incr_token = GlobalMembersCommand.c_token;
 			do
 			{
-				(end) = 0;
+				(incr) = 0;
 				do
 				{
 					if (((DefineConstants.FIRST_AXES) >= 0) && (GlobalMembersAxis.axis_array[(DefineConstants.FIRST_AXES) + (axis)].is_timedata) && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
@@ -6357,37 +6328,66 @@ public class GlobalMembersSet
 						tm tm = new tm();
 						byte ss = GlobalMembersUtil.try_to_get_string();
 						if (GlobalMembersTime.gstrptime(ss, GlobalMembersAxis.axis_array[axis.getValue()].timefmt, tm) != null)
-							(end) = (double) GlobalMembersTime.gtimegm(tm);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-							free(ss);
+							(incr) = (double) GlobalMembersTime.gtimegm(tm);
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(ss);
 					}
 					else
 					{
-						(end) = GlobalMembersParse.real_expression();
+						(incr) = GlobalMembersParse.real_expression();
 					}
 				} while (0);
 			} while (0);
-		}
 
-		if (start < end && incr <= 0)
-			GlobalMembersBf_test.int_error(incr_token, "increment must be positive");
-		if (start > end && incr >= 0)
-			GlobalMembersBf_test.int_error(incr_token, "increment must be negative");
-		if (start > end)
-		{
-			/* put in order */
-			double numtics = Math.floor((end * (1 + DefineConstants.SIGNIF) - start) / incr);
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+			{
+				/* only step and increment specified */
+				end = DefineConstants.VERYLARGE;
+			}
+			else
+			{
+				GlobalMembersCommand.c_token++;
+				do
+				{
+					(end) = 0;
+					do
+					{
+						if (((DefineConstants.FIRST_AXES) >= 0) && (GlobalMembersAxis.axis_array[(DefineConstants.FIRST_AXES) + (axis)].is_timedata) && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+						{
+							tm tm = new tm();
+							byte ss = GlobalMembersUtil.try_to_get_string();
+							if (GlobalMembersTime.gstrptime(ss, GlobalMembersAxis.axis_array[axis.getValue()].timefmt, tm) != null)
+								(end) = (double) GlobalMembersTime.gtimegm(tm);
+							//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+							free(ss);
+						}
+						else
+						{
+							(end) = GlobalMembersParse.real_expression();
+						}
+					} while (0);
+				} while (0);
+			}
 
-			end = start;
-			start = end + numtics * incr;
-			incr = -incr;
-		}
+			if (start < end && incr <= 0)
+				GlobalMembersBf_test.int_error(incr_token, "increment must be positive");
+			if (start > end && incr >= 0)
+				GlobalMembersBf_test.int_error(incr_token, "increment must be negative");
+			if (start > end)
+			{
+				/* put in order */
+				double numtics = Math.floor((end * (1 + DefineConstants.SIGNIF) - start) / incr);
+
+				end = start;
+				start = end + numtics * incr;
+				incr = -incr;
+			}
 		}
 
 		if (!tdef.def.mix) // remove old list
 		{
-		GlobalMembersSet.free_marklist(tdef.def.user);
-		tdef.def.user = DefineConstants.NULL;
+			GlobalMembersSet.free_marklist(tdef.def.user);
+			tdef.def.user = DefineConstants.NULL;
 		}
 		tdef.type = en_ticseries_type.TIC_SERIES;
 		tdef.def.series.start = start;
@@ -6395,8 +6395,8 @@ public class GlobalMembersSet
 		tdef.def.series.end = end;
 	}
 
-/* 'set style line' command */
-/* set style line {tag} {linetype n} {linewidth x} {pointtype n} {pointsize x} */
+	/* 'set style line' command */
+	/* set style line {tag} {linetype n} {linewidth x} {pointtype n} {pointsize x} */
 
 	public static void set_linestyle()
 	{
@@ -6410,7 +6410,7 @@ public class GlobalMembersSet
 
 		/* get tag */
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || ((tag = GlobalMembersParse.int_expression()) <= 0))
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
 
 		/* Default style is based on linetype with the same tag id */
 		loc_lp.l_type = tag - 1;
@@ -6419,45 +6419,45 @@ public class GlobalMembersSet
 		/* Check if linestyle is already defined */
 		if (GlobalMembersGadgets.first_linestyle != DefineConstants.NULL) // skip to last linestyle
 		{
-		for (this_linestyle = GlobalMembersGadgets.first_linestyle; this_linestyle != DefineConstants.NULL; prev_linestyle = this_linestyle, this_linestyle = this_linestyle.next)
-			/* is this the linestyle we want? */
-			if (tag <= this_linestyle.tag)
-			break;
+			for (this_linestyle = GlobalMembersGadgets.first_linestyle; this_linestyle != DefineConstants.NULL; prev_linestyle = this_linestyle, this_linestyle = this_linestyle.next)
+				/* is this the linestyle we want? */
+				if (tag <= this_linestyle.tag)
+					break;
 		}
 
 		if (this_linestyle == DefineConstants.NULL || tag != this_linestyle.tag)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		new_linestyle = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct linestyle_def), "linestyle");
-		if (prev_linestyle != DefineConstants.NULL)
-			prev_linestyle.next = new_linestyle; // add it to end of list
-		else
-			GlobalMembersGadgets.first_linestyle = new_linestyle; // make it start of list
-		new_linestyle.tag = tag;
-		new_linestyle.next = this_linestyle;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: new_linestyle->lp_properties = loc_lp;
-		new_linestyle.lp_properties.copyFrom(loc_lp);
-		this_linestyle = new_linestyle;
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			new_linestyle = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct linestyle_def), "linestyle");
+			if (prev_linestyle != DefineConstants.NULL)
+				prev_linestyle.next = new_linestyle; // add it to end of list
+			else
+				GlobalMembersGadgets.first_linestyle = new_linestyle; // make it start of list
+			new_linestyle.tag = tag;
+			new_linestyle.next = this_linestyle;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: new_linestyle->lp_properties = loc_lp;
+			new_linestyle.lp_properties.copyFrom(loc_lp);
+			this_linestyle = new_linestyle;
 		}
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
 		{
-		GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, prev_linestyle, this_linestyle);
-		GlobalMembersCommand.c_token++;
+			GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, prev_linestyle, this_linestyle);
+			GlobalMembersCommand.c_token++;
 		}
 		else
-		/* pick up a line spec; dont allow ls, do allow point type */
-		GlobalMembersMisc.lp_parse(this_linestyle.lp_properties, false, true);
+			/* pick up a line spec; dont allow ls, do allow point type */
+			GlobalMembersMisc.lp_parse(this_linestyle.lp_properties, false, true);
 
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Extraneous arguments to set style line");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Extraneous arguments to set style line");
 
 	}
 
-/* ======================================================== */
-/* process a 'set arrowstyle' command */
-/* set style arrow {tag} {nohead|head|backhead|heads} {size l,a{,b}} {{no}filled} {linestyle...} {layer n}*/
+	/* ======================================================== */
+	/* process a 'set arrowstyle' command */
+	/* set style arrow {tag} {nohead|head|backhead|heads} {size l,a{,b}} {{no}filled} {linestyle...} {layer n}*/
 	public static void set_arrowstyle()
 	{
 		arrowstyle_def this_arrowstyle = DefineConstants.NULL;
@@ -6473,131 +6473,131 @@ public class GlobalMembersSet
 		/* get tag */
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* must be a tag expression! */
-		tag = GlobalMembersParse.int_expression();
-		if (tag <= 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
+			/* must be a tag expression! */
+			tag = GlobalMembersParse.int_expression();
+			if (tag <= 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "tag must be > zero");
 		}
 		else
-		tag = GlobalMembersSet.assign_arrowstyle_tag(); // default next tag
+			tag = GlobalMembersSet.assign_arrowstyle_tag(); // default next tag
 
 		/* search for arrowstyle */
 		if (GlobalMembersGadgets.first_arrowstyle != DefineConstants.NULL) // skip to last arrowstyle
 		{
-		for (this_arrowstyle = GlobalMembersGadgets.first_arrowstyle; this_arrowstyle != DefineConstants.NULL; prev_arrowstyle = this_arrowstyle, this_arrowstyle = this_arrowstyle.next)
-			/* is this the arrowstyle we want? */
-			if (tag <= this_arrowstyle.tag)
-			break;
+			for (this_arrowstyle = GlobalMembersGadgets.first_arrowstyle; this_arrowstyle != DefineConstants.NULL; prev_arrowstyle = this_arrowstyle, this_arrowstyle = this_arrowstyle.next)
+				/* is this the arrowstyle we want? */
+				if (tag <= this_arrowstyle.tag)
+					break;
 		}
 
 		if (this_arrowstyle == DefineConstants.NULL || tag != this_arrowstyle.tag)
 		{
-		/* adding the arrowstyle */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		new_arrowstyle = (GlobalMembersMouse.struct arrowstyle_def *) GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct arrowstyle_def), "arrowstyle");
-		GlobalMembersGadgets.default_arrow_style((new_arrowstyle.arrow_properties));
-		if (prev_arrowstyle != DefineConstants.NULL)
-			prev_arrowstyle.next = new_arrowstyle; // add it to end of list
-		else
-			GlobalMembersGadgets.first_arrowstyle = new_arrowstyle; // make it start of list
-		new_arrowstyle.tag = tag;
-		new_arrowstyle.next = this_arrowstyle;
-		this_arrowstyle = new_arrowstyle;
+			/* adding the arrowstyle */
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			new_arrowstyle = (GlobalMembersMouse.struct arrowstyle_def *) GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct arrowstyle_def), "arrowstyle");
+			GlobalMembersGadgets.default_arrow_style((new_arrowstyle.arrow_properties));
+			if (prev_arrowstyle != DefineConstants.NULL)
+				prev_arrowstyle.next = new_arrowstyle; // add it to end of list
+			else
+				GlobalMembersGadgets.first_arrowstyle = new_arrowstyle; // make it start of list
+			new_arrowstyle.tag = tag;
+			new_arrowstyle.next = this_arrowstyle;
+			this_arrowstyle = new_arrowstyle;
 		}
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_arrowstyle->arrow_properties = loc_arrow;
-		this_arrowstyle.arrow_properties.copyFrom(loc_arrow);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: this_arrowstyle->arrow_properties = loc_arrow;
+			this_arrowstyle.arrow_properties.copyFrom(loc_arrow);
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
 		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_arrowstyle->arrow_properties = loc_arrow;
-		this_arrowstyle.arrow_properties.copyFrom(loc_arrow);
-		GlobalMembersCommand.c_token++;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: this_arrowstyle->arrow_properties = loc_arrow;
+			this_arrowstyle.arrow_properties.copyFrom(loc_arrow);
+			GlobalMembersCommand.c_token++;
 		}
 		else
-		/* pick up a arrow spec : dont allow arrowstyle */
-		GlobalMembersMisc.arrow_parse(this_arrowstyle.arrow_properties, false);
+			/* pick up a arrow spec : dont allow arrowstyle */
+			GlobalMembersMisc.arrow_parse(this_arrowstyle.arrow_properties, false);
 
 		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous or out-of-order arguments in set arrowstyle");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous or out-of-order arguments in set arrowstyle");
 
 	}
 
-/* assign a new arrowstyle tag
- * arrowstyles are kept sorted by tag number, so this is easy
- * returns the lowest unassigned tag number
- */
+	/* assign a new arrowstyle tag
+	 * arrowstyles are kept sorted by tag number, so this is easy
+	 * returns the lowest unassigned tag number
+	 */
 	public static int assign_arrowstyle_tag()
 	{
 		arrowstyle_def this_Renamed;
 		int last = 0; // previous tag value
 
 		for (this_Renamed = GlobalMembersGadgets.first_arrowstyle; this_Renamed != DefineConstants.NULL; this_Renamed = this_Renamed.next)
-		if (this_Renamed.tag == last + 1)
-			last++;
-		else
-			break;
+			if (this_Renamed.tag == last + 1)
+				last++;
+			else
+				break;
 
 		return (last + 1);
 	}
 
-/* return 1 if format looks like a numeric format
- * ie more than one %{efg}, or %something-else
- */
-/* FIXME HBB 20000430: as coded, this will only check the *first*
- * format string, not all of them. */
+	/* return 1 if format looks like a numeric format
+	 * ie more than one %{efg}, or %something-else
+	 */
+	/* FIXME HBB 20000430: as coded, this will only check the *first*
+	 * format string, not all of them. */
 	public static int looks_like_numeric(String format)
 	{
 		if (!(format = tangible.StringFunctions.strChr(format, '%')))
-		return 0;
+			return 0;
 
 		while (++format && (format.equals(' ') || format.equals('-') || format.equals('+') || format.equals('#')))
-		; // do nothing
+			; // do nothing
 
 		while (Character.isDigit((byte) format) || format.equals('.'))
-		++format;
+			++format;
 
 		return (format.equals('f') || format.equals('g') || format.equals('e'));
 	}
 
-/*********** Support functions for set_command ***********/
+	/*********** Support functions for set_command ***********/
 
-/*
- * The set.c PROCESS_TIC_PROP macro has the following characteristics:
- *   (a) options must in the correct order
- *   (b) 'set xtics' (no option) resets only the interval (FREQ)
- *       {it will also negate NO_TICS, see (d)}
- *   (c) changing any property also resets the interval to automatic
- *   (d) set no[xy]tics; set [xy]tics changes border to nomirror, rather
- *       than to the default, mirror.
- *   (e) effect of 'set no[]tics; set []tics border ...' is compiler
- *       dependent;  if '!(TICS)' is evaluated first, 'border' is an
- *       undefined variable :-(
- *
- * This function replaces the macro, and introduces a new option
- * 'au$tofreq' to give somewhat different behaviour:
- *   (a) no change
- *   (b) 'set xtics' (no option) only affects NO_TICS;  'autofreq' resets
- *       the interval calulation to automatic
- *   (c) the interval mode is not affected by changing some other option
- *   (d) if NO_TICS, set []tics will restore defaults (borders, mirror
- *       where appropriate)
- *   (e) if (NO_TICS), border option is processed.
- *
- *  A 'default' option could easily be added to reset all options to
- *  the initial values - mostly book-keeping.
- *
- *  To retain tic properties after setting no[]tics may also be
- *  straightforward (save value as negative), but requires changes
- *  in other code ( e.g. for  'if (xtics)', use 'if (xtics > 0)'
- */
+	/*
+	 * The set.c PROCESS_TIC_PROP macro has the following characteristics:
+	 *   (a) options must in the correct order
+	 *   (b) 'set xtics' (no option) resets only the interval (FREQ)
+	 *       {it will also negate NO_TICS, see (d)}
+	 *   (c) changing any property also resets the interval to automatic
+	 *   (d) set no[xy]tics; set [xy]tics changes border to nomirror, rather
+	 *       than to the default, mirror.
+	 *   (e) effect of 'set no[]tics; set []tics border ...' is compiler
+	 *       dependent;  if '!(TICS)' is evaluated first, 'border' is an
+	 *       undefined variable :-(
+	 *
+	 * This function replaces the macro, and introduces a new option
+	 * 'au$tofreq' to give somewhat different behaviour:
+	 *   (a) no change
+	 *   (b) 'set xtics' (no option) only affects NO_TICS;  'autofreq' resets
+	 *       the interval calulation to automatic
+	 *   (c) the interval mode is not affected by changing some other option
+	 *   (d) if NO_TICS, set []tics will restore defaults (borders, mirror
+	 *       where appropriate)
+	 *   (e) if (NO_TICS), border option is processed.
+	 *
+	 *  A 'default' option could easily be added to reset all options to
+	 *  the initial values - mostly book-keeping.
+	 *
+	 *  To retain tic properties after setting no[]tics may also be
+	 *  straightforward (save value as negative), but requires changes
+	 *  in other code ( e.g. for  'if (xtics)', use 'if (xtics > 0)'
+	 */
 
-/*    generates PROCESS_TIC_PROP strings from tic_side, e.g. "x2"
- *  STRING, NOSTRING, MONTH, NOMONTH, DAY, NODAY, MINISTRING, NOMINI
- *  "nox2t$ics"     "nox2m$tics"  "nox2d$tics"    "nomx2t$ics"
- */
+	/*    generates PROCESS_TIC_PROP strings from tic_side, e.g. "x2"
+	 *  STRING, NOSTRING, MONTH, NOMONTH, DAY, NODAY, MINISTRING, NOMINI
+	 *  "nox2t$ics"     "nox2m$tics"  "nox2d$tics"    "nomx2t$ics"
+	 */
 
 	public static int set_tic_prop(AXIS_INDEX axis)
 	{
@@ -6614,214 +6614,214 @@ public class GlobalMembersSet
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, cmdptr) != 0)
 		{
-		boolean axisset = false;
-		boolean mirror_opt = false; // set to true if (no)mirror option specified)
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix = false;
-		match = 1;
-		++GlobalMembersCommand.c_token;
-		do
-		{
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$is") != 0)
-			{
-			axisset = true;
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_ON_BORDER;
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_ON_AXIS;
+			boolean axisset = false;
+			boolean mirror_opt = false; // set to true if (no)mirror option specified)
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix = false;
+			match = 1;
 			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bo$rder") != 0)
+			do
 			{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_ON_AXIS;
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_ON_BORDER;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "mi$rror") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_MIRROR;
-			mirror_opt = true;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomi$rror") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_MIRROR;
-			mirror_opt = true;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "in$wards") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].tic_in = true;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "out$wards") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].tic_in = false;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sc$ale") != 0)
-			{
-			++GlobalMembersCommand.c_token;
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
-			{
-				GlobalMembersAxis.axis_array[axis.getValue()].ticscale = 1.0;
-				GlobalMembersAxis.axis_array[axis.getValue()].miniticscale = 0.5;
-				++GlobalMembersCommand.c_token;
-			}
-			else
-			{
-				GlobalMembersAxis.axis_array[axis.getValue()].ticscale = GlobalMembersParse.real_expression();
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$is") != 0)
 				{
-				++GlobalMembersCommand.c_token;
-				GlobalMembersAxis.axis_array[axis.getValue()].miniticscale = GlobalMembersParse.real_expression();
+					axisset = true;
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_ON_BORDER;
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_ON_AXIS;
+					++GlobalMembersCommand.c_token;
 				}
-				else
-				GlobalMembersAxis.axis_array[axis.getValue()].miniticscale = 0.5 * GlobalMembersAxis.axis_array[axis.getValue()].ticscale;
-			}
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ro$tate") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate = DefineConstants.TEXT_VERTICAL;
-			++GlobalMembersCommand.c_token;
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "by") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate = GlobalMembersParse.int_expression();
-			}
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noro$tate") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate = 0;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "off$set") != 0)
-			{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.get_position_default(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.offset, position_type.character);
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nooff$set") != 0)
-			{
-			position tics_nooffset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
-			++GlobalMembersCommand.c_token;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[axis].ticdef.offset = tics_nooffset;
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.offset.copyFrom(tics_nooffset);
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "range$limited") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.rangelimited = true;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norange$limited") != 0)
-			{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.rangelimited = false;
-			++GlobalMembersCommand.c_token;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "f$ont") != 0)
-			{
-			++GlobalMembersCommand.c_token;
-			/* Make sure they've specified a font */
-			if (!(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected font");
-			else
-			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font);
-				GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font = DefineConstants.NULL;
-				GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font = GlobalMembersUtil.try_to_get_string();
-			}
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "format") != 0)
-			{
-			String format;
-			++GlobalMembersCommand.c_token;
-			if (!((format = GlobalMembersUtil.try_to_get_string())))
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected format");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			GlobalMembersAxis.axis_array[axis.getValue()].formatstring = format.substring(0, sizeof(GlobalMembersAxis.axis_array[axis.getValue()].formatstring));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(format);
-			GlobalMembersAxis.axis_array[axis.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(GlobalMembersAxis.axis_array[axis.getValue()].formatstring);
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") != 0)
-			{
-			GlobalMembersMisc.parse_colorspec(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.textcolor, axis == (AXIS_INDEX.FIRST_Z_AXIS.getValue()) != 0 ? DefineConstants.TC_Z : DefineConstants.TC_FRAC);
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "au$tofreq") != 0)
-			{
-			/* auto tic interval */
-			++GlobalMembersCommand.c_token;
-			if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix)
-			{
-				GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
-				GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
-			}
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
-			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "add") != 0)
-			{
-			++GlobalMembersCommand.c_token;
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix = true;
-			}
-			else if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			{
-			GlobalMembersSet.load_tics(axis);
-			}
-		} while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0);
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bo$rder") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_ON_AXIS;
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_ON_BORDER;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "mi$rror") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_MIRROR;
+					mirror_opt = true;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nomi$rror") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_MIRROR;
+					mirror_opt = true;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "in$wards") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].tic_in = true;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "out$wards") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].tic_in = false;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sc$ale") != 0)
+				{
+					++GlobalMembersCommand.c_token;
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
+					{
+						GlobalMembersAxis.axis_array[axis.getValue()].ticscale = 1.0;
+						GlobalMembersAxis.axis_array[axis.getValue()].miniticscale = 0.5;
+						++GlobalMembersCommand.c_token;
+					}
+					else
+					{
+						GlobalMembersAxis.axis_array[axis.getValue()].ticscale = GlobalMembersParse.real_expression();
+						if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+						{
+							++GlobalMembersCommand.c_token;
+							GlobalMembersAxis.axis_array[axis.getValue()].miniticscale = GlobalMembersParse.real_expression();
+						}
+						else
+							GlobalMembersAxis.axis_array[axis.getValue()].miniticscale = 0.5 * GlobalMembersAxis.axis_array[axis.getValue()].ticscale;
+					}
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ro$tate") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate = DefineConstants.TEXT_VERTICAL;
+					++GlobalMembersCommand.c_token;
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "by") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate = GlobalMembersParse.int_expression();
+					}
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noro$tate") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate = 0;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "off$set") != 0)
+				{
+					++GlobalMembersCommand.c_token;
+					GlobalMembersAxis.get_position_default(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.offset, position_type.character);
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nooff$set") != 0)
+				{
+					position tics_nooffset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
+					++GlobalMembersCommand.c_token;
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+					//ORIGINAL LINE: axis_array[axis].ticdef.offset = tics_nooffset;
+					GlobalMembersAxis.axis_array[axis.getValue()].ticdef.offset.copyFrom(tics_nooffset);
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "range$limited") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].ticdef.rangelimited = true;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norange$limited") != 0)
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].ticdef.rangelimited = false;
+					++GlobalMembersCommand.c_token;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "f$ont") != 0)
+				{
+					++GlobalMembersCommand.c_token;
+					/* Make sure they've specified a font */
+					if (!(GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected font");
+					else
+					{
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font);
+						GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font = DefineConstants.NULL;
+						GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font = GlobalMembersUtil.try_to_get_string();
+					}
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "format") != 0)
+				{
+					String format;
+					++GlobalMembersCommand.c_token;
+					if (!((format = GlobalMembersUtil.try_to_get_string())))
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected format");
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					GlobalMembersAxis.axis_array[axis.getValue()].formatstring = format.substring(0, sizeof(GlobalMembersAxis.axis_array[axis.getValue()].formatstring));
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(format);
+					GlobalMembersAxis.axis_array[axis.getValue()].format_is_numeric = GlobalMembersSet.looks_like_numeric(GlobalMembersAxis.axis_array[axis.getValue()].formatstring);
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") != 0)
+				{
+					GlobalMembersMisc.parse_colorspec(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.textcolor, axis == (AXIS_INDEX.FIRST_Z_AXIS.getValue()) != 0 ? DefineConstants.TC_Z : DefineConstants.TC_FRAC);
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "au$tofreq") != 0)
+				{
+					/* auto tic interval */
+					++GlobalMembersCommand.c_token;
+					if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix)
+					{
+						GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
+						GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
+					}
+					GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "add") != 0)
+				{
+					++GlobalMembersCommand.c_token;
+					GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix = true;
+				}
+				else if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				{
+					GlobalMembersSet.load_tics(axis);
+				}
+			} while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0);
 
-		/* if tics are off and not set by axis, reset to default (border) */
-		if (((GlobalMembersAxis.axis_array[axis.getValue()].ticmode & DefineConstants.TICS_MASK) == DefineConstants.NO_TICS) && (!axisset))
-		{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_ON_BORDER;
-			if ((mirror_opt == false) && ((axis == AXIS_INDEX.FIRST_X_AXIS) || (axis == AXIS_INDEX.FIRST_Y_AXIS) || (axis == AXIS_INDEX.COLOR_AXIS)))
+			/* if tics are off and not set by axis, reset to default (border) */
+			if (((GlobalMembersAxis.axis_array[axis.getValue()].ticmode & DefineConstants.TICS_MASK) == DefineConstants.NO_TICS) && (!axisset))
 			{
-			GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_MIRROR;
+				GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_ON_BORDER;
+				if ((mirror_opt == false) && ((axis == AXIS_INDEX.FIRST_X_AXIS) || (axis == AXIS_INDEX.FIRST_Y_AXIS) || (axis == AXIS_INDEX.COLOR_AXIS)))
+				{
+					GlobalMembersAxis.axis_array[axis.getValue()].ticmode |= DefineConstants.TICS_MIRROR;
+				}
 			}
-		}
 
 		}
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, nocmd) != 0) // NOSTRING
 		{
-		GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_MASK;
-		GlobalMembersCommand.c_token++;
-		match = 1;
+			GlobalMembersAxis.axis_array[axis.getValue()].ticmode &= ~DefineConstants.TICS_MASK;
+			GlobalMembersCommand.c_token++;
+			match = 1;
 		}
-	/* other options */
+		/* other options */
 
 		() strcpy(sfxptr, "m$tics"); // MONTH
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, cmdptr) != 0)
 		{
-		if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix)
-		{
-			GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
-		}
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_MONTH;
-		++GlobalMembersCommand.c_token;
-		match = 1;
+			if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix)
+			{
+				GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
+				GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
+			}
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_MONTH;
+			++GlobalMembersCommand.c_token;
+			match = 1;
 		}
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, nocmd) != 0) // NOMONTH
 		{
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
-		++GlobalMembersCommand.c_token;
-		match = 1;
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
+			++GlobalMembersCommand.c_token;
+			match = 1;
 		}
 		() strcpy(sfxptr, "d$tics"); // DAYS
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, cmdptr) != 0)
 		{
-		match = 1;
-		if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix)
-		{
-			GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
-			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
-		}
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_DAY;
-		++GlobalMembersCommand.c_token;
+			match = 1;
+			if (!GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.mix)
+			{
+				GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user);
+				GlobalMembersAxis.axis_array[axis.getValue()].ticdef.def.user = DefineConstants.NULL;
+			}
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_DAY;
+			++GlobalMembersCommand.c_token;
 		}
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, nocmd) != 0) // NODAYS
 		{
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
-		++GlobalMembersCommand.c_token;
-		match = 1;
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
+			++GlobalMembersCommand.c_token;
+			match = 1;
 		}
 		cmdptr = 'm';
 		() strcpy(cmdptr + 1, GlobalMembersAxis.axis_defaults[axis.getValue()].name);
@@ -6829,65 +6829,65 @@ public class GlobalMembersSet
 
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, cmdptr) != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		match = 1;
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_AUTO.getValue();
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
-		{
-			GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_DEFAULT.getValue();
-			++GlobalMembersCommand.c_token;
-		}
-		else
-		{
-			GlobalMembersAxis.axis_array[axis.getValue()].mtic_freq = Math.floor(GlobalMembersParse.real_expression());
-			GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_USER.getValue();
-		}
+			GlobalMembersCommand.c_token++;
+			match = 1;
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+			{
+				GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_AUTO.getValue();
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "def$ault") != 0)
+			{
+				GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_DEFAULT.getValue();
+				++GlobalMembersCommand.c_token;
+			}
+			else
+			{
+				GlobalMembersAxis.axis_array[axis.getValue()].mtic_freq = Math.floor(GlobalMembersParse.real_expression());
+				GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_USER.getValue();
+			}
 		}
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, nocmd) != 0) // NOMINI
 		{
-		GlobalMembersAxis.axis_array[axis.getValue()].minitics = false;
-		GlobalMembersCommand.c_token++;
-		match = 1;
+			GlobalMembersAxis.axis_array[axis.getValue()].minitics = false;
+			GlobalMembersCommand.c_token++;
+			match = 1;
 		}
 		return (match);
 	}
 
-///#ifdef BACKWARDS_COMPATIBLE
-// /*
-//  * Backwards compatibility ...
-//  */
-//static void set_nolinestyle()
-//{
-//    struct linestyle_def *this, *prev;
-//    int tag;
-//
-//    if (END_OF_COMMAND) {
-// /* delete all linestyles */
-//	while (first_linestyle != NULL)
-//	    delete_linestyle(&first_linestyle, NULL, first_linestyle);
-//    } else {
-// /* get tag */
-//	tag = int_expression();
-//	if (!END_OF_COMMAND)
-//	    int_error(c_token, "extraneous arguments to set nolinestyle");
-//	for (this = first_linestyle, prev = NULL;
-//	     this != NULL;
-//	     prev = this, this = this->next) {
-//	    if (this->tag == tag) {
-//		delete_linestyle(&first_linestyle, prev, this);
-//		return;         // exit, our job is done 
-//	    }
-//	}
-//	int_error(c_token, "linestyle not found");
-//    }
-//}
-///#endif
+	///#ifdef BACKWARDS_COMPATIBLE
+	// /*
+	//  * Backwards compatibility ...
+	//  */
+	//static void set_nolinestyle()
+	//{
+	//    struct linestyle_def *this, *prev;
+	//    int tag;
+	//
+	//    if (END_OF_COMMAND) {
+	// /* delete all linestyles */
+	//	while (first_linestyle != NULL)
+	//	    delete_linestyle(&first_linestyle, NULL, first_linestyle);
+	//    } else {
+	// /* get tag */
+	//	tag = int_expression();
+	//	if (!END_OF_COMMAND)
+	//	    int_error(c_token, "extraneous arguments to set nolinestyle");
+	//	for (this = first_linestyle, prev = NULL;
+	//	     this != NULL;
+	//	     prev = this, this = this->next) {
+	//	    if (this->tag == tag) {
+	//		delete_linestyle(&first_linestyle, prev, this);
+	//		return;         // exit, our job is done 
+	//	    }
+	//	}
+	//	int_error(c_token, "linestyle not found");
+	//    }
+	//}
+	///#endif
 
 
-/* HBB 20001021: new function: make label texts decoratable with numbers */
+	/* HBB 20001021: new function: make label texts decoratable with numbers */
 	public static String fill_numbers_into_string(String pattern)
 	{
 		int pattern_length = pattern.length() + 1;
@@ -6897,55 +6897,55 @@ public class GlobalMembersSet
 
 		do // loop over string/value pairs
 		{
-		double value;
+			double value;
 
-		if (GlobalMembersUtil.isstring(++GlobalMembersCommand.c_token) != 0)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(output);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(pattern);
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "constant expression expected");
-		}
+			if (GlobalMembersUtil.isstring(++GlobalMembersCommand.c_token) != 0)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(output);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(pattern);
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "constant expression expected");
+			}
 
-		/* assume it's a numeric expression, concatenate it to output
-		 * string: parse value, enlarge output buffer, and gprintf()
-		 * it. */
-		value = GlobalMembersParse.real_expression();
-		newlen += pattern_length + 30;
-		output = GlobalMembersAlloc.gp_realloc(output, newlen, "fill_numbers next number");
-		GlobalMembersUtil.gprintf(output + output_end, newlen - output_end, pattern, 1.0, value);
-		output_end += String.valueOf(output + output_end).length();
+			/* assume it's a numeric expression, concatenate it to output
+			 * string: parse value, enlarge output buffer, and gprintf()
+			 * it. */
+			value = GlobalMembersParse.real_expression();
+			newlen += pattern_length + 30;
+			output = GlobalMembersAlloc.gp_realloc(output, newlen, "fill_numbers next number");
+			GlobalMembersUtil.gprintf(output + output_end, newlen - output_end, pattern, 1.0, value);
+			output_end += String.valueOf(output + output_end).length();
 
-		/* allow a string to follow, after another comma: */
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		{
-			/* no comma followed the number --> we're done. Jump out
-			 * directly, as falling out of the while loop means
-			 * something slightly different. */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(pattern);
-			return output;
-		}
-		GlobalMembersCommand.c_token++;
-
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
-		{
-			int length = GlobalMembersUtil.token_len(GlobalMembersCommand.c_token);
-
-			if (length >= pattern_length)
-			pattern = GlobalMembersAlloc.gp_realloc(pattern, pattern_length = length, "fill_numbers resize pattern");
-			GlobalMembersUtil.quote_str(pattern, GlobalMembersCommand.c_token, length);
+			/* allow a string to follow, after another comma: */
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+			{
+				/* no comma followed the number --> we're done. Jump out
+				 * directly, as falling out of the while loop means
+				 * something slightly different. */
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(pattern);
+				return output;
+			}
 			GlobalMembersCommand.c_token++;
-		}
-		else
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(pattern);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(output);
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "string expected");
-		} // if (string after comma)
+
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0)
+			{
+				int length = GlobalMembersUtil.token_len(GlobalMembersCommand.c_token);
+
+				if (length >= pattern_length)
+					pattern = GlobalMembersAlloc.gp_realloc(pattern, pattern_length = length, "fill_numbers resize pattern");
+				GlobalMembersUtil.quote_str(pattern, GlobalMembersCommand.c_token, length);
+				GlobalMembersCommand.c_token++;
+			}
+			else
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(pattern);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(output);
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "string expected");
+			} // if (string after comma)
 		} while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0);
 
 		/* came out here --> the last element was a string, not a number.
@@ -6953,17 +6953,17 @@ public class GlobalMembersSet
 		 * copied to 'output' */
 		output = GlobalMembersAlloc.gp_realloc(output, newlen += pattern_length, "fill_numbers closing");
 		output + output_end = pattern;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(pattern);
 		return output;
 	}
 
-/*
- *  Normalize gray scale of gradient to fill [0,1] and
- *  complain if gray values are not strictly increasing.
- *  Maybe automatic sorting of the gray values could be a
- *  feature.
- */
+	/*
+	 *  Normalize gray scale of gradient to fill [0,1] and
+	 *  complain if gray values are not strictly increasing.
+	 *  Maybe automatic sorting of the gray values could be a
+	 *  feature.
+	 */
 
 	public static void check_palette_grayscale()
 	{
@@ -6974,10 +6974,10 @@ public class GlobalMembersSet
 		/* check if gray values are sorted */
 		for (i = 0; i < GlobalMembersColor.sm_palette.gradient_num - 1; ++i)
 		{
-		if (GlobalMembersColor.sm_palette.gradient[i].pos > GlobalMembersColor.sm_palette.gradient[i + 1].pos)
-		{
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Gray scale not sorted in gradient.");
-		}
+			if (GlobalMembersColor.sm_palette.gradient[i].pos > GlobalMembersColor.sm_palette.gradient[i + 1].pos)
+			{
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Gray scale not sorted in gradient.");
+			}
 		}
 
 		/* fit gray axis into [0:1]:  subtract offset and rescale */
@@ -6985,7 +6985,7 @@ public class GlobalMembersSet
 		f = 1.0 / (GlobalMembersColor.sm_palette.gradient[GlobalMembersColor.sm_palette.gradient_num - 1].pos - off);
 		for (i = 1; i < GlobalMembersColor.sm_palette.gradient_num - 1; ++i)
 		{
-		GlobalMembersColor.sm_palette.gradient[i].pos = f * (GlobalMembersColor.sm_palette.gradient[i].pos - off);
+			GlobalMembersColor.sm_palette.gradient[i].pos = f * (GlobalMembersColor.sm_palette.gradient[i].pos - off);
 		}
 
 		/* paranoia on the first and last entries */
@@ -6993,17 +6993,17 @@ public class GlobalMembersSet
 		GlobalMembersColor.sm_palette.gradient[GlobalMembersColor.sm_palette.gradient_num - 1].pos = 1.0;
 	}
 
-/* Process 'set palette defined' gradient specification */
-/* Syntax
- *   set palette defined   -->  use default palette
- *   set palette defined ( <pos1> <colorspec1>, ... , <posN> <colorspecN> )
- *     <posX>  gray value, automatically rescaled to [0, 1]
- *     <colorspecX>   :=  { "<color_name>" | "<X-style-color>" |  <r> <g> <b> }
- *        <color_name>     predefined colors (see below)
- *        <X-style-color>  "#rrggbb" with 2char hex values for red, green, blue
- *        <r> <g> <b>      three values in [0, 1] for red, green and blue
- *   return 1 if named colors where used, 0 otherwise
- */
+	/* Process 'set palette defined' gradient specification */
+	/* Syntax
+	 *   set palette defined   -->  use default palette
+	 *   set palette defined ( <pos1> <colorspec1>, ... , <posN> <colorspecN> )
+	 *     <posX>  gray value, automatically rescaled to [0, 1]
+	 *     <colorspecX>   :=  { "<color_name>" | "<X-style-color>" |  <r> <g> <b> }
+	 *        <color_name>     predefined colors (see below)
+	 *        <X-style-color>  "#rrggbb" with 2char hex values for red, green, blue
+	 *        <r> <g> <b>      three values in [0, 1] for red, green and blue
+	 *   return 1 if named colors where used, 0 otherwise
+	 */
 	public static int set_palette_defined()
 	{
 		double p = 0;
@@ -7017,113 +7017,113 @@ public class GlobalMembersSet
 		/* Invalidate previous gradient */
 		GlobalMembersColor.invalidate_palette();
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersColor.sm_palette.gradient);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersColor.sm_palette.gradient = GlobalMembersAlloc.gp_alloc(actual_size * sizeof(gradient_struct), "pm3d gradient");
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* lets use some default gradient */
-		double[][] pal = {{0.0, 0.05, 0.05, 0.2}, {0.1, 0, 0, 1}, {0.25, 0.7, 0.85, 0.9}, {0.4, 0, 0.75, 0}, {0.5, 1, 1, 0}, {0.7, 1, 0, 0}, {0.9, 0.6, 0.6, 0.6}, {1.0, 0.95, 0.95, 0.95}};
-		int i;
-		for (i = 0; i < 8; ++i)
-		{
-			GlobalMembersColor.sm_palette.gradient[i].pos = pal[i][0];
-			GlobalMembersColor.sm_palette.gradient[i].col.r = pal[i][1];
-			GlobalMembersColor.sm_palette.gradient[i].col.g = pal[i][2];
-			GlobalMembersColor.sm_palette.gradient[i].col.b = pal[i][3];
-		}
-		GlobalMembersColor.sm_palette.gradient_num = 8;
-		GlobalMembersColor.sm_palette.cmodel = color_models_id.C_MODEL_RGB.getValue();
-		return 0;
+			/* lets use some default gradient */
+			double[][] pal = {{0.0, 0.05, 0.05, 0.2}, {0.1, 0, 0, 1}, {0.25, 0.7, 0.85, 0.9}, {0.4, 0, 0.75, 0}, {0.5, 1, 1, 0}, {0.7, 1, 0, 0}, {0.9, 0.6, 0.6, 0.6}, {1.0, 0.95, 0.95, 0.95}};
+			int i;
+			for (i = 0; i < 8; ++i)
+			{
+				GlobalMembersColor.sm_palette.gradient[i].pos = pal[i][0];
+				GlobalMembersColor.sm_palette.gradient[i].col.r = pal[i][1];
+				GlobalMembersColor.sm_palette.gradient[i].col.g = pal[i][2];
+				GlobalMembersColor.sm_palette.gradient[i].col.b = pal[i][3];
+			}
+			GlobalMembersColor.sm_palette.gradient_num = 8;
+			GlobalMembersColor.sm_palette.cmodel = color_models_id.C_MODEL_RGB.getValue();
+			return 0;
 		}
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "(") == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected ( to start gradient definition.");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected ( to start gradient definition.");
 
 		++GlobalMembersCommand.c_token;
 		num = -1;
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		String col_str;
-		p = GlobalMembersParse.real_expression();
-		col_str = GlobalMembersUtil.try_to_get_string();
-		if (col_str != null)
-		{
-			/* either color name or X-style rgb value "#rrggbb" */
-			if (col_str.charAt(0) == '#')
+			String col_str;
+			p = GlobalMembersParse.real_expression();
+			col_str = GlobalMembersUtil.try_to_get_string();
+			if (col_str != null)
 			{
-			/* X-style specifier */
-			int rr;
-			int gg;
-			int bb;
-			if (sscanf(col_str, "#%2x%2x%2x", rr, gg, bb) != 3)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Unknown color specifier. Use '#rrggbb'.");
-			r = (double)(rr) / 255.;
-			g = (double)(gg) / 255.;
-			b = (double)(bb) / 255.;
-			}
-			else // some predefined names
-			{
-			/* Maybe we could scan the X11 rgb.txt file to look up color
-			 * names?  Or at least move these definitions to some file
-			 * which is included somehow during compilation instead
-			 * hardcoding them. */
-			/* Can't use lookupt_table() as it works for tokens only,
-			   so we'll do it manually */
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-			final GlobalMembersBreaders.gen_table * tbl = GlobalMembersTables.pm3d_color_names_tbl;
-			while (tbl.key != null)
-			{
-				if (!strcmp(col_str, tbl.key))
+				/* either color name or X-style rgb value "#rrggbb" */
+				if (col_str.charAt(0) == '#')
 				{
-				r = (double)((tbl.value >> 16) & 255) / 255.;
-				g = (double)((tbl.value >> 8) & 255) / 255.;
-				b = (double)(tbl.value & 255) / 255.;
-				break;
+					/* X-style specifier */
+					int rr;
+					int gg;
+					int bb;
+					if (sscanf(col_str, "#%2x%2x%2x", rr, gg, bb) != 3)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Unknown color specifier. Use '#rrggbb'.");
+					r = (double)(rr) / 255.;
+					g = (double)(gg) / 255.;
+					b = (double)(bb) / 255.;
 				}
-				tbl++;
+				else // some predefined names
+				{
+					/* Maybe we could scan the X11 rgb.txt file to look up color
+					 * names?  Or at least move these definitions to some file
+					 * which is included somehow during compilation instead
+					 * hardcoding them. */
+					/* Can't use lookupt_table() as it works for tokens only,
+			   so we'll do it manually */
+					//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+					final GlobalMembersBreaders.gen_table * tbl = GlobalMembersTables.pm3d_color_names_tbl;
+					while (tbl.key != null)
+					{
+						if (!strcmp(col_str, tbl.key))
+						{
+							r = (double)((tbl.value >> 16) & 255) / 255.;
+							g = (double)((tbl.value >> 8) & 255) / 255.;
+							b = (double)(tbl.value & 255) / 255.;
+							break;
+						}
+						tbl++;
+					}
+					if (tbl.key == null)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Unknown color name.");
+					named_colors = 1;
+				}
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(col_str);
 			}
-			if (tbl.key == null)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Unknown color name.");
-			named_colors = 1;
+			else
+			{
+				/* numerical rgb, hsv, xyz, ... values  [0,1] */
+				r = GlobalMembersParse.real_expression();
+				if (r<0 || r>1)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Value out of range [0,1].");
+				g = GlobalMembersParse.real_expression();
+				if (g<0 || g>1)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Value out of range [0,1].");
+				b = GlobalMembersParse.real_expression();
+				if (b<0 || b>1)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Value out of range [0,1].");
 			}
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(col_str);
-		}
-		else
-		{
-			/* numerical rgb, hsv, xyz, ... values  [0,1] */
-			r = GlobalMembersParse.real_expression();
-			if (r<0 || r>1)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Value out of range [0,1].");
-			g = GlobalMembersParse.real_expression();
-			if (g<0 || g>1)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Value out of range [0,1].");
-			b = GlobalMembersParse.real_expression();
-			if (b<0 || b>1)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token - 1, "Value out of range [0,1].");
-		}
-		++num;
+			++num;
 
-		if (num >= actual_size)
-		{
-			/* get more space for the gradient */
-			actual_size += 10;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			GlobalMembersColor.sm_palette.gradient = GlobalMembersAlloc.gp_realloc(GlobalMembersColor.sm_palette.gradient, actual_size * sizeof(gradient_struct), "pm3d gradient");
-		}
-		GlobalMembersColor.sm_palette.gradient[num].pos = p;
-		GlobalMembersColor.sm_palette.gradient[num].col.r = r;
-		GlobalMembersColor.sm_palette.gradient[num].col.g = g;
-		GlobalMembersColor.sm_palette.gradient[num].col.b = b;
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") != 0)
-			break;
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected comma.");
-		++GlobalMembersCommand.c_token;
+			if (num >= actual_size)
+			{
+				/* get more space for the gradient */
+				actual_size += 10;
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				GlobalMembersColor.sm_palette.gradient = GlobalMembersAlloc.gp_realloc(GlobalMembersColor.sm_palette.gradient, actual_size * sizeof(gradient_struct), "pm3d gradient");
+			}
+			GlobalMembersColor.sm_palette.gradient[num].pos = p;
+			GlobalMembersColor.sm_palette.gradient[num].col.r = r;
+			GlobalMembersColor.sm_palette.gradient[num].col.g = g;
+			GlobalMembersColor.sm_palette.gradient[num].col.b = b;
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ")") != 0)
+				break;
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected comma.");
+			++GlobalMembersCommand.c_token;
 
 		}
 
@@ -7133,9 +7133,9 @@ public class GlobalMembersSet
 		return named_colors;
 	}
 
-/*  process 'set palette file' command
- *  load a palette from file, honor datafile modifiers
- */
+	/*  process 'set palette file' command
+	 *  load a palette from file, honor datafile modifiers
+	 */
 	public static void set_palette_file()
 	{
 		int specs;
@@ -7149,82 +7149,82 @@ public class GlobalMembersSet
 
 		/* get filename */
 		if (!(file_name = GlobalMembersUtil.try_to_get_string()))
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "missing filename");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "missing filename");
 
 		GlobalMembersDatafile.df_set_plot_mode(MODE_PLOT_TYPE.MODE_QUERY); // Needed only for binary datafiles
 		specs = GlobalMembersDatafile.df_open(file_name, 4, DefineConstants.NULL);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(file_name);
 
 		if (specs > 0 && specs < 3)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Less than 3 using specs for palette");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Less than 3 using specs for palette");
 
 		if (GlobalMembersColor.sm_palette.gradient != null)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersColor.sm_palette.gradient);
-		GlobalMembersColor.sm_palette.gradient = 0;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersColor.sm_palette.gradient);
+			GlobalMembersColor.sm_palette.gradient = 0;
 		}
 		actual_size = 10;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersColor.sm_palette.gradient = GlobalMembersAlloc.gp_alloc(actual_size * sizeof(gradient_struct), "gradient");
 
 		i = 0;
 
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define VCONSTRAIN(x) ( (x)<0 ? 0 : ( (x)>1 ? 1: (x) ) )
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define VCONSTRAIN(x) ( (x)<0 ? 0 : ( (x)>1 ? 1: (x) ) )
 		/* values are simply clipped to [0,1] without notice */
 		while ((j = GlobalMembersDatafile.df_readline(v, 4)) != DefineConstants.DF_EOF)
 		{
-		if (i >= actual_size)
-		{
-		  actual_size += 10;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		  GlobalMembersColor.sm_palette.gradient = (gradient_struct) GlobalMembersAlloc.gp_realloc(GlobalMembersColor.sm_palette.gradient, actual_size * sizeof(gradient_struct), "pm3d gradient");
-		}
-		switch (j)
-		{
+			if (i >= actual_size)
+			{
+				actual_size += 10;
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				GlobalMembersColor.sm_palette.gradient = (gradient_struct) GlobalMembersAlloc.gp_realloc(GlobalMembersColor.sm_palette.gradient, actual_size * sizeof(gradient_struct), "pm3d gradient");
+			}
+			switch (j)
+			{
 			case 3:
-			GlobalMembersColor.sm_palette.gradient[i].col.r = ((v[0])<0 ? 0 : ((v[0])>1 ? 1: (v[0])));
-			GlobalMembersColor.sm_palette.gradient[i].col.g = ((v[1])<0 ? 0 : ((v[1])>1 ? 1: (v[1])));
-			GlobalMembersColor.sm_palette.gradient[i].col.b = ((v[2])<0 ? 0 : ((v[2])>1 ? 1: (v[2])));
-			GlobalMembersColor.sm_palette.gradient[i].pos = i;
-			break;
+				GlobalMembersColor.sm_palette.gradient[i].col.r = ((v[0])<0 ? 0 : ((v[0])>1 ? 1: (v[0])));
+				GlobalMembersColor.sm_palette.gradient[i].col.g = ((v[1])<0 ? 0 : ((v[1])>1 ? 1: (v[1])));
+				GlobalMembersColor.sm_palette.gradient[i].col.b = ((v[2])<0 ? 0 : ((v[2])>1 ? 1: (v[2])));
+				GlobalMembersColor.sm_palette.gradient[i].pos = i;
+				break;
 			case 4:
-			GlobalMembersColor.sm_palette.gradient[i].col.r = ((v[1])<0 ? 0 : ((v[1])>1 ? 1: (v[1])));
-			GlobalMembersColor.sm_palette.gradient[i].col.g = ((v[2])<0 ? 0 : ((v[2])>1 ? 1: (v[2])));
-			GlobalMembersColor.sm_palette.gradient[i].col.b = ((v[3])<0 ? 0 : ((v[3])>1 ? 1: (v[3])));
-			GlobalMembersColor.sm_palette.gradient[i].pos = v[0];
-			break;
+				GlobalMembersColor.sm_palette.gradient[i].col.r = ((v[1])<0 ? 0 : ((v[1])>1 ? 1: (v[1])));
+				GlobalMembersColor.sm_palette.gradient[i].col.g = ((v[2])<0 ? 0 : ((v[2])>1 ? 1: (v[2])));
+				GlobalMembersColor.sm_palette.gradient[i].col.b = ((v[3])<0 ? 0 : ((v[3])>1 ? 1: (v[3])));
+				GlobalMembersColor.sm_palette.gradient[i].pos = v[0];
+				break;
 			default:
-			GlobalMembersDatafile.df_close();
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Bad data on line %d", GlobalMembersDatafile.df_line_number);
-			break;
+				GlobalMembersDatafile.df_close();
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Bad data on line %d", GlobalMembersDatafile.df_line_number);
+				break;
+			}
+			++i;
 		}
-		++i;
-		}
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef VCONSTRAIN
+		//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+		///#undef VCONSTRAIN
 		GlobalMembersDatafile.df_close();
 		if (i == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "No valid palette found");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "No valid palette found");
 
 		GlobalMembersColor.sm_palette.gradient_num = i;
 		GlobalMembersSet.check_palette_grayscale();
 
 	}
 
-/* Process a 'set palette function' command.
- *  Three functions with fixed dummy variable gray are registered which
- *  map gray to the different color components.
- *  If ALLOW_DUMMY_VAR_FOR_GRAY is set:
- *    A different dummy variable may proceed the formulae in quotes.
- *    This syntax is different from the usual '[u=<start>:<end>]', but
- *    as <start> and <end> are fixed to 0 and 1 you would have to type
- *    always '[u=]' which looks strange, especially as just '[u]'
- *    wouldn't work.
- *  If unset:  dummy variable is fixed to 'gray'.
- */
+	/* Process a 'set palette function' command.
+	 *  Three functions with fixed dummy variable gray are registered which
+	 *  map gray to the different color components.
+	 *  If ALLOW_DUMMY_VAR_FOR_GRAY is set:
+	 *    A different dummy variable may proceed the formulae in quotes.
+	 *    This syntax is different from the usual '[u=<start>:<end>]', but
+	 *    as <start> and <end> are fixed to 0 and 1 you would have to type
+	 *    always '[u=]' which looks strange, especially as just '[u]'
+	 *    wouldn't work.
+	 *  If unset:  dummy variable is fixed to 'gray'.
+	 */
 	public static void set_palette_function()
 	{
 		int start_token;
@@ -7234,13 +7234,13 @@ public class GlobalMembersSet
 		saved_dummy_var = String.valueOf(GlobalMembersParse.c_dummy_var[0]).substring(0, DefineConstants.MAX_ID_LEN);
 
 		/* set dummy variable */
-	///#ifdef ALLOW_DUMMY_VAR_FOR_GRAY
-	//    if (isstring(c_token)) {
-	//	quote_str( c_dummy_var[0], c_token, MAX_ID_LEN );
-	//	++c_token;
-	//    }
-	//    else
-	///#endif // ALLOW_DUMMY_VAR_FOR_GRAY
+		///#ifdef ALLOW_DUMMY_VAR_FOR_GRAY
+		//    if (isstring(c_token)) {
+		//	quote_str( c_dummy_var[0], c_token, MAX_ID_LEN );
+		//	++c_token;
+		//    }
+		//    else
+		///#endif // ALLOW_DUMMY_VAR_FOR_GRAY
 		GlobalMembersParse.c_dummy_var[0] = "gray".substring(0, DefineConstants.MAX_ID_LEN);
 
 
@@ -7248,56 +7248,56 @@ public class GlobalMembersSet
 		start_token = GlobalMembersCommand.c_token;
 		if (GlobalMembersColor.sm_palette.Afunc.at != null)
 		{
-		GlobalMembersEval.free_at(GlobalMembersColor.sm_palette.Afunc.at);
-		GlobalMembersColor.sm_palette.Afunc.at = DefineConstants.NULL;
+			GlobalMembersEval.free_at(GlobalMembersColor.sm_palette.Afunc.at);
+			GlobalMembersColor.sm_palette.Afunc.at = DefineConstants.NULL;
 		}
 		GlobalMembersCommand.dummy_func = GlobalMembersColor.sm_palette.Afunc;
 		GlobalMembersColor.sm_palette.Afunc.at = GlobalMembersParse.perm_at();
 		if (GlobalMembersColor.sm_palette.Afunc.at == null)
-		GlobalMembersBf_test.int_error(start_token, "not enough memory for function");
+			GlobalMembersBf_test.int_error(start_token, "not enough memory for function");
 		GlobalMembersUtil.m_capture((GlobalMembersColor.sm_palette.Afunc.definition), start_token, GlobalMembersCommand.c_token - 1);
 		GlobalMembersCommand.dummy_func = DefineConstants.NULL;
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected comma");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected comma");
 		++GlobalMembersCommand.c_token;
 
 		/* Bfunc */
 		start_token = GlobalMembersCommand.c_token;
 		if (GlobalMembersColor.sm_palette.Bfunc.at != null)
 		{
-		GlobalMembersEval.free_at(GlobalMembersColor.sm_palette.Bfunc.at);
-		GlobalMembersColor.sm_palette.Bfunc.at = DefineConstants.NULL;
+			GlobalMembersEval.free_at(GlobalMembersColor.sm_palette.Bfunc.at);
+			GlobalMembersColor.sm_palette.Bfunc.at = DefineConstants.NULL;
 		}
 		GlobalMembersCommand.dummy_func = GlobalMembersColor.sm_palette.Bfunc;
 		GlobalMembersColor.sm_palette.Bfunc.at = GlobalMembersParse.perm_at();
 		if (GlobalMembersColor.sm_palette.Bfunc.at == null)
-		GlobalMembersBf_test.int_error(start_token, "not enough memory for function");
+			GlobalMembersBf_test.int_error(start_token, "not enough memory for function");
 		GlobalMembersUtil.m_capture((GlobalMembersColor.sm_palette.Bfunc.definition), start_token, GlobalMembersCommand.c_token - 1);
 		GlobalMembersCommand.dummy_func = DefineConstants.NULL;
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected comma");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Expected comma");
 		++GlobalMembersCommand.c_token;
 
 		/* Cfunc */
 		start_token = GlobalMembersCommand.c_token;
 		if (GlobalMembersColor.sm_palette.Cfunc.at != null)
 		{
-		GlobalMembersEval.free_at(GlobalMembersColor.sm_palette.Cfunc.at);
-		GlobalMembersColor.sm_palette.Cfunc.at = DefineConstants.NULL;
+			GlobalMembersEval.free_at(GlobalMembersColor.sm_palette.Cfunc.at);
+			GlobalMembersColor.sm_palette.Cfunc.at = DefineConstants.NULL;
 		}
 		GlobalMembersCommand.dummy_func = GlobalMembersColor.sm_palette.Cfunc;
 		GlobalMembersColor.sm_palette.Cfunc.at = GlobalMembersParse.perm_at();
 		if (GlobalMembersColor.sm_palette.Cfunc.at == null)
-		GlobalMembersBf_test.int_error(start_token, "not enough memory for function");
+			GlobalMembersBf_test.int_error(start_token, "not enough memory for function");
 		GlobalMembersUtil.m_capture((GlobalMembersColor.sm_palette.Cfunc.definition), start_token, GlobalMembersCommand.c_token - 1);
 		GlobalMembersCommand.dummy_func = DefineConstants.NULL;
 
 		GlobalMembersParse.c_dummy_var[0] = saved_dummy_var.substring(0, DefineConstants.MAX_ID_LEN);
 	}
 
-/* <histogramstyle> = {clustered {gap <n>} | rowstacked | columnstacked */
-/*                     errorbars {gap <n>} {linewidth <lw>}}            */
-/*                    {title <title_options>}                           */
+	/* <histogramstyle> = {clustered {gap <n>} | rowstacked | columnstacked */
+	/*                     errorbars {gap <n>} {linewidth <lw>}}            */
+	/*                    {title <title_options>}                           */
 	public static void parse_histogramstyle(histogram_style hs, histogram_type def_type, int def_gap)
 	{
 		text_label title_specs = new text_label(DefineConstants.NULL, -2, {position_type.character, position_type.character, position_type.character, 0.0, 0.0, 0.0}, JUSTIFY.CENTRE, 0, 0, DefineConstants.NULL, DefineConstants.NULL, {DefineConstants.TC_LT, -2, 0.0}, {0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0}}, {position_type.character, position_type.character, position_type.character, 0.0, 0.0, 0.0}, false);
@@ -7307,65 +7307,65 @@ public class GlobalMembersSet
 		hs.gap = def_gap;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		return;
+			return;
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "hs") == 0 && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "hist$ogram") == 0)
-		return;
+			return;
 		GlobalMembersCommand.c_token++;
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "clust$ered") != 0)
-		{
-			hs.type = histogram_type.HT_CLUSTERED.getValue();
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "error$bars") != 0)
-		{
-			hs.type = histogram_type.HT_ERRORBARS.getValue();
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rows$tacked") != 0)
-		{
-			hs.type = histogram_type.HT_STACKED_IN_LAYERS.getValue();
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "columns$tacked") != 0)
-		{
-			hs.type = histogram_type.HT_STACKED_IN_TOWERS.getValue();
-			GlobalMembersCommand.c_token++;
-		}
-		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "gap") != 0)
-		{
-			if (GlobalMembersUtil.isanumber(++GlobalMembersCommand.c_token) != 0)
-			hs.gap = GlobalMembersParse.int_expression();
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "clust$ered") != 0)
+			{
+				hs.type = histogram_type.HT_CLUSTERED.getValue();
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "error$bars") != 0)
+			{
+				hs.type = histogram_type.HT_ERRORBARS.getValue();
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rows$tacked") != 0)
+			{
+				hs.type = histogram_type.HT_STACKED_IN_LAYERS.getValue();
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "columns$tacked") != 0)
+			{
+				hs.type = histogram_type.HT_STACKED_IN_TOWERS.getValue();
+				GlobalMembersCommand.c_token++;
+			}
+			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "gap") != 0)
+			{
+				if (GlobalMembersUtil.isanumber(++GlobalMembersCommand.c_token) != 0)
+					hs.gap = GlobalMembersParse.int_expression();
+				else
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected gap value");
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ti$tle") != 0)
+			{
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+				//ORIGINAL LINE: title_specs.offset = hs->title.offset;
+				title_specs.offset.copyFrom(hs.title.offset);
+				GlobalMembersSet.set_xyzlabel(title_specs);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				memcpy(hs.title.textcolor, title_specs.textcolor, sizeof(t_colorspec));
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+				//ORIGINAL LINE: hs->title.offset = title_specs.offset;
+				hs.title.offset.copyFrom(title_specs.offset);
+				/* EAM FIXME - could allocate space and copy parsed font instead */
+				hs.title.font = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].label.font;
+			}
+			else if ((GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "lw") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "linew$idth") != 0) && (hs.type == histogram_type.HT_ERRORBARS.getValue()))
+			{
+				GlobalMembersCommand.c_token++;
+				hs.bar_lw = GlobalMembersParse.real_expression();
+				if (hs.bar_lw <= 0)
+					hs.bar_lw = 1;
+			}
 			else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expected gap value");
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ti$tle") != 0)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: title_specs.offset = hs->title.offset;
-			title_specs.offset.copyFrom(hs.title.offset);
-			GlobalMembersSet.set_xyzlabel(title_specs);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			memcpy(hs.title.textcolor, title_specs.textcolor, sizeof(t_colorspec));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: hs->title.offset = title_specs.offset;
-			hs.title.offset.copyFrom(title_specs.offset);
-			/* EAM FIXME - could allocate space and copy parsed font instead */
-			hs.title.font = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].label.font;
-		}
-		else if ((GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "lw") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "linew$idth") != 0) && (hs.type == histogram_type.HT_ERRORBARS.getValue()))
-		{
-			GlobalMembersCommand.c_token++;
-			hs.bar_lw = GlobalMembersParse.real_expression();
-			if (hs.bar_lw <= 0)
-			hs.bar_lw = 1;
-		}
-		else
-			/* We hit something unexpected */
-			break;
+				/* We hit something unexpected */
+				break;
 		}
 	}
 
@@ -7380,480 +7380,480 @@ public class GlobalMembersSet
 	{
 		GlobalMembersCommand.c_token++;
 
-	///#ifdef BACKWARDS_COMPATIBLE
-	//
-	// /* retain backwards compatibility to the old syntax for now
-	//  * Oh, such ugliness ...
-	//  */
-	//
-	//    if (almost_equals(c_token,"da$ta")) {
-	//	if (interactive)
-	//	    int_warn(c_token, "deprecated syntax, use \"set style data\"");
-	//	if (!almost_equals(++c_token,"s$tyle"))
-	//	    int_error(c_token,"expecting keyword 'style'");
-	//	else
-	//	    data_style = get_style();
-	//    } else if (almost_equals(c_token,"fu$nction")) {
-	//	if (interactive)
-	//	    int_warn(c_token, "deprecated syntax, use \"set style function\"");
-	//	if (!almost_equals(++c_token,"s$tyle"))
-	//	    int_error(c_token,"expecting keyword 'style'");
-	//	else {
-	//	    enum PLOT_STYLE temp_style = get_style();
-	//
-	//	    if (temp_style & PLOT_STYLE_HAS_ERRORBAR)
-	//		int_error(c_token, "style not usable for function plots, left unchanged");
-	//	    else if (temp_style == HISTOGRAMS)
-	//		int_error(c_token, "style not usable for function plots, left unchanged");
-	//	    else
-	//		func_style = temp_style;
-	//	}
-	//    } else if (almost_equals(c_token,"li$nestyle") || equals(c_token, "ls" )) {
-	//	if (interactive)
-	//	    int_warn(c_token, "deprecated syntax, use \"set style line\"");
-	//	c_token++;
-	//	set_linestyle();
-	//    } else if (almost_equals(c_token,"noli$nestyle") || equals(c_token, "nols" )) {
-	//	c_token++;
-	//	set_nolinestyle();
-	//    } else if (gp_input_line[token[c_token].start_index] == 'n' &&
-	//	       gp_input_line[token[c_token].start_index+1] == 'o') {
-	//	if (interactive)
-	//	    int_warn(c_token, "deprecated syntax, use \"unset\"");
-	//	token[c_token].start_index += 2;
-	//	token[c_token].length -= 2;
-	//	c_token--;
-	//	unset_command();
-	//    } else if (almost_equals(c_token,"miss$ing")) {
-	//	if (interactive)
-	//	    int_warn(c_token, "deprecated syntax, use \"set datafile missing\"");
-	//	set_missing();
-	//    } else {
-	//
-	///#else	// Milder form of backwards compatibility 
+		///#ifdef BACKWARDS_COMPATIBLE
+		//
+		// /* retain backwards compatibility to the old syntax for now
+		//  * Oh, such ugliness ...
+		//  */
+		//
+		//    if (almost_equals(c_token,"da$ta")) {
+		//	if (interactive)
+		//	    int_warn(c_token, "deprecated syntax, use \"set style data\"");
+		//	if (!almost_equals(++c_token,"s$tyle"))
+		//	    int_error(c_token,"expecting keyword 'style'");
+		//	else
+		//	    data_style = get_style();
+		//    } else if (almost_equals(c_token,"fu$nction")) {
+		//	if (interactive)
+		//	    int_warn(c_token, "deprecated syntax, use \"set style function\"");
+		//	if (!almost_equals(++c_token,"s$tyle"))
+		//	    int_error(c_token,"expecting keyword 'style'");
+		//	else {
+		//	    enum PLOT_STYLE temp_style = get_style();
+		//
+		//	    if (temp_style & PLOT_STYLE_HAS_ERRORBAR)
+		//		int_error(c_token, "style not usable for function plots, left unchanged");
+		//	    else if (temp_style == HISTOGRAMS)
+		//		int_error(c_token, "style not usable for function plots, left unchanged");
+		//	    else
+		//		func_style = temp_style;
+		//	}
+		//    } else if (almost_equals(c_token,"li$nestyle") || equals(c_token, "ls" )) {
+		//	if (interactive)
+		//	    int_warn(c_token, "deprecated syntax, use \"set style line\"");
+		//	c_token++;
+		//	set_linestyle();
+		//    } else if (almost_equals(c_token,"noli$nestyle") || equals(c_token, "nols" )) {
+		//	c_token++;
+		//	set_nolinestyle();
+		//    } else if (gp_input_line[token[c_token].start_index] == 'n' &&
+		//	       gp_input_line[token[c_token].start_index+1] == 'o') {
+		//	if (interactive)
+		//	    int_warn(c_token, "deprecated syntax, use \"unset\"");
+		//	token[c_token].start_index += 2;
+		//	token[c_token].length -= 2;
+		//	c_token--;
+		//	unset_command();
+		//    } else if (almost_equals(c_token,"miss$ing")) {
+		//	if (interactive)
+		//	    int_warn(c_token, "deprecated syntax, use \"set datafile missing\"");
+		//	set_missing();
+		//    } else {
+		//
+		///#else	// Milder form of backwards compatibility 
 		/* Allow "set no{foo}" rather than "unset foo" */ 
 		if (GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index) == 'n' && GlobalMembersCommand.gp_input_line.charAt(GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + 1) == 'o')
 		{
-		if (GlobalMembersPlot.interactive)
-			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "deprecated syntax, use \"unset\"");
-		GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index += 2;
-		GlobalMembersCommand.token[GlobalMembersCommand.c_token].length -= 2;
-		GlobalMembersCommand.c_token--;
-		GlobalMembersUnset.unset_command();
+			if (GlobalMembersPlot.interactive)
+				GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "deprecated syntax, use \"unset\"");
+			GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index += 2;
+			GlobalMembersCommand.token[GlobalMembersCommand.c_token].length -= 2;
+			GlobalMembersCommand.c_token--;
+			GlobalMembersUnset.unset_command();
 		}
 		else
 		{
 
-	///#endif // BACKWARDS_COMPATIBLE 
+			///#endif // BACKWARDS_COMPATIBLE 
 
-		int save_token;
-		GlobalMembersParse.check_for_iteration();
-		save_token = GlobalMembersCommand.c_token;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-		ITERATE:
+			int save_token;
+			GlobalMembersParse.check_for_iteration();
+			save_token = GlobalMembersCommand.c_token;
+			//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+			ITERATE:
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch(lookup_table(&set_tbl[0],c_token))
-		switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_tbl[0]), GlobalMembersCommand.c_token))
-		{
-		case S_ANGLES:
-			GlobalMembersSet.set_angles();
-			break;
-		case S_ARROW:
-			GlobalMembersSet.set_arrow();
-			break;
-		case S_AUTOSCALE:
-			GlobalMembersSet.set_autoscale();
-			break;
-		case S_BARS:
-			GlobalMembersSet.set_bars();
-			break;
-		case S_BORDER:
-			GlobalMembersSet.set_border();
-			break;
-		case S_BOXWIDTH:
-			GlobalMembersSet.set_boxwidth();
-			break;
-		case S_CLABEL:
-			GlobalMembersSet.set_clabel();
-			break;
-		case S_CLIP:
-			GlobalMembersSet.set_clip();
-			break;
-		case S_CNTRPARAM:
-			GlobalMembersSet.set_cntrparam();
-			break;
-		case S_CONTOUR:
-			GlobalMembersSet.set_contour();
-			break;
-		case S_DGRID3D:
-			GlobalMembersSet.set_dgrid3d();
-			break;
-		case S_DECIMALSIGN:
-			GlobalMembersSet.set_decimalsign();
-			break;
-		case S_DUMMY:
-			GlobalMembersSet.set_dummy();
-			break;
-		case S_ENCODING:
-			GlobalMembersSet.set_encoding();
-			break;
-		case S_FIT:
-			GlobalMembersSet.set_fit();
-			break;
-		case S_FONTPATH:
-			GlobalMembersSet.set_fontpath();
-			break;
-		case S_FORMAT:
-			GlobalMembersSet.set_format();
-			break;
-		case S_GRID:
-			GlobalMembersSet.set_grid();
-			break;
-		case S_HIDDEN3D:
-			GlobalMembersSet.set_hidden3d();
-			break;
-		case S_HISTORYSIZE:
-	///#ifdef GNUPLOT_HISTORY
-			GlobalMembersSet.set_historysize();
-	///#else
-	//	    int_error(c_token, "Command 'set historysize' requires history support.");
-	///#endif
-			break;
-		case S_ISOSAMPLES:
-			GlobalMembersSet.set_isosamples();
-			break;
-		case S_KEY:
-			GlobalMembersSet.set_key();
-			break;
-		case S_KEYTITLE:
-			GlobalMembersSet.set_keytitle();
-			break;
-		case S_LABEL:
-			GlobalMembersSet.set_label();
-			break;
-		case S_LOADPATH:
-			GlobalMembersSet.set_loadpath();
-			break;
-		case S_LOCALE:
-			GlobalMembersSet.set_locale();
-			break;
-		case S_LOGSCALE:
-			GlobalMembersSet.set_logscale();
-			break;
-	///#ifdef GP_MACROS
-		case S_MACROS:
-			GlobalMembersSet.set_macros();
-			break;
-	///#endif
-		case S_MAPPING:
-			GlobalMembersSet.set_mapping();
-			break;
-		case S_BMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: set_margin(&bmargin);
-			GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.bmargin));
-			break;
-		case S_LMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: set_margin(&lmargin);
-			GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.lmargin));
-			break;
-		case S_RMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: set_margin(&rmargin);
-			GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.rmargin));
-			break;
-		case S_TMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: set_margin(&tmargin);
-			GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.tmargin));
-			break;
-		case S_DATAFILE:
-			if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "miss$ing") != 0)
-			GlobalMembersSet.set_missing();
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sep$arator") != 0)
-			GlobalMembersSet.set_separator();
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "com$mentschars") != 0)
-			GlobalMembersSet.set_datafile_commentschars();
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bin$ary") != 0)
-			GlobalMembersDatafile.df_set_datafile_binary();
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fort$ran") != 0)
-			{
-			GlobalMembersDatafile.df_fortran_constants = true;
-			GlobalMembersCommand.c_token++;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nofort$ran") != 0)
-			{
-			GlobalMembersDatafile.df_fortran_constants = false;
-			GlobalMembersCommand.c_token++;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fpe_trap") != 0)
-			{
-			GlobalMembersDatafile.df_nofpe_trap = false;
-			GlobalMembersCommand.c_token++;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nofpe_trap") != 0)
-			{
-			GlobalMembersDatafile.df_nofpe_trap = true;
-			GlobalMembersCommand.c_token++;
-			}
-			else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting datafile modifier");
-			break;
-	///#ifdef USE_MOUSE
-		case S_MOUSE:
-			GlobalMembersSet.set_mouse();
-			break;
-	///#endif
-		case S_MULTIPLOT:
-			GlobalMembersTerm.term_start_multiplot();
-			break;
-		case S_OFFSETS:
-			GlobalMembersSet.set_offsets();
-			break;
-		case S_ORIGIN:
-			GlobalMembersSet.set_origin();
-			break;
-		case SET_OUTPUT:
-			GlobalMembersSet.set_output();
-			break;
-		case S_PARAMETRIC:
-			GlobalMembersSet.set_parametric();
-			break;
-		case S_PM3D:
-			GlobalMembersSet.set_pm3d();
-			break;
-		case S_PALETTE:
-			GlobalMembersSet.set_palette();
-			break;
-		case S_COLORBOX:
-			GlobalMembersSet.set_colorbox();
-			break;
-		case S_POINTSIZE:
-			GlobalMembersSet.set_pointsize();
-			break;
-		case S_POLAR:
-			GlobalMembersSet.set_polar();
-			break;
-		case S_PRINT:
-			GlobalMembersSet.set_print();
-			break;
-	///#ifdef EAM_OBJECTS
-		case S_OBJECT:
-			GlobalMembersSet.set_object();
-			break;
-	///#endif
-		case S_SAMPLES:
-			GlobalMembersSet.set_samples();
-			break;
-		case S_SIZE:
-			GlobalMembersSet.set_size();
-			break;
-		case S_STYLE:
-			GlobalMembersSet.set_style();
-			break;
-		case S_SURFACE:
-			GlobalMembersSet.set_surface();
-			break;
-		case S_TABLE:
-			GlobalMembersSet.set_table();
-			break;
-		case S_TERMINAL:
-			GlobalMembersSet.set_terminal();
-			break;
-		case S_TERMOPTIONS:
-			GlobalMembersSet.set_termoptions();
-			break;
-		case S_TICS:
-			GlobalMembersSet.set_tics();
-			break;
-		case S_TICSCALE:
-			GlobalMembersSet.set_ticscale();
-			break;
-		case S_TIMEFMT:
-			GlobalMembersSet.set_timefmt();
-			break;
-		case S_TIMESTAMP:
-			GlobalMembersSet.set_timestamp();
-			break;
-		case S_TITLE:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersGadgets.title);
-			break;
-		case S_VIEW:
-			GlobalMembersSet.set_view();
-			break;
-		case S_ZERO:
-			GlobalMembersSet.set_zero();
-			break;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: switch(lookup_table(&set_tbl[0],c_token))
+				switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_tbl[0]), GlobalMembersCommand.c_token))
+				{
+				case S_ANGLES:
+					GlobalMembersSet.set_angles();
+					break;
+				case S_ARROW:
+					GlobalMembersSet.set_arrow();
+					break;
+				case S_AUTOSCALE:
+					GlobalMembersSet.set_autoscale();
+					break;
+				case S_BARS:
+					GlobalMembersSet.set_bars();
+					break;
+				case S_BORDER:
+					GlobalMembersSet.set_border();
+					break;
+				case S_BOXWIDTH:
+					GlobalMembersSet.set_boxwidth();
+					break;
+				case S_CLABEL:
+					GlobalMembersSet.set_clabel();
+					break;
+				case S_CLIP:
+					GlobalMembersSet.set_clip();
+					break;
+				case S_CNTRPARAM:
+					GlobalMembersSet.set_cntrparam();
+					break;
+				case S_CONTOUR:
+					GlobalMembersSet.set_contour();
+					break;
+				case S_DGRID3D:
+					GlobalMembersSet.set_dgrid3d();
+					break;
+				case S_DECIMALSIGN:
+					GlobalMembersSet.set_decimalsign();
+					break;
+				case S_DUMMY:
+					GlobalMembersSet.set_dummy();
+					break;
+				case S_ENCODING:
+					GlobalMembersSet.set_encoding();
+					break;
+				case S_FIT:
+					GlobalMembersSet.set_fit();
+					break;
+				case S_FONTPATH:
+					GlobalMembersSet.set_fontpath();
+					break;
+				case S_FORMAT:
+					GlobalMembersSet.set_format();
+					break;
+				case S_GRID:
+					GlobalMembersSet.set_grid();
+					break;
+				case S_HIDDEN3D:
+					GlobalMembersSet.set_hidden3d();
+					break;
+				case S_HISTORYSIZE:
+					///#ifdef GNUPLOT_HISTORY
+					GlobalMembersSet.set_historysize();
+					///#else
+					//	    int_error(c_token, "Command 'set historysize' requires history support.");
+					///#endif
+					break;
+				case S_ISOSAMPLES:
+					GlobalMembersSet.set_isosamples();
+					break;
+				case S_KEY:
+					GlobalMembersSet.set_key();
+					break;
+				case S_KEYTITLE:
+					GlobalMembersSet.set_keytitle();
+					break;
+				case S_LABEL:
+					GlobalMembersSet.set_label();
+					break;
+				case S_LOADPATH:
+					GlobalMembersSet.set_loadpath();
+					break;
+				case S_LOCALE:
+					GlobalMembersSet.set_locale();
+					break;
+				case S_LOGSCALE:
+					GlobalMembersSet.set_logscale();
+					break;
+					///#ifdef GP_MACROS
+				case S_MACROS:
+					GlobalMembersSet.set_macros();
+					break;
+					///#endif
+				case S_MAPPING:
+					GlobalMembersSet.set_mapping();
+					break;
+				case S_BMARGIN:
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: set_margin(&bmargin);
+					GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.bmargin));
+					break;
+				case S_LMARGIN:
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: set_margin(&lmargin);
+					GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.lmargin));
+					break;
+				case S_RMARGIN:
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: set_margin(&rmargin);
+					GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.rmargin));
+					break;
+				case S_TMARGIN:
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: set_margin(&tmargin);
+					GlobalMembersSet.set_margin(new position(GlobalMembersGadgets.tmargin));
+					break;
+				case S_DATAFILE:
+					if (GlobalMembersUtil.almost_equals(++GlobalMembersCommand.c_token, "miss$ing") != 0)
+						GlobalMembersSet.set_missing();
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "sep$arator") != 0)
+						GlobalMembersSet.set_separator();
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "com$mentschars") != 0)
+						GlobalMembersSet.set_datafile_commentschars();
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "bin$ary") != 0)
+						GlobalMembersDatafile.df_set_datafile_binary();
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fort$ran") != 0)
+					{
+						GlobalMembersDatafile.df_fortran_constants = true;
+						GlobalMembersCommand.c_token++;
+					}
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nofort$ran") != 0)
+					{
+						GlobalMembersDatafile.df_fortran_constants = false;
+						GlobalMembersCommand.c_token++;
+					}
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fpe_trap") != 0)
+					{
+						GlobalMembersDatafile.df_nofpe_trap = false;
+						GlobalMembersCommand.c_token++;
+					}
+					else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nofpe_trap") != 0)
+					{
+						GlobalMembersDatafile.df_nofpe_trap = true;
+						GlobalMembersCommand.c_token++;
+					}
+					else
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting datafile modifier");
+					break;
+					///#ifdef USE_MOUSE
+				case S_MOUSE:
+					GlobalMembersSet.set_mouse();
+					break;
+					///#endif
+				case S_MULTIPLOT:
+					GlobalMembersTerm.term_start_multiplot();
+					break;
+				case S_OFFSETS:
+					GlobalMembersSet.set_offsets();
+					break;
+				case S_ORIGIN:
+					GlobalMembersSet.set_origin();
+					break;
+				case SET_OUTPUT:
+					GlobalMembersSet.set_output();
+					break;
+				case S_PARAMETRIC:
+					GlobalMembersSet.set_parametric();
+					break;
+				case S_PM3D:
+					GlobalMembersSet.set_pm3d();
+					break;
+				case S_PALETTE:
+					GlobalMembersSet.set_palette();
+					break;
+				case S_COLORBOX:
+					GlobalMembersSet.set_colorbox();
+					break;
+				case S_POINTSIZE:
+					GlobalMembersSet.set_pointsize();
+					break;
+				case S_POLAR:
+					GlobalMembersSet.set_polar();
+					break;
+				case S_PRINT:
+					GlobalMembersSet.set_print();
+					break;
+					///#ifdef EAM_OBJECTS
+				case S_OBJECT:
+					GlobalMembersSet.set_object();
+					break;
+					///#endif
+				case S_SAMPLES:
+					GlobalMembersSet.set_samples();
+					break;
+				case S_SIZE:
+					GlobalMembersSet.set_size();
+					break;
+				case S_STYLE:
+					GlobalMembersSet.set_style();
+					break;
+				case S_SURFACE:
+					GlobalMembersSet.set_surface();
+					break;
+				case S_TABLE:
+					GlobalMembersSet.set_table();
+					break;
+				case S_TERMINAL:
+					GlobalMembersSet.set_terminal();
+					break;
+				case S_TERMOPTIONS:
+					GlobalMembersSet.set_termoptions();
+					break;
+				case S_TICS:
+					GlobalMembersSet.set_tics();
+					break;
+				case S_TICSCALE:
+					GlobalMembersSet.set_ticscale();
+					break;
+				case S_TIMEFMT:
+					GlobalMembersSet.set_timefmt();
+					break;
+				case S_TIMESTAMP:
+					GlobalMembersSet.set_timestamp();
+					break;
+				case S_TITLE:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersGadgets.title);
+					break;
+				case S_VIEW:
+					GlobalMembersSet.set_view();
+					break;
+				case S_ZERO:
+					GlobalMembersSet.set_zero();
+					break;
 
-		case S_MXTICS:
-		case S_NOMXTICS:
-		case S_XTICS:
-		case S_NOXTICS:
-		case S_XDTICS:
-		case S_NOXDTICS:
-		case S_XMTICS:
-		case S_NOXMTICS:
-			GlobalMembersSet.set_tic_prop(AXIS_INDEX.FIRST_X_AXIS);
-			break;
-		case S_MYTICS:
-		case S_NOMYTICS:
-		case S_YTICS:
-		case S_NOYTICS:
-		case S_YDTICS:
-		case S_NOYDTICS:
-		case S_YMTICS:
-		case S_NOYMTICS:
-			GlobalMembersSet.set_tic_prop(AXIS_INDEX.FIRST_Y_AXIS);
-			break;
-		case S_MX2TICS:
-		case S_NOMX2TICS:
-		case S_X2TICS:
-		case S_NOX2TICS:
-		case S_X2DTICS:
-		case S_NOX2DTICS:
-		case S_X2MTICS:
-		case S_NOX2MTICS:
-			GlobalMembersSet.set_tic_prop(AXIS_INDEX.SECOND_X_AXIS);
-			break;
-		case S_MY2TICS:
-		case S_NOMY2TICS:
-		case S_Y2TICS:
-		case S_NOY2TICS:
-		case S_Y2DTICS:
-		case S_NOY2DTICS:
-		case S_Y2MTICS:
-		case S_NOY2MTICS:
-			GlobalMembersSet.set_tic_prop(AXIS_INDEX.SECOND_Y_AXIS);
-			break;
-		case S_MZTICS:
-		case S_NOMZTICS:
-		case S_ZTICS:
-		case S_NOZTICS:
-		case S_ZDTICS:
-		case S_NOZDTICS:
-		case S_ZMTICS:
-		case S_NOZMTICS:
-			GlobalMembersSet.set_tic_prop(AXIS_INDEX.FIRST_Z_AXIS);
-			break;
-		case S_MCBTICS:
-		case S_NOMCBTICS:
-		case S_CBTICS:
-		case S_NOCBTICS:
-		case S_CBDTICS:
-		case S_NOCBDTICS:
-		case S_CBMTICS:
-		case S_NOCBMTICS:
-			GlobalMembersSet.set_tic_prop(AXIS_INDEX.COLOR_AXIS);
-			break;
-		case S_XDATA:
-			GlobalMembersSet.set_timedata(AXIS_INDEX.FIRST_X_AXIS);
-			/* HBB 20000506: the old cod this this, too, although it
-			 * serves no useful purpose, AFAICS */
-			/* HBB 20010201: Changed implementation to fix bug
-			 * (c_token advanced too far) */
-			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].is_timedata = GlobalMembersAxis.axis_array[AXIS_INDEX.U_AXIS.getValue()].is_timedata = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].is_timedata;
-			break;
-		case S_YDATA:
-			GlobalMembersSet.set_timedata(AXIS_INDEX.FIRST_Y_AXIS);
-			/* dito */
-			GlobalMembersAxis.axis_array[AXIS_INDEX.V_AXIS.getValue()].is_timedata = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].is_timedata;
-			break;
-		case S_ZDATA:
-			GlobalMembersSet.set_timedata(AXIS_INDEX.FIRST_Z_AXIS);
-			break;
-		case S_CBDATA:
-			GlobalMembersSet.set_timedata(AXIS_INDEX.COLOR_AXIS);
-			break;
-		case S_X2DATA:
-			GlobalMembersSet.set_timedata(AXIS_INDEX.SECOND_X_AXIS);
-			break;
-		case S_Y2DATA:
-			GlobalMembersSet.set_timedata(AXIS_INDEX.SECOND_Y_AXIS);
-			break;
-		case S_XLABEL:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].label);
-			break;
-		case S_YLABEL:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].label);
-			break;
-		case S_ZLABEL:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label);
-			break;
-		case S_CBLABEL:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label);
-			break;
-		case S_X2LABEL:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].label);
-			break;
-		case S_Y2LABEL:
-			GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].label);
-			break;
-		case S_XRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.FIRST_X_AXIS);
-			break;
-		case S_X2RANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.SECOND_X_AXIS);
-			break;
-		case S_YRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.FIRST_Y_AXIS);
-			break;
-		case S_Y2RANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.SECOND_Y_AXIS);
-			break;
-		case S_ZRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.FIRST_Z_AXIS);
-			break;
-		case S_CBRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.COLOR_AXIS);
-			break;
-		case S_RRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.R_AXIS);
-			break;
-		case S_TRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.T_AXIS);
-			break;
-		case S_URANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.U_AXIS);
-			break;
-		case S_VRANGE:
-			GlobalMembersSet.set_range(AXIS_INDEX.V_AXIS);
-			break;
-		case S_XZEROAXIS:
-			GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_X_AXIS);
-			break;
-		case S_YZEROAXIS:
-			GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_Y_AXIS);
-			break;
-		case S_ZZEROAXIS:
-			GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_Z_AXIS);
-			break;
-		case S_X2ZEROAXIS:
-			GlobalMembersSet.set_zeroaxis(AXIS_INDEX.SECOND_X_AXIS);
-			break;
-		case S_Y2ZEROAXIS:
-			GlobalMembersSet.set_zeroaxis(AXIS_INDEX.SECOND_Y_AXIS);
-			break;
-		case S_ZEROAXIS:
-			GlobalMembersSet.set_allzeroaxis();
-			break;
-		case S_XYPLANE:
-			GlobalMembersSet.set_xyplane();
-			break;
-		case S_TICSLEVEL:
-			GlobalMembersSet.set_ticslevel();
-			break;
-		default:
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized option.  See 'help set'.");
-			break;
-		}
+				case S_MXTICS:
+				case S_NOMXTICS:
+				case S_XTICS:
+				case S_NOXTICS:
+				case S_XDTICS:
+				case S_NOXDTICS:
+				case S_XMTICS:
+				case S_NOXMTICS:
+					GlobalMembersSet.set_tic_prop(AXIS_INDEX.FIRST_X_AXIS);
+					break;
+				case S_MYTICS:
+				case S_NOMYTICS:
+				case S_YTICS:
+				case S_NOYTICS:
+				case S_YDTICS:
+				case S_NOYDTICS:
+				case S_YMTICS:
+				case S_NOYMTICS:
+					GlobalMembersSet.set_tic_prop(AXIS_INDEX.FIRST_Y_AXIS);
+					break;
+				case S_MX2TICS:
+				case S_NOMX2TICS:
+				case S_X2TICS:
+				case S_NOX2TICS:
+				case S_X2DTICS:
+				case S_NOX2DTICS:
+				case S_X2MTICS:
+				case S_NOX2MTICS:
+					GlobalMembersSet.set_tic_prop(AXIS_INDEX.SECOND_X_AXIS);
+					break;
+				case S_MY2TICS:
+				case S_NOMY2TICS:
+				case S_Y2TICS:
+				case S_NOY2TICS:
+				case S_Y2DTICS:
+				case S_NOY2DTICS:
+				case S_Y2MTICS:
+				case S_NOY2MTICS:
+					GlobalMembersSet.set_tic_prop(AXIS_INDEX.SECOND_Y_AXIS);
+					break;
+				case S_MZTICS:
+				case S_NOMZTICS:
+				case S_ZTICS:
+				case S_NOZTICS:
+				case S_ZDTICS:
+				case S_NOZDTICS:
+				case S_ZMTICS:
+				case S_NOZMTICS:
+					GlobalMembersSet.set_tic_prop(AXIS_INDEX.FIRST_Z_AXIS);
+					break;
+				case S_MCBTICS:
+				case S_NOMCBTICS:
+				case S_CBTICS:
+				case S_NOCBTICS:
+				case S_CBDTICS:
+				case S_NOCBDTICS:
+				case S_CBMTICS:
+				case S_NOCBMTICS:
+					GlobalMembersSet.set_tic_prop(AXIS_INDEX.COLOR_AXIS);
+					break;
+				case S_XDATA:
+					GlobalMembersSet.set_timedata(AXIS_INDEX.FIRST_X_AXIS);
+					/* HBB 20000506: the old cod this this, too, although it
+					 * serves no useful purpose, AFAICS */
+					/* HBB 20010201: Changed implementation to fix bug
+					 * (c_token advanced too far) */
+					GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].is_timedata = GlobalMembersAxis.axis_array[AXIS_INDEX.U_AXIS.getValue()].is_timedata = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].is_timedata;
+					break;
+				case S_YDATA:
+					GlobalMembersSet.set_timedata(AXIS_INDEX.FIRST_Y_AXIS);
+					/* dito */
+					GlobalMembersAxis.axis_array[AXIS_INDEX.V_AXIS.getValue()].is_timedata = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].is_timedata;
+					break;
+				case S_ZDATA:
+					GlobalMembersSet.set_timedata(AXIS_INDEX.FIRST_Z_AXIS);
+					break;
+				case S_CBDATA:
+					GlobalMembersSet.set_timedata(AXIS_INDEX.COLOR_AXIS);
+					break;
+				case S_X2DATA:
+					GlobalMembersSet.set_timedata(AXIS_INDEX.SECOND_X_AXIS);
+					break;
+				case S_Y2DATA:
+					GlobalMembersSet.set_timedata(AXIS_INDEX.SECOND_Y_AXIS);
+					break;
+				case S_XLABEL:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].label);
+					break;
+				case S_YLABEL:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].label);
+					break;
+				case S_ZLABEL:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].label);
+					break;
+				case S_CBLABEL:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label);
+					break;
+				case S_X2LABEL:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].label);
+					break;
+				case S_Y2LABEL:
+					GlobalMembersSet.set_xyzlabel(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].label);
+					break;
+				case S_XRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.FIRST_X_AXIS);
+					break;
+				case S_X2RANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.SECOND_X_AXIS);
+					break;
+				case S_YRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.FIRST_Y_AXIS);
+					break;
+				case S_Y2RANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.SECOND_Y_AXIS);
+					break;
+				case S_ZRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.FIRST_Z_AXIS);
+					break;
+				case S_CBRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.COLOR_AXIS);
+					break;
+				case S_RRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.R_AXIS);
+					break;
+				case S_TRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.T_AXIS);
+					break;
+				case S_URANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.U_AXIS);
+					break;
+				case S_VRANGE:
+					GlobalMembersSet.set_range(AXIS_INDEX.V_AXIS);
+					break;
+				case S_XZEROAXIS:
+					GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_X_AXIS);
+					break;
+				case S_YZEROAXIS:
+					GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_Y_AXIS);
+					break;
+				case S_ZZEROAXIS:
+					GlobalMembersSet.set_zeroaxis(AXIS_INDEX.FIRST_Z_AXIS);
+					break;
+				case S_X2ZEROAXIS:
+					GlobalMembersSet.set_zeroaxis(AXIS_INDEX.SECOND_X_AXIS);
+					break;
+				case S_Y2ZEROAXIS:
+					GlobalMembersSet.set_zeroaxis(AXIS_INDEX.SECOND_Y_AXIS);
+					break;
+				case S_ZEROAXIS:
+					GlobalMembersSet.set_allzeroaxis();
+					break;
+				case S_XYPLANE:
+					GlobalMembersSet.set_xyplane();
+					break;
+				case S_TICSLEVEL:
+					GlobalMembersSet.set_ticslevel();
+					break;
+				default:
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized option.  See 'help set'.");
+					break;
+				}
 
 			if (GlobalMembersParse.next_iteration())
 			{
-			GlobalMembersCommand.c_token = save_token;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto ITERATE;
+				GlobalMembersCommand.c_token = save_token;
+				//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+				goto ITERATE;
 			}
 
 		}
@@ -7872,39 +7872,39 @@ public class GlobalMembersSet
 	{
 		if (key.stack_dir == en_key_stack_direction.GPKEY_VERTICAL)
 		{
-		switch (key.hpos)
-		{
-		case LEFT:
-			key.margin = en_key_ext_region.GPKEY_LMARGIN;
-			break;
-		case CENTRE:
-			if (key.vpos == VERT_JUSTIFY.JUST_TOP)
-			key.margin = en_key_ext_region.GPKEY_TMARGIN;
-			else
-			key.margin = en_key_ext_region.GPKEY_BMARGIN;
-			break;
-		case RIGHT:
-			key.margin = en_key_ext_region.GPKEY_RMARGIN;
-			break;
-		}
+			switch (key.hpos)
+			{
+			case LEFT:
+				key.margin = en_key_ext_region.GPKEY_LMARGIN;
+				break;
+			case CENTRE:
+				if (key.vpos == VERT_JUSTIFY.JUST_TOP)
+					key.margin = en_key_ext_region.GPKEY_TMARGIN;
+				else
+					key.margin = en_key_ext_region.GPKEY_BMARGIN;
+				break;
+			case RIGHT:
+				key.margin = en_key_ext_region.GPKEY_RMARGIN;
+				break;
+			}
 		}
 		else
 		{
-		switch (key.vpos)
-		{
-		case JUST_TOP:
-			key.margin = en_key_ext_region.GPKEY_TMARGIN;
-			break;
-		case JUST_CENTRE:
-			if (key.hpos == JUSTIFY.LEFT)
-			key.margin = en_key_ext_region.GPKEY_LMARGIN;
-			else
-			key.margin = en_key_ext_region.GPKEY_RMARGIN;
-			break;
-		case JUST_BOT:
-			key.margin = en_key_ext_region.GPKEY_BMARGIN;
-			break;
-		}
+			switch (key.vpos)
+			{
+			case JUST_TOP:
+				key.margin = en_key_ext_region.GPKEY_TMARGIN;
+				break;
+			case JUST_CENTRE:
+				if (key.hpos == JUSTIFY.LEFT)
+					key.margin = en_key_ext_region.GPKEY_LMARGIN;
+				else
+					key.margin = en_key_ext_region.GPKEY_RMARGIN;
+				break;
+			case JUST_BOT:
+				key.margin = en_key_ext_region.GPKEY_BMARGIN;
+				break;
+			}
 		}
 	}
 
@@ -7927,10 +7927,10 @@ public class GlobalMembersSet
 		GlobalMembersColor.sm_palette.ps_allcF = 0;
 		GlobalMembersColor.sm_palette.use_maxcolors = 0;
 		GlobalMembersColor.sm_palette.gradient_num = 0;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersColor.sm_palette.gradient);
 		GlobalMembersColor.sm_palette.gradient = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersColor.sm_palette.color);
 		GlobalMembersColor.sm_palette.color = DefineConstants.NULL;
 		GlobalMembersColor.sm_palette.cmodel = color_models_id.C_MODEL_RGB.getValue();
@@ -7958,26 +7958,26 @@ public class GlobalMembersSet
 		object def_polygon = new object(DefineConstants.NULL, -1, 0, DefineConstants.OBJ_POLYGON, {t_fillstyle.FS_SOLID, 100, 0, {DefineConstants.TC_LT, DefineConstants.LT_BLACK, 0.0}}, {1, DefineConstants.LT_BLACK, 0, 0, 1.0, 0.0, false, {DefineConstants.TC_DEFAULT, 0, 0.0}}, {.polygon = {0, DefineConstants.NULL}});
 
 		if (new_Renamed == null)
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		new() = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct object), "object");
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			new() = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct object), "object");
 		else if (new_Renamed.object_type == DefineConstants.OBJ_POLYGON)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(new_Renamed.o.polygon.vertex);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(new_Renamed.o.polygon.vertex);
 
 		if (object_type == DefineConstants.OBJ_RECTANGLE)
 		{
-		*new() = def_rect;
-		new_Renamed.lp_properties.l_type = DefineConstants.LT_DEFAULT; // Use default rectangle color
-		new_Renamed.fillstyle.fillstyle = t_fillstyle.FS_DEFAULT.getValue(); // and default fill style
+			*new() = def_rect;
+			new_Renamed.lp_properties.l_type = DefineConstants.LT_DEFAULT; // Use default rectangle color
+			new_Renamed.fillstyle.fillstyle = t_fillstyle.FS_DEFAULT.getValue(); // and default fill style
 		}
 		else if (object_type == DefineConstants.OBJ_ELLIPSE)
-		*new() = def_ellipse;
+			*new() = def_ellipse;
 		else if (object_type == DefineConstants.OBJ_CIRCLE)
-		*new() = def_circle;
+			*new() = def_circle;
 		else if (object_type == DefineConstants.OBJ_POLYGON)
-		*new() = def_polygon;
+			*new() = def_polygon;
 		else
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "object initialization failure");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "object initialization failure");
 
 		new_Renamed.tag = tag;
 		new_Renamed.object_type = object_type;
@@ -7993,28 +7993,28 @@ public class GlobalMembersSet
 	 */
 	public static void delete_linestyle(linestyle_def[] head, linestyle_def prev, linestyle_def this_Renamed)
 	{
-		if (this_Renamed != DefineConstants.NULL) // there really is something to delete
+		if (this_Renamed != null) // there really is something to delete
 		{
-		if (this_Renamed == head)
-			head = this_Renamed.next;
-		else
-			prev.next = this_Renamed.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(this_Renamed);
+			if (this_Renamed == head)
+				head = this_Renamed.next;
+			else
+				prev.next = this_Renamed.next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(this_Renamed);
 		}
 	}
 
 	public static void free_marklist(ticmark list)
 	{
-		while (list != DefineConstants.NULL)
+		while (list != null)
 		{
-		ticmark freeable = list;
-		list = list.next;
-		if (!freeable.label.equals(DefineConstants.NULL))
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(freeable.label);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(freeable);
+			ticmark freeable = list;
+			list = list.next;
+			if (!freeable.label.equals(DefineConstants.NULL))
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(freeable.label);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(freeable);
 		}
 	}
 
@@ -8029,21 +8029,21 @@ public class GlobalMembersSet
 
 		while (list != null)
 		{
-		if (list.level < 0)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(list.label);
-			tmp = list.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(list);
-			list = tmp;
-		}
-		else
-		{
-			b.next = list;
-			b = list;
-			list = list.next;
-		}
+			if (list.level < 0)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(list.label);
+				tmp = list.next;
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(list);
+				list = tmp;
+			}
+			else
+			{
+				b.next = list;
+				b = list;
+				list = list.next;
+			}
 		}
 		b.next = DefineConstants.NULL;
 		return a.next;
@@ -8058,12 +8058,12 @@ public class GlobalMembersSet
 		text_label new_Renamed;
 		position default_offset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		new() = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct text_label), "text_label");
 		new_Renamed.next = DefineConstants.NULL;
 		new_Renamed.tag = tag;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: new->place = default_position;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: new->place = default_position;
 		new_Renamed.place.copyFrom(default_position);
 		new_Renamed.pos = JUSTIFY.LEFT;
 		new_Renamed.rotate = 0;
@@ -8073,8 +8073,8 @@ public class GlobalMembersSet
 		new_Renamed.textcolor.type = DefineConstants.TC_DEFAULT;
 		new_Renamed.lp_properties.pointflag = 0;
 		new_Renamed.lp_properties.p_type = 1;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: new->offset = default_offset;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: new->offset = default_offset;
 		new_Renamed.offset.copyFrom(default_offset);
 		new_Renamed.noenhanced = false;
 
@@ -8106,159 +8106,159 @@ public class GlobalMembersSet
 		lp_style_type loc_lp = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
 		loc_lp.pointflag = -2;
 
-	   /* Now parse the label format and style options */
+		/* Now parse the label format and style options */
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* get position */
-		if (!set_position && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 && !axis_label)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersAxis.get_position(pos);
-			set_position = true;
-			continue;
-		}
-
-		/* get justification */
-		if (!set_just)
-		{
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "l$eft") != 0)
-			{
-			just = JUSTIFY.LEFT;
-			GlobalMembersCommand.c_token++;
-			set_just = true;
-			continue;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$entre") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$enter") != 0)
-			{
-			just = JUSTIFY.CENTRE;
-			GlobalMembersCommand.c_token++;
-			set_just = true;
-			continue;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$ight") != 0)
-			{
-			just = JUSTIFY.RIGHT;
-			GlobalMembersCommand.c_token++;
-			set_just = true;
-			continue;
-			}
-		}
-
-		/* get rotation (added by RCC) */
-		if (!set_rot)
-		{
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rot$ate") != 0)
-			{
-			rotate = DefineConstants.TEXT_VERTICAL;
-			GlobalMembersCommand.c_token++;
-			set_rot = true;
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "by") != 0)
+			/* get position */
+			if (!set_position && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0 && !axis_label)
 			{
 				GlobalMembersCommand.c_token++;
-				rotate = GlobalMembersParse.int_expression();
+				GlobalMembersAxis.get_position(pos);
+				set_position = true;
+				continue;
 			}
-			continue;
-			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norot$ate") != 0)
+
+			/* get justification */
+			if (!set_just)
 			{
-			rotate = 0;
-			GlobalMembersCommand.c_token++;
-			set_rot = true;
-			continue;
+				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "l$eft") != 0)
+				{
+					just = JUSTIFY.LEFT;
+					GlobalMembersCommand.c_token++;
+					set_just = true;
+					continue;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$entre") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "c$enter") != 0)
+				{
+					just = JUSTIFY.CENTRE;
+					GlobalMembersCommand.c_token++;
+					set_just = true;
+					continue;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "r$ight") != 0)
+				{
+					just = JUSTIFY.RIGHT;
+					GlobalMembersCommand.c_token++;
+					set_just = true;
+					continue;
+				}
 			}
-		}
 
-		/* get font (added by DJL) */
-		if (!set_font && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "font") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			if ((font = GlobalMembersUtil.try_to_get_string()))
+			/* get rotation (added by RCC) */
+			if (!set_rot)
 			{
-			set_font = true;
-			continue;
+				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "rot$ate") != 0)
+				{
+					rotate = DefineConstants.TEXT_VERTICAL;
+					GlobalMembersCommand.c_token++;
+					set_rot = true;
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "by") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						rotate = GlobalMembersParse.int_expression();
+					}
+					continue;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "norot$ate") != 0)
+				{
+					rotate = 0;
+					GlobalMembersCommand.c_token++;
+					set_rot = true;
+					continue;
+				}
 			}
-			else
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "'fontname,fontsize' expected");
-		}
 
-		/* get front/back (added by JDP) */
-		if (!set_layer && !axis_label)
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
+			/* get font (added by DJL) */
+			if (!set_font && GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "font") != 0)
 			{
-			layer = 0;
-			GlobalMembersCommand.c_token++;
-			set_layer = true;
-			continue;
+				GlobalMembersCommand.c_token++;
+				if ((font = GlobalMembersUtil.try_to_get_string()))
+				{
+					set_font = true;
+					continue;
+				}
+				else
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "'fontname,fontsize' expected");
 			}
-			else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
+
+			/* get front/back (added by JDP) */
+			if (!set_layer && !axis_label)
 			{
-			layer = 1;
-			GlobalMembersCommand.c_token++;
-			set_layer = true;
-			continue;
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "back") != 0)
+				{
+					layer = 0;
+					GlobalMembersCommand.c_token++;
+					set_layer = true;
+					continue;
+				}
+				else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "front") != 0)
+				{
+					layer = 1;
+					GlobalMembersCommand.c_token++;
+					set_layer = true;
+					continue;
+				}
 			}
-		}
 
-		if (loc_lp.pointflag == -2 && !axis_label)
-		{
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "po$int") != 0)
+			if (loc_lp.pointflag == -2 && !axis_label)
 			{
-			int stored_token = ++GlobalMembersCommand.c_token;
-			lp_style_type tmp_lp = new lp_style_type();
-			loc_lp.pointflag = 1;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: tmp_lp = loc_lp;
-			tmp_lp.copyFrom(loc_lp);
-			GlobalMembersMisc.lp_parse(tmp_lp, true, true);
-			if (stored_token != GlobalMembersCommand.c_token)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: loc_lp = tmp_lp;
-				loc_lp.copyFrom(tmp_lp);
-			continue;
+				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "po$int") != 0)
+				{
+					int stored_token = ++GlobalMembersCommand.c_token;
+					lp_style_type tmp_lp = new lp_style_type();
+					loc_lp.pointflag = 1;
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+					//ORIGINAL LINE: tmp_lp = loc_lp;
+					tmp_lp.copyFrom(loc_lp);
+					GlobalMembersMisc.lp_parse(tmp_lp, true, true);
+					if (stored_token != GlobalMembersCommand.c_token)
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: loc_lp = tmp_lp;
+						loc_lp.copyFrom(tmp_lp);
+					continue;
+				}
+				else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nopo$int") != 0)
+				{
+					loc_lp.pointflag = 0;
+					GlobalMembersCommand.c_token++;
+					continue;
+				}
 			}
-			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nopo$int") != 0)
+
+			if (!set_offset && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "of$fset") != 0)
 			{
-			loc_lp.pointflag = 0;
-			GlobalMembersCommand.c_token++;
-			continue;
+				GlobalMembersCommand.c_token++;
+				GlobalMembersAxis.get_position_default(offset, position_type.character);
+				set_offset = true;
+				continue;
 			}
-		}
 
-		if (!set_offset && GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "of$fset") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersAxis.get_position_default(offset, position_type.character);
-			set_offset = true;
-			continue;
-		}
+			if ((GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") != 0) && !set_textcolor)
+			{
+				GlobalMembersMisc.parse_colorspec(textcolor, DefineConstants.TC_Z);
+				set_textcolor = true;
+				continue;
+			}
 
-		if ((GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tc") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "text$color") != 0) && !set_textcolor)
-		{
-			GlobalMembersMisc.parse_colorspec(textcolor, DefineConstants.TC_Z);
-			set_textcolor = true;
-			continue;
-		}
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noenh$anced") != 0)
+			{
+				this_label.noenhanced = true;
+				GlobalMembersCommand.c_token++;
+				continue;
+			}
+			else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "enh$anced") != 0)
+			{
+				this_label.noenhanced = false;
+				GlobalMembersCommand.c_token++;
+				continue;
+			}
 
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "noenh$anced") != 0)
-		{
-			this_label.noenhanced = true;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "enh$anced") != 0)
-		{
-			this_label.noenhanced = false;
-			GlobalMembersCommand.c_token++;
-			continue;
-		}
-
-		/* Coming here means that none of the previous 'if's struck
-		 * its "continue" statement, i.e.  whatever is in the command
-		 * line is forbidden by the 'set label' command syntax.
-		 * On the other hand, 'plot with labels' may have additional stuff coming up.
-		 */
-		break;
+			/* Coming here means that none of the previous 'if's struck
+			 * its "continue" statement, i.e.  whatever is in the command
+			 * line is forbidden by the 'set label' command syntax.
+			 * On the other hand, 'plot with labels' may have additional stuff coming up.
+			 */
+			break;
 
 		} // while(!END_OF_COMMAND)
 
@@ -8266,14 +8266,14 @@ public class GlobalMembersSet
 		 * loop. Only after all options have been parsed it's safe to
 		 * overwrite the position if none has been specified. */
 		if (!set_position)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: pos = default_position;
-		pos.copyFrom(default_position);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: pos = default_position;
+			pos.copyFrom(default_position);
 
 		/* OK! copy the requested options into the label */
 		if (set_position)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_label->place = pos;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: this_label->place = pos;
 			this_label.place.copyFrom(pos);
 		if (set_just)
 			this_label.pos = just;
@@ -8284,20 +8284,20 @@ public class GlobalMembersSet
 		if (set_font)
 			this_label.font = font;
 		if (set_textcolor)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 			memcpy((this_label.textcolor), textcolor, sizeof(t_colorspec));
 		if (loc_lp.pointflag >= 0)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 			memcpy((this_label.lp_properties), loc_lp, sizeof(loc_lp));
 		if (set_offset)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_label->offset = offset;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: this_label->offset = offset;
 			this_label.offset.copyFrom(offset);
 
 		/* Make sure the z coord and the z-coloring agree */
 		if (this_label.textcolor.type == DefineConstants.TC_Z)
-		this_label.textcolor.value = this_label.place.z;
+			this_label.textcolor.value = this_label.place.z;
 	}
 }
