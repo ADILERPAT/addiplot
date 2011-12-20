@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersPlot3d
 {
 	///#define __STDC__ 1
@@ -168,38 +170,38 @@ public class GlobalMembersPlot3d
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: plot3d.c,v 1.171.2.5 2010/02/27 21:52:38 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: plot3d.c,v 1.171.2.5 2010/02/27 21:52:38 sfeam Exp $");
+	//}
 	///#endif
 
 	/* Variables of plot3d.c needed by other modules: */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct surface_points *first_3dplot;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int plot3d_num;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern en_data_mapping mapping3d;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int dgrid3d_row_fineness;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int dgrid3d_col_fineness;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int dgrid3d_norm_value;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int dgrid3d_mode;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern double dgrid3d_x_scale;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern double dgrid3d_y_scale;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean dgrid3d;
 
-/* support for dynamic size of input line */
+	/* support for dynamic size of input line */
 
 
 	/* prototypes from plot3d.c */
@@ -220,29 +222,29 @@ public class GlobalMembersPlot3d
 		GlobalMembersGadgets.is_3d_plot = true;
 
 		/* change view to become map if requested by 'set view map' */
-		if (GlobalMembersGraph3d.splot_map == true)
-		GlobalMembersCommand.splot_map_activate();
+		if (GlobalMembersGraph3d.splot_map != 0)
+			GlobalMembersCommand.splot_map_activate();
 
-		if (GlobalMembersGadgets.parametric && strcmp(GlobalMembersParse.set_dummy_var[0], "t") == 0)
+		if (GlobalMembersGadgets.parametric && StringFunctions.strcmp(GlobalMembersParse.set_dummy_var[0], "t") == 0)
 		{
-		GlobalMembersParse.set_dummy_var[0] = "u";
-		GlobalMembersParse.set_dummy_var[1] = "v";
+			GlobalMembersParse.set_dummy_var[0] = "u";
+			GlobalMembersParse.set_dummy_var[1] = "v";
 		}
 
 		/* put stuff into arrays to simplify access */
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_X_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
 			{
 				this_Renamed.min = this_Renamed.set_max;
 				this_Renamed.max = this_Renamed.set_min;
 			}
 			else
 			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (false)
 			{
@@ -256,20 +258,20 @@ public class GlobalMembersPlot3d
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Y_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
 			{
 				this_Renamed.min = this_Renamed.set_max;
 				this_Renamed.max = this_Renamed.set_min;
 			}
 			else
 			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (false)
 			{
@@ -283,20 +285,20 @@ public class GlobalMembersPlot3d
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Z_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
 			{
 				this_Renamed.min = this_Renamed.set_max;
 				this_Renamed.max = this_Renamed.set_min;
 			}
 			else
 			{
-				this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (false)
 			{
@@ -310,20 +312,20 @@ public class GlobalMembersPlot3d
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.U_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.U_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
 			{
 				this_Renamed.min = this_Renamed.set_max;
 				this_Renamed.max = this_Renamed.set_min;
 			}
 			else
 			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (true)
 			{
@@ -337,20 +339,20 @@ public class GlobalMembersPlot3d
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.V_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.V_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
 			{
 				this_Renamed.min = this_Renamed.set_max;
 				this_Renamed.max = this_Renamed.set_min;
 			}
 			else
 			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (true)
 			{
@@ -364,20 +366,20 @@ public class GlobalMembersPlot3d
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.COLOR_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
 			{
 				this_Renamed.min = this_Renamed.set_max;
 				this_Renamed.max = this_Renamed.set_min;
 			}
 			else
 			{
-				this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (false)
 			{
@@ -391,10 +393,10 @@ public class GlobalMembersPlot3d
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 
 		if (GlobalMembersTerm.term == null) // unknown
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "use 'set term' to set terminal type first");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "use 'set term' to set terminal type first");
 
 		u_axis = (GlobalMembersGadgets.parametric ? AXIS_INDEX.U_AXIS : AXIS_INDEX.FIRST_X_AXIS);
 		v_axis = (GlobalMembersGadgets.parametric ? AXIS_INDEX.V_AXIS : AXIS_INDEX.FIRST_Y_AXIS);
@@ -415,11 +417,11 @@ public class GlobalMembersPlot3d
 				GlobalMembersAxis.axis_array[u_axis.getValue()].autoscale = GlobalMembersAxis.load_range(u_axis, GlobalMembersAxis.axis_array[u_axis.getValue()].min, GlobalMembersAxis.axis_array[u_axis.getValue()].max, GlobalMembersAxis.axis_array[u_axis.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
+				GlobalMembersCommand.c_token++;
 			}
-		} while (0);
-		if (GlobalMembersGraph3d.splot_map == true && !GlobalMembersGadgets.parametric) // v_axis==FIRST_Y_AXIS
-		GlobalMembersCommand.splot_map_deactivate();
+		} while (false);
+		if ((GlobalMembersGraph3d.splot_map != 0) && !GlobalMembersGadgets.parametric) // v_axis==FIRST_Y_AXIS
+			GlobalMembersCommand.splot_map_deactivate();
 		do
 		{
 			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
@@ -436,40 +438,40 @@ public class GlobalMembersPlot3d
 				GlobalMembersAxis.axis_array[v_axis.getValue()].autoscale = GlobalMembersAxis.load_range(v_axis, GlobalMembersAxis.axis_array[v_axis.getValue()].min, GlobalMembersAxis.axis_array[v_axis.getValue()].max, GlobalMembersAxis.axis_array[v_axis.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
+				GlobalMembersCommand.c_token++;
 			}
-		} while (0);
-		if (GlobalMembersGraph3d.splot_map == true && !GlobalMembersGadgets.parametric) // v_axis==FIRST_Y_AXIS
-		GlobalMembersCommand.splot_map_activate();
+		} while (false);
+		if ((GlobalMembersGraph3d.splot_map != 0) && !GlobalMembersGadgets.parametric) // v_axis==FIRST_Y_AXIS
+			GlobalMembersCommand.splot_map_activate();
 
 		if (GlobalMembersGadgets.parametric)
 		{
-		do
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
+			do
 			{
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_X_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale);
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
+				{
 					GlobalMembersCommand.c_token++;
-			}
-		} while (0);
-		if (GlobalMembersGraph3d.splot_map == true)
-			GlobalMembersCommand.splot_map_deactivate();
-		do
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_X_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
+					GlobalMembersCommand.c_token++;
+				}
+			} while (false);
+			if (GlobalMembersGraph3d.splot_map != 0)
+				GlobalMembersCommand.splot_map_deactivate();
+			do
 			{
-				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_Y_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale);
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
+				{
 					GlobalMembersCommand.c_token++;
-			}
-		} while (0);
-		if (GlobalMembersGraph3d.splot_map == true)
-			GlobalMembersCommand.splot_map_activate();
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_Y_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
+					GlobalMembersCommand.c_token++;
+				}
+			} while (false);
+			if (GlobalMembersGraph3d.splot_map != 0)
+				GlobalMembersCommand.splot_map_activate();
 		} // parametric
 		do
 		{
@@ -479,13 +481,13 @@ public class GlobalMembersPlot3d
 				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_Z_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
+				GlobalMembersCommand.c_token++;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_X_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -493,12 +495,12 @@ public class GlobalMembersPlot3d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Y_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -506,12 +508,12 @@ public class GlobalMembersPlot3d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Z_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -519,40 +521,40 @@ public class GlobalMembersPlot3d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 
 		/* Clear out any tick labels read from data files in previous plot */
 		for (u_axis = 0; u_axis < DefineConstants.AXIS_ARRAY_SIZE; u_axis++)
 		{
-		ticdef ticdef = GlobalMembersAxis.axis_array[u_axis.getValue()].ticdef;
-		if (ticdef.def.user != null)
-			ticdef.def.user = GlobalMembersSet.prune_dataticks(ticdef.def.user);
-		if (ticdef.def.user == null && ticdef.type == en_ticseries_type.TIC_USER)
-			ticdef.type = en_ticseries_type.TIC_COMPUTED;
+			ticdef ticdef = GlobalMembersAxis.axis_array[u_axis.getValue()].ticdef;
+			if (ticdef.def.user != null)
+				ticdef.def.user = GlobalMembersSet.prune_dataticks(ticdef.def.user);
+			if (ticdef.def.user == null && ticdef.type == en_ticseries_type.TIC_USER)
+				ticdef.type = en_ticseries_type.TIC_COMPUTED;
 		}
 
 		/* use the default dummy variable unless changed */
 		if (dummy_token0 >= 0)
-		GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[0], dummy_token0, DefineConstants.MAX_ID_LEN);
+			GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[0], dummy_token0, DefineConstants.MAX_ID_LEN);
 		else
-		() strcpy(GlobalMembersParse.c_dummy_var[0], GlobalMembersParse.set_dummy_var[0]);
+			strcpy(GlobalMembersParse.c_dummy_var[0], GlobalMembersParse.set_dummy_var[0]);
 
 		if (dummy_token1 >= 0)
-		GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[1], dummy_token1, DefineConstants.MAX_ID_LEN);
+			GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[1], dummy_token1, DefineConstants.MAX_ID_LEN);
 		else
-		() strcpy(GlobalMembersParse.c_dummy_var[1], GlobalMembersParse.set_dummy_var[1]);
+			strcpy(GlobalMembersParse.c_dummy_var[1], GlobalMembersParse.set_dummy_var[1]);
 
 		GlobalMembersPlot3d.eval_3dplots();
 	}
 
-///#ifdef VOLATILE_REFRESH
-/* Helper function for refresh command.  Reexamine each data point and update the
- * flags for INRANGE/OUTRANGE/UNDEFINED based on the current limits for that axis.
- * Normally the axis limits are already known at this point. But if the user has
- * forced "set autoscale" since the previous plot or refresh, we need to reset the
- * axis limits and try to approximate the full auto-scaling behaviour.
- */
+	///#ifdef VOLATILE_REFRESH
+	/* Helper function for refresh command.  Reexamine each data point and update the
+	 * flags for INRANGE/OUTRANGE/UNDEFINED based on the current limits for that axis.
+	 * Normally the axis limits are already known at this point. But if the user has
+	 * forced "set autoscale" since the previous plot or refresh, we need to reset the
+	 * axis limits and try to approximate the full auto-scaling behaviour.
+	 */
 	public static void refresh_3dbounds(surface_points first_plot, int nplots)
 	{
 		surface_points this_plot = first_plot;
@@ -560,111 +562,111 @@ public class GlobalMembersPlot3d
 
 		for (iplot = 0; iplot < nplots; iplot++, this_plot = this_plot.next_sp)
 		{
-		int i; // point index
-		axis x_axis = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
-		axis y_axis = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
-		iso_curve this_curve;
+			int i; // point index
+			axis x_axis = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
+			axis y_axis = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
+			iso_curve this_curve;
 
-		/* IMAGE clipping is done elsewhere, so we don't need INRANGE/OUTRANGE
-		 * checks.
-		 */
-		if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
-		{
-			if (((int)x_axis.set_autoscale) != 0)
-			GlobalMembersGraphics.plot_image_or_update_axes(this_plot, true);
-			continue;
-		}
-
-		for (this_curve = this_plot.iso_crvs; this_curve; this_curve = this_curve.next)
-		{
-
-		for (i = 0; i < this_curve.p_count; i++)
-		{
-			coordinate point = this_curve.points[i];
-
-			if (point.type == coord_type.UNDEFINED)
-			continue;
-			else
-			point.type = coord_type.INRANGE;
-
-			/* If the state has been set to autoscale since the last plot,
-			 * mark everything INRANGE and re-evaluate the axis limits now.
-			 * Otherwise test INRANGE/OUTRANGE against previous axis limits.
+			/* IMAGE clipping is done elsewhere, so we don't need INRANGE/OUTRANGE
+			 * checks.
 			 */
-			if (x_axis.set_autoscale & (e_autoscale.AUTOSCALE_MIN | e_autoscale.AUTOSCALE_MAX) != 0)
+			if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
 			{
-			if (point.x > x_axis.max)
-				x_axis.max = point.x;
-			if (point.x < x_axis.min)
-				x_axis.min = point.x;
-			}
-			else if (!(((x_axis.min)<(x_axis.max)) ? (((point.x) >= (x_axis.min)) && ((point.x) <= (x_axis.max))) : (((point.x) >= (x_axis.max)) && ((point.x) <= (x_axis.min)))))
-			{
-			point.type = coord_type.OUTRANGE;
-			continue;
+				if (x_axis.set_autoscale.getValue() != 0)
+					GlobalMembersGraphics.plot_image_or_update_axes(this_plot, true);
+				continue;
 			}
 
-			if (y_axis.set_autoscale & (e_autoscale.AUTOSCALE_MIN | e_autoscale.AUTOSCALE_MAX) != 0)
+			for (this_curve = this_plot.iso_crvs; this_curve; this_curve = this_curve.next)
 			{
-			if (point.y > y_axis.max)
-				y_axis.max = point.y;
-			if (point.y < y_axis.min)
-				y_axis.min = point.y;
-			}
-			else if (!(((y_axis.min)<(y_axis.max)) ? (((point.y) >= (y_axis.min)) && ((point.y) <= (y_axis.max))) : (((point.y) >= (y_axis.max)) && ((point.y) <= (y_axis.min)))))
-			{
-			point.type = coord_type.OUTRANGE;
-			continue;
-			}
-		} // End of this curve
-		} // End of this plot
+
+				for (i = 0; i < this_curve.p_count; i++)
+				{
+					coordinate point = this_curve.points[i];
+
+					if (point.type == coord_type.UNDEFINED)
+						continue;
+					else
+						point.type = coord_type.INRANGE;
+
+					/* If the state has been set to autoscale since the last plot,
+					 * mark everything INRANGE and re-evaluate the axis limits now.
+					 * Otherwise test INRANGE/OUTRANGE against previous axis limits.
+					 */
+					if ((x_axis.set_autoscale.getValue() & (((e_autoscale.AUTOSCALE_MIN.getValue() | e_autoscale.AUTOSCALE_MAX.getValue()) != 0) ? 1 : 0)) != 0)
+					{
+						if (point.x > x_axis.max)
+							x_axis.max = point.x;
+						if (point.x < x_axis.min)
+							x_axis.min = point.x;
+					}
+					else if (!(((x_axis.min)<(x_axis.max)) ? (((point.x) >= (x_axis.min)) && ((point.x) <= (x_axis.max))) : (((point.x) >= (x_axis.max)) && ((point.x) <= (x_axis.min)))))
+					{
+						point.type = coord_type.OUTRANGE;
+						continue;
+					}
+
+					if ((y_axis.set_autoscale.getValue() & (((e_autoscale.AUTOSCALE_MIN.getValue() | e_autoscale.AUTOSCALE_MAX.getValue()) != 0) ? 1 : 0)) != 0)
+					{
+						if (point.y > y_axis.max)
+							y_axis.max = point.y;
+						if (point.y < y_axis.min)
+							y_axis.min = point.y;
+					}
+					else if (!(((y_axis.min)<(y_axis.max)) ? (((point.y) >= (y_axis.min)) && ((point.y) <= (y_axis.max))) : (((point.y) >= (y_axis.max)) && ((point.y) <= (y_axis.min)))))
+					{
+						point.type = coord_type.OUTRANGE;
+						continue;
+					}
+				} // End of this curve
+			} // End of this plot
 
 		}
 	}
 
-/*
- * sp_free() releases any memory which was previously malloc()'d to hold
- *   surface points.
- */
-/* HBB 20000506: don't risk stack havoc by recursion, use iterative list
- * cleanup unstead */
+	/*
+	 * sp_free() releases any memory which was previously malloc()'d to hold
+	 *   surface points.
+	 */
+	/* HBB 20000506: don't risk stack havoc by recursion, use iterative list
+	 * cleanup unstead */
 	public static void sp_free(surface_points sp)
 	{
 		while (sp != null)
 		{
-		surface_points next = sp.next_sp;
-		if (sp.title != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(sp.title);
+			surface_points next = sp.next_sp;
+			if (sp.title != null)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(sp.title);
 
-		while (sp.contours != null)
-		{
-			gnuplot_contours next_cntrs = sp.contours.next;
+			while (sp.contours != null)
+			{
+				gnuplot_contours next_cntrs = sp.contours.next;
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(sp.contours.coords);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(sp.contours);
-			sp.contours = next_cntrs;
-		}
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(sp.contours.coords);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(sp.contours);
+				sp.contours = next_cntrs;
+			}
 
-		while (sp.iso_crvs != null)
-		{
-			iso_curve next_icrvs = sp.iso_crvs.next;
+			while (sp.iso_crvs != null)
+			{
+				iso_curve next_icrvs = sp.iso_crvs.next;
 
-			GlobalMembersMisc.iso_free(sp.iso_crvs);
-			sp.iso_crvs = next_icrvs;
-		}
+				GlobalMembersMisc.iso_free(sp.iso_crvs);
+				sp.iso_crvs = next_icrvs;
+			}
 
-		if (sp.labels != null)
-		{
-			GlobalMembersGadgets.free_labels(sp.labels);
-			sp.labels = (GlobalMembersMouse.struct text_label *)DefineConstants.NULL;
-		}
+			if (sp.labels != null)
+			{
+				GlobalMembersGadgets.free_labels(sp.labels);
+				sp.labels = (GlobalMembersMouse.struct text_label *)DefineConstants.NULL;
+			}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(sp);
-		sp = next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(sp);
+			sp = next;
 		}
 	}
 
@@ -1591,10 +1593,10 @@ public class GlobalMembersPlot3d
 	public static double dgrid3d_y_scale = 1.0;
 	public static boolean dgrid3d = false;
 
-/* HBB 20000501: code isolated from eval_3dplots(), where practically
- * identical code occured twice, for direct and crossing isolines,
- * respectively.  The latter only are done for in non-hidden3d
- * mode. */
+	/* HBB 20000501: code isolated from eval_3dplots(), where practically
+	 * identical code occured twice, for direct and crossing isolines,
+	 * respectively.  The latter only are done for in non-hidden3d
+	 * mode. */
 
 	/* static prototypes */
 
@@ -1607,45 +1609,45 @@ public class GlobalMembersPlot3d
 
 		for (j = 0; j < num_iso_to_use; j++)
 		{
-		double iso = iso_min + j * iso_step;
-		/* HBB 20000501: with the new code, it should
-		 * be safe to rely on the actual 'v' axis not
-		 * to be improperly logscaled... */
-		() GlobalMembersEval.Gcomplex(plot_func.dummy_values[cross ? 0 : 1], (GlobalMembersAxis.axis_array[iso_axis.getValue()].log ? Math.exp((iso) * GlobalMembersAxis.axis_array[iso_axis.getValue()].log_base): (iso)), 0.0);
+			double iso = iso_min + j * iso_step;
+			/* HBB 20000501: with the new code, it should
+			 * be safe to rely on the actual 'v' axis not
+			 * to be improperly logscaled... */
+			() GlobalMembersEval.Gcomplex(plot_func.dummy_values[cross ? 0 : 1], (GlobalMembersAxis.axis_array[iso_axis.getValue()].log ? Math.exp((iso) * GlobalMembersAxis.axis_array[iso_axis.getValue()].log_base): (iso)), 0.0);
 
-		for (i = 0; i < num_sam_to_use; i++)
-		{
-			double sam = sam_min + i * sam_step;
-			value a = new value();
-			double temp;
-
-			() GlobalMembersEval.Gcomplex(plot_func.dummy_values[cross ? 1 : 0], (GlobalMembersAxis.axis_array[sam_axis.getValue()].log ? Math.exp((sam) * GlobalMembersAxis.axis_array[sam_axis.getValue()].log_base): (sam)), 0.0);
-
-			if (cross)
+			for (i = 0; i < num_sam_to_use; i++)
 			{
-			points[i].x = iso;
-			points[i].y = sam;
-			}
-			else
-			{
-			points[i].x = sam;
-			points[i].y = iso;
-			}
+				double sam = sam_min + i * sam_step;
+				value a = new value();
+				double temp;
 
-			GlobalMembersEval.evaluate_at(plot_func.at, a);
+				() GlobalMembersEval.Gcomplex(plot_func.dummy_values[cross ? 1 : 0], (GlobalMembersAxis.axis_array[sam_axis.getValue()].log ? Math.exp((sam) * GlobalMembersAxis.axis_array[sam_axis.getValue()].log_base): (sam)), 0.0);
 
-			if (GlobalMembersEval.undefined || (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero))
-			{
-			points[i].type = coord_type.UNDEFINED;
-			continue;
-			}
+				if (cross)
+				{
+					points[i].x = iso;
+					points[i].y = sam;
+				}
+				else
+				{
+					points[i].x = sam;
+					points[i].y = iso;
+				}
 
-			temp = GlobalMembersEval.real(a);
-			points[i].type = coord_type.INRANGE;
-			do
-			{
-				if (value_axis == DefineConstants.NO_AXIS)
-					break;
+				GlobalMembersEval.evaluate_at(plot_func.at, a);
+
+				if (GlobalMembersEval.undefined || (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero))
+				{
+					points[i].type = coord_type.UNDEFINED;
+					continue;
+				}
+
+				temp = GlobalMembersEval.real(a);
+				points[i].type = coord_type.INRANGE;
+				do
+				{
+					if (value_axis == DefineConstants.NO_AXIS)
+						break;
 					if (!(temp > -DefineConstants.VERYLARGE && temp < DefineConstants.VERYLARGE))
 					{
 						points[i].type = coord_type.UNDEFINED;
@@ -1674,120 +1676,120 @@ public class GlobalMembersPlot3d
 					}
 					else
 						points[i].z = temp;
-						if (false)
-							break;
-							if (points[i].type != coord_type.INRANGE)
-								break;
-								if (value_axis.getValue() < 0)
-									break;
-									if (temp < GlobalMembersAxis.axis_array[value_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[value_axis.getValue()].data_min = temp;
-										if (temp < GlobalMembersAxis.axis_array[value_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[value_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[value_axis.getValue()].min = temp;
-												else
-												{
-													points[i].type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (temp > GlobalMembersAxis.axis_array[value_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[value_axis.getValue()].data_max = temp;
-											if (temp > GlobalMembersAxis.axis_array[value_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[value_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[value_axis.getValue()].max = temp;
-													else
-													{
-														points[i].type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-			if (do_update_color != 0)
-			{
-			{
-				coord_type c_type_tmp = points[i].type;
-				do
-				{
-					if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+					if (false)
 						break;
-						if (!(temp > -DefineConstants.VERYLARGE && temp < DefineConstants.VERYLARGE))
+					if (points[i].type != coord_type.INRANGE)
+						break;
+					if (value_axis.getValue() < 0)
+						break;
+					if (temp < GlobalMembersAxis.axis_array[value_axis.getValue()].data_min)
+						GlobalMembersAxis.axis_array[value_axis.getValue()].data_min = temp;
+					if (temp < GlobalMembersAxis.axis_array[value_axis.getValue()].min)
+					{
+						if (GlobalMembersAxis.axis_array[value_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+							GlobalMembersAxis.axis_array[value_axis.getValue()].min = temp;
+						else
 						{
-							c_type_tmp = coord_type.UNDEFINED;
+							points[i].type = coord_type.OUTRANGE;
 							()0;
 							break;
 						}
-						if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
+					}
+					if (temp > GlobalMembersAxis.axis_array[value_axis.getValue()].data_max)
+						GlobalMembersAxis.axis_array[value_axis.getValue()].data_max = temp;
+					if (temp > GlobalMembersAxis.axis_array[value_axis.getValue()].max)
+					{
+						if (GlobalMembersAxis.axis_array[value_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+							GlobalMembersAxis.axis_array[value_axis.getValue()].max = temp;
+						else
 						{
-							if (temp < 0.0)
+							points[i].type = coord_type.OUTRANGE;
+							()0;
+						}
+					}
+				} while (0);
+				if (do_update_color != 0)
+				{
+					{
+						coord_type c_type_tmp = points[i].type;
+						do
+						{
+							if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+								break;
+							if (!(temp > -DefineConstants.VERYLARGE && temp < DefineConstants.VERYLARGE))
 							{
 								c_type_tmp = coord_type.UNDEFINED;
 								()0;
 								break;
 							}
-							else if (temp == 0.0)
+							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
 							{
-								points[i].ylow = -DefineConstants.VERYLARGE;
-								c_type_tmp = coord_type.OUTRANGE;
-								()0;
-								break;
+								if (temp < 0.0)
+								{
+									c_type_tmp = coord_type.UNDEFINED;
+									()0;
+									break;
+								}
+								else if (temp == 0.0)
+								{
+									points[i].ylow = -DefineConstants.VERYLARGE;
+									c_type_tmp = coord_type.OUTRANGE;
+									()0;
+									break;
+								}
+								else
+								{
+									points[i].ylow = (Math.log(temp) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+								}
 							}
 							else
-							{
-								points[i].ylow = (Math.log(temp) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
-							}
-						}
-						else
-							points[i].ylow = temp;
+								points[i].ylow = temp;
 							if (false)
 								break;
-								if (c_type_tmp != coord_type.INRANGE)
+							if (c_type_tmp != coord_type.INRANGE)
+								break;
+							if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+								break;
+							if (temp < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
+								GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = temp;
+							if (temp < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
+							{
+								if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = temp;
+								else
+								{
+									c_type_tmp = coord_type.OUTRANGE;
+									()0;
 									break;
-									if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
-										break;
-										if (temp < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
-											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = temp;
-											if (temp < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-											{
-												if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = temp;
-													else
-													{
-														c_type_tmp = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (temp > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
-												GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = temp;
-												if (temp > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-												{
-													if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = temp;
-														else
-														{
-															c_type_tmp = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
-			};
+								}
+							}
+							if (temp > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
+								GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = temp;
+							if (temp > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
+							{
+								if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = temp;
+								else
+								{
+									c_type_tmp = coord_type.OUTRANGE;
+									()0;
+								}
+							}
+						} while (0);
+					};
+				}
 			}
-		}
-		this_iso.p_count = num_sam_to_use;
-		this_iso = (this_iso).next;
-		points = (this_iso) ? (this_iso).points : DefineConstants.NULL;
+			this_iso.p_count = num_sam_to_use;
+			this_iso = (this_iso).next;
+			points = (this_iso) ? (this_iso).points : DefineConstants.NULL;
 		}
 	}
 
-/* Get 3D data from file, and store into this_plot data
- * structure. Takes care of 'set mapping' and 'set dgrid3d'.
- *
- * Notice: this_plot->token is end of datafile spec, before title etc
- * will be moved past title etc after we return */
+	/* Get 3D data from file, and store into this_plot data
+	 * structure. Takes care of 'set mapping' and 'set dgrid3d'.
+	 *
+	 * Notice: this_plot->token is end of datafile spec, before title etc
+	 * will be moved past title etc after we return */
 	public static int get_3ddata(surface_points this_plot)
 	{
 		int xdatum = 0;
@@ -1800,19 +1802,19 @@ public class GlobalMembersPlot3d
 
 		if (mapping3d == en_data_mapping.MAP3D_CARTESIAN)
 		{
-		/* do this check only, if we have PM3D / PM3D-COLUMN not compiled in */
-		if (GlobalMembersDatafile.df_no_use_specs == 2)
-			GlobalMembersBf_test.int_error(this_plot.token, "Need 1 or 3 columns for cartesian data");
-		/* HBB NEW 20060427: if there's only one, explicit using
-		 * column, it's z data.  df_axis[] has to reflect that, so
-		 * df_readline() will expect time/date input. */
-		if (GlobalMembersDatafile.df_no_use_specs == 1)
-			GlobalMembersDatafile.df_axis[0] = AXIS_INDEX.FIRST_Z_AXIS;
+			/* do this check only, if we have PM3D / PM3D-COLUMN not compiled in */
+			if (GlobalMembersDatafile.df_no_use_specs == 2)
+				GlobalMembersBf_test.int_error(this_plot.token, "Need 1 or 3 columns for cartesian data");
+			/* HBB NEW 20060427: if there's only one, explicit using
+			 * column, it's z data.  df_axis[] has to reflect that, so
+			 * df_readline() will expect time/date input. */
+			if (GlobalMembersDatafile.df_no_use_specs == 1)
+				GlobalMembersDatafile.df_axis[0] = AXIS_INDEX.FIRST_Z_AXIS;
 		}
 		else
 		{
-		if (GlobalMembersDatafile.df_no_use_specs == 1)
-			GlobalMembersBf_test.int_error(this_plot.token, "Need 2 or 3 columns for polar data");
+			if (GlobalMembersDatafile.df_no_use_specs == 1)
+				GlobalMembersBf_test.int_error(this_plot.token, "Need 2 or 3 columns for polar data");
 		}
 
 		this_plot.num_iso_read = 0;
@@ -1825,311 +1827,311 @@ public class GlobalMembersPlot3d
 		 */
 		if (this_plot.iso_crvs != DefineConstants.NULL)
 		{
-		iso_curve icrv;
-		iso_curve icrvs = this_plot.iso_crvs;
+			iso_curve icrv;
+			iso_curve icrvs = this_plot.iso_crvs;
 
-		while (icrvs != null)
-		{
-			icrv = icrvs;
-			icrvs = icrvs.next;
-			GlobalMembersMisc.iso_free(icrv);
-		}
-		this_plot.iso_crvs = DefineConstants.NULL;
+			while (icrvs != null)
+			{
+				icrv = icrvs;
+				icrvs = icrvs.next;
+				GlobalMembersMisc.iso_free(icrv);
+			}
+			this_plot.iso_crvs = DefineConstants.NULL;
 		}
 		/* data file is already open */
 
 		if (GlobalMembersDatafile.df_matrix)
-		this_plot.has_grid_topology = true;
+			this_plot.has_grid_topology = true;
 
 		{
-		/*{{{  read surface from text file */
-		iso_curve local_this_iso = GlobalMembersMisc.iso_alloc(GlobalMembersGadgets.samples_1);
-		coordinate cp;
-		coordinate cptail = DefineConstants.NULL; // Only for VECTOR plots
-		double x;
-		double y;
-		double z;
-		double xtail;
-		double ytail;
-		double ztail;
-		double color = DefineConstants.VERYLARGE;
-		int pm3d_color_from_column = false;
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define color_from_column(x) pm3d_color_from_column = x
-
-		if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			GlobalMembersDatafile.expect_string(4);
-
-		if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-		{
-			local_this_iso.next = GlobalMembersMisc.iso_alloc(GlobalMembersGadgets.samples_1);
-			local_this_iso.next.p_count = 0;
-		}
-
-		/* If the user has set an explicit locale for numeric input, apply it */
-		/* here so that it affects data fields read from the input file.      */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (0)();
-
-		while ((retval = GlobalMembersDatafile.df_readline(v, DefineConstants.MAXDATACOLS)) != DefineConstants.DF_EOF)
-		{
-			j = retval;
-
-			if (j == DefineConstants.DF_SECOND_BLANK)
-			break; // two blank lines
-			if (j == DefineConstants.DF_FIRST_BLANK)
-			{
-
-			/* Images are in a sense similar to isocurves.
-			 * However, the routine for images is written to
-			 * compute the two dimensions of coordinates by
-			 * examining the data alone.  That way it can be used
-			 * in the 2D plots, for which there is no isoline
-			 * record.  So, toss out isoline information for
-			 * images.
-			 */
-			if ((this_plot.plot_style == PLOT_STYLE.IMAGE) || (this_plot.plot_style == PLOT_STYLE.RGBIMAGE) || (this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE))
-				continue;
-
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-				continue;
-
-			/* one blank line */
-			if (pt_in_iso_crv == 0)
-			{
-				if (xdatum == 0)
-				continue;
-				pt_in_iso_crv = xdatum;
-			}
-			if (xdatum > 0)
-			{
-				local_this_iso.p_count = xdatum;
-				local_this_iso.next = this_plot.iso_crvs;
-				this_plot.iso_crvs = local_this_iso;
-				this_plot.num_iso_read++;
-
-				if (xdatum != pt_in_iso_crv)
-				this_plot.has_grid_topology = false;
-
-				local_this_iso = GlobalMembersMisc.iso_alloc(pt_in_iso_crv);
-				xdatum = 0;
-				ydatum++;
-			}
-			continue;
-			}
-
-			else if (j == DefineConstants.DF_FOUND_KEY_TITLE)
-			{
-			/* only the shared part of the 2D and 3D headers is used */
-			GlobalMembersDatafile.df_set_key_title((GlobalMembersMouse.struct curve_points *)this_plot);
-			continue;
-			}
-			else if (j == DefineConstants.DF_KEY_TITLE_MISSING)
-			{
-			fprintf(stderr, "get_data: key title not found in requested column\n");
-			continue;
-			}
-
-			/* its a data point or undefined */
-			if (xdatum >= local_this_iso.p_max)
-			{
-			/* overflow about to occur. Extend size of points[]
-			 * array. Double the size, and add 1000 points, to
-			 * avoid needlessly small steps. */
-			GlobalMembersMisc.iso_extend(local_this_iso, xdatum + xdatum + 1000);
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-				GlobalMembersMisc.iso_extend(local_this_iso.next, xdatum + xdatum + 1000);
-				local_this_iso.next.p_count = 0;
-			}
-			}
-			cp = local_this_iso.points + xdatum;
-
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-			if (j < 6)
-			{
-				cp.type = coord_type.UNDEFINED;
-				continue;
-			}
-			cptail = local_this_iso.next.points + xdatum;
-			}
-
-			if (j == DefineConstants.DF_UNDEFINED || j == DefineConstants.DF_MISSING)
-			{
-			cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto come_here_if_undefined;
-			}
-			cp.type = coord_type.INRANGE; // unless we find out different
-
-			/* EAM Oct 2004 - Substantially rework this section */
-			/* now that there are many more plot types.         */
-
-			x = y = z = 0.0;
-			xtail = ytail = ztail = 0.0;
-
-			/* The x, y, z coordinates depend on the mapping type */
-			switch (mapping3d)
-			{
-
-			case MAP3D_CARTESIAN:
-			if (j == 1)
-			{
-				x = xdatum;
-				y = ydatum;
-				z = v[0];
-				j = 3;
-				break;
-			}
-
-			if (j == 2)
-			{
-				if (PLOT_STYLE.PM3DSURFACE != this_plot.plot_style)
-				GlobalMembersBf_test.int_error(this_plot.token, "2 columns only possible with explicit pm3d style (line %d)", GlobalMembersDatafile.df_line_number);
-				x = xdatum;
-				y = ydatum;
-				z = v[0];
-				pm3d_color_from_column = true;
-				color = v[1];
-				j = 3;
-				break;
-			}
-
-			/* Assume everybody agrees that x,y,z are the first three specs */
-			if (j >= 3)
-			{
-				x = v[0];
-				y = v[1];
-				z = v[2];
-				break;
-			}
-
-			break;
-
-			case MAP3D_SPHERICAL:
-			if (j < 2)
-				GlobalMembersBf_test.int_error(this_plot.token, "Need 2 or 3 columns");
-			if (j < 3)
-			{
-				v[2] = 1; // default radius
-				j = 3;
-			}
-
-			/* Convert to radians. */
-			v[0] *= GlobalMembersGadgets.ang2rad;
-			v[1] *= GlobalMembersGadgets.ang2rad;
-
-			x = v[2] * Math.cos(v[0]) * Math.cos(v[1]);
-			y = v[2] * Math.sin(v[0]) * Math.cos(v[1]);
-			z = v[2] * Math.sin(v[1]);
-
-			break;
-
-			case MAP3D_CYLINDRICAL:
-			if (j < 2)
-				GlobalMembersBf_test.int_error(this_plot.token, "Need 2 or 3 columns");
-			if (j < 3)
-			{
-				v[2] = 1; // default radius
-				j = 3;
-			}
-
-			/* Convert to radians. */
-			v[0] *= GlobalMembersGadgets.ang2rad;
-
-			x = v[2] * Math.cos(v[0]);
-			y = v[2] * Math.sin(v[0]);
-			z = v[1];
-
-			break;
-
-			default:
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Internal error: Unknown mapping type");
-			return retval;
-			}
-
-			if (j < GlobalMembersDatafile.df_no_use_specs)
-			GlobalMembersBf_test.int_error(this_plot.token, "Wrong number of columns in input data - line %d", GlobalMembersDatafile.df_line_number);
-
-			/* After the first three columns it gets messy because */
-			/* different plot styles assume different contents in the columns */
-			if (j >= 4)
-			{
-			if ((this_plot.plot_style == PLOT_STYLE.POINTSTYLE || this_plot.plot_style == PLOT_STYLE.LINESPOINTS) && this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE)
-			{
-				cp.xlow = v[3];
-				color = z;
-				pm3d_color_from_column = false;
-			}
-
-			else if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			{
-			/* 4th column holds label text rather than color */
-			/* text = df_tokens[3]; */
-				color = z;
-				pm3d_color_from_column = false;
-			}
-
-			else
-			{
-				color = v[3];
-				pm3d_color_from_column = true;
-			}
-			}
-
-			if (j >= 5)
-			{
-			if ((this_plot.plot_style == PLOT_STYLE.POINTSTYLE || this_plot.plot_style == PLOT_STYLE.LINESPOINTS) && this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE)
-			{
-				color = v[4];
-				pm3d_color_from_column = true;
-			}
+			/*{{{  read surface from text file */
+			iso_curve local_this_iso = GlobalMembersMisc.iso_alloc(GlobalMembersGadgets.samples_1);
+			coordinate cp;
+			coordinate cptail = DefineConstants.NULL; // Only for VECTOR plots
+			double x;
+			double y;
+			double z;
+			double xtail;
+			double ytail;
+			double ztail;
+			double color = DefineConstants.VERYLARGE;
+			int pm3d_color_from_column = false;
+			//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+			///#define color_from_column(x) pm3d_color_from_column = x
 
 			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			{
-				/* take color from an explicitly given 5th column */
-				color = v[4];
-				pm3d_color_from_column = true;
-			}
+				GlobalMembersDatafile.expect_string(4);
 
-			}
-
-			if (j >= 6)
-			{
 			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
 			{
-				xtail = x + v[3];
-				ytail = y + v[4];
-				ztail = z + v[5];
-				if (j >= 7)
-				{
-				color = v[6];
-				pm3d_color_from_column = true;
-				}
-				else
-				{
-				color = z;
-				pm3d_color_from_column = false;
-				}
+				local_this_iso.next = GlobalMembersMisc.iso_alloc(GlobalMembersGadgets.samples_1);
+				local_this_iso.next.p_count = 0;
 			}
-			}
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef color_from_column
 
+			/* If the user has set an explicit locale for numeric input, apply it */
+			/* here so that it affects data fields read from the input file.      */
+			() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (0)();
 
-			/* Adjust for logscales. Set min/max and point types. Store in cp.
-			 * The macro cannot use continue, as it is wrapped in a loop.
-			 * I regard this as correct goto use
-			 */
-			cp.type = coord_type.INRANGE;
-			do
+			while ((retval = GlobalMembersDatafile.df_readline(v, DefineConstants.MAXDATACOLS)) != DefineConstants.DF_EOF)
 			{
-				if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+				j = retval;
+
+				if (j == DefineConstants.DF_SECOND_BLANK)
+					break; // two blank lines
+				if (j == DefineConstants.DF_FIRST_BLANK)
+				{
+
+					/* Images are in a sense similar to isocurves.
+					 * However, the routine for images is written to
+					 * compute the two dimensions of coordinates by
+					 * examining the data alone.  That way it can be used
+					 * in the 2D plots, for which there is no isoline
+					 * record.  So, toss out isoline information for
+					 * images.
+					 */
+					if ((this_plot.plot_style == PLOT_STYLE.IMAGE) || (this_plot.plot_style == PLOT_STYLE.RGBIMAGE) || (this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE))
+						continue;
+
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+						continue;
+
+					/* one blank line */
+					if (pt_in_iso_crv == 0)
+					{
+						if (xdatum == 0)
+							continue;
+						pt_in_iso_crv = xdatum;
+					}
+					if (xdatum > 0)
+					{
+						local_this_iso.p_count = xdatum;
+						local_this_iso.next = this_plot.iso_crvs;
+						this_plot.iso_crvs = local_this_iso;
+						this_plot.num_iso_read++;
+
+						if (xdatum != pt_in_iso_crv)
+							this_plot.has_grid_topology = false;
+
+						local_this_iso = GlobalMembersMisc.iso_alloc(pt_in_iso_crv);
+						xdatum = 0;
+						ydatum++;
+					}
+					continue;
+				}
+
+				else if (j == DefineConstants.DF_FOUND_KEY_TITLE)
+				{
+					/* only the shared part of the 2D and 3D headers is used */
+					GlobalMembersDatafile.df_set_key_title((GlobalMembersMouse.struct curve_points *)this_plot);
+					continue;
+				}
+				else if (j == DefineConstants.DF_KEY_TITLE_MISSING)
+				{
+					fprintf(stderr, "get_data: key title not found in requested column\n");
+					continue;
+				}
+
+				/* its a data point or undefined */
+				if (xdatum >= local_this_iso.p_max)
+				{
+					/* overflow about to occur. Extend size of points[]
+					 * array. Double the size, and add 1000 points, to
+					 * avoid needlessly small steps. */
+					GlobalMembersMisc.iso_extend(local_this_iso, xdatum + xdatum + 1000);
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					{
+						GlobalMembersMisc.iso_extend(local_this_iso.next, xdatum + xdatum + 1000);
+						local_this_iso.next.p_count = 0;
+					}
+				}
+				cp = local_this_iso.points + xdatum;
+
+				if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+				{
+					if (j < 6)
+					{
+						cp.type = coord_type.UNDEFINED;
+						continue;
+					}
+					cptail = local_this_iso.next.points + xdatum;
+				}
+
+				if (j == DefineConstants.DF_UNDEFINED || j == DefineConstants.DF_MISSING)
+				{
+					cp.type = coord_type.UNDEFINED;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto come_here_if_undefined;
+				}
+				cp.type = coord_type.INRANGE; // unless we find out different
+
+				/* EAM Oct 2004 - Substantially rework this section */
+				/* now that there are many more plot types.         */
+
+				x = y = z = 0.0;
+				xtail = ytail = ztail = 0.0;
+
+				/* The x, y, z coordinates depend on the mapping type */
+				switch (mapping3d)
+				{
+
+				case MAP3D_CARTESIAN:
+					if (j == 1)
+					{
+						x = xdatum;
+						y = ydatum;
+						z = v[0];
+						j = 3;
+						break;
+					}
+
+					if (j == 2)
+					{
+						if (PLOT_STYLE.PM3DSURFACE != this_plot.plot_style)
+							GlobalMembersBf_test.int_error(this_plot.token, "2 columns only possible with explicit pm3d style (line %d)", GlobalMembersDatafile.df_line_number);
+						x = xdatum;
+						y = ydatum;
+						z = v[0];
+						pm3d_color_from_column = true;
+						color = v[1];
+						j = 3;
+						break;
+					}
+
+					/* Assume everybody agrees that x,y,z are the first three specs */
+					if (j >= 3)
+					{
+						x = v[0];
+						y = v[1];
+						z = v[2];
+						break;
+					}
+
 					break;
+
+				case MAP3D_SPHERICAL:
+					if (j < 2)
+						GlobalMembersBf_test.int_error(this_plot.token, "Need 2 or 3 columns");
+					if (j < 3)
+					{
+						v[2] = 1; // default radius
+						j = 3;
+					}
+
+					/* Convert to radians. */
+					v[0] *= GlobalMembersGadgets.ang2rad;
+					v[1] *= GlobalMembersGadgets.ang2rad;
+
+					x = v[2] * Math.cos(v[0]) * Math.cos(v[1]);
+					y = v[2] * Math.sin(v[0]) * Math.cos(v[1]);
+					z = v[2] * Math.sin(v[1]);
+
+					break;
+
+				case MAP3D_CYLINDRICAL:
+					if (j < 2)
+						GlobalMembersBf_test.int_error(this_plot.token, "Need 2 or 3 columns");
+					if (j < 3)
+					{
+						v[2] = 1; // default radius
+						j = 3;
+					}
+
+					/* Convert to radians. */
+					v[0] *= GlobalMembersGadgets.ang2rad;
+
+					x = v[2] * Math.cos(v[0]);
+					y = v[2] * Math.sin(v[0]);
+					z = v[1];
+
+					break;
+
+				default:
+					GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Internal error: Unknown mapping type");
+					return retval;
+				}
+
+				if (j < GlobalMembersDatafile.df_no_use_specs)
+					GlobalMembersBf_test.int_error(this_plot.token, "Wrong number of columns in input data - line %d", GlobalMembersDatafile.df_line_number);
+
+				/* After the first three columns it gets messy because */
+				/* different plot styles assume different contents in the columns */
+				if (j >= 4)
+				{
+					if ((this_plot.plot_style == PLOT_STYLE.POINTSTYLE || this_plot.plot_style == PLOT_STYLE.LINESPOINTS) && this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE)
+					{
+						cp.xlow = v[3];
+						color = z;
+						pm3d_color_from_column = false;
+					}
+
+					else if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+					{
+						/* 4th column holds label text rather than color */
+						/* text = df_tokens[3]; */
+						color = z;
+						pm3d_color_from_column = false;
+					}
+
+					else
+					{
+						color = v[3];
+						pm3d_color_from_column = true;
+					}
+				}
+
+				if (j >= 5)
+				{
+					if ((this_plot.plot_style == PLOT_STYLE.POINTSTYLE || this_plot.plot_style == PLOT_STYLE.LINESPOINTS) && this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE)
+					{
+						color = v[4];
+						pm3d_color_from_column = true;
+					}
+
+					if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+					{
+						/* take color from an explicitly given 5th column */
+						color = v[4];
+						pm3d_color_from_column = true;
+					}
+
+				}
+
+				if (j >= 6)
+				{
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					{
+						xtail = x + v[3];
+						ytail = y + v[4];
+						ztail = z + v[5];
+						if (j >= 7)
+						{
+							color = v[6];
+							pm3d_color_from_column = true;
+						}
+						else
+						{
+							color = z;
+							pm3d_color_from_column = false;
+						}
+					}
+				}
+				//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+				///#undef color_from_column
+
+
+				/* Adjust for logscales. Set min/max and point types. Store in cp.
+				 * The macro cannot use continue, as it is wrapped in a loop.
+				 * I regard this as correct goto use
+				 */
+				cp.type = coord_type.INRANGE;
+				do
+				{
+					if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+						break;
 					if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
 					{
 						cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+						//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 						goto come_here_if_undefined;
 						break;
 					}
@@ -2138,7 +2140,7 @@ public class GlobalMembersPlot3d
 						if (x < 0.0)
 						{
 							cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 							goto come_here_if_undefined;
 							break;
 						}
@@ -2156,46 +2158,46 @@ public class GlobalMembersPlot3d
 					}
 					else
 						cp.x = x;
-						if (this_plot.noautoscale)
+					if (this_plot.noautoscale)
+						break;
+					if (cp.type != coord_type.INRANGE)
+						break;
+					if ((int)GlobalMembersAxis.x_axis < 0)
+						break;
+					if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+						GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = x;
+					if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = x;
+						else
+						{
+							cp.type = coord_type.OUTRANGE;
+							()0;
 							break;
-							if (cp.type != coord_type.INRANGE)
-								break;
-								if ((int)GlobalMembersAxis.x_axis < 0)
-									break;
-									if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = x;
-										if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = x;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = x;
-											if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = x;
-													else
-													{
-														cp.type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-			do
-			{
-				if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
-					break;
+						}
+					}
+					if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+						GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = x;
+					if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = x;
+						else
+						{
+							cp.type = coord_type.OUTRANGE;
+							()0;
+						}
+					}
+				} while (0);
+				do
+				{
+					if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
+						break;
 					if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
 					{
 						cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+						//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 						goto come_here_if_undefined;
 						break;
 					}
@@ -2204,7 +2206,7 @@ public class GlobalMembersPlot3d
 						if (y < 0.0)
 						{
 							cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 							goto come_here_if_undefined;
 							break;
 						}
@@ -2222,537 +2224,537 @@ public class GlobalMembersPlot3d
 					}
 					else
 						cp.y = y;
-						if (this_plot.noautoscale)
-							break;
-							if (cp.type != coord_type.INRANGE)
-								break;
-								if ((int)GlobalMembersAxis.y_axis < 0)
-									break;
-									if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min = y;
-										if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min = y;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max = y;
-											if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max = y;
-													else
-													{
-														cp.type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-			cptail.type = coord_type.INRANGE;
-			do
-			{
-				if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
-					break;
-					if (!(xtail > -DefineConstants.VERYLARGE && xtail < DefineConstants.VERYLARGE))
-					{
-						cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-						goto come_here_if_undefined;
+					if (this_plot.noautoscale)
 						break;
-					}
-					if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+					if (cp.type != coord_type.INRANGE)
+						break;
+					if ((int)GlobalMembersAxis.y_axis < 0)
+						break;
+					if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min)
+						GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min = y;
+					if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min)
 					{
-						if (xtail < 0.0)
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min = y;
+						else
 						{
-							cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-							goto come_here_if_undefined;
-							break;
-						}
-						else if (xtail == 0.0)
-						{
-							cptail.x = -DefineConstants.VERYLARGE;
 							cp.type = coord_type.OUTRANGE;
 							()0;
 							break;
 						}
+					}
+					if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max)
+						GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max = y;
+					if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max = y;
 						else
 						{
-							cptail.x = (Math.log(xtail) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-						}
-					}
-					else
-						cptail.x = xtail;
-						if (this_plot.noautoscale)
-							break;
-							if (cp.type != coord_type.INRANGE)
-								break;
-								if ((int)GlobalMembersAxis.x_axis < 0)
-									break;
-									if (xtail < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xtail;
-										if (xtail < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xtail;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (xtail > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xtail;
-											if (xtail > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xtail;
-													else
-													{
-														cp.type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-			do
-			{
-				if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
-					break;
-					if (!(ytail > -DefineConstants.VERYLARGE && ytail < DefineConstants.VERYLARGE))
-					{
-						cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-						goto come_here_if_undefined;
-						break;
-					}
-					if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
-					{
-						if (ytail < 0.0)
-						{
-							cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-							goto come_here_if_undefined;
-							break;
-						}
-						else if (ytail == 0.0)
-						{
-							cptail.y = -DefineConstants.VERYLARGE;
 							cp.type = coord_type.OUTRANGE;
 							()0;
-							break;
-						}
-						else
-						{
-							cptail.y = (Math.log(ytail) / GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
 						}
 					}
-					else
-						cptail.y = ytail;
-						if (this_plot.noautoscale)
-							break;
-							if (cp.type != coord_type.INRANGE)
-								break;
-								if ((int)GlobalMembersAxis.y_axis < 0)
-									break;
-									if (ytail < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min = ytail;
-										if (ytail < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min = ytail;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (ytail > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max = ytail;
-											if (ytail > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max = ytail;
-													else
-													{
-														cp.type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-			}
-
-			if (dgrid3d)
-			{
-			/* HBB 20010424: in dgrid3d mode, delay log() taking
-			 * and scaling until after the dgrid process. Only for
-			 * z, not for x and y, so we can layout the newly
-			 * created created grid more easily. */
-			cp.z = z;
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-				cptail.z = ztail;
-			}
-			else
-			{
-			/* EAM Sep 2008 - Otherwise z=Nan or z=Inf or DF_MISSING fails */
-			/* to set CRD_COLOR at all, since the z test bails to a goto.  */
-			if (this_plot.plot_style == PLOT_STYLE.IMAGE)
-			{
-				cp.ylow = z;
-			}
-
-			do
-			{
-				if (GlobalMembersAxis.z_axis == DefineConstants.NO_AXIS)
-					break;
-					if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
-					{
-						cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-						goto come_here_if_undefined;
-						break;
-					}
-					if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log)
-					{
-						if (z < 0.0)
-						{
-							cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-							goto come_here_if_undefined;
-							break;
-						}
-						else if (z == 0.0)
-						{
-							cp.z = -DefineConstants.VERYLARGE;
-							cp.type = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
-						else
-						{
-							cp.z = (Math.log(z) / GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base);
-						}
-					}
-					else
-						cp.z = z;
-						if (this_plot.noautoscale)
-							break;
-							if (cp.type != coord_type.INRANGE)
-								break;
-								if ((int)GlobalMembersAxis.z_axis < 0)
-									break;
-									if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min = z;
-										if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = z;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max = z;
-											if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = z;
-													else
-													{
-														cp.type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-				do
+				} while (0);
+				if (this_plot.plot_style == PLOT_STYLE.VECTOR)
 				{
-					if (GlobalMembersAxis.z_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(ztail > -DefineConstants.VERYLARGE && ztail < DefineConstants.VERYLARGE))
+					cptail.type = coord_type.INRANGE;
+					do
+					{
+						if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+							break;
+						if (!(xtail > -DefineConstants.VERYLARGE && xtail < DefineConstants.VERYLARGE))
 						{
 							cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 							goto come_here_if_undefined;
 							break;
 						}
-						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log)
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
 						{
-							if (ztail < 0.0)
+							if (xtail < 0.0)
 							{
 								cp.type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 								goto come_here_if_undefined;
 								break;
 							}
-							else if (ztail == 0.0)
+							else if (xtail == 0.0)
 							{
-								cptail.z = -DefineConstants.VERYLARGE;
+								cptail.x = -DefineConstants.VERYLARGE;
 								cp.type = coord_type.OUTRANGE;
 								()0;
 								break;
 							}
 							else
 							{
-								cptail.z = (Math.log(ztail) / GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base);
+								cptail.x = (Math.log(xtail) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
 							}
 						}
 						else
-							cptail.z = ztail;
-							if (this_plot.noautoscale)
+							cptail.x = xtail;
+						if (this_plot.noautoscale)
+							break;
+						if (cp.type != coord_type.INRANGE)
+							break;
+						if ((int)GlobalMembersAxis.x_axis < 0)
+							break;
+						if (xtail < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xtail;
+						if (xtail < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xtail;
+							else
+							{
+								cp.type = coord_type.OUTRANGE;
+								()0;
 								break;
-								if (cp.type != coord_type.INRANGE)
-									break;
-									if ((int)GlobalMembersAxis.z_axis < 0)
-										break;
-										if (ztail < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min = ztail;
-											if (ztail < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = ztail;
-													else
-													{
-														cp.type = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (ztail > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max = ztail;
-												if (ztail > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = ztail;
-														else
-														{
-															cp.type = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
-
-			if (this_plot.lp_properties.l_type == DefineConstants.LT_COLORFROMCOLUMN)
-				cp.ylow = color;
-
-			if ((PLOT_STYLE.PM3DSURFACE == (this_plot).plot_style || PM3D_IMPL_MODE.PM3D_IMPLICIT == GlobalMembersPm3d.pm3d.implicit || 1 == (this_plot).lp_properties.use_palette))
-			{
-				if (pm3d_color_from_column != 0)
-				{
-				{
-					coord_type c_type_tmp = cp.type;
+							}
+						}
+						if (xtail > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xtail;
+						if (xtail > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xtail;
+							else
+							{
+								cp.type = coord_type.OUTRANGE;
+								()0;
+							}
+						}
+					} while (0);
 					do
 					{
-						if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+						if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
 							break;
-							if (!(color > -DefineConstants.VERYLARGE && color < DefineConstants.VERYLARGE))
+						if (!(ytail > -DefineConstants.VERYLARGE && ytail < DefineConstants.VERYLARGE))
+						{
+							cp.type = coord_type.UNDEFINED;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto come_here_if_undefined;
+							break;
+						}
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
+						{
+							if (ytail < 0.0)
 							{
-								c_type_tmp = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								cp.type = coord_type.UNDEFINED;
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 								goto come_here_if_undefined;
 								break;
 							}
-							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
+							else if (ytail == 0.0)
 							{
-								if (color < 0.0)
-								{
-									c_type_tmp = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-									goto come_here_if_undefined;
-									break;
-								}
-								else if (color == 0.0)
-								{
-									cp.ylow = -DefineConstants.VERYLARGE;
-									c_type_tmp = coord_type.OUTRANGE;
-									()0;
-									break;
-								}
-								else
-								{
-									cp.ylow = (Math.log(color) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
-								}
+								cptail.y = -DefineConstants.VERYLARGE;
+								cp.type = coord_type.OUTRANGE;
+								()0;
+								break;
 							}
 							else
-								cp.ylow = color;
-								if (this_plot.noautoscale)
-									break;
-									if (c_type_tmp != coord_type.INRANGE)
-										break;
-										if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
-											break;
-											if (color < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
-												GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = color;
-												if (color < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = color;
-														else
-														{
-															c_type_tmp = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (color > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
-													GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = color;
-													if (color > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = color;
-															else
-															{
-																c_type_tmp = coord_type.OUTRANGE;
-																()0;
-															}
-													}
+							{
+								cptail.y = (Math.log(ytail) / GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
+							}
+						}
+						else
+							cptail.y = ytail;
+						if (this_plot.noautoscale)
+							break;
+						if (cp.type != coord_type.INRANGE)
+							break;
+						if ((int)GlobalMembersAxis.y_axis < 0)
+							break;
+						if (ytail < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min = ytail;
+						if (ytail < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min = ytail;
+							else
+							{
+								cp.type = coord_type.OUTRANGE;
+								()0;
+								break;
+							}
+						}
+						if (ytail > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max = ytail;
+						if (ytail > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max = ytail;
+							else
+							{
+								cp.type = coord_type.OUTRANGE;
+								()0;
+							}
+						}
 					} while (0);
-				};
+				}
+
+				if (dgrid3d)
+				{
+					/* HBB 20010424: in dgrid3d mode, delay log() taking
+					 * and scaling until after the dgrid process. Only for
+					 * z, not for x and y, so we can layout the newly
+					 * created created grid more easily. */
+					cp.z = z;
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+						cptail.z = ztail;
 				}
 				else
 				{
-				{
-					coord_type c_type_tmp = cp.type;
+					/* EAM Sep 2008 - Otherwise z=Nan or z=Inf or DF_MISSING fails */
+					/* to set CRD_COLOR at all, since the z test bails to a goto.  */
+					if (this_plot.plot_style == PLOT_STYLE.IMAGE)
+					{
+						cp.ylow = z;
+					}
+
 					do
 					{
-						if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+						if (GlobalMembersAxis.z_axis == DefineConstants.NO_AXIS)
 							break;
-							if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
+						if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
+						{
+							cp.type = coord_type.UNDEFINED;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto come_here_if_undefined;
+							break;
+						}
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log)
+						{
+							if (z < 0.0)
 							{
-								c_type_tmp = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								cp.type = coord_type.UNDEFINED;
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 								goto come_here_if_undefined;
 								break;
 							}
-							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
+							else if (z == 0.0)
 							{
-								if (z < 0.0)
+								cp.z = -DefineConstants.VERYLARGE;
+								cp.type = coord_type.OUTRANGE;
+								()0;
+								break;
+							}
+							else
+							{
+								cp.z = (Math.log(z) / GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base);
+							}
+						}
+						else
+							cp.z = z;
+						if (this_plot.noautoscale)
+							break;
+						if (cp.type != coord_type.INRANGE)
+							break;
+						if ((int)GlobalMembersAxis.z_axis < 0)
+							break;
+						if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min = z;
+						if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = z;
+							else
+							{
+								cp.type = coord_type.OUTRANGE;
+								()0;
+								break;
+							}
+						}
+						if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max = z;
+						if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = z;
+							else
+							{
+								cp.type = coord_type.OUTRANGE;
+								()0;
+							}
+						}
+					} while (0);
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+						do
+						{
+							if (GlobalMembersAxis.z_axis == DefineConstants.NO_AXIS)
+								break;
+							if (!(ztail > -DefineConstants.VERYLARGE && ztail < DefineConstants.VERYLARGE))
+							{
+								cp.type = coord_type.UNDEFINED;
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								goto come_here_if_undefined;
+								break;
+							}
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log)
+							{
+								if (ztail < 0.0)
 								{
-									c_type_tmp = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+									cp.type = coord_type.UNDEFINED;
+									//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 									goto come_here_if_undefined;
 									break;
 								}
-								else if (z == 0.0)
+								else if (ztail == 0.0)
 								{
-									cp.ylow = -DefineConstants.VERYLARGE;
-									c_type_tmp = coord_type.OUTRANGE;
+									cptail.z = -DefineConstants.VERYLARGE;
+									cp.type = coord_type.OUTRANGE;
 									()0;
 									break;
 								}
 								else
 								{
-									cp.ylow = (Math.log(z) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+									cptail.z = (Math.log(ztail) / GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].log_base);
 								}
 							}
 							else
-								cp.ylow = z;
-								if (this_plot.noautoscale)
+								cptail.z = ztail;
+							if (this_plot.noautoscale)
+								break;
+							if (cp.type != coord_type.INRANGE)
+								break;
+							if ((int)GlobalMembersAxis.z_axis < 0)
+								break;
+							if (ztail < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min = ztail;
+							if (ztail < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min)
+							{
+								if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = ztail;
+								else
+								{
+									cp.type = coord_type.OUTRANGE;
+									()0;
 									break;
+								}
+							}
+							if (ztail > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max = ztail;
+							if (ztail > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max)
+							{
+								if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = ztail;
+								else
+								{
+									cp.type = coord_type.OUTRANGE;
+									()0;
+								}
+							}
+						} while (0);
+
+					if (this_plot.lp_properties.l_type == DefineConstants.LT_COLORFROMCOLUMN)
+						cp.ylow = color;
+
+					if ((PLOT_STYLE.PM3DSURFACE == (this_plot).plot_style || PM3D_IMPL_MODE.PM3D_IMPLICIT == GlobalMembersPm3d.pm3d.implicit || 1 == (this_plot).lp_properties.use_palette))
+					{
+						if (pm3d_color_from_column != 0)
+						{
+							{
+								coord_type c_type_tmp = cp.type;
+								do
+								{
+									if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+										break;
+									if (!(color > -DefineConstants.VERYLARGE && color < DefineConstants.VERYLARGE))
+									{
+										c_type_tmp = coord_type.UNDEFINED;
+										//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+										goto come_here_if_undefined;
+										break;
+									}
+									if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
+									{
+										if (color < 0.0)
+										{
+											c_type_tmp = coord_type.UNDEFINED;
+											//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+											goto come_here_if_undefined;
+											break;
+										}
+										else if (color == 0.0)
+										{
+											cp.ylow = -DefineConstants.VERYLARGE;
+											c_type_tmp = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+										else
+										{
+											cp.ylow = (Math.log(color) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+										}
+									}
+									else
+										cp.ylow = color;
+									if (this_plot.noautoscale)
+										break;
 									if (c_type_tmp != coord_type.INRANGE)
 										break;
-										if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+									if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+										break;
+									if (color < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
+										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = color;
+									if (color < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
+									{
+										if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = color;
+										else
+										{
+											c_type_tmp = coord_type.OUTRANGE;
+											()0;
 											break;
-											if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
-												GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = z;
-												if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = z;
-														else
-														{
-															c_type_tmp = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
-													GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = z;
-													if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = z;
-															else
-															{
-																c_type_tmp = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
-				};
+										}
+									}
+									if (color > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
+										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = color;
+									if (color > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
+									{
+										if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = color;
+										else
+										{
+											c_type_tmp = coord_type.OUTRANGE;
+											()0;
+										}
+									}
+								} while (0);
+							};
+						}
+						else
+						{
+							{
+								coord_type c_type_tmp = cp.type;
+								do
+								{
+									if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+										break;
+									if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
+									{
+										c_type_tmp = coord_type.UNDEFINED;
+										//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+										goto come_here_if_undefined;
+										break;
+									}
+									if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
+									{
+										if (z < 0.0)
+										{
+											c_type_tmp = coord_type.UNDEFINED;
+											//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+											goto come_here_if_undefined;
+											break;
+										}
+										else if (z == 0.0)
+										{
+											cp.ylow = -DefineConstants.VERYLARGE;
+											c_type_tmp = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+										else
+										{
+											cp.ylow = (Math.log(z) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+										}
+									}
+									else
+										cp.ylow = z;
+									if (this_plot.noautoscale)
+										break;
+									if (c_type_tmp != coord_type.INRANGE)
+										break;
+									if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+										break;
+									if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
+										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = z;
+									if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
+									{
+										if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = z;
+										else
+										{
+											c_type_tmp = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+									}
+									if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
+										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = z;
+									if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
+									{
+										if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = z;
+										else
+										{
+											c_type_tmp = coord_type.OUTRANGE;
+											()0;
+										}
+									}
+								} while (0);
+							};
+						}
+					}
 				}
-			}
-			}
 
-			/* At this point we have stored the point coordinates. Now we need to copy */
-			/* x,y,z into the text_label structure and add the actual text string.     */
-			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			GlobalMembersPlot2d.store_label(this_plot.labels, cp, xdatum, GlobalMembersDatafile.df_tokens[3], color);
+				/* At this point we have stored the point coordinates. Now we need to copy */
+				/* x,y,z into the text_label structure and add the actual text string.     */
+				if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+					GlobalMembersPlot2d.store_label(this_plot.labels, cp, xdatum, GlobalMembersDatafile.df_tokens[3], color);
 
-			if (this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
+				if (this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
+				{
+					/* We will autoscale the RGB components to  a total range [0:255]
+					 * so we don't need to do any fancy scaling here.
+					 */
+					cp.yhigh = v[3];
+					cp.xlow = v[4];
+					cp.xhigh = v[5];
+					cp.ylow = v[6]; // Alpha channel
+				}
+
+				//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+				come_here_if_undefined:
+					/* some may complain, but I regard this as the correct use of goto */
+					++xdatum;
+			} // end of whileloop - end of surface
+
+			/* We are finished reading user input; return to C locale for internal use */
+			() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+
+			if (pm3d_color_from_column != 0)
 			{
-			/* We will autoscale the RGB components to  a total range [0:255]
-			 * so we don't need to do any fancy scaling here.
-			 */
-			cp.yhigh = v[3];
-			cp.xlow = v[4];
-			cp.xhigh = v[5];
-			cp.ylow = v[6]; // Alpha channel
+				this_plot.pm3d_color_from_column = pm3d_color_from_column;
 			}
 
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-		come_here_if_undefined:
-			/* some may complain, but I regard this as the correct use of goto */
-			++xdatum;
-		} // end of whileloop - end of surface
+			if (xdatum > 0)
+			{
+				this_plot.num_iso_read++; // Update last iso.
+				local_this_iso.p_count = xdatum;
 
-		/* We are finished reading user input; return to C locale for internal use */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+				/* If this is a VECTOR plot then iso->next is already */
+				/* occupied by the vector tail coordinates.           */
+				if (this_plot.plot_style != PLOT_STYLE.VECTOR)
+					local_this_iso.next = this_plot.iso_crvs;
+				this_plot.iso_crvs = local_this_iso;
 
-		if (pm3d_color_from_column != 0)
-		{
-			this_plot.pm3d_color_from_column = pm3d_color_from_column;
-		}
+				if (xdatum != pt_in_iso_crv)
+					this_plot.has_grid_topology = false;
 
-		if (xdatum > 0)
-		{
-			this_plot.num_iso_read++; // Update last iso.
-			local_this_iso.p_count = xdatum;
+			} // Free last allocation
+			else
+			{
+				if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					GlobalMembersMisc.iso_free(local_this_iso.next);
+				GlobalMembersMisc.iso_free(local_this_iso);
+			}
 
-			/* If this is a VECTOR plot then iso->next is already */
-			/* occupied by the vector tail coordinates.           */
-			if (this_plot.plot_style != PLOT_STYLE.VECTOR)
-			local_this_iso.next = this_plot.iso_crvs;
-			this_plot.iso_crvs = local_this_iso;
-
-			if (xdatum != pt_in_iso_crv)
-			this_plot.has_grid_topology = false;
-
-		} // Free last allocation
-		else
-		{
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			GlobalMembersMisc.iso_free(local_this_iso.next);
-			GlobalMembersMisc.iso_free(local_this_iso);
-		}
-
-		/*}}} */
+			/*}}} */
 		}
 
 		if (dgrid3d && this_plot.num_iso_read > 0)
-		GlobalMembersPlot3d.grid_nongrid_data(this_plot);
+			GlobalMembersPlot3d.grid_nongrid_data(this_plot);
 
 		/* This check used to be done in graph3d */
 		if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min == DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min == DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min == DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max == -DefineConstants.VERYLARGE)
@@ -2763,52 +2765,52 @@ public class GlobalMembersPlot3d
 		}
 
 		if (this_plot.num_iso_read <= 1)
-		this_plot.has_grid_topology = false;
+			this_plot.has_grid_topology = false;
 		if (this_plot.has_grid_topology != 0 && !GlobalMembersGraph3d.hidden3d)
 		{
-		iso_curve new_icrvs = DefineConstants.NULL;
-		int num_new_iso = this_plot.iso_crvs.p_count;
-		int len_new_iso = this_plot.num_iso_read;
-		int i;
+			iso_curve new_icrvs = DefineConstants.NULL;
+			int num_new_iso = this_plot.iso_crvs.p_count;
+			int len_new_iso = this_plot.num_iso_read;
+			int i;
 
-		/* Now we need to set the other direction (pseudo) isolines. */
-		for (i = 0; i < num_new_iso; i++)
-		{
-			iso_curve new_icrv = GlobalMembersMisc.iso_alloc(len_new_iso);
-
-			new_icrv.p_count = len_new_iso;
-
-			for (j = 0, this_iso = this_plot.iso_crvs; this_iso != DefineConstants.NULL; j++, this_iso = this_iso.next)
+			/* Now we need to set the other direction (pseudo) isolines. */
+			for (i = 0; i < num_new_iso; i++)
 			{
-			/* copy whole point struct to get type too.
-			 * wasteful for windows, with padding */
-			/* more efficient would be extra pointer to same struct */
-			new_icrv.points[j] = this_iso.points[i];
+				iso_curve new_icrv = GlobalMembersMisc.iso_alloc(len_new_iso);
+
+				new_icrv.p_count = len_new_iso;
+
+				for (j = 0, this_iso = this_plot.iso_crvs; this_iso != DefineConstants.NULL; j++, this_iso = this_iso.next)
+				{
+					/* copy whole point struct to get type too.
+					 * wasteful for windows, with padding */
+					/* more efficient would be extra pointer to same struct */
+					new_icrv.points[j] = this_iso.points[i];
+				}
+
+				new_icrv.next = new_icrvs;
+				new_icrvs = new_icrv;
 			}
 
-			new_icrv.next = new_icrvs;
-			new_icrvs = new_icrv;
-		}
-
-		/* Append the new iso curves after the read ones. */
-		for (this_iso = this_plot.iso_crvs; this_iso.next != DefineConstants.NULL; this_iso = this_iso.next)
-			;
-		this_iso.next = new_icrvs;
+			/* Append the new iso curves after the read ones. */
+			for (this_iso = this_plot.iso_crvs; this_iso.next != DefineConstants.NULL; this_iso = this_iso.next)
+				;
+			this_iso.next = new_icrvs;
 		}
 
 		return retval;
 	}
 
-/*
- * This parses the splot command after any range specifications. To support
- * autoscaling on the x/z axis, we want any data files to define the x/y
- * range, then to plot any functions using that range. We thus parse the
- * input twice, once to pick up the data files, and again to pick up the
- * functions. Definitions are processed twice, but that won't hurt.
- * div - okay, it doesn't hurt, but every time an option as added for
- * datafiles, code to parse it has to be added here. Change so that
- * we store starting-token in the plot structure.
- */
+	/*
+	 * This parses the splot command after any range specifications. To support
+	 * autoscaling on the x/z axis, we want any data files to define the x/y
+	 * range, then to plot any functions using that range. We thus parse the
+	 * input twice, once to pick up the data files, and again to pick up the
+	 * functions. Definitions are processed twice, but that won't hurt.
+	 * div - okay, it doesn't hurt, but every time an option as added for
+	 * datafiles, code to parse it has to be added here. Change so that
+	 * we store starting-token in the plot structure.
+	 */
 	public static void eval_3dplots()
 	{
 		int i;
@@ -2834,7 +2836,7 @@ public class GlobalMembersPlot3d
 		 * since we cannot call sp_free if the list is incomplete
 		 */
 		if (first_3dplot != null && plot3d_num > 0)
-		  GlobalMembersPlot3d.sp_free(first_3dplot);
+			GlobalMembersPlot3d.sp_free(first_3dplot);
 		plot3d_num = 0;
 		first_3dplot = DefineConstants.NULL;
 
@@ -2855,7 +2857,7 @@ public class GlobalMembersPlot3d
 
 		begin_token = GlobalMembersCommand.c_token;
 
-	/*** First Pass: Read through data files ***/
+		/*** First Pass: Read through data files ***/
 		/*
 		 * This pass serves to set the x/yranges and to parse the command, as
 		 * well as filling in every thing except the function data. That is done
@@ -2865,638 +2867,638 @@ public class GlobalMembersPlot3d
 
 		while (true)
 		{
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "function to plot expected");
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "function to plot expected");
 
-		if (crnt_param == 0 && !was_definition)
-			start_token = GlobalMembersCommand.c_token;
+			if (crnt_param == 0 && !was_definition)
+				start_token = GlobalMembersCommand.c_token;
 
-		if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
-		{
-			GlobalMembersCommand.define();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+			if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
 			{
-			was_definition = true;
-			continue;
-			}
-
-		}
-		else
-		{
-			int specs = -1;
-			surface_points this_plot;
-
-			String name_str;
-			boolean duplication = false;
-			boolean set_title = false;
-			boolean set_with = false;
-			boolean set_lpstyle = false;
-			boolean checked_once = false;
-			boolean set_labelstyle = false;
-
-			if (!was_definition && (!GlobalMembersGadgets.parametric || crnt_param == 0))
-			start_token = GlobalMembersCommand.c_token;
-			was_definition = false;
-
-			GlobalMembersCommand.dummy_func = plot_func;
-			/* WARNING: do NOT free name_str */
-			/* FIXME: could also be saved in this_plot */
-			name_str = GlobalMembersParse.string_or_express(DefineConstants.NULL);
-			GlobalMembersCommand.dummy_func = DefineConstants.NULL;
-			if (name_str != null)
-			{
-			/*{{{  data file to plot */
-			if (GlobalMembersGadgets.parametric && crnt_param != 0)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "previous parametric function not fully specified");
-
-			if (!some_data_files)
-			{
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				GlobalMembersCommand.define();
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
 				{
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
-				}
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				{
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
-				}
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				{
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min = DefineConstants.VERYLARGE;
-				}
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				{
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
-				}
-				some_data_files = true;
-			}
-			if (tp_3d_ptr != null)
-				this_plot = tp_3d_ptr;
-			else // no memory malloc()'d there yet
-			{
-				/* Allocate enough isosamples and samples */
-				this_plot = GlobalMembersPlot3d.sp_alloc(0, 0, 0, 0);
-				tp_3d_ptr = this_plot;
-			}
-
-			this_plot.plot_type = PLOT_TYPE.DATA3D;
-			this_plot.plot_style = GlobalMembersGadgets.data_style;
-
-			GlobalMembersDatafile.df_set_plot_mode(MODE_PLOT_TYPE.MODE_SPLOT);
-			specs = GlobalMembersDatafile.df_open(name_str, DefineConstants.MAXDATACOLS, (GlobalMembersMouse.struct curve_points *)this_plot);
-
-			if (GlobalMembersDatafile.df_matrix)
-				this_plot.has_grid_topology = true;
-
-			/* parses all datafile-specific modifiers */
-			/* we will load the data after parsing title,with,... */
-
-			/* for capture to key */
-			this_plot.token = end_token = GlobalMembersCommand.c_token - 1;
-			this_plot.iteration = GlobalMembersParse.iteration; // FIXME: Is this really needed?
-
-			/* this_plot->token is temporary, for errors in get_3ddata() */
-
-			if (specs < 3)
-			{
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].is_timedata)
-				{
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for x time data");
-				}
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].is_timedata)
-				{
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for y time data");
-				}
-			}
-			GlobalMembersDatafile.df_axis[0] = AXIS_INDEX.FIRST_X_AXIS;
-			GlobalMembersDatafile.df_axis[1] = AXIS_INDEX.FIRST_Y_AXIS;
-			GlobalMembersDatafile.df_axis[2] = AXIS_INDEX.FIRST_Z_AXIS;
-
-			/*}}} */
-
-			} // function to plot
-			else
-			{
-
-			/*{{{  function */
-			++plot_num;
-			if (GlobalMembersGadgets.parametric)
-			{
-				/* Rotate between x/y/z axes */
-				/* +2 same as -1, but beats -ve problem */
-				crnt_param = (crnt_param + 2) % 3;
-			}
-			if (tp_3d_ptr != null)
-			{
-				this_plot = tp_3d_ptr;
-				if (!GlobalMembersGraph3d.hidden3d)
-				GlobalMembersPlot3d.sp_replace(this_plot, GlobalMembersGadgets.samples_1, GlobalMembersGraph3d.iso_samples_1, GlobalMembersGadgets.samples_2, GlobalMembersGraph3d.iso_samples_2);
-				else
-				GlobalMembersPlot3d.sp_replace(this_plot, GlobalMembersGraph3d.iso_samples_1, 0, 0, GlobalMembersGraph3d.iso_samples_2);
-
-			} // no memory malloc()'d there yet
-			else
-			{
-				/* Allocate enough isosamples and samples */
-				if (!GlobalMembersGraph3d.hidden3d)
-				this_plot = GlobalMembersPlot3d.sp_alloc(GlobalMembersGadgets.samples_1, GlobalMembersGraph3d.iso_samples_1, GlobalMembersGadgets.samples_2, GlobalMembersGraph3d.iso_samples_2);
-				else
-				this_plot = GlobalMembersPlot3d.sp_alloc(GlobalMembersGraph3d.iso_samples_1, 0, 0, GlobalMembersGraph3d.iso_samples_2);
-				tp_3d_ptr = this_plot;
-			}
-
-			this_plot.plot_type = PLOT_TYPE.FUNC3D;
-			this_plot.has_grid_topology = true;
-			this_plot.plot_style = GlobalMembersGadgets.func_style;
-			this_plot.num_iso_read = GlobalMembersGraph3d.iso_samples_2;
-			/* ignore it for now */
-			some_functions = true;
-			end_token = GlobalMembersCommand.c_token - 1;
-			/*}}} */
-
-			} // end of IS THIS A FILE OR A FUNC block
-
-			/* clear current title, if exist */
-			if (this_plot.title != null)
-			{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(this_plot.title);
-			this_plot.title = DefineConstants.NULL;
-			}
-
-			/* default line and point types, no palette */
-			this_plot.lp_properties.use_palette = false;
-			this_plot.lp_properties.l_type = line_num;
-			this_plot.lp_properties.p_type = point_num;
-
-			/* user may prefer explicit line styles */
-			if (GlobalMembersGadgets.prefer_line_styles)
-			GlobalMembersTerm.lp_use_properties(this_plot.lp_properties, line_num + 1);
-
-			/* pm 25.11.2001 allow any order of options */
-			while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || !checked_once)
-			{
-
-			/* deal with title */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$itle") != 0)
-			{
-				if (set_title)
-				{
-				duplication = true;
-				break;
-				}
-				this_plot.title_no_enhanced = !key.enhanced;
-				/* title can be enhanced if not explicitly disabled */
-				if (GlobalMembersGadgets.parametric)
-				{
-				if (crnt_param != 0)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"title\" allowed only after parametric function fully specified");
-				else
-				{
-					if (!xtitle.equals(DefineConstants.NULL))
-					xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, DefineConstants.NUL); // Remove default title .
-					if (!ytitle.equals(DefineConstants.NULL))
-					ytitle = tangible.StringFunctions.changeCharacter(ytitle, 0, DefineConstants.NUL); // Remove default title .
-				}
-				}
-				GlobalMembersCommand.c_token++;
-
-				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "col$umnheader") != 0)
-				{
-				GlobalMembersDatafile.df_set_key_title_columnhead(this_plot.plot_type);
-				}
-				else
-
-	///#ifdef BACKWARDS_COMPATIBLE
-	// /* Annoying backwards-compatibility hack - deprecate! */
-	//		    if (isanumber(c_token)) {
-	//			c_token--;
-	//			df_set_key_title_columnhead(this_plot->plot_type);
-	//		    } else
-	///#endif
-
-				if (!(this_plot.title = GlobalMembersUtil.try_to_get_string()))
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting \"title\" for plot");
-				set_title = true;
-				continue;
-			}
-
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "not$itle") != 0)
-			{
-				if (set_title)
-				{
-				duplication = true;
-				break;
-				}
-				GlobalMembersCommand.c_token++;
-				if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-				GlobalMembersUtil.try_to_get_string(); // ignore optionally given title string
-				this_plot.title_is_suppressed = true;
-				if (!xtitle.equals(DefineConstants.NULL))
-				xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
-				if (!ytitle.equals(DefineConstants.NULL))
-				ytitle = tangible.StringFunctions.changeCharacter(ytitle, 0, '\0');
-				set_title = true;
-				continue;
-			}
-
-			/* deal with style */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "w$ith") != 0)
-			{
-				if (set_with)
-				{
-				duplication = true;
-				break;
-				}
-				this_plot.plot_style = GlobalMembersMisc.get_style();
-				if ((this_plot.plot_type == PLOT_TYPE.FUNC3D) && ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_ERRORBAR) || (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)))
-				{
-				GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "This plot style is only for datafiles , reverting to \"points\"");
-				this_plot.plot_style = PLOT_STYLE.POINTSTYLE;
-				}
-
-				if ((this_plot.plot_style | GlobalMembersGadgets.data_style) & PLOT_STYLE.PM3DSURFACE)
-				{
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0)
-				{
-				/* option 'with pm3d [at ...]' is explicitly specified */
-				GlobalMembersCommand.c_token++;
-				if (GlobalMembersPm3d.get_pm3d_at_option(this_plot.pm3d_where.charAt(0)) != 0)
-					return; // error
-				}
-				}
-
-				if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE)
-				GlobalMembersMisc.get_image_options(this_plot.image_properties);
-
-				set_with = true;
-				continue;
-			}
-
-			/* Hidden3D code by default includes points, labels and vectors	*/
-			/* in the hidden3d processing. Check here if this particular	*/
-			/* plot wants to be excluded.					*/
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nohidden$3d") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-				this_plot.opt_out_of_hidden3d = true;
-				continue;
-			}
-
-			/* "set contour" is global.  Allow individual plots to opt out */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nocon$tours") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-				this_plot.opt_out_of_contours = true;
-				continue;
-			}
-
-			/* "set surface" is global.  Allow individual plots to opt out */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nosur$face") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-				this_plot.opt_out_of_surface = true;
-				continue;
-			}
-
-			/* Labels can have font and text property info as plot options */
-			/* In any case we must allocate one instance of the text style */
-			/* that all labels in the plot will share.                     */
-			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			{
-				int stored_token = GlobalMembersCommand.c_token;
-				if (this_plot.labels == DefineConstants.NULL)
-				{
-				this_plot.labels = GlobalMembersSet.new_text_label(-1);
-				this_plot.labels.pos = VERT_JUSTIFY.JUST_CENTRE;
-				this_plot.labels.layer = DefineConstants.LAYER_PLOTLABELS;
-				}
-				GlobalMembersSet.parse_label_options(this_plot.labels);
-				checked_once = true;
-				if (stored_token != GlobalMembersCommand.c_token)
-				{
-				if (set_labelstyle)
-				{
-					duplication = true;
-					break;
-				}
-				else
-				{
-					set_labelstyle = true;
+					was_definition = true;
 					continue;
 				}
-				}
-			}
 
-			/* pick up line/point specs
-			 * - point spec allowed if style uses points, ie style&2 != 0
-			 * - keywords are optional
-			 */
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-				int stored_token = GlobalMembersCommand.c_token;
-
-				if (!checked_once)
-				{
-				GlobalMembersGadgets.default_arrow_style(this_plot.arrow_properties);
-				this_plot.arrow_properties.lp_properties.l_type = line_num;
-				checked_once = true;
-				}
-				GlobalMembersMisc.arrow_parse(this_plot.arrow_properties, true);
-				if (stored_token != GlobalMembersCommand.c_token)
-				{
-				 if (set_lpstyle)
-				 {
-					duplication = true;
-					break;
-				 }
-				 else
-				 {
-					set_lpstyle = true;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_plot->lp_properties = this_plot->arrow_properties.lp_properties;
-					this_plot.lp_properties.copyFrom(this_plot.arrow_properties.lp_properties);
-					continue;
-				 }
-				}
 			}
 			else
 			{
-				int stored_token = GlobalMembersCommand.c_token;
-				lp_style_type lp = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
+				int specs = -1;
+				surface_points this_plot;
 
-				lp.l_type = line_num;
-				lp.p_type = point_num;
+				String name_str;
+				boolean duplication = false;
+				boolean set_title = false;
+				boolean set_with = false;
+				boolean set_lpstyle = false;
+				boolean checked_once = false;
+				boolean set_labelstyle = false;
 
-				/* user may prefer explicit line styles */
-				if (GlobalMembersGadgets.prefer_line_styles)
-				GlobalMembersTerm.lp_use_properties(lp, line_num + 1);
+				if (!was_definition && (!GlobalMembersGadgets.parametric || crnt_param == 0))
+					start_token = GlobalMembersCommand.c_token;
+				was_definition = false;
 
-				 GlobalMembersMisc.lp_parse(lp, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
-				checked_once = true;
-				if (stored_token != GlobalMembersCommand.c_token)
+				GlobalMembersCommand.dummy_func = plot_func;
+				/* WARNING: do NOT free name_str */
+				/* FIXME: could also be saved in this_plot */
+				name_str = GlobalMembersParse.string_or_express(DefineConstants.NULL);
+				GlobalMembersCommand.dummy_func = DefineConstants.NULL;
+				if (name_str != null)
 				{
-				if (set_lpstyle)
-				{
-					duplication = true;
-					break;
-				}
+					/*{{{  data file to plot */
+					if (GlobalMembersGadgets.parametric && crnt_param != 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "previous parametric function not fully specified");
+
+					if (!some_data_files)
+					{
+						if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						{
+							GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
+						}
+						if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						{
+							GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
+						}
+						if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						{
+							GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min = DefineConstants.VERYLARGE;
+						}
+						if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						{
+							GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
+						}
+						some_data_files = true;
+					}
+					if (tp_3d_ptr != null)
+						this_plot = tp_3d_ptr;
+					else // no memory malloc()'d there yet
+					{
+						/* Allocate enough isosamples and samples */
+						this_plot = GlobalMembersPlot3d.sp_alloc(0, 0, 0, 0);
+						tp_3d_ptr = this_plot;
+					}
+
+					this_plot.plot_type = PLOT_TYPE.DATA3D;
+					this_plot.plot_style = GlobalMembersGadgets.data_style;
+
+					GlobalMembersDatafile.df_set_plot_mode(MODE_PLOT_TYPE.MODE_SPLOT);
+					specs = GlobalMembersDatafile.df_open(name_str, DefineConstants.MAXDATACOLS, (GlobalMembersMouse.struct curve_points *)this_plot);
+
+					if (GlobalMembersDatafile.df_matrix)
+						this_plot.has_grid_topology = true;
+
+					/* parses all datafile-specific modifiers */
+					/* we will load the data after parsing title,with,... */
+
+					/* for capture to key */
+					this_plot.token = end_token = GlobalMembersCommand.c_token - 1;
+					this_plot.iteration = GlobalMembersParse.iteration; // FIXME: Is this really needed?
+
+					/* this_plot->token is temporary, for errors in get_3ddata() */
+
+					if (specs < 3)
+					{
+						if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].is_timedata)
+						{
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for x time data");
+						}
+						if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].is_timedata)
+						{
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for y time data");
+						}
+					}
+					GlobalMembersDatafile.df_axis[0] = AXIS_INDEX.FIRST_X_AXIS;
+					GlobalMembersDatafile.df_axis[1] = AXIS_INDEX.FIRST_Y_AXIS;
+					GlobalMembersDatafile.df_axis[2] = AXIS_INDEX.FIRST_Z_AXIS;
+
+					/*}}} */
+
+				} // function to plot
 				else
 				{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_plot->lp_properties = lp;
-					this_plot.lp_properties.copyFrom(lp);
-					set_lpstyle = true;
-					continue;
-				}
-				}
-			}
 
-			break; // unknown option
+					/*{{{  function */
+					++plot_num;
+					if (GlobalMembersGadgets.parametric)
+					{
+						/* Rotate between x/y/z axes */
+						/* +2 same as -1, but beats -ve problem */
+						crnt_param = (crnt_param + 2) % 3;
+					}
+					if (tp_3d_ptr != null)
+					{
+						this_plot = tp_3d_ptr;
+						if (!GlobalMembersGraph3d.hidden3d)
+							GlobalMembersPlot3d.sp_replace(this_plot, GlobalMembersGadgets.samples_1, GlobalMembersGraph3d.iso_samples_1, GlobalMembersGadgets.samples_2, GlobalMembersGraph3d.iso_samples_2);
+						else
+							GlobalMembersPlot3d.sp_replace(this_plot, GlobalMembersGraph3d.iso_samples_1, 0, 0, GlobalMembersGraph3d.iso_samples_2);
 
-			} // while (!END_OF_COMMAND)
+					} // no memory malloc()'d there yet
+					else
+					{
+						/* Allocate enough isosamples and samples */
+						if (!GlobalMembersGraph3d.hidden3d)
+							this_plot = GlobalMembersPlot3d.sp_alloc(GlobalMembersGadgets.samples_1, GlobalMembersGraph3d.iso_samples_1, GlobalMembersGadgets.samples_2, GlobalMembersGraph3d.iso_samples_2);
+						else
+							this_plot = GlobalMembersPlot3d.sp_alloc(GlobalMembersGraph3d.iso_samples_1, 0, 0, GlobalMembersGraph3d.iso_samples_2);
+						tp_3d_ptr = this_plot;
+					}
 
-			if (duplication)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "duplicated or contradicting arguments in plot options");
+					this_plot.plot_type = PLOT_TYPE.FUNC3D;
+					this_plot.has_grid_topology = true;
+					this_plot.plot_style = GlobalMembersGadgets.func_style;
+					this_plot.num_iso_read = GlobalMembersGraph3d.iso_samples_2;
+					/* ignore it for now */
+					some_functions = true;
+					end_token = GlobalMembersCommand.c_token - 1;
+					/*}}} */
 
-			/* set default values for title if this has not been specified */
-			this_plot.title_is_filename = false;
-			if (!set_title)
-			{
-			this_plot.title_no_enhanced = true; // filename or function cannot be enhanced
-			if (key.auto_titles == keytitle_type.FILENAME_KEYTITLES)
-			{
-				GlobalMembersUtil.m_capture((this_plot.title), start_token, end_token);
-				if (crnt_param == 2)
-				xtitle = this_plot.title;
-				else if (crnt_param == 1)
-				ytitle = this_plot.title;
-				this_plot.title_is_filename = true;
-			}
-			else
-			{
-				if (!xtitle.equals(DefineConstants.NULL))
-				xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
-				if (!ytitle.equals(DefineConstants.NULL))
-				ytitle = tangible.StringFunctions.changeCharacter(ytitle, 0, '\0');
-				/*   this_plot->title = NULL;   */
-			}
-			}
+				} // end of IS THIS A FILE OR A FUNC block
 
-			/* No line/point style given. As lp_parse also supplies
-			 * the defaults for linewidth and pointsize, call it now
-			 * to define them. */
-			if (!set_lpstyle)
-			{
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-				this_plot.arrow_properties.lp_properties.l_type = line_num;
-				GlobalMembersMisc.arrow_parse(this_plot.arrow_properties, true);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_plot->lp_properties = this_plot->arrow_properties.lp_properties;
-				this_plot.lp_properties.copyFrom(this_plot.arrow_properties.lp_properties);
-			}
-			else
-			{
-				this_plot.lp_properties.l_type = line_num;
-				this_plot.lp_properties.l_width = 1.0;
-				this_plot.lp_properties.p_type = point_num;
-				this_plot.lp_properties.p_size = GlobalMembersGadgets.pointsize;
-				this_plot.lp_properties.use_palette = false;
-
-				/* user may prefer explicit line styles */
-				if (GlobalMembersGadgets.prefer_line_styles)
-				GlobalMembersTerm.lp_use_properties(this_plot.lp_properties, line_num + 1);
-
-				GlobalMembersMisc.lp_parse(this_plot.lp_properties, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
-			}
-
-	///#ifdef BACKWARDS_COMPATIBLE
-	// /* allow old-style syntax - ignore case lt 3 4 for example */
-	//		if (!END_OF_COMMAND && isanumber(c_token)) {
-	//		    this_plot->lp_properties.l_type =
-	//			this_plot->lp_properties.p_type = int_expression() - 1;
-	//
-	//		    if (isanumber(c_token))
-	//			this_plot->lp_properties.p_type = int_expression() - 1;
-	//		}
-	///#endif
-
-			}
-
-			/* Some low-level routines expect to find the pointflag attribute */
-			/* in lp_properties (they don't have access to the full header).  */
-			if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
-			this_plot.lp_properties.pointflag = true;
-
-			/* Rule out incompatible line/point/style options */
-			if (this_plot.plot_type == PLOT_TYPE.FUNC3D)
-			{
-			if ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT) && (this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE))
-				this_plot.lp_properties.p_size = 1;
-			}
-			if (this_plot.plot_style == PLOT_STYLE.LINES)
-			{
-			this_plot.opt_out_of_hidden3d = false;
-			}
-
-			if (crnt_param == 0 && this_plot.plot_style != PLOT_STYLE.PM3DSURFACE && this_plot.plot_style != PLOT_STYLE.IMAGE && this_plot.plot_style != PLOT_STYLE.RGBIMAGE && this_plot.plot_style != PLOT_STYLE.RGBA_IMAGE)
-			/* don't increment the default line/point properties if
-			 * this_plot is an EXPLICIT pm3d surface plot */
-			/* same as above, for an (rgb)image plot */
-			{
-			if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
-				point_num += 1 + (GlobalMembersGraph3d.draw_contour != 0) + (GlobalMembersGraph3d.hidden3d != false);
-			line_num += 1 + (GlobalMembersGraph3d.draw_contour != 0) + (GlobalMembersGraph3d.hidden3d != false);
-			}
-
-			if (this_plot.plot_style == PLOT_STYLE.IMAGE)
-			this_plot.lp_properties.use_palette = true;
-			if (this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
-			{
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = 0;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = 255;
-			}
-
-			/* now get the data... having to think hard here...
-			 * first time through, we fill in this_plot. For second
-			 * surface in file, we have to allocate another surface
-			 * struct. BUT we may allocate this store only to
-			 * find that it is merely some blank lines at end of file
-			 * tp_3d_ptr is still pointing at next field of prev. plot,
-			 * before :    prev_or_first -> this_plot -> possible_preallocated_store
-			 *                tp_3d_ptr--^
-			 * after  :    prev_or_first -> first -> second -> last -> possibly_more_store
-			 *                                        tp_3d_ptr ----^
-			 * if file is empty, tp_3d_ptr is not moved. this_plot continues
-			 * to point at allocated storage, but that will be reused later
-			 */
-
-			assert this_plot == tp_3d_ptr;
-
-			if (this_plot.plot_type == PLOT_TYPE.DATA3D)
-			{
-			/*{{{  read data */
-			/* pointer to the plot of the first dataset (surface) in the file */
-			surface_points first_dataset = this_plot;
-			int this_token = this_plot.token;
-
-			do
-			{
-				this_plot = tp_3d_ptr;
-				assert this_plot != DefineConstants.NULL;
-
-				/* dont move tp_3d_ptr until we are sure we
-				 * have read a surface
-				 */
-
-				/* used by get_3ddata() */
-				this_plot.token = this_token;
-
-				df_return = GlobalMembersPlot3d.get_3ddata(this_plot);
-				/* for second pass */
-				this_plot.token = GlobalMembersCommand.c_token;
-				this_plot.iteration = GlobalMembersParse.iteration;
-
-				if (this_plot.num_iso_read == 0)
-				this_plot.plot_type = PLOT_TYPE.NODATA;
-
-				if (this_plot != first_dataset)
-				/* copy (explicit) "with pm3d at ..." option from the first dataset in the file */
-				this_plot.pm3d_where = first_dataset.pm3d_where;
-
-				/* okay, we have read a surface */
-				++plot_num;
-				tp_3d_ptr = &(this_plot.next_sp);
-				if (df_return == DefineConstants.DF_EOF)
-				break;
-
-				/* there might be another surface so allocate
-				 * and prepare another surface structure
-				 * This does no harm if in fact there are
-				 * no more surfaces to read
-				 */
-
-				if ((this_plot = tp_3d_ptr) != DefineConstants.NULL)
-				{
+				/* clear current title, if exist */
 				if (this_plot.title != null)
 				{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 					free(this_plot.title);
 					this_plot.title = DefineConstants.NULL;
 				}
+
+				/* default line and point types, no palette */
+				this_plot.lp_properties.use_palette = false;
+				this_plot.lp_properties.l_type = line_num;
+				this_plot.lp_properties.p_type = point_num;
+
+				/* user may prefer explicit line styles */
+				if (GlobalMembersGadgets.prefer_line_styles)
+					GlobalMembersTerm.lp_use_properties(this_plot.lp_properties, line_num + 1);
+
+				/* pm 25.11.2001 allow any order of options */
+				while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0 || !checked_once)
+				{
+
+					/* deal with title */
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$itle") != 0)
+					{
+						if (set_title)
+						{
+							duplication = true;
+							break;
+						}
+						this_plot.title_no_enhanced = !key.enhanced;
+						/* title can be enhanced if not explicitly disabled */
+						if (GlobalMembersGadgets.parametric)
+						{
+							if (crnt_param != 0)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"title\" allowed only after parametric function fully specified");
+							else
+							{
+								if (!xtitle.equals(DefineConstants.NULL))
+									xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, DefineConstants.NUL); // Remove default title .
+								if (!ytitle.equals(DefineConstants.NULL))
+									ytitle = tangible.StringFunctions.changeCharacter(ytitle, 0, DefineConstants.NUL); // Remove default title .
+							}
+						}
+						GlobalMembersCommand.c_token++;
+
+						if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "col$umnheader") != 0)
+						{
+							GlobalMembersDatafile.df_set_key_title_columnhead(this_plot.plot_type);
+						}
+						else
+
+							///#ifdef BACKWARDS_COMPATIBLE
+							// /* Annoying backwards-compatibility hack - deprecate! */
+							//		    if (isanumber(c_token)) {
+							//			c_token--;
+							//			df_set_key_title_columnhead(this_plot->plot_type);
+							//		    } else
+							///#endif
+
+							if (!(this_plot.title = GlobalMembersUtil.try_to_get_string()))
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting \"title\" for plot");
+						set_title = true;
+						continue;
+					}
+
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "not$itle") != 0)
+					{
+						if (set_title)
+						{
+							duplication = true;
+							break;
+						}
+						GlobalMembersCommand.c_token++;
+						if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+							GlobalMembersUtil.try_to_get_string(); // ignore optionally given title string
+						this_plot.title_is_suppressed = true;
+						if (!xtitle.equals(DefineConstants.NULL))
+							xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
+						if (!ytitle.equals(DefineConstants.NULL))
+							ytitle = tangible.StringFunctions.changeCharacter(ytitle, 0, '\0');
+						set_title = true;
+						continue;
+					}
+
+					/* deal with style */
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "w$ith") != 0)
+					{
+						if (set_with)
+						{
+							duplication = true;
+							break;
+						}
+						this_plot.plot_style = GlobalMembersMisc.get_style();
+						if ((this_plot.plot_type == PLOT_TYPE.FUNC3D) && ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_ERRORBAR) || (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)))
+						{
+							GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "This plot style is only for datafiles , reverting to \"points\"");
+							this_plot.plot_style = PLOT_STYLE.POINTSTYLE;
+						}
+
+						if ((this_plot.plot_style | GlobalMembersGadgets.data_style) & PLOT_STYLE.PM3DSURFACE)
+						{
+							if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0)
+							{
+								/* option 'with pm3d [at ...]' is explicitly specified */
+								GlobalMembersCommand.c_token++;
+								if (GlobalMembersPm3d.get_pm3d_at_option(this_plot.pm3d_where.charAt(0)) != 0)
+									return; // error
+							}
+						}
+
+						if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE)
+							GlobalMembersMisc.get_image_options(this_plot.image_properties);
+
+						set_with = true;
+						continue;
+					}
+
+					/* Hidden3D code by default includes points, labels and vectors	*/
+					/* in the hidden3d processing. Check here if this particular	*/
+					/* plot wants to be excluded.					*/
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nohidden$3d") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						this_plot.opt_out_of_hidden3d = true;
+						continue;
+					}
+
+					/* "set contour" is global.  Allow individual plots to opt out */
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nocon$tours") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						this_plot.opt_out_of_contours = true;
+						continue;
+					}
+
+					/* "set surface" is global.  Allow individual plots to opt out */
+					if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "nosur$face") != 0)
+					{
+						GlobalMembersCommand.c_token++;
+						this_plot.opt_out_of_surface = true;
+						continue;
+					}
+
+					/* Labels can have font and text property info as plot options */
+					/* In any case we must allocate one instance of the text style */
+					/* that all labels in the plot will share.                     */
+					if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+					{
+						int stored_token = GlobalMembersCommand.c_token;
+						if (this_plot.labels == DefineConstants.NULL)
+						{
+							this_plot.labels = GlobalMembersSet.new_text_label(-1);
+							this_plot.labels.pos = VERT_JUSTIFY.JUST_CENTRE;
+							this_plot.labels.layer = DefineConstants.LAYER_PLOTLABELS;
+						}
+						GlobalMembersSet.parse_label_options(this_plot.labels);
+						checked_once = true;
+						if (stored_token != GlobalMembersCommand.c_token)
+						{
+							if (set_labelstyle)
+							{
+								duplication = true;
+								break;
+							}
+							else
+							{
+								set_labelstyle = true;
+								continue;
+							}
+						}
+					}
+
+					/* pick up line/point specs
+					 * - point spec allowed if style uses points, ie style&2 != 0
+					 * - keywords are optional
+					 */
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					{
+						int stored_token = GlobalMembersCommand.c_token;
+
+						if (!checked_once)
+						{
+							GlobalMembersGadgets.default_arrow_style(this_plot.arrow_properties);
+							this_plot.arrow_properties.lp_properties.l_type = line_num;
+							checked_once = true;
+						}
+						GlobalMembersMisc.arrow_parse(this_plot.arrow_properties, true);
+						if (stored_token != GlobalMembersCommand.c_token)
+						{
+							if (set_lpstyle)
+							{
+								duplication = true;
+								break;
+							}
+							else
+							{
+								set_lpstyle = true;
+								//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+								//ORIGINAL LINE: this_plot->lp_properties = this_plot->arrow_properties.lp_properties;
+								this_plot.lp_properties.copyFrom(this_plot.arrow_properties.lp_properties);
+								continue;
+							}
+						}
+					}
+					else
+					{
+						int stored_token = GlobalMembersCommand.c_token;
+						lp_style_type lp = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
+
+						lp.l_type = line_num;
+						lp.p_type = point_num;
+
+						/* user may prefer explicit line styles */
+						if (GlobalMembersGadgets.prefer_line_styles)
+							GlobalMembersTerm.lp_use_properties(lp, line_num + 1);
+
+						GlobalMembersMisc.lp_parse(lp, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
+						checked_once = true;
+						if (stored_token != GlobalMembersCommand.c_token)
+						{
+							if (set_lpstyle)
+							{
+								duplication = true;
+								break;
+							}
+							else
+							{
+								//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+								//ORIGINAL LINE: this_plot->lp_properties = lp;
+								this_plot.lp_properties.copyFrom(lp);
+								set_lpstyle = true;
+								continue;
+							}
+						}
+					}
+
+					break; // unknown option
+
+				} // while (!END_OF_COMMAND)
+
+				if (duplication)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "duplicated or contradicting arguments in plot options");
+
+				/* set default values for title if this has not been specified */
+				this_plot.title_is_filename = false;
+				if (!set_title)
+				{
+					this_plot.title_no_enhanced = true; // filename or function cannot be enhanced
+					if (key.auto_titles == keytitle_type.FILENAME_KEYTITLES)
+					{
+						GlobalMembersUtil.m_capture((this_plot.title), start_token, end_token);
+						if (crnt_param == 2)
+							xtitle = this_plot.title;
+						else if (crnt_param == 1)
+							ytitle = this_plot.title;
+						this_plot.title_is_filename = true;
+					}
+					else
+					{
+						if (!xtitle.equals(DefineConstants.NULL))
+							xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
+						if (!ytitle.equals(DefineConstants.NULL))
+							ytitle = tangible.StringFunctions.changeCharacter(ytitle, 0, '\0');
+						/*   this_plot->title = NULL;   */
+					}
 				}
+
+				/* No line/point style given. As lp_parse also supplies
+				 * the defaults for linewidth and pointsize, call it now
+				 * to define them. */
+				if (!set_lpstyle)
+				{
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					{
+						this_plot.arrow_properties.lp_properties.l_type = line_num;
+						GlobalMembersMisc.arrow_parse(this_plot.arrow_properties, true);
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: this_plot->lp_properties = this_plot->arrow_properties.lp_properties;
+						this_plot.lp_properties.copyFrom(this_plot.arrow_properties.lp_properties);
+					}
+					else
+					{
+						this_plot.lp_properties.l_type = line_num;
+						this_plot.lp_properties.l_width = 1.0;
+						this_plot.lp_properties.p_type = point_num;
+						this_plot.lp_properties.p_size = GlobalMembersGadgets.pointsize;
+						this_plot.lp_properties.use_palette = false;
+
+						/* user may prefer explicit line styles */
+						if (GlobalMembersGadgets.prefer_line_styles)
+							GlobalMembersTerm.lp_use_properties(this_plot.lp_properties, line_num + 1);
+
+						GlobalMembersMisc.lp_parse(this_plot.lp_properties, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
+					}
+
+					///#ifdef BACKWARDS_COMPATIBLE
+					// /* allow old-style syntax - ignore case lt 3 4 for example */
+					//		if (!END_OF_COMMAND && isanumber(c_token)) {
+					//		    this_plot->lp_properties.l_type =
+					//			this_plot->lp_properties.p_type = int_expression() - 1;
+					//
+					//		    if (isanumber(c_token))
+					//			this_plot->lp_properties.p_type = int_expression() - 1;
+					//		}
+					///#endif
+
+				}
+
+				/* Some low-level routines expect to find the pointflag attribute */
+				/* in lp_properties (they don't have access to the full header).  */
+				if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
+					this_plot.lp_properties.pointflag = true;
+
+				/* Rule out incompatible line/point/style options */
+				if (this_plot.plot_type == PLOT_TYPE.FUNC3D)
+				{
+					if ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT) && (this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE))
+						this_plot.lp_properties.p_size = 1;
+				}
+				if (this_plot.plot_style == PLOT_STYLE.LINES)
+				{
+					this_plot.opt_out_of_hidden3d = false;
+				}
+
+				if (crnt_param == 0 && this_plot.plot_style != PLOT_STYLE.PM3DSURFACE && this_plot.plot_style != PLOT_STYLE.IMAGE && this_plot.plot_style != PLOT_STYLE.RGBIMAGE && this_plot.plot_style != PLOT_STYLE.RGBA_IMAGE)
+					/* don't increment the default line/point properties if
+					 * this_plot is an EXPLICIT pm3d surface plot */
+					/* same as above, for an (rgb)image plot */
+				{
+					if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
+						point_num += 1 + (GlobalMembersGraph3d.draw_contour != 0) + (GlobalMembersGraph3d.hidden3d != false);
+					line_num += 1 + (GlobalMembersGraph3d.draw_contour != 0) + (GlobalMembersGraph3d.hidden3d != false);
+				}
+
+				if (this_plot.plot_style == PLOT_STYLE.IMAGE)
+					this_plot.lp_properties.use_palette = true;
+				if (this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
+				{
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = 0;
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = 255;
+				}
+
+				/* now get the data... having to think hard here...
+				 * first time through, we fill in this_plot. For second
+				 * surface in file, we have to allocate another surface
+				 * struct. BUT we may allocate this store only to
+				 * find that it is merely some blank lines at end of file
+				 * tp_3d_ptr is still pointing at next field of prev. plot,
+				 * before :    prev_or_first -> this_plot -> possible_preallocated_store
+				 *                tp_3d_ptr--^
+				 * after  :    prev_or_first -> first -> second -> last -> possibly_more_store
+				 *                                        tp_3d_ptr ----^
+				 * if file is empty, tp_3d_ptr is not moved. this_plot continues
+				 * to point at allocated storage, but that will be reused later
+				 */
+
+				assert this_plot == tp_3d_ptr;
+
+				if (this_plot.plot_type == PLOT_TYPE.DATA3D)
+				{
+					/*{{{  read data */
+					/* pointer to the plot of the first dataset (surface) in the file */
+					surface_points first_dataset = this_plot;
+					int this_token = this_plot.token;
+
+					do
+					{
+						this_plot = tp_3d_ptr;
+						assert this_plot != DefineConstants.NULL;
+
+						/* dont move tp_3d_ptr until we are sure we
+						 * have read a surface
+						 */
+
+						/* used by get_3ddata() */
+						this_plot.token = this_token;
+
+						df_return = GlobalMembersPlot3d.get_3ddata(this_plot);
+						/* for second pass */
+						this_plot.token = GlobalMembersCommand.c_token;
+						this_plot.iteration = GlobalMembersParse.iteration;
+
+						if (this_plot.num_iso_read == 0)
+							this_plot.plot_type = PLOT_TYPE.NODATA;
+
+						if (this_plot != first_dataset)
+							/* copy (explicit) "with pm3d at ..." option from the first dataset in the file */
+							this_plot.pm3d_where = first_dataset.pm3d_where;
+
+						/* okay, we have read a surface */
+						++plot_num;
+						tp_3d_ptr = &(this_plot.next_sp);
+						if (df_return == DefineConstants.DF_EOF)
+							break;
+
+						/* there might be another surface so allocate
+						 * and prepare another surface structure
+						 * This does no harm if in fact there are
+						 * no more surfaces to read
+						 */
+
+						if ((this_plot = tp_3d_ptr) != DefineConstants.NULL)
+						{
+							if (this_plot.title != null)
+							{
+								//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+								free(this_plot.title);
+								this_plot.title = DefineConstants.NULL;
+							}
+						}
+						else
+						{
+							/* Allocate enough isosamples and samples */
+							this_plot = tp_3d_ptr = GlobalMembersPlot3d.sp_alloc(0, 0, 0, 0);
+						}
+
+						this_plot.plot_type = PLOT_TYPE.DATA3D;
+						this_plot.iteration = GlobalMembersParse.iteration;
+						this_plot.plot_style = first_dataset.plot_style;
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: this_plot->lp_properties = first_dataset->lp_properties;
+						this_plot.lp_properties.copyFrom(first_dataset.lp_properties);
+						if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+						{
+							this_plot.labels = GlobalMembersSet.new_text_label(-1);
+							*(this_plot.labels) = *(first_dataset.labels);
+							this_plot.labels.next = DefineConstants.NULL;
+						}
+					} while (df_return != DefineConstants.DF_EOF);
+
+					GlobalMembersDatafile.df_close();
+					/*}}} */
+
+				} // not a data file
 				else
 				{
-				/* Allocate enough isosamples and samples */
-				this_plot = tp_3d_ptr = GlobalMembersPlot3d.sp_alloc(0, 0, 0, 0);
+					tp_3d_ptr = &(this_plot.next_sp);
+					this_plot.token = GlobalMembersCommand.c_token; // store for second pass
+					this_plot.iteration = GlobalMembersParse.iteration;
 				}
 
-				this_plot.plot_type = PLOT_TYPE.DATA3D;
-				this_plot.iteration = GlobalMembersParse.iteration;
-				this_plot.plot_style = first_dataset.plot_style;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_plot->lp_properties = first_dataset->lp_properties;
-				this_plot.lp_properties.copyFrom(first_dataset.lp_properties);
-				if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-				{
-				this_plot.labels = GlobalMembersSet.new_text_label(-1);
-				*(this_plot.labels) = *(first_dataset.labels);
-				this_plot.labels.next = DefineConstants.NULL;
-				}
-			} while (df_return != DefineConstants.DF_EOF);
+				if (GlobalMembersParse.empty_iteration())
+					this_plot.plot_type = PLOT_TYPE.NODATA;
 
-			GlobalMembersDatafile.df_close();
-			/*}}} */
+			} // !is_definition() : end of scope of this_plot
 
-			} // not a data file
-			else
+			if (crnt_param != 0)
 			{
-			tp_3d_ptr = &(this_plot.next_sp);
-			this_plot.token = GlobalMembersCommand.c_token; // store for second pass
-			this_plot.iteration = GlobalMembersParse.iteration;
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					continue;
+				}
+				else
+					break;
 			}
 
-			if (GlobalMembersParse.empty_iteration())
-			this_plot.plot_type = PLOT_TYPE.NODATA;
+			/* Iterate-over-plot mechanisms */
+			if (GlobalMembersParse.next_iteration())
+			{
+				GlobalMembersCommand.c_token = start_token;
+				continue;
+			}
 
-		} // !is_definition() : end of scope of this_plot
-
-		if (crnt_param != 0)
-		{
 			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
 			{
-			GlobalMembersCommand.c_token++;
-			continue;
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.check_for_iteration();
 			}
 			else
-			break;
-		}
-
-		/* Iterate-over-plot mechanisms */
-		if (GlobalMembersParse.next_iteration())
-		{
-			GlobalMembersCommand.c_token = start_token;
-			continue;
-		}
-
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.check_for_iteration();
-		}
-		else
-			break;
+				break;
 
 		} // while(TRUE), ie first pass
 
 
 		if (GlobalMembersGadgets.parametric && crnt_param != 0)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "parametric function not fully specified");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "parametric function not fully specified");
 
 
-	/*** Second Pass: Evaluate the functions ***/
+		/*** Second Pass: Evaluate the functions ***/
 		/*
 		 * Everything is defined now, except the function data. We expect no
 		 * syntax errors, etc, since the above parsed it all. This makes the code
@@ -3506,204 +3508,204 @@ public class GlobalMembersPlot3d
 
 		if (some_functions)
 		{
-		/* I've changed the controlled variable in fn plots to u_min etc since
-		 * it's easier for me to think parametric - 'normal' plot is after all
-		 * a special case. I was confused about x_min being both minimum of
-		 * x values found, and starting value for fn plots.
-		 */
-		double u_min;
-		double u_max;
-		double u_step;
-		double v_min;
-		double v_max;
-		double v_step;
-		double u_isostep;
-		double v_isostep;
-		AXIS_INDEX u_axis;
-		AXIS_INDEX v_axis;
-		surface_points this_plot;
-
-		/* Make these point out the right 'u' and 'v' axis. In
-		 * non-parametric mode, x is used as u, and y as v */
-		u_axis = GlobalMembersGadgets.parametric ? AXIS_INDEX.U_AXIS : AXIS_INDEX.FIRST_X_AXIS;
-		v_axis = GlobalMembersGadgets.parametric ? AXIS_INDEX.V_AXIS : AXIS_INDEX.FIRST_Y_AXIS;
-
-		if (!GlobalMembersGadgets.parametric)
-		{
-			/*{{{  check ranges */
-			/* give error if xrange badly set from missing datafile error
-			 * parametric fn can still set ranges
-			 * if there are no fns, we'll report it later as 'nothing to plot'
+			/* I've changed the controlled variable in fn plots to u_min etc since
+			 * it's easier for me to think parametric - 'normal' plot is after all
+			 * a special case. I was confused about x_min being both minimum of
+			 * x values found, and starting value for fn plots.
 			 */
+			double u_min;
+			double u_max;
+			double u_step;
+			double v_min;
+			double v_max;
+			double v_step;
+			double u_isostep;
+			double v_isostep;
+			AXIS_INDEX u_axis;
+			AXIS_INDEX v_axis;
+			surface_points this_plot;
 
-			/* check that xmin -> xmax is not too small */
-			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, "x range is invalid");
-			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Y_AXIS, "y range is invalid");
-			/*}}} */
-		}
-		if (GlobalMembersGadgets.parametric && !some_data_files)
-		{
-			/*{{{  set ranges */
-			/* parametric fn can still change x/y range */
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min = DefineConstants.VERYLARGE;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
-			/*}}} */
-		}
+			/* Make these point out the right 'u' and 'v' axis. In
+			 * non-parametric mode, x is used as u, and y as v */
+			u_axis = GlobalMembersGadgets.parametric ? AXIS_INDEX.U_AXIS : AXIS_INDEX.FIRST_X_AXIS;
+			v_axis = GlobalMembersGadgets.parametric ? AXIS_INDEX.V_AXIS : AXIS_INDEX.FIRST_Y_AXIS;
 
-		/*{{{  figure ranges, taking logs etc into account */
-		u_min = GlobalMembersAxis.axis_log_value_checked(u_axis, GlobalMembersAxis.axis_array[u_axis.getValue()].min, "x range");
-		u_max = GlobalMembersAxis.axis_log_value_checked(u_axis, GlobalMembersAxis.axis_array[u_axis.getValue()].max, "x range");
-		v_min = GlobalMembersAxis.axis_log_value_checked(v_axis, GlobalMembersAxis.axis_array[v_axis.getValue()].min, "y range");
-		v_max = GlobalMembersAxis.axis_log_value_checked(v_axis, GlobalMembersAxis.axis_array[v_axis.getValue()].max, "y range");
-		/*}}} */
-
-
-		if (GlobalMembersGadgets.samples_1 < 2 || GlobalMembersGadgets.samples_2 < 2 || GlobalMembersGraph3d.iso_samples_1 < 2 || GlobalMembersGraph3d.iso_samples_2 < 2)
-		{
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "samples or iso_samples < 2. Must be at least 2.");
-		}
-
-		/* start over */
-		this_plot = first_3dplot;
-		GlobalMembersCommand.c_token = begin_token;
-		GlobalMembersParse.check_for_iteration();
-
-		/* why do attributes of this_plot matter ? */
-		/* FIXME HBB 20000501: I think they don't, actually. I'm
-		 * taking out references to has_grid_topology in this part of
-		 * the code.  It only deals with function, which always is
-		 * gridded */
-
-		if (GlobalMembersGraph3d.hidden3d)
-		{
-			u_step = (u_max - u_min) / (GlobalMembersGraph3d.iso_samples_1 - 1);
-			v_step = (v_max - v_min) / (GlobalMembersGraph3d.iso_samples_2 - 1);
-		}
-		else
-		{
-			u_step = (u_max - u_min) / (GlobalMembersGadgets.samples_1 - 1);
-			v_step = (v_max - v_min) / (GlobalMembersGadgets.samples_2 - 1);
-		}
-
-		u_isostep = (u_max - u_min) / (GlobalMembersGraph3d.iso_samples_1 - 1);
-		v_isostep = (v_max - v_min) / (GlobalMembersGraph3d.iso_samples_2 - 1);
-
-
-		/* Read through functions */
-		while (true)
-		{
-			if (crnt_param == 0 && !was_definition)
-			start_token = GlobalMembersCommand.c_token;
-
-			if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
+			if (!GlobalMembersGadgets.parametric)
 			{
-			GlobalMembersCommand.define();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			{
-				was_definition = true;
-				continue;
-			}
+				/*{{{  check ranges */
+				/* give error if xrange badly set from missing datafile error
+				 * parametric fn can still set ranges
+				 * if there are no fns, we'll report it later as 'nothing to plot'
+				 */
 
-			}
-			else
-			{
-			at_type at_ptr;
-			String name_str;
-			was_definition = false;
-
-			GlobalMembersCommand.dummy_func = plot_func;
-			name_str = GlobalMembersParse.string_or_express(at_ptr);
-
-			if (name_str == null) // func to plot
-			{
-				/*{{{  evaluate function */
-				iso_curve this_iso = this_plot.iso_crvs;
-				int num_sam_to_use;
-				int num_iso_to_use;
-
-				/* crnt_param is used as the axis number.  As the
-				 * axis array indices are ordered z, y, x, we have
-				 * to count *backwards*, starting starting at 2,
-				 * to properly store away contents to x, y and
-				 * z. The following little gimmick does that. */
-				if (GlobalMembersGadgets.parametric)
-				crnt_param = (crnt_param + 2) % 3;
-
-				plot_func.at = at_ptr;
-
-				num_iso_to_use = GlobalMembersGraph3d.iso_samples_2;
-				num_sam_to_use = GlobalMembersGraph3d.hidden3d ? GlobalMembersGraph3d.iso_samples_1 : GlobalMembersGadgets.samples_1;
-
-				GlobalMembersPlot3d.calculate_set_of_isolines(crnt_param, false, this_iso, v_axis, v_min, v_isostep, num_iso_to_use, u_axis, u_min, u_step, num_sam_to_use, (PLOT_STYLE.PM3DSURFACE == (this_plot).plot_style || PM3D_IMPL_MODE.PM3D_IMPLICIT == GlobalMembersPm3d.pm3d.implicit || 1 == (this_plot).lp_properties.use_palette));
-
-				if (!GlobalMembersGraph3d.hidden3d)
-				{
-				num_iso_to_use = GlobalMembersGraph3d.iso_samples_1;
-				num_sam_to_use = GlobalMembersGadgets.samples_2;
-
-				GlobalMembersPlot3d.calculate_set_of_isolines(crnt_param, true, this_iso, u_axis, u_min, u_isostep, num_iso_to_use, v_axis, v_min, v_step, num_sam_to_use, (PLOT_STYLE.PM3DSURFACE == (this_plot).plot_style || PM3D_IMPL_MODE.PM3D_IMPLICIT == GlobalMembersPm3d.pm3d.implicit || 1 == (this_plot).lp_properties.use_palette));
-				}
+				/* check that xmin -> xmax is not too small */
+				GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, "x range is invalid");
+				GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Y_AXIS, "y range is invalid");
 				/*}}} */
-			} // end of ITS A FUNCTION TO PLOT
-			/* we saved it from first pass */
-			GlobalMembersCommand.c_token = this_plot.token;
-
-			/* we may have seen this one data file in multiple iterations */
-			i = this_plot.iteration;
-			do
+			}
+			if (GlobalMembersGadgets.parametric && !some_data_files)
 			{
-				this_plot = this_plot.next_sp;
-			} while (this_plot != null && this_plot.token == GlobalMembersCommand.c_token && this_plot.iteration == i);
-
-			} // !is_definition
-
-			/* Iterate-over-plot mechanism */
-			if (crnt_param == 0 && GlobalMembersParse.next_iteration())
-			{
-			GlobalMembersCommand.c_token = start_token;
-			continue;
+				/*{{{  set ranges */
+				/* parametric fn can still change x/y range */
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min = DefineConstants.VERYLARGE;
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
+				/*}}} */
 			}
 
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+			/*{{{  figure ranges, taking logs etc into account */
+			u_min = GlobalMembersAxis.axis_log_value_checked(u_axis, GlobalMembersAxis.axis_array[u_axis.getValue()].min, "x range");
+			u_max = GlobalMembersAxis.axis_log_value_checked(u_axis, GlobalMembersAxis.axis_array[u_axis.getValue()].max, "x range");
+			v_min = GlobalMembersAxis.axis_log_value_checked(v_axis, GlobalMembersAxis.axis_array[v_axis.getValue()].min, "y range");
+			v_max = GlobalMembersAxis.axis_log_value_checked(v_axis, GlobalMembersAxis.axis_array[v_axis.getValue()].max, "y range");
+			/*}}} */
+
+
+			if (GlobalMembersGadgets.samples_1 < 2 || GlobalMembersGadgets.samples_2 < 2 || GlobalMembersGraph3d.iso_samples_1 < 2 || GlobalMembersGraph3d.iso_samples_2 < 2)
 			{
-			GlobalMembersCommand.c_token++;
-			if (crnt_param == 0)
-				GlobalMembersParse.check_for_iteration();
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "samples or iso_samples < 2. Must be at least 2.");
+			}
+
+			/* start over */
+			this_plot = first_3dplot;
+			GlobalMembersCommand.c_token = begin_token;
+			GlobalMembersParse.check_for_iteration();
+
+			/* why do attributes of this_plot matter ? */
+			/* FIXME HBB 20000501: I think they don't, actually. I'm
+			 * taking out references to has_grid_topology in this part of
+			 * the code.  It only deals with function, which always is
+			 * gridded */
+
+			if (GlobalMembersGraph3d.hidden3d)
+			{
+				u_step = (u_max - u_min) / (GlobalMembersGraph3d.iso_samples_1 - 1);
+				v_step = (v_max - v_min) / (GlobalMembersGraph3d.iso_samples_2 - 1);
 			}
 			else
-			break;
+			{
+				u_step = (u_max - u_min) / (GlobalMembersGadgets.samples_1 - 1);
+				v_step = (v_max - v_min) / (GlobalMembersGadgets.samples_2 - 1);
+			}
 
-		} // while(TRUE)
+			u_isostep = (u_max - u_min) / (GlobalMembersGraph3d.iso_samples_1 - 1);
+			v_isostep = (v_max - v_min) / (GlobalMembersGraph3d.iso_samples_2 - 1);
 
 
-		if (GlobalMembersGadgets.parametric)
-		{
-			/* Now actually fix the plot triplets to be single plots. */
-			GlobalMembersPlot3d.parametric_3dfixup(first_3dplot, plot_num);
-		}
+			/* Read through functions */
+			while (true)
+			{
+				if (crnt_param == 0 && !was_definition)
+					start_token = GlobalMembersCommand.c_token;
+
+				if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
+				{
+					GlobalMembersCommand.define();
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+					{
+						was_definition = true;
+						continue;
+					}
+
+				}
+				else
+				{
+					at_type at_ptr;
+					String name_str;
+					was_definition = false;
+
+					GlobalMembersCommand.dummy_func = plot_func;
+					name_str = GlobalMembersParse.string_or_express(at_ptr);
+
+					if (name_str == null) // func to plot
+					{
+						/*{{{  evaluate function */
+						iso_curve this_iso = this_plot.iso_crvs;
+						int num_sam_to_use;
+						int num_iso_to_use;
+
+						/* crnt_param is used as the axis number.  As the
+						 * axis array indices are ordered z, y, x, we have
+						 * to count *backwards*, starting starting at 2,
+						 * to properly store away contents to x, y and
+						 * z. The following little gimmick does that. */
+						if (GlobalMembersGadgets.parametric)
+							crnt_param = (crnt_param + 2) % 3;
+
+						plot_func.at = at_ptr;
+
+						num_iso_to_use = GlobalMembersGraph3d.iso_samples_2;
+						num_sam_to_use = GlobalMembersGraph3d.hidden3d ? GlobalMembersGraph3d.iso_samples_1 : GlobalMembersGadgets.samples_1;
+
+						GlobalMembersPlot3d.calculate_set_of_isolines(crnt_param, false, this_iso, v_axis, v_min, v_isostep, num_iso_to_use, u_axis, u_min, u_step, num_sam_to_use, (PLOT_STYLE.PM3DSURFACE == (this_plot).plot_style || PM3D_IMPL_MODE.PM3D_IMPLICIT == GlobalMembersPm3d.pm3d.implicit || 1 == (this_plot).lp_properties.use_palette));
+
+						if (!GlobalMembersGraph3d.hidden3d)
+						{
+							num_iso_to_use = GlobalMembersGraph3d.iso_samples_1;
+							num_sam_to_use = GlobalMembersGadgets.samples_2;
+
+							GlobalMembersPlot3d.calculate_set_of_isolines(crnt_param, true, this_iso, u_axis, u_min, u_isostep, num_iso_to_use, v_axis, v_min, v_step, num_sam_to_use, (PLOT_STYLE.PM3DSURFACE == (this_plot).plot_style || PM3D_IMPL_MODE.PM3D_IMPLICIT == GlobalMembersPm3d.pm3d.implicit || 1 == (this_plot).lp_properties.use_palette));
+						}
+						/*}}} */
+					} // end of ITS A FUNCTION TO PLOT
+					/* we saved it from first pass */
+					GlobalMembersCommand.c_token = this_plot.token;
+
+					/* we may have seen this one data file in multiple iterations */
+					i = this_plot.iteration;
+					do
+					{
+						this_plot = this_plot.next_sp;
+					} while (this_plot != null && this_plot.token == GlobalMembersCommand.c_token && this_plot.iteration == i);
+
+				} // !is_definition
+
+				/* Iterate-over-plot mechanism */
+				if (crnt_param == 0 && GlobalMembersParse.next_iteration())
+				{
+					GlobalMembersCommand.c_token = start_token;
+					continue;
+				}
+
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					if (crnt_param == 0)
+						GlobalMembersParse.check_for_iteration();
+				}
+				else
+					break;
+
+			} // while(TRUE)
+
+
+			if (GlobalMembersGadgets.parametric)
+			{
+				/* Now actually fix the plot triplets to be single plots. */
+				GlobalMembersPlot3d.parametric_3dfixup(first_3dplot, plot_num);
+			}
 		} // some functions
 
 		/* if first_3dplot is NULL, we have no functions or data at all.
-		   * This can happen, if you type "splot x=5", since x=5 is a
-		   * variable assignment
+		 * This can happen, if you type "splot x=5", since x=5 is a
+		 * variable assignment
 		 */
 		if (plot_num == 0 || first_3dplot == DefineConstants.NULL)
 		{
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "no functions or data to plot");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "no functions or data to plot");
 		}
 
 		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, "All points x value undefined");
 		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Y_AXIS, "All points y value undefined");
 		if (GlobalMembersGraph3d.splot_map != 0)
-		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Z_AXIS, DefineConstants.NULL); // Suppress warning message
+			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Z_AXIS, DefineConstants.NULL); // Suppress warning message
 		else
-		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Z_AXIS, "All points z value undefined");
+			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Z_AXIS, "All points z value undefined");
 
 		GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.FIRST_X_AXIS);
 		GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.FIRST_Y_AXIS);
@@ -3716,11 +3718,11 @@ public class GlobalMembersPlot3d
 		GlobalMembersPm3d.set_plot_with_palette(plot_num, MODE_PLOT_TYPE.MODE_SPLOT);
 		if (GlobalMembersPm3d.is_plot_with_palette())
 		{
-		GlobalMembersAxis.set_cbminmax();
-		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.COLOR_AXIS, "All points of colorbox value undefined");
-		GlobalMembersAxis.setup_tics(AXIS_INDEX.COLOR_AXIS, 20);
-		/* axis_revert_and_unlog_range(COLOR_AXIS); */
-		/* fprintf(stderr,"plot3d.c: CB_AXIS.min=%g\tCB_AXIS.max=%g\n",CB_AXIS.min,CB_AXIS.max); */
+			GlobalMembersAxis.set_cbminmax();
+			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.COLOR_AXIS, "All points of colorbox value undefined");
+			GlobalMembersAxis.setup_tics(AXIS_INDEX.COLOR_AXIS, 20);
+			/* axis_revert_and_unlog_range(COLOR_AXIS); */
+			/* fprintf(stderr,"plot3d.c: CB_AXIS.min=%g\tCB_AXIS.max=%g\n",CB_AXIS.min,CB_AXIS.max); */
 		}
 
 		do
@@ -3730,60 +3732,60 @@ public class GlobalMembersPlot3d
 			{
 				if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN != 0)
 					this_Renamed.set_min = this_Renamed.min;
-					if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-						this_Renamed.set_max = this_Renamed.max;
+				if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					this_Renamed.set_max = this_Renamed.max;
 			}
 		} while (0);
 
 		if (plot_num == 0 || first_3dplot == DefineConstants.NULL)
 		{
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "no functions or data to plot");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "no functions or data to plot");
 		}
 		/* Creates contours if contours are to be plotted as well. */
 
 		if (((int)GlobalMembersGraph3d.draw_contour) != 0)
 		{
-		surface_points this_plot;
-		for (this_plot = first_3dplot, i = 0; i < plot_num; this_plot = this_plot.next_sp, i++)
-		{
-
-			if (this_plot.contours != null)
+			surface_points this_plot;
+			for (this_plot = first_3dplot, i = 0; i < plot_num; this_plot = this_plot.next_sp, i++)
 			{
-			gnuplot_contours cntrs = this_plot.contours;
 
-			while (cntrs != null)
-			{
-				gnuplot_contours cntr = cntrs;
-				cntrs = cntrs.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(cntr.coords);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(cntr);
-			}
-			this_plot.contours = DefineConstants.NULL;
-			}
+				if (this_plot.contours != null)
+				{
+					gnuplot_contours cntrs = this_plot.contours;
 
-			/* Make sure this one can be contoured. */
-			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS || this_plot.plot_style == PLOT_STYLE.VECTOR || this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
-			continue;
+					while (cntrs != null)
+					{
+						gnuplot_contours cntr = cntrs;
+						cntrs = cntrs.next;
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(cntr.coords);
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(cntr);
+					}
+					this_plot.contours = DefineConstants.NULL;
+				}
 
-			/* Allow individual surfaces to opt out of contouring */
-			if (this_plot.opt_out_of_contours)
-			continue;
+				/* Make sure this one can be contoured. */
+				if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS || this_plot.plot_style == PLOT_STYLE.VECTOR || this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
+					continue;
 
-			if (this_plot.has_grid_topology == 0)
-			{
-			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET,"Cannot contour non grid data. Please use \"set dgrid3d\".");
+				/* Allow individual surfaces to opt out of contouring */
+				if (this_plot.opt_out_of_contours)
+					continue;
+
+				if (this_plot.has_grid_topology == 0)
+				{
+					GlobalMembersUtil.int_warn(DefineConstants.NO_CARET,"Cannot contour non grid data. Please use \"set dgrid3d\".");
+				}
+				else if (this_plot.plot_type == PLOT_TYPE.DATA3D)
+				{
+					this_plot.contours = GlobalMembersContour.contour(this_plot.num_iso_read, this_plot.iso_crvs);
+				}
+				else
+				{
+					this_plot.contours = GlobalMembersContour.contour(GlobalMembersGraph3d.iso_samples_2, this_plot.iso_crvs);
+				}
 			}
-			else if (this_plot.plot_type == PLOT_TYPE.DATA3D)
-			{
-			this_plot.contours = GlobalMembersContour.contour(this_plot.num_iso_read, this_plot.iso_crvs);
-			}
-			else
-			{
-			this_plot.contours = GlobalMembersContour.contour(GlobalMembersGraph3d.iso_samples_2, this_plot.iso_crvs);
-			}
-		}
 		} // draw_contour
 
 		/* the following ~9 lines were moved from the end of the
@@ -3796,12 +3798,12 @@ public class GlobalMembersPlot3d
 		/* if we get here, all went well, so record the line for replot */
 		if (GlobalMembersCommand.plot_token != -1)
 		{
-		/* note that m_capture also frees the old replot_line */
-	tangible.RefObject<String[]> tempRef_replot_line = new tangible.RefObject<String[]>(GlobalMembersCommand.replot_line);
-		GlobalMembersUtil.m_capture(tempRef_replot_line, GlobalMembersCommand.plot_token, GlobalMembersCommand.c_token - 1);
-		GlobalMembersCommand.replot_line = tempRef_replot_line.argvalue;
-		GlobalMembersCommand.plot_token = -1;
-		GlobalMembersEval.fill_gpval_string("GPVAL_LAST_PLOT", GlobalMembersCommand.replot_line);
+			/* note that m_capture also frees the old replot_line */
+			tangible.RefObject<String[]> tempRef_replot_line = new tangible.RefObject<String[]>(GlobalMembersCommand.replot_line);
+			GlobalMembersUtil.m_capture(tempRef_replot_line, GlobalMembersCommand.plot_token, GlobalMembersCommand.c_token - 1);
+			GlobalMembersCommand.replot_line = tempRef_replot_line.argvalue;
+			GlobalMembersCommand.plot_token = -1;
+			GlobalMembersEval.fill_gpval_string("GPVAL_LAST_PLOT", GlobalMembersCommand.replot_line);
 		}
 
 		/* record that all went well */
@@ -3809,25 +3811,25 @@ public class GlobalMembersPlot3d
 
 		/* perform the plot */
 		if (GlobalMembersGadgets.table_mode)
-		GlobalMembersTabulate.print_3dtable(plot_num);
+			GlobalMembersTabulate.print_3dtable(plot_num);
 		else
 		{
-		GlobalMembersGraph3d.do_3dplot(first_3dplot, plot_num, 0);
+			GlobalMembersGraph3d.do_3dplot(first_3dplot, plot_num, 0);
 
-		/* after do_3dplot(), axis_array[] and max_array[].min
-		 * contain the plotting range actually used (rounded
-		 * to tic marks, not only the min/max data values)
-		 * --> save them now for writeback if requested
-		 */
-		do {AXIS_INDEX axis; for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++) if (GlobalMembersAxis.axis_array[axis].range_flags & DefineConstants.RANGE_WRITEBACK) {GlobalMembersAxis.set_writeback_min(axis); GlobalMembersAxis.set_writeback_max(axis);}} while (0);
-		/* update GPVAL_ variables available to user */
-		GlobalMembersEval.update_gpval_variables(1);
+			/* after do_3dplot(), axis_array[] and max_array[].min
+			 * contain the plotting range actually used (rounded
+			 * to tic marks, not only the min/max data values)
+			 * --> save them now for writeback if requested
+			 */
+			do {AXIS_INDEX axis; for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++) if (GlobalMembersAxis.axis_array[axis].range_flags & DefineConstants.RANGE_WRITEBACK) {GlobalMembersAxis.set_writeback_min(axis); GlobalMembersAxis.set_writeback_max(axis);}} while (0);
+			/* update GPVAL_ variables available to user */
+			GlobalMembersEval.update_gpval_variables(1);
 
-	///#ifdef VOLATILE_REFRESH
-		/* Mark these plots as safe for quick refresh */
-		GlobalMembersGadgets.refresh_nplots = plot_num;
-		GlobalMembersGadgets.refresh_ok = 3;
-	///#endif
+			///#ifdef VOLATILE_REFRESH
+			/* Mark these plots as safe for quick refresh */
+			GlobalMembersGadgets.refresh_nplots = plot_num;
+			GlobalMembersGadgets.refresh_ok = 3;
+			///#endif
 		}
 	}
 	public static void grid_nongrid_data(surface_points this_plot)
@@ -3869,25 +3871,25 @@ public class GlobalMembersPlot3d
 		ymin = ymax = old_iso_crvs.points[0].y;
 		for (icrv = old_iso_crvs; icrv != DefineConstants.NULL; icrv = icrv.next)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *points = icrv->points;
-		coordinate * points = new coordinate(icrv.points);
+			//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: struct coordinate  *points = icrv->points;
+			coordinate * points = new coordinate(icrv.points);
 
-		for (i = 0; i < icrv.p_count; i++, points++)
-		{
-			/* HBB 20010424: avoid crashing for undefined input */
-			if (points.type == coord_type.UNDEFINED)
-			continue;
-			if (xmin > points.x)
-			xmin = points.x;
-			if (xmax < points.x)
-			xmax = points.x;
-			if (ymin > points.y)
-			ymin = points.y;
-			if (ymax < points.y)
-			ymax = points.y;
-		}
+			for (i = 0; i < icrv.p_count; i++, points++)
+			{
+				/* HBB 20010424: avoid crashing for undefined input */
+				if (points.type == coord_type.UNDEFINED)
+					continue;
+				if (xmin > points.x)
+					xmin = points.x;
+				if (xmax < points.x)
+					xmax = points.x;
+				if (ymin > points.y)
+					ymin = points.y;
+				if (ymax < points.y)
+					ymax = points.y;
+			}
 		}
 
 		dx = (xmax - xmin) / (dgrid3d_col_fineness - 1);
@@ -3910,27 +3912,27 @@ public class GlobalMembersPlot3d
 
 		for (i = 0, x = xmin; i < dgrid3d_col_fineness; i++, x += dx)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-		coordinate * points = new coordinate();
+			//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+			coordinate * points = new coordinate();
 
-		icrv = GlobalMembersMisc.iso_alloc(dgrid3d_row_fineness + 1);
-		icrv.p_count = dgrid3d_row_fineness;
-		icrv.next = this_plot.iso_crvs;
-		this_plot.iso_crvs = icrv;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: points = icrv->points;
-		points.copyFrom(icrv.points);
+			icrv = GlobalMembersMisc.iso_alloc(dgrid3d_row_fineness + 1);
+			icrv.p_count = dgrid3d_row_fineness;
+			icrv.next = this_plot.iso_crvs;
+			this_plot.iso_crvs = icrv;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: points = icrv->points;
+			points.copyFrom(icrv.points);
 
-		for (j = 0, y = ymin; j < dgrid3d_row_fineness; j++, y += dy, points++)
-		{
-			z = w = 0.0;
-
-			/* as soon as ->type is changed to UNDEFINED, break out of
-			 * two inner loops! */
-			points.type = coord_type.INRANGE;
-
-			if (dgrid3d_mode == en_dgrid3d_mode.DGRID3D_SPLINES.getValue())
+			for (j = 0, y = ymin; j < dgrid3d_row_fineness; j++, y += dy, points++)
 			{
+				z = w = 0.0;
+
+				/* as soon as ->type is changed to UNDEFINED, break out of
+				 * two inner loops! */
+				points.type = coord_type.INRANGE;
+
+				if (dgrid3d_mode == en_dgrid3d_mode.DGRID3D_SPLINES.getValue())
+				{
 					z = b[numpoints];
 					for (k = 0; k < numpoints; k++)
 					{
@@ -3939,14 +3941,14 @@ public class GlobalMembersPlot3d
 						z = z - b[k] * GlobalMembersPlot3d.splines_kernel(Math.sqrt(dx * dx + dy * dy));
 					}
 					z = z + b[numpoints + 1] * x + b[numpoints + 2] * y;
-			} // everything, except splines
-			else
-			{
+				} // everything, except splines
+				else
+				{
 					for (oicrv = old_iso_crvs; oicrv != DefineConstants.NULL; oicrv = oicrv.next)
 					{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *opoints = oicrv->points;
+						//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+						//ORIGINAL LINE: struct coordinate  *opoints = oicrv->points;
 						coordinate * opoints = new coordinate(oicrv.points);
 						for (k = 0; k < oicrv.p_count; k++, opoints++)
 						{
@@ -4013,32 +4015,32 @@ public class GlobalMembersPlot3d
 						if (points.type != coord_type.INRANGE)
 							break; // out of the second-inner loop as well ...
 					}
-			} // endif( dgrid3d_mode == DGRID3D_SPLINES )
+				} // endif( dgrid3d_mode == DGRID3D_SPLINES )
 
-				  /* Now that we've escaped the loops safely, we know that we
-				   * do have a good value in z and w, so we can proceed just as
-				   * if nothing had happened at all. Nice, isn't it? */
-			points.type = coord_type.INRANGE;
+				/* Now that we've escaped the loops safely, we know that we
+				 * do have a good value in z and w, so we can proceed just as
+				 * if nothing had happened at all. Nice, isn't it? */
+				points.type = coord_type.INRANGE;
 
-			/* HBB 20010424: if log x or log y axis, we don't want to
-			 * log() the value again --> just store it, and trust that
-			 * it's always inrange */
-			points.x = x;
-			points.y = y;
+				/* HBB 20010424: if log x or log y axis, we don't want to
+				 * log() the value again --> just store it, and trust that
+				 * it's always inrange */
+				points.x = x;
+				points.y = y;
 
-			/* Honor requested x and y limits */
-			/* FIXME: This code section was not in 4.2.  It imperfectly    */
-			/* restores the clipping behaviour of version 3.7 and earlier. */
-			if ((x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)) || (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
-			points.type = coord_type.OUTRANGE;
+				/* Honor requested x and y limits */
+				/* FIXME: This code section was not in 4.2.  It imperfectly    */
+				/* restores the clipping behaviour of version 3.7 and earlier. */
+				if ((x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)) || (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
+					points.type = coord_type.OUTRANGE;
 
-			if (dgrid3d_mode != en_dgrid3d_mode.DGRID3D_SPLINES.getValue())
+				if (dgrid3d_mode != en_dgrid3d_mode.DGRID3D_SPLINES.getValue())
 					z = z / w;
 
-			do
-			{
-				if (GlobalMembersAxis.z_axis == DefineConstants.NO_AXIS)
-					break;
+				do
+				{
+					if (GlobalMembersAxis.z_axis == DefineConstants.NO_AXIS)
+						break;
 					if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
 					{
 						points.type = coord_type.UNDEFINED;
@@ -4067,138 +4069,138 @@ public class GlobalMembersPlot3d
 					}
 					else
 						points.z = z;
-						if (this_plot.noautoscale)
-							break;
-							if (points.type != coord_type.INRANGE)
-								break;
-								if ((int)GlobalMembersAxis.z_axis < 0)
-									break;
-									if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min)
-										GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min = z;
-										if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min)
-										{
-											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = z;
-												else
-												{
-													points.type = coord_type.OUTRANGE;
-													()0;
-													break;
-												}
-										}
-										if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max)
-											GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max = z;
-											if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max)
-											{
-												if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = z;
-													else
-													{
-														points.type = coord_type.OUTRANGE;
-														()0;
-													}
-											}
-			} while (0);
-
-			if (this_plot.pm3d_color_from_column)
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Gridding of the color column is not implemented");
-			else
-			{
-			{
-				coord_type c_type_tmp = points.type;
-				do
-				{
-					if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+					if (this_plot.noautoscale)
 						break;
-						if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
+					if (points.type != coord_type.INRANGE)
+						break;
+					if ((int)GlobalMembersAxis.z_axis < 0)
+						break;
+					if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min)
+						GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_min = z;
+					if (z < GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = z;
+						else
 						{
-							c_type_tmp = coord_type.UNDEFINED;
-							continue;
+							points.type = coord_type.OUTRANGE;
+							()0;
 							break;
 						}
-						if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
+					}
+					if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max)
+						GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].data_max = z;
+					if (z > GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+							GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = z;
+						else
 						{
-							if (z < 0.0)
+							points.type = coord_type.OUTRANGE;
+							()0;
+						}
+					}
+				} while (0);
+
+				if (this_plot.pm3d_color_from_column)
+					GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Gridding of the color column is not implemented");
+				else
+				{
+					{
+						coord_type c_type_tmp = points.type;
+						do
+						{
+							if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+								break;
+							if (!(z > -DefineConstants.VERYLARGE && z < DefineConstants.VERYLARGE))
 							{
 								c_type_tmp = coord_type.UNDEFINED;
 								continue;
 								break;
 							}
-							else if (z == 0.0)
+							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
 							{
-								points.ylow = -DefineConstants.VERYLARGE;
-								c_type_tmp = coord_type.OUTRANGE;
-								()0;
-								break;
+								if (z < 0.0)
+								{
+									c_type_tmp = coord_type.UNDEFINED;
+									continue;
+									break;
+								}
+								else if (z == 0.0)
+								{
+									points.ylow = -DefineConstants.VERYLARGE;
+									c_type_tmp = coord_type.OUTRANGE;
+									()0;
+									break;
+								}
+								else
+								{
+									points.ylow = (Math.log(z) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+								}
 							}
 							else
-							{
-								points.ylow = (Math.log(z) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
-							}
-						}
-						else
-							points.ylow = z;
+								points.ylow = z;
 							if (this_plot.noautoscale)
 								break;
-								if (c_type_tmp != coord_type.INRANGE)
+							if (c_type_tmp != coord_type.INRANGE)
+								break;
+							if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+								break;
+							if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
+								GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = z;
+							if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
+							{
+								if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = z;
+								else
+								{
+									c_type_tmp = coord_type.OUTRANGE;
+									()0;
 									break;
-									if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
-										break;
-										if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
-											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = z;
-											if (z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-											{
-												if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = z;
-													else
-													{
-														c_type_tmp = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
-												GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = z;
-												if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-												{
-													if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = z;
-														else
-														{
-															c_type_tmp = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
-			};
+								}
+							}
+							if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
+								GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = z;
+							if (z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
+							{
+								if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = z;
+								else
+								{
+									c_type_tmp = coord_type.OUTRANGE;
+									()0;
+								}
+							}
+						} while (0);
+					};
+				}
 			}
 		}
-		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(xx); // save to call free on NULL pointer if splines not used
 
 		/* Delete the old non grid data. */
 		for (oicrvs = old_iso_crvs; oicrvs != DefineConstants.NULL;)
 		{
-		oicrv = oicrvs;
-		oicrvs = oicrvs.next;
-		GlobalMembersMisc.iso_free(oicrv);
+			oicrv = oicrvs;
+			oicrvs = oicrvs.next;
+			GlobalMembersMisc.iso_free(oicrv);
 		}
 	}
 
-/*
- * The hardest part of this routine is collapsing the FUNC plot types in the
- * list (which are gauranteed to occur in (x,y,z) triplets while preserving
- * the non-FUNC type plots intact.  This means we have to work our way
- * through various lists.  Examples (hand checked):
- * start_plot:F1->F2->F3->NULL ==> F3->NULL
- * start_plot:F1->F2->F3->F4->F5->F6->NULL ==> F3->F6->NULL
- * start_plot:F1->F2->F3->D1->D2->F4->F5->F6->D3->NULL ==>
- * F3->D1->D2->F6->D3->NULL
- *
- * x and y ranges now fixed in eval_3dplots
- */
+	/*
+	 * The hardest part of this routine is collapsing the FUNC plot types in the
+	 * list (which are gauranteed to occur in (x,y,z) triplets while preserving
+	 * the non-FUNC type plots intact.  This means we have to work our way
+	 * through various lists.  Examples (hand checked):
+	 * start_plot:F1->F2->F3->NULL ==> F3->NULL
+	 * start_plot:F1->F2->F3->F4->F5->F6->NULL ==> F3->F6->NULL
+	 * start_plot:F1->F2->F3->D1->D2->F4->F5->F6->D3->NULL ==>
+	 * F3->D1->D2->F6->D3->NULL
+	 *
+	 * x and y ranges now fixed in eval_3dplots
+	 */
 	public static void parametric_3dfixup(surface_points start_plot, int plot_num)
 	{
 		surface_points xp;
@@ -4226,87 +4228,87 @@ public class GlobalMembersPlot3d
 		new_list = xp = start_plot;
 		for (surface = 0; surface < plot_num; surface++)
 		{
-		if (xp.plot_type == PLOT_TYPE.FUNC3D)
-		{
-			surface_points yp = xp.next_sp;
-			surface_points zp = yp.next_sp;
-
-			/* Here's a FUNC3D parametric function defined as three parts.
-			 * Go through all the points and assign the x's and y's from xp and
-			 * yp to zp. min/max already done
-			 */
-			iso_curve xicrvs = xp.iso_crvs;
-			iso_curve yicrvs = yp.iso_crvs;
-			iso_curve zicrvs = zp.iso_crvs;
-
-			plot_num -= 2;
-
-			assert coord_type.INRANGE < coord_type.OUTRANGE && coord_type.OUTRANGE < coord_type.UNDEFINED;
-
-			while (zicrvs != null)
+			if (xp.plot_type == PLOT_TYPE.FUNC3D)
 			{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *xpoints = xicrvs->points;
-			coordinate[] xpoints = new coordinate(xicrvs.points);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *ypoints = yicrvs->points;
-			coordinate[] ypoints = new coordinate(yicrvs.points);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *zpoints = zicrvs->points;
-			coordinate[] zpoints = new coordinate(zicrvs.points);
+				surface_points yp = xp.next_sp;
+				surface_points zp = yp.next_sp;
 
-			for (i = 0; i < zicrvs.p_count; ++i)
-			{
-				zpoints[i].x = xpoints[i].z;
-				zpoints[i].y = ypoints[i].z;
-				if (zpoints[i].type < xpoints[i].type)
-				zpoints[i].type = xpoints[i].type;
-				if (zpoints[i].type < ypoints[i].type)
-				zpoints[i].type = ypoints[i].type;
+				/* Here's a FUNC3D parametric function defined as three parts.
+				 * Go through all the points and assign the x's and y's from xp and
+				 * yp to zp. min/max already done
+				 */
+				iso_curve xicrvs = xp.iso_crvs;
+				iso_curve yicrvs = yp.iso_crvs;
+				iso_curve zicrvs = zp.iso_crvs;
 
-			}
-			xicrvs = xicrvs.next;
-			yicrvs = yicrvs.next;
-			zicrvs = zicrvs.next;
-			}
+				plot_num -= 2;
 
-			/* Ok, fix up the title to include xp and yp plots. */
-			if (((xp.title != null && xp.title.charAt(0) != '\0') || (yp.title != null && yp.title.charAt(0) != '\0')) && zp.title != null)
-			{
-			tlen = (xp.title != null ? xp.title.length() : 0) + (yp.title != null ? yp.title.length() : 0) + (zp.title != null ? zp.title.length() : 0) + 5;
-			new_title = GlobalMembersAlloc.gp_alloc(tlen, "string");
-			new_title = null;
-			if (xp.title != null && xp.title.charAt(0) != '\0')
-			{
-				new_title += xp.title;
-				new_title += ", "; // + 2
-			}
-			if (yp.title != null && yp.title.charAt(0) != '\0')
-			{
-				new_title += yp.title;
-				new_title += ", "; // + 2
-			}
-			new_title += zp.title;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(zp.title);
-			zp.title = new_title;
-			}
-			/* add xp and yp to head of free list */
-			assert xp.next_sp == yp;
-			yp.next_sp = free_list;
-			free_list = xp;
+				assert coord_type.INRANGE < coord_type.OUTRANGE && coord_type.OUTRANGE < coord_type.UNDEFINED;
 
-			/* add zp to tail of new_list */
-			last_pointer = zp;
-			last_pointer = &(zp.next_sp);
-			xp = zp.next_sp;
-		} // its a data plot
-		else
-		{
-			assert last_pointer == xp; // think this is true !
-			last_pointer = &(xp.next_sp);
-			xp = xp.next_sp;
-		}
+				while (zicrvs != null)
+				{
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: struct coordinate  *xpoints = xicrvs->points;
+					coordinate[] xpoints = new coordinate(xicrvs.points);
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: struct coordinate  *ypoints = yicrvs->points;
+					coordinate[] ypoints = new coordinate(yicrvs.points);
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: struct coordinate  *zpoints = zicrvs->points;
+					coordinate[] zpoints = new coordinate(zicrvs.points);
+
+					for (i = 0; i < zicrvs.p_count; ++i)
+					{
+						zpoints[i].x = xpoints[i].z;
+						zpoints[i].y = ypoints[i].z;
+						if (zpoints[i].type < xpoints[i].type)
+							zpoints[i].type = xpoints[i].type;
+						if (zpoints[i].type < ypoints[i].type)
+							zpoints[i].type = ypoints[i].type;
+
+					}
+					xicrvs = xicrvs.next;
+					yicrvs = yicrvs.next;
+					zicrvs = zicrvs.next;
+				}
+
+				/* Ok, fix up the title to include xp and yp plots. */
+				if (((xp.title != null && xp.title.charAt(0) != '\0') || (yp.title != null && yp.title.charAt(0) != '\0')) && zp.title != null)
+				{
+					tlen = (xp.title != null ? xp.title.length() : 0) + (yp.title != null ? yp.title.length() : 0) + (zp.title != null ? zp.title.length() : 0) + 5;
+					new_title = GlobalMembersAlloc.gp_alloc(tlen, "string");
+					new_title = null;
+					if (xp.title != null && xp.title.charAt(0) != '\0')
+					{
+						new_title += xp.title;
+						new_title += ", "; // + 2
+					}
+					if (yp.title != null && yp.title.charAt(0) != '\0')
+					{
+						new_title += yp.title;
+						new_title += ", "; // + 2
+					}
+					new_title += zp.title;
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(zp.title);
+					zp.title = new_title;
+				}
+				/* add xp and yp to head of free list */
+				assert xp.next_sp == yp;
+				yp.next_sp = free_list;
+				free_list = xp;
+
+				/* add zp to tail of new_list */
+				last_pointer = zp;
+				last_pointer = &(zp.next_sp);
+				xp = zp.next_sp;
+			} // its a data plot
+			else
+			{
+				assert last_pointer == xp; // think this is true !
+				last_pointer = &(xp.next_sp);
+				xp = xp.next_sp;
+			}
 		}
 
 		/* Ok, append free list and write first_plot */
@@ -4314,58 +4316,58 @@ public class GlobalMembersPlot3d
 		first_3dplot = new_list;
 	}
 
-/* HBB 20000508: moved these functions to the only module that uses them
- * so they can be turned 'static' */
-/*
- * sp_alloc() allocates a surface_points structure that can hold 'num_iso_1'
- * iso-curves with 'num_samp_2' samples and 'num_iso_2' iso-curves with
- * 'num_samp_1' samples.
- * If, however num_iso_2 or num_samp_1 is zero no iso curves are allocated.
- */
+	/* HBB 20000508: moved these functions to the only module that uses them
+	 * so they can be turned 'static' */
+	/*
+	 * sp_alloc() allocates a surface_points structure that can hold 'num_iso_1'
+	 * iso-curves with 'num_samp_2' samples and 'num_iso_2' iso-curves with
+	 * 'num_samp_1' samples.
+	 * If, however num_iso_2 or num_samp_1 is zero no iso curves are allocated.
+	 */
 	public static surface_points sp_alloc(int num_samp_1, int num_iso_1, int num_samp_2, int num_iso_2)
 	{
 		lp_style_type default_lp_properties = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		surface_points sp = GlobalMembersAlloc.gp_alloc(sizeof(sp), "surface");
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memset' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memset' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memset(sp,0,sizeof(GlobalMembersMouse.struct surface_points));
 
 		/* Initialize various fields */
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: sp->lp_properties = default_lp_properties;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: sp->lp_properties = default_lp_properties;
 		sp.lp_properties.copyFrom(default_lp_properties);
 		GlobalMembersGadgets.default_arrow_style((sp.arrow_properties));
 
 		if (num_iso_2 > 0 && num_samp_1 > 0)
 		{
-		int i;
-		iso_curve icrv;
+			int i;
+			iso_curve icrv;
 
-		for (i = 0; i < num_iso_1; i++)
-		{
-			icrv = GlobalMembersMisc.iso_alloc(num_samp_2);
-			icrv.next = sp.iso_crvs;
-			sp.iso_crvs = icrv;
-		}
-		for (i = 0; i < num_iso_2; i++)
-		{
-			icrv = GlobalMembersMisc.iso_alloc(num_samp_1);
-			icrv.next = sp.iso_crvs;
-			sp.iso_crvs = icrv;
-		}
+			for (i = 0; i < num_iso_1; i++)
+			{
+				icrv = GlobalMembersMisc.iso_alloc(num_samp_2);
+				icrv.next = sp.iso_crvs;
+				sp.iso_crvs = icrv;
+			}
+			for (i = 0; i < num_iso_2; i++)
+			{
+				icrv = GlobalMembersMisc.iso_alloc(num_samp_1);
+				icrv.next = sp.iso_crvs;
+				sp.iso_crvs = icrv;
+			}
 		}
 
 		return (sp);
 	}
 
-/*
- * sp_replace() updates a surface_points structure so it can hold 'num_iso_1'
- * iso-curves with 'num_samp_2' samples and 'num_iso_2' iso-curves with
- * 'num_samp_1' samples.
- * If, however num_iso_2 or num_samp_1 is zero no iso curves are allocated.
- */
+	/*
+	 * sp_replace() updates a surface_points structure so it can hold 'num_iso_1'
+	 * iso-curves with 'num_samp_2' samples and 'num_iso_2' iso-curves with
+	 * 'num_samp_1' samples.
+	 * If, however num_iso_2 or num_samp_1 is zero no iso curves are allocated.
+	 */
 	public static void sp_replace(surface_points sp, int num_samp_1, int num_iso_1, int num_samp_2, int num_iso_2)
 	{
 		int i;
@@ -4374,31 +4376,31 @@ public class GlobalMembersPlot3d
 
 		while (icrvs != null)
 		{
-		icrv = icrvs;
-		icrvs = icrvs.next;
-		GlobalMembersMisc.iso_free(icrv);
+			icrv = icrvs;
+			icrvs = icrvs.next;
+			GlobalMembersMisc.iso_free(icrv);
 		}
 		sp.iso_crvs = DefineConstants.NULL;
 
 		if (num_iso_2 > 0 && num_samp_1 > 0)
 		{
-		for (i = 0; i < num_iso_1; i++)
-		{
-			icrv = GlobalMembersMisc.iso_alloc(num_samp_2);
-			icrv.next = sp.iso_crvs;
-			sp.iso_crvs = icrv;
-		}
-		for (i = 0; i < num_iso_2; i++)
-		{
-			icrv = GlobalMembersMisc.iso_alloc(num_samp_1);
-			icrv.next = sp.iso_crvs;
-			sp.iso_crvs = icrv;
-		}
+			for (i = 0; i < num_iso_1; i++)
+			{
+				icrv = GlobalMembersMisc.iso_alloc(num_samp_2);
+				icrv.next = sp.iso_crvs;
+				sp.iso_crvs = icrv;
+			}
+			for (i = 0; i < num_iso_2; i++)
+			{
+				icrv = GlobalMembersMisc.iso_alloc(num_samp_1);
+				icrv.next = sp.iso_crvs;
+				sp.iso_crvs = icrv;
+			}
 		}
 		else
-		sp.iso_crvs = DefineConstants.NULL;
+			sp.iso_crvs = DefineConstants.NULL;
 	}
-///#endif
+	///#endif
 
 
 
@@ -4412,7 +4414,7 @@ public class GlobalMembersPlot3d
 		return 0.0;
 	}
 
-/* PKJ:
+	/* PKJ:
    This function has been hived off out of the original grid_nongrid_data().
    No changes have been made, but variables only needed locally have moved
    out of grid_nongrid_data() into this functin. */
@@ -4436,11 +4438,11 @@ public class GlobalMembersPlot3d
 		{
 			numpoints += oicrv.p_count;
 		}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		xx = GlobalMembersAlloc.gp_alloc(sizeof(xx[0]) * (numpoints + 3) * (numpoints + 8), "thin plate splines in dgrid3d");
 		/* the memory needed is not really (n+3)*(n+8) for now,
 		   but might be if I take into account errors ... */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		K = GlobalMembersAlloc.gp_alloc(sizeof(K[0]) * (numpoints + 3), "matrix : thin plate splines 2d");
 		yy = xx + numpoints;
 		zz = yy + numpoints;
@@ -4451,9 +4453,9 @@ public class GlobalMembersPlot3d
 		numpoints = 0;
 		for (oicrv = old_iso_crvs; oicrv != DefineConstants.NULL; oicrv = oicrv.next)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *opoints = oicrv->points;
+			//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: struct coordinate  *opoints = oicrv->points;
 			coordinate * opoints = new coordinate(oicrv.points);
 
 			for (k = 0; k < oicrv.p_count; k++, opoints++)
@@ -4502,7 +4504,7 @@ public class GlobalMembersPlot3d
 		K[numpoints + 2][numpoints] = 0.0;
 		K[numpoints + 2][numpoints + 1] = 0.0;
 		K[numpoints + 2][numpoints + 2] = 0.0;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		indx = GlobalMembersAlloc.gp_alloc(sizeof(indx[0]) * (numpoints + 3), "indexes lu");
 		/* actually, K is *not* positive definite, but
 		   has only non zero real eigenvalues ->
@@ -4510,9 +4512,9 @@ public class GlobalMembersPlot3d
 		GlobalMembersMatrix.lu_decomp(K, numpoints + 3, indx, d);
 		GlobalMembersMatrix.lu_backsubst(K, numpoints + 3, indx, b);
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(K);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(indx);
 
 		p_xx = xx;
@@ -4551,7 +4553,7 @@ public class GlobalMembersPlot3d
 		return dist;
 	}
 
-/* This is from Numerical Recipes in C, 2nd ed, p70 */
+	/* This is from Numerical Recipes in C, 2nd ed, p70 */
 	public static double pythag(double dx, double dy)
 	{
 		double x;
@@ -4571,7 +4573,7 @@ public class GlobalMembersPlot3d
 	}
 
 	/* the curves/surfaces of the plot */
-	public static surface_points first_3dplot = DefineConstants.NULL;
+	public static surface_points first_3dplot = null;
 	public static udft_entry plot_func = new udft_entry();
 
 	public static int plot3d_num = 0;

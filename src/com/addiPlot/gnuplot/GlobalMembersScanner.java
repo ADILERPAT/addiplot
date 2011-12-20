@@ -1,5 +1,8 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.RefObject;
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersScanner
 {
 	///#define __STDC__ 1
@@ -168,46 +171,46 @@ public class GlobalMembersScanner
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: scanner.c,v 1.27.2.1 2010/01/30 05:07:52 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: scanner.c,v 1.27.2.1 2010/01/30 05:07:52 sfeam Exp $");
+	//}
 
-/*
- * scanner() breaks expression[] into lexical units, storing them in token[].
- *   The total number of tokens found is returned as the function
- *   value.  Scanning will stop when '\0' is found in expression[], or
- *   when token[] is full.  extend_input_line() is called to extend
- *   expression array if needed.
- *
- *       Scanning is performed by following rules:
- *
- *      Current char    token should contain
- *     -------------    -----------------------
- *      1.  alpha,_     all following alpha-numerics
- *      2.  digit       0 or more following digits, 0 or 1 decimal point,
- *                              0 or more digits, 0 or 1 'e' or 'E',
- *                              0 or more digits.
- *      3.  ^,+,-,/     only current char
- *          %,~,(,)
- *          [,],;,:,
- *          ?,comma
- *          $           for using patch (div)
- *      4.  &,|,=,*     current char; also next if next is same
- *      5.  !,<,>       current char; also next if next is =
- *      6.  ", '        all chars up until matching quote
- *      7.  #           this token cuts off scanning of the line (DFK).
- *      8.  `           (command substitution: all characters through the
- *                      matching backtic are replaced by the output of
- *                      the contained command, then scanning is restarted.)
- * EAM Jan 2010:	Bugfix. No rule covered an initial period. This caused
- *			string concatenation to fail for variables whose first
- *			character is 'E' or 'e'.  Now we add a 9th rule:
- *	9.  .		A period may be a token by itself (string concatenation)
- *			or the start of a decimal number continuing with a digit
- *
- *                      white space between tokens is ignored
- */
+	/*
+	 * scanner() breaks expression[] into lexical units, storing them in token[].
+	 *   The total number of tokens found is returned as the function
+	 *   value.  Scanning will stop when '\0' is found in expression[], or
+	 *   when token[] is full.  extend_input_line() is called to extend
+	 *   expression array if needed.
+	 *
+	 *       Scanning is performed by following rules:
+	 *
+	 *      Current char    token should contain
+	 *     -------------    -----------------------
+	 *      1.  alpha,_     all following alpha-numerics
+	 *      2.  digit       0 or more following digits, 0 or 1 decimal point,
+	 *                              0 or more digits, 0 or 1 'e' or 'E',
+	 *                              0 or more digits.
+	 *      3.  ^,+,-,/     only current char
+	 *          %,~,(,)
+	 *          [,],;,:,
+	 *          ?,comma
+	 *          $           for using patch (div)
+	 *      4.  &,|,=,*     current char; also next if next is same
+	 *      5.  !,<,>       current char; also next if next is =
+	 *      6.  ", '        all chars up until matching quote
+	 *      7.  #           this token cuts off scanning of the line (DFK).
+	 *      8.  `           (command substitution: all characters through the
+	 *                      matching backtic are replaced by the output of
+	 *                      the contained command, then scanning is restarted.)
+	 * EAM Jan 2010:	Bugfix. No rule covered an initial period. This caused
+	 *			string concatenation to fail for variables whose first
+	 *			character is 'E' or 'e'.  Now we add a 9th rule:
+	 *	9.  .		A period may be a token by itself (string concatenation)
+	 *			or the start of a decimal number continuing with a digit
+	 *
+	 *                      white space between tokens is ignored
+	 */
 	///#endif
 
 	/* GNUPLOT - scanner.c */
@@ -996,7 +999,7 @@ public class GlobalMembersScanner
 
 	/* Prototypes of functions exported by scanner.c */
 
-	public static int scanner(tangible.RefObject<String[]> expressionp, int expressionlenp)
+	public static int scanner(RefObject<String[]> expressionp, int expressionlenp)
 	{
 		int current; // index of current char in expression[]
 		String expression = expressionp.argvalue;
@@ -1005,99 +1008,99 @@ public class GlobalMembersScanner
 
 		for (current = t_num = 0; expression.charAt(current) != DefineConstants.NUL; current++)
 		{
-		if (t_num + 1 >= GlobalMembersCommand.token_table_size)
-		{
-			/* leave space for dummy end token */
-			GlobalMembersCommand.extend_token_table();
-		}
-		if (Character.isWhitespace((byte) expression.charAt(current)))
-			continue; // skip the whitespace
-		GlobalMembersCommand.token[t_num].start_index = current;
-		GlobalMembersCommand.token[t_num].length = 1;
-		GlobalMembersCommand.token[t_num].is_token = true; // to start with...
-
-		if (expression.charAt(current) == '`')
-		{
-		tangible.RefObject<String[]> tempRef_expressionp = new tangible.RefObject<String[]>(expressionp);
-			GlobalMembersScanner.substitute(tempRef_expressionp, expressionlenp, current);
-			expressionp.argvalue = tempRef_expressionp.argvalue;
-			expression = expressionp.argvalue; // expression might have moved
-			current--;
-			continue;
-		}
-		/* allow _ to be the first character of an identifier */
-		if (Character.isLetter((byte) expression.charAt(current)) || expression.charAt(current) == '_')
-		{
-			while ((Character.isLetterOrDigit((byte)expression.charAt(current + 1)) || (expression.charAt(current + 1)) == '_')) {GlobalMembersCommand.token[t_num].length++; current++;};
-		}
-		else if (Character.isDigit((byte) expression.charAt(current)))
-		{
-			GlobalMembersCommand.token[t_num].is_token = false;
-			GlobalMembersCommand.token[t_num].length = GlobalMembersScanner.get_num(expression.charAt(current));
-			current += (GlobalMembersCommand.token[t_num].length - 1);
-
-		}
-		else if (expression.charAt(current) == '.')
-		{
-			/* Rule 9 */
-			if (Character.isDigit(expression.charAt(current + 1)))
+			if (t_num + 1 >= GlobalMembersCommand.token_table_size)
 			{
-			GlobalMembersCommand.token[t_num].is_token = false;
-			GlobalMembersCommand.token[t_num].length = GlobalMembersScanner.get_num(expression.charAt(current));
-			current += (GlobalMembersCommand.token[t_num].length - 1);
-			} // do nothing if the . is a token by itself
-
-		}
-		else if (expression.charAt(current) == DefineConstants.LBRACE)
-		{
-			GlobalMembersCommand.token[t_num].is_token = false;
-			GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
-	///#ifdef __PUREC__
-	//	    {
-	//		char l[80];
-	//		if ((sscanf(&expression[++current], "%lf,%lf%[ }]s",
-	//			    &token[t_num].l_val.v.cmplx_val.real,
-	//			    &token[t_num].l_val.v.cmplx_val.imag,
-	//			    &l) != 3) || (!strchr(l, RBRACE)))
-	//		    int_error(t_num, "invalid complex constant");
-	//	    }
-	///#else
-			if ((sscanf(expression.charAt(++current), "%lf , %lf %c", GlobalMembersCommand.token[t_num].l_val.v.cmplx_val.real, GlobalMembersCommand.token[t_num].l_val.v.cmplx_val.imag, brace) != 3) || (brace != DefineConstants.RBRACE))
-			GlobalMembersBf_test.int_error(t_num, "invalid complex constant");
-	///#endif
-			GlobalMembersCommand.token[t_num].length += 2;
-			while (expression.charAt(++current) != DefineConstants.RBRACE)
-			{
-			GlobalMembersCommand.token[t_num].length++;
-			if (expression.charAt(current) == DefineConstants.NUL) // { for vi %
-				GlobalMembersBf_test.int_error(t_num, "no matching '}'");
+				/* leave space for dummy end token */
+				GlobalMembersCommand.extend_token_table();
 			}
-		}
-		else if (expression.charAt(current) == '\'' || expression.charAt(current) == '\"')
-		{
-			GlobalMembersCommand.token[t_num].length++;
-			quote = expression.charAt(current);
-			while (expression.charAt(++current) != quote)
+			if (Character.isWhitespace((byte) expression.charAt(current)))
+				continue; // skip the whitespace
+			GlobalMembersCommand.token[t_num].start_index = current;
+			GlobalMembersCommand.token[t_num].length = 1;
+			GlobalMembersCommand.token[t_num].is_token = true; // to start with...
+
+			if (expression.charAt(current) == '`')
 			{
-			if (!expression.charAt(current))
-			{
-				expression = tangible.StringFunctions.changeCharacter(expression, current, quote);
-				expression = tangible.StringFunctions.changeCharacter(expression, current + 1, DefineConstants.NUL);
-				break;
-			}
-			else if (quote == '\"' && expression.charAt(current) == '\\' && expression.charAt(current + 1))
-			{
-				current++;
-				GlobalMembersCommand.token[t_num].length += 2;
-			}
-			else if (quote == '\"' && expression.charAt(current) == '`')
-			{
-			tangible.RefObject<String[]> tempRef_expressionp2 = new tangible.RefObject<String[]>(expressionp);
-				GlobalMembersScanner.substitute(tempRef_expressionp2, expressionlenp, current);
-				expressionp.argvalue = tempRef_expressionp2.argvalue;
-				expression = expressionp.argvalue; // it might have moved
+				tangible.RefObject<String[]> tempRef_expressionp = new tangible.RefObject<String[]>(expressionp);
+				GlobalMembersScanner.substitute(tempRef_expressionp, expressionlenp, current);
+				expressionp.argvalue = tempRef_expressionp.argvalue;
+				expression = expressionp.argvalue; // expression might have moved
 				current--;
+				continue;
 			}
+			/* allow _ to be the first character of an identifier */
+			if (Character.isLetter((byte) expression.charAt(current)) || expression.charAt(current) == '_')
+			{
+				while ((Character.isLetterOrDigit((byte)expression.charAt(current + 1)) || (expression.charAt(current + 1)) == '_')) {GlobalMembersCommand.token[t_num].length++; current++;};
+			}
+			else if (Character.isDigit((byte) expression.charAt(current)))
+			{
+				GlobalMembersCommand.token[t_num].is_token = false;
+				GlobalMembersCommand.token[t_num].length = GlobalMembersScanner.get_num(expression.charAt(current));
+				current += (GlobalMembersCommand.token[t_num].length - 1);
+
+			}
+			else if (expression.charAt(current) == '.')
+			{
+				/* Rule 9 */
+				if (Character.isDigit(expression.charAt(current + 1)))
+				{
+					GlobalMembersCommand.token[t_num].is_token = false;
+					GlobalMembersCommand.token[t_num].length = GlobalMembersScanner.get_num(expression.charAt(current));
+					current += (GlobalMembersCommand.token[t_num].length - 1);
+				} // do nothing if the . is a token by itself
+
+			}
+			else if (expression.charAt(current) == DefineConstants.LBRACE)
+			{
+				GlobalMembersCommand.token[t_num].is_token = false;
+				GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
+				///#ifdef __PUREC__
+				//	    {
+				//		char l[80];
+				//		if ((sscanf(&expression[++current], "%lf,%lf%[ }]s",
+				//			    &token[t_num].l_val.v.cmplx_val.real,
+				//			    &token[t_num].l_val.v.cmplx_val.imag,
+				//			    &l) != 3) || (!strchr(l, RBRACE)))
+				//		    int_error(t_num, "invalid complex constant");
+				//	    }
+				///#else
+				if ((sscanf(expression.charAt(++current), "%lf , %lf %c", GlobalMembersCommand.token[t_num].l_val.v.cmplx_val.real, GlobalMembersCommand.token[t_num].l_val.v.cmplx_val.imag, brace) != 3) || (brace != DefineConstants.RBRACE))
+					GlobalMembersBf_test.int_error(t_num, "invalid complex constant");
+				///#endif
+				GlobalMembersCommand.token[t_num].length += 2;
+				while (expression.charAt(++current) != DefineConstants.RBRACE)
+				{
+					GlobalMembersCommand.token[t_num].length++;
+					if (expression.charAt(current) == DefineConstants.NUL) // { for vi %
+						GlobalMembersBf_test.int_error(t_num, "no matching '}'");
+				}
+			}
+			else if (expression.charAt(current) == '\'' || expression.charAt(current) == '\"')
+			{
+				GlobalMembersCommand.token[t_num].length++;
+				quote = expression.charAt(current);
+				while (expression.charAt(++current) != quote)
+				{
+					if (!expression.charAt(current))
+					{
+						expression = StringFunctions.changeCharacter(expression, current, quote);
+						expression = StringFunctions.changeCharacter(expression, current + 1, DefineConstants.NUL);
+						break;
+					}
+					else if (quote == '\"' && expression.charAt(current) == '\\' && expression.charAt(current + 1))
+					{
+						current++;
+						GlobalMembersCommand.token[t_num].length += 2;
+					}
+					else if (quote == '\"' && expression.charAt(current) == '`')
+					{
+						tangible.RefObject<String[]> tempRef_expressionp2 = new tangible.RefObject<String[]>(expressionp);
+						GlobalMembersScanner.substitute(tempRef_expressionp2, expressionlenp, current);
+						expressionp.argvalue = tempRef_expressionp2.argvalue;
+						expression = expressionp.argvalue; // it might have moved
+						current--;
+					}
 					else if (quote == '\'' && expression.charAt(current + 1) == '\'' && expression.charAt(current + 2) == '\'')
 					{
 						/* look ahead: two subsequent single quotes
@@ -1106,59 +1109,59 @@ public class GlobalMembersScanner
 						current += 2;
 						GlobalMembersCommand.token[t_num].length += 3;
 					}
+					else
+						GlobalMembersCommand.token[t_num].length++;
+				}
+			}
 			else
-				GlobalMembersCommand.token[t_num].length++;
-			}
-		}
-		else
-			switch (expression.charAt(current))
-			{
-			case '#': // DFK: add comments to gnuplot
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto endline; // ignore the rest of the line
-			case '^':
-			case '+':
-			case '-':
-			case '/':
-			case '%':
-			case '~':
-			case '(':
-			case ')':
-			case '[':
-			case ']':
-			case ';':
-			case ':':
-			case '?':
-			case ',':
-			case '$': // div
-			break;
-			case '&':
-			case '|':
-			case '=':
-			case '*':
-			if (expression.charAt(current) == expression.charAt(current + 1))
-				{GlobalMembersCommand.token[t_num].length++; current++;};
-			break;
-			case '!':
-			case '<':
-			case '>':
-			if (expression.charAt(current + 1) == '=')
-				{GlobalMembersCommand.token[t_num].length++; current++;};
-			break;
-			default:
-			GlobalMembersBf_test.int_error(t_num, "invalid character %c",expression.charAt(current));
-			}
-		++t_num; // next token if not white space
+				switch (expression.charAt(current))
+				{
+				case '#': // DFK: add comments to gnuplot
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto endline; // ignore the rest of the line
+				case '^':
+				case '+':
+				case '-':
+				case '/':
+				case '%':
+				case '~':
+				case '(':
+				case ')':
+				case '[':
+				case ']':
+				case ';':
+				case ':':
+				case '?':
+				case ',':
+				case '$': // div
+					break;
+				case '&':
+				case '|':
+				case '=':
+				case '*':
+					if (expression.charAt(current) == expression.charAt(current + 1))
+					{GlobalMembersCommand.token[t_num].length++; current++;};
+					break;
+				case '!':
+				case '<':
+				case '>':
+					if (expression.charAt(current + 1) == '=')
+					{GlobalMembersCommand.token[t_num].length++; current++;};
+					break;
+				default:
+					GlobalMembersBf_test.int_error(t_num, "invalid character %c",expression.charAt(current));
+				}
+			++t_num; // next token if not white space
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-	  endline: // comments jump here to ignore line
+		//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+		endline: // comments jump here to ignore line
 
-	/* Now kludge an extra token which points to '\0' at end of expression[].
+			/* Now kludge an extra token which points to '\0' at end of expression[].
 	   This is useful so printerror() looks nice even if we've fallen off the
 	   line. */
 
-		GlobalMembersCommand.token[t_num].start_index = current;
+			GlobalMembersCommand.token[t_num].start_index = current;
 		GlobalMembersCommand.token[t_num].length = 0;
 		/* print 3+4  then print 3+  is accepted without
 		 * this, since string is ignored if it is not
@@ -1261,53 +1264,53 @@ public class GlobalMembersScanner
 		GlobalMembersCommand.token[t_num].is_token = false;
 		GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.INTGR; // assume unless . or E found
 		while (Character.isDigit((byte) str.argvalue[count]))
-		count++;
+			count++;
 		if (str.argvalue[count].equals('.'))
 		{
-		GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
-		/* swallow up digits until non-digit */
-		while (Character.isDigit((byte) str.argvalue[++count]));
-		/* now str[count] is other than a digit */
+			GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
+			/* swallow up digits until non-digit */
+			while (Character.isDigit((byte) str.argvalue[++count]));
+			/* now str[count] is other than a digit */
 		}
 		if (str.argvalue[count].equals('e') || str.argvalue[count].equals('E'))
 		{
-		GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
-		count++;
-		if (str.argvalue[count].equals('-') || str.argvalue[count].equals('+'))
+			GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
 			count++;
-		if (!Character.isDigit((byte) str.argvalue[count]))
-		{
-			GlobalMembersCommand.token[t_num].start_index += count;
-			GlobalMembersBf_test.int_error(t_num, "expecting exponent");
-		}
-		while (Character.isDigit((byte) str.argvalue[++count]));
+			if (str.argvalue[count].equals('-') || str.argvalue[count].equals('+'))
+				count++;
+			if (!Character.isDigit((byte) str.argvalue[count]))
+			{
+				GlobalMembersCommand.token[t_num].start_index += count;
+				GlobalMembersBf_test.int_error(t_num, "expecting exponent");
+			}
+			while (Character.isDigit((byte) str.argvalue[++count]));
 		}
 		if (GlobalMembersCommand.token[t_num].l_val.type == DATA_TYPES.INTGR)
 		{
-		int lval;
-		String endptr;
-		errno = 0;
-		lval = strtol(str.argvalue, endptr, 0);
-		if (!errno && ((GlobalMembersCommand.token[t_num].l_val.v.int_val = lval) == lval))
-			return (endptr - str.argvalue);
-		GlobalMembersUtil.int_warn(t_num, "integer overflow; changing to floating point");
-		GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
-		/* Fall through */
+			int lval;
+			String endptr;
+			errno = 0;
+			lval = strtol(str.argvalue, endptr, 0);
+			if (!errno && ((GlobalMembersCommand.token[t_num].l_val.v.int_val = lval) == lval))
+				return (endptr - str.argvalue);
+			GlobalMembersUtil.int_warn(t_num, "integer overflow; changing to floating point");
+			GlobalMembersCommand.token[t_num].l_val.type = DATA_TYPES.CMPLX;
+			/* Fall through */
 		}
 		GlobalMembersCommand.token[t_num].l_val.v.cmplx_val.imag = 0.0;
 		GlobalMembersCommand.token[t_num].l_val.v.cmplx_val.real = Double.parseDouble(str.argvalue);
 		return (count);
 	}
 
-/* substitute output from ` `
- * *strp points to the input string.  (*strp)[current] is expected to
- * be the initial back tic.  Characters through the following back tic
- * are replaced by the output of the command.  extend_input_line()
- * is called to extend *strp array if needed.
- */
+	/* substitute output from ` `
+	 * *strp points to the input string.  (*strp)[current] is expected to
+	 * be the initial back tic.  Characters through the following back tic
+	 * are replaced by the output of the command.  extend_input_line()
+	 * is called to extend *strp array if needed.
+	 */
 	public static void substitute(tangible.RefObject<String[]> strp, int str_lenp, int current)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * last;
 		byte c;
 		String str;
@@ -1323,8 +1326,8 @@ public class GlobalMembersScanner
 		last = str;
 		while (*++last)
 		{
-		if (*last == '`')
-			break;
+			if (*last == '`')
+				break;
 		}
 		pgm_len = last - str;
 		pgm = GlobalMembersAlloc.gp_alloc(pgm_len, "command string");
@@ -1333,43 +1336,43 @@ public class GlobalMembersScanner
 		/* save rest of line, if any */
 		if (*last)
 		{
-		last++; // advance past `
-		rest_len = last.length() + 1;
-		if (rest_len > 1)
-		{
-			rest = GlobalMembersAlloc.gp_alloc(rest_len, "input line copy");
-			rest = last;
-		}
+			last++; // advance past `
+			rest_len = last.length() + 1;
+			if (rest_len > 1)
+			{
+				rest = GlobalMembersAlloc.gp_alloc(rest_len, "input line copy");
+				rest = last;
+			}
 		}
 
 		/* do system call */
-	tangible.RefObject<String[]> tempRef_output = new tangible.RefObject<String[]>(output);
+		tangible.RefObject<String[]> tempRef_output = new tangible.RefObject<String[]>(output);
 		() GlobalMembersCommand.do_system_func(pgm, tempRef_output);
 		output = tempRef_output.argvalue;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(pgm);
 
 		/* now replace ` ` with output */
 		output_pos = 0;
 		while ((c = output.charAt(output_pos++)))
 		{
-		if (c != '\n' && c != '\r')
-			strp.argvalue[current++] = c;
-		if (current == str_lenp)
-			GlobalMembersCommand.extend_input_line();
+			if (c != '\n' && c != '\r')
+				strp.argvalue[current++] = c;
+			if (current == str_lenp)
+				GlobalMembersCommand.extend_input_line();
 		}
 		strp.argvalue[current] = 0;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(output);
 
 		/* tack on rest of line to output */
 		if (rest != null)
 		{
-		while (current + rest_len > str_lenp)
-			GlobalMembersCommand.extend_input_line();
-		strp.argvalue + current = rest;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(rest);
+			while (current + rest_len > str_lenp)
+				GlobalMembersCommand.extend_input_line();
+			strp.argvalue + current = rest;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(rest);
 		}
 		GlobalMembersUtil.screen_ok = false;
 

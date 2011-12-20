@@ -588,4 +588,5 @@ final class DefineConstants
 	public static final long INVALID_UTF8 = 0xffff; //CC 0xfffful
 	public static final String FAQ_LOCATION = "http://www.gnuplot.info/faq/";
 	public static final String SUPPORT = "http://sf.net/projects/gnuplot/support";
+	public static final double DBL_MAX = Double.MAX_VALUE;
 }

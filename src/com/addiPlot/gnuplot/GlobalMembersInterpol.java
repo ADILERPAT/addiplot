@@ -173,10 +173,10 @@ public class GlobalMembersInterpol
 		return GlobalMembersAlloc.RCSid("$Id: interpol.c,v 1.38 2008/11/12 02:29:43 janert Exp $");
 	}
 
-/*
- * This is the main entry point used for everything except frequencies.
- * As stated in the header, it is fine, but I'm not too happy with it.
- */
+	/*
+	 * This is the main entry point used for everything except frequencies.
+	 * As stated in the header, it is fine, but I'm not too happy with it.
+	 */
 
 	///#endif
 
@@ -1239,46 +1239,46 @@ public class GlobalMembersInterpol
 		int num_points;
 
 		curves = GlobalMembersInterpol.num_curves(plot);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		new_points = GlobalMembersAlloc.gp_alloc((GlobalMembersGadgets.samples_1 + 1) * curves * sizeof(GlobalMembersMouse.struct coordinate), "interpolation table");
 
 		first_point = 0;
 		for (i = 0; i < curves; i++)
 		{
-		num_points = GlobalMembersInterpol.next_curve(plot, first_point);
-		switch (plot.plot_smooth)
-		{
-		case SMOOTH_CSPLINES:
-			sc = cp_tridiag(plot, first_point, num_points);
-			GlobalMembersInterpol.do_cubic(plot, sc, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(sc);
-			break;
-		case SMOOTH_ACSPLINES:
-			sc = cp_approx_spline(plot, first_point, num_points);
-			GlobalMembersInterpol.do_cubic(plot, sc, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(sc);
-			break;
+			num_points = GlobalMembersInterpol.next_curve(plot, first_point);
+			switch (plot.plot_smooth)
+			{
+			case SMOOTH_CSPLINES:
+				sc = cp_tridiag(plot, first_point, num_points);
+				GlobalMembersInterpol.do_cubic(plot, sc, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(sc);
+				break;
+			case SMOOTH_ACSPLINES:
+				sc = cp_approx_spline(plot, first_point, num_points);
+				GlobalMembersInterpol.do_cubic(plot, sc, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(sc);
+				break;
 
-		case SMOOTH_BEZIER:
-		case SMOOTH_SBEZIER:
-			bc = GlobalMembersInterpol.cp_binomial(num_points);
-			GlobalMembersInterpol.do_bezier(plot, bc, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free((String) bc);
-			break;
-		case SMOOTH_KDENSITY:
-		  GlobalMembersInterpol.do_kdensity(plot, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
-		  break;
-		default: // keep gcc -Wall quiet
-			;
-		}
-		new_points[(i + 1) * (GlobalMembersGadgets.samples_1 + 1) - 1].type = coord_type.UNDEFINED;
-		first_point += num_points;
+			case SMOOTH_BEZIER:
+			case SMOOTH_SBEZIER:
+				bc = GlobalMembersInterpol.cp_binomial(num_points);
+				GlobalMembersInterpol.do_bezier(plot, bc, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free((String) bc);
+				break;
+			case SMOOTH_KDENSITY:
+				GlobalMembersInterpol.do_kdensity(plot, first_point, num_points, new_points + i * (GlobalMembersGadgets.samples_1 + 1));
+				break;
+			default: // keep gcc -Wall quiet
+				;
+			}
+			new_points[(i + 1) * (GlobalMembersGadgets.samples_1 + 1) - 1].type = coord_type.UNDEFINED;
+			first_point += num_points;
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(plot.points);
 		plot.points = new_points;
 		plot.p_max = curves * (GlobalMembersGadgets.samples_1 + 1);
@@ -1287,11 +1287,11 @@ public class GlobalMembersInterpol
 		return;
 	}
 
-/*
- * Frequency plots have don't need new points allocated; we just need
- * to adjust the plot ranges. Wedging this into gen_interp() would
- * make that code even harder to read.
- */
+	/*
+	 * Frequency plots have don't need new points allocated; we just need
+	 * to adjust the plot ranges. Wedging this into gen_interp() would
+	 * make that code even harder to read.
+	 */
 
 	public static void gen_interp_frequency(curve_points plot)
 	{
@@ -1338,22 +1338,22 @@ public class GlobalMembersInterpol
 		first_point = 0;
 		while ((num_points = GlobalMembersInterpol.next_curve(plot, first_point)) > 0)
 		{
-		/* Sort this set of points, does qsort handle 1 point correctly? */
-		/* HBB 20010720: removed casts -- they don't help a thing, but
-		 * may hide problems */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		qsort(plot.points + first_point, num_points, sizeof(GlobalMembersMouse.struct coordinate), GlobalMembersInterpol.compare_points);
-		first_point += num_points;
+			/* Sort this set of points, does qsort handle 1 point correctly? */
+			/* HBB 20010720: removed casts -- they don't help a thing, but
+			 * may hide problems */
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			qsort(plot.points + first_point, num_points, sizeof(GlobalMembersMouse.struct coordinate), GlobalMembersInterpol.compare_points);
+			first_point += num_points;
 		}
 		return;
 	}
 
-/*
- * cp_implode() if averaging is selected this function computes the new
- *              entries and shortens the whole thing to the necessary
- *              size
- * MGR Addendum
- */
+	/*
+	 * cp_implode() if averaging is selected this function computes the new
+	 *              entries and shortens the whole thing to the necessary
+	 *              size
+	 * MGR Addendum
+	 */
 
 	public static void cp_implode(curve_points cp)
 	{
@@ -1378,159 +1378,159 @@ public class GlobalMembersInterpol
 		first_point = 0;
 		while ((num_points = GlobalMembersInterpol.next_curve(cp, first_point)) > 0)
 		{
-		k = 0;
-		for (i = first_point; i < first_point + num_points; i++)
-		{
-			/* HBB 20020801: don't try to use undefined datapoints */
-			if (cp.points[i].type == coord_type.UNDEFINED)
-				continue;
-			if (k == 0)
+			k = 0;
+			for (i = first_point; i < first_point + num_points; i++)
 			{
-			x = cp.points[i].x;
-			y = cp.points[i].y;
-			sux = cp.points[i].xhigh;
-			slx = cp.points[i].xlow;
-			suy = cp.points[i].yhigh;
-			sly = cp.points[i].ylow;
-			all_inrange = (cp.points[i].type == coord_type.INRANGE);
-			k = 1;
-			}
-			else if (cp.points[i].x == x)
-			{
-			y += cp.points[i].y;
-			sux += cp.points[i].xhigh;
-			slx += cp.points[i].xlow;
-			suy += cp.points[i].yhigh;
-			sly += cp.points[i].ylow;
-			if (cp.points[i].type != coord_type.INRANGE)
-				all_inrange = false;
-			k++;
-			}
-			else
-			{
-			cp.points[j].x = x;
-			 if (cp.plot_smooth == PLOT_SMOOTH.SMOOTH_FREQUENCY || cp.plot_smooth == PLOT_SMOOTH.SMOOTH_CUMULATIVE)
-				k = 1;
-			cp.points[j].y = y /= (double) k;
-			cp.points[j].xhigh = sux / (double) k;
-			cp.points[j].xlow = slx / (double) k;
-			cp.points[j].yhigh = suy / (double) k;
-			cp.points[j].ylow = sly / (double) k;
-			/* HBB 20000405: I wanted to use STORE_AND_FIXUP_RANGE
-			 * here, but won't: it assumes we want to modify the
-			 * range, and that the range is given in 'input'
-			 * coordinates.  For logarithmic axes, the overhead
-			 * would be larger than the possible gain, so write it
-			 * out explicitly, instead:
-			 * */
-			cp.points[j].type = coord_type.INRANGE;
-			if (!all_inrange)
-			{
-				if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+				/* HBB 20020801: don't try to use undefined datapoints */
+				if (cp.points[i].type == coord_type.UNDEFINED)
+					continue;
+				if (k == 0)
 				{
-				if (x <= -DefineConstants.VERYLARGE)
+					x = cp.points[i].x;
+					y = cp.points[i].y;
+					sux = cp.points[i].xhigh;
+					slx = cp.points[i].xlow;
+					suy = cp.points[i].yhigh;
+					sly = cp.points[i].ylow;
+					all_inrange = (cp.points[i].type == coord_type.INRANGE);
+					k = 1;
+				}
+				else if (cp.points[i].x == x)
 				{
-					cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-					goto is_outrange;
+					y += cp.points[i].y;
+					sux += cp.points[i].xhigh;
+					slx += cp.points[i].xlow;
+					suy += cp.points[i].yhigh;
+					sly += cp.points[i].ylow;
+					if (cp.points[i].type != coord_type.INRANGE)
+						all_inrange = false;
+					k++;
 				}
-				x = Math.exp((x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-				}
-				if (((x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
+				else
 				{
-				cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto is_outrange;
-				}
-				if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
-				{
-				if (y <= -DefineConstants.VERYLARGE)
-				{
-					cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-					goto is_outrange;
-				}
-				y = Math.exp((y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
-				}
-				if (((y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
-				cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			is_outrange:
-				;
-			} // if(! all inrange)
+					cp.points[j].x = x;
+					if (cp.plot_smooth == PLOT_SMOOTH.SMOOTH_FREQUENCY || cp.plot_smooth == PLOT_SMOOTH.SMOOTH_CUMULATIVE)
+						k = 1;
+					cp.points[j].y = y /= (double) k;
+					cp.points[j].xhigh = sux / (double) k;
+					cp.points[j].xlow = slx / (double) k;
+					cp.points[j].yhigh = suy / (double) k;
+					cp.points[j].ylow = sly / (double) k;
+					/* HBB 20000405: I wanted to use STORE_AND_FIXUP_RANGE
+					 * here, but won't: it assumes we want to modify the
+					 * range, and that the range is given in 'input'
+					 * coordinates.  For logarithmic axes, the overhead
+					 * would be larger than the possible gain, so write it
+					 * out explicitly, instead:
+					 * */
+					cp.points[j].type = coord_type.INRANGE;
+					if (!all_inrange)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+						{
+							if (x <= -DefineConstants.VERYLARGE)
+							{
+								cp.points[j].type = coord_type.OUTRANGE;
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								goto is_outrange;
+							}
+							x = Math.exp((x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+						}
+						if (((x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
+						{
+							cp.points[j].type = coord_type.OUTRANGE;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto is_outrange;
+						}
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
+						{
+							if (y <= -DefineConstants.VERYLARGE)
+							{
+								cp.points[j].type = coord_type.OUTRANGE;
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								goto is_outrange;
+							}
+							y = Math.exp((y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
+						}
+						if (((y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
+							cp.points[j].type = coord_type.OUTRANGE;
+						//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+						is_outrange:
+							;
+					} // if(! all inrange)
 
-			j++; // next valid entry
-			k = 0; // to read
-			i--; // from this (-> last after for(;;)) entry
-			} // else (same x position)
-		} // for(points in curve)
+					j++; // next valid entry
+					k = 0; // to read
+					i--; // from this (-> last after for(;;)) entry
+				} // else (same x position)
+			} // for(points in curve)
 
-		if (k != 0)
-		{
-			cp.points[j].x = x;
-			if (cp.plot_smooth == PLOT_SMOOTH.SMOOTH_FREQUENCY || cp.plot_smooth == PLOT_SMOOTH.SMOOTH_CUMULATIVE)
-			k = 1;
-			cp.points[j].y = y /= (double) k;
-			cp.points[j].xhigh = sux / (double) k;
-			cp.points[j].xlow = slx / (double) k;
-			cp.points[j].yhigh = suy / (double) k;
-			cp.points[j].ylow = sly / (double) k;
-			cp.points[j].type = coord_type.INRANGE;
-			if (!all_inrange)
+			if (k != 0)
 			{
-				if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+				cp.points[j].x = x;
+				if (cp.plot_smooth == PLOT_SMOOTH.SMOOTH_FREQUENCY || cp.plot_smooth == PLOT_SMOOTH.SMOOTH_CUMULATIVE)
+					k = 1;
+				cp.points[j].y = y /= (double) k;
+				cp.points[j].xhigh = sux / (double) k;
+				cp.points[j].xlow = slx / (double) k;
+				cp.points[j].yhigh = suy / (double) k;
+				cp.points[j].ylow = sly / (double) k;
+				cp.points[j].type = coord_type.INRANGE;
+				if (!all_inrange)
 				{
-				if (x <= -DefineConstants.VERYLARGE)
-				{
-					cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-					goto is_outrange2;
+					if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+					{
+						if (x <= -DefineConstants.VERYLARGE)
+						{
+							cp.points[j].type = coord_type.OUTRANGE;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto is_outrange2;
+						}
+						x = Math.exp((x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+					}
+					if (((x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
+					{
+						cp.points[j].type = coord_type.OUTRANGE;
+						//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+						goto is_outrange2;
+					}
+					if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
+					{
+						if (y <= -DefineConstants.VERYLARGE)
+						{
+							cp.points[j].type = coord_type.OUTRANGE;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto is_outrange2;
+						}
+						y = Math.exp((y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
+					}
+					if (((y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
+						cp.points[j].type = coord_type.OUTRANGE;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					is_outrange2:
+						;
 				}
-				x = Math.exp((x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-				}
-				if (((x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
-				{
-				cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto is_outrange2;
-				}
-				if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
-				{
-				if (y <= -DefineConstants.VERYLARGE)
-				{
-					cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-					goto is_outrange2;
-				}
-				y = Math.exp((y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
-				}
-				if (((y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN)) || ((y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max) && !(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX)))
-				cp.points[j].type = coord_type.OUTRANGE;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			is_outrange2:
-				;
+				j++; // next valid entry
 			}
-			j++; // next valid entry
-		}
-		/* insert invalid point to separate curves */
-		if (j < cp.p_count)
-		{
-			cp.points[j].type = coord_type.UNDEFINED;
-			j++;
-		}
-		first_point += num_points;
+			/* insert invalid point to separate curves */
+			if (j < cp.p_count)
+			{
+				cp.points[j].type = coord_type.UNDEFINED;
+				j++;
+			}
+			first_point += num_points;
 		} // end while
 		cp.p_count = j;
 		GlobalMembersPlot2d.cp_extend(cp, j);
 	}
 
-/*
- * position curve_start to index the next non-UNDEFINDED point,
- * start search at initial curve_start,
- * return number of non-UNDEFINDED points from there on,
- * if no more valid points are found, curve_start is set
- * to plot->p_count and 0 is returned
- */
+	/*
+	 * position curve_start to index the next non-UNDEFINDED point,
+	 * start search at initial curve_start,
+	 * return number of non-UNDEFINDED points from there on,
+	 * if no more valid points are found, curve_start is set
+	 * to plot->p_count and 0 is returned
+	 */
 
 
 
@@ -1702,21 +1702,21 @@ public class GlobalMembersInterpol
 		/* Skip undefined points */
 		while (curve_start < plot.p_count && plot.points[curve_start].type == coord_type.UNDEFINED)
 		{
-		curve_start++;
+			curve_start++;
 		};
 		curve_length = 0;
 		/* curve_length is first used as an offset, then the correct # points */
 		while ((curve_start) + curve_length < plot.p_count && plot.points[(curve_start) + curve_length].type != coord_type.UNDEFINED)
 		{
-		curve_length++;
+			curve_length++;
 		};
 		return (curve_length);
 	}
 
-/*
- * determine the number of curves in plot->points, separated by
- * UNDEFINED points
- */
+	/*
+	 * determine the number of curves in plot->points, separated by
+	 * UNDEFINED points
+	 */
 
 	public static int num_curves(curve_points plot)
 	{
@@ -1728,22 +1728,22 @@ public class GlobalMembersInterpol
 		curves = 0;
 		while ((num_points = GlobalMembersInterpol.next_curve(plot, first_point)) > 0)
 		{
-		curves++;
-		first_point += num_points;
+			curves++;
+			first_point += num_points;
 		}
 		return (curves);
 	}
 
-/* PKJ - May 2008 
+	/* PKJ - May 2008 
    kdensity (short for Kernel Density) builds histograms using
    "Kernel Density Estimation" using Gaussian Kernels.
    Check: L. Wassermann: "All of Statistics" for example.
 
    The implementation is based closely on the implementation for Bezier
    curves, except for the way the actual interpolation is generated.
-*/
+	 */
 
-/* eval_kdensity is a modification of eval_bezier */
+	/* eval_kdensity is a modification of eval_bezier */
 	public static void eval_kdensity(curve_points cp, int first_point, int num_points, double sr, double px, double py)
 	{
 
@@ -1765,12 +1765,12 @@ public class GlobalMembersInterpol
 		sigma = 0.0;
 		for (i = 0; i <= n; i++)
 		{
-		  avg += this_points[i].x;
-		  sigma += this_points[i].x * this_points[i].x;
+			avg += this_points[i].x;
+			sigma += this_points[i].x * this_points[i].x;
 
-		  /* Find min and max of x-range. Necessary since points not sorted! */
-		  min = this_points[i].x < min != 0 ? this_points[i].x : min;
-		  max = this_points[i].x > max != 0 ? this_points[i].x : max;
+			/* Find min and max of x-range. Necessary since points not sorted! */
+			min = this_points[i].x < min != 0 ? this_points[i].x : min;
+			max = this_points[i].x > max != 0 ? this_points[i].x : max;
 		}
 		avg /= (double)n;
 		sigma = Math.sqrt(sigma / (double)n - avg * avg); // Standard Deviation
@@ -1795,17 +1795,17 @@ public class GlobalMembersInterpol
 		y = 0;
 		for (i = 0; i <= n; i++)
 		{
-		  if (this_points[i].z <= 0)
-		  {
-		bandwidth = default_bandwidth;
-		  }
-		  else
-		  {
-		bandwidth = this_points[i].z;
-		  }
+			if (this_points[i].z <= 0)
+			{
+				bandwidth = default_bandwidth;
+			}
+			else
+			{
+				bandwidth = this_points[i].z;
+			}
 
-		  tmp = (x - this_points[i].x) / bandwidth;
-		  y += this_points[i].y * Math.exp(- 0.5 * tmp * tmp) / bandwidth;
+			tmp = (x - this_points[i].x) / bandwidth;
+			y += this_points[i].y * Math.exp(- 0.5 * tmp * tmp) / bandwidth;
 		}
 		y /= Math.sqrt(2.0 * DefineConstants.M_PI);
 
@@ -1813,7 +1813,7 @@ public class GlobalMembersInterpol
 		py = y;
 	}
 
-/* do_kdensity is based on do_bezier, except for the call to eval_bezier */
+	/* do_kdensity is based on do_bezier, except for the call to eval_bezier */
 	public static void do_kdensity(curve_points cp, int first_point, int num_points, coordinate[] dest)
 	{
 		int i;
@@ -1846,115 +1846,111 @@ public class GlobalMembersInterpol
 		{
 			GlobalMembersInterpol.eval_kdensity(cp, first_point, num_points, (double) i / (double)(GlobalMembersGadgets.samples_1 - 1), x, y);
 
-		/* now we have to store the points and adjust the ranges */
-		dest[i].type = coord_type.INRANGE;
-		do
-		{
-			dest[i].x = x;
-			if (dest[i].type != coord_type.INRANGE)
-				break;
+			/* now we have to store the points and adjust the ranges */
+			dest[i].type = coord_type.INRANGE;
+			do
+			{
+				dest[i].x = x;
+				if (dest[i].type != coord_type.INRANGE)
+					break;
 				if ((x) < (ixmin))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(ixmin) = (x);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((x) > (ixmax))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(ixmax) = (x);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
-		do
-		{
-			dest[i].y = y;
-			if (dest[i].type != coord_type.INRANGE)
-				break;
+			} while (false);
+			do
+			{
+				dest[i].y = y;
+				if (dest[i].type != coord_type.INRANGE)
+					break;
 				if ((y) < (iymin))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(iymin) = (y);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((y) > (iymax))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(iymax) = (y);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
+			} while (false);
 
-		dest[i].xlow = dest[i].xhigh = dest[i].x;
-		dest[i].ylow = dest[i].yhigh = dest[i].y;
+			dest[i].xlow = dest[i].xhigh = dest[i].x;
+			dest[i].ylow = dest[i].yhigh = dest[i].y;
 
-		dest[i].z = -1;
+			dest[i].z = -1;
 		}
 
 		do
 		{
 			if (ixmax > sxmax)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((ixmax) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (ixmax));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (ixmin < sxmin)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((ixmin) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (ixmin));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (iymax > symax)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((iymax) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (iymax));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (iymin < symin)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((iymin) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (iymin));
-		} while (0);
+		} while (false);
 	}
 
-/*
- * build up a cntr_struct list from curve_points
- * this funtion is only used for the alternate entry point to
- * Gershon's code and thus commented out
- ***deleted***
- */
+	/*
+	 * build up a cntr_struct list from curve_points
+	 * this funtion is only used for the alternate entry point to
+	 * Gershon's code and thus commented out
+	 ***deleted***
+	 */
 
 
-/* HBB 990205: rewrote the 'bezier' interpolation routine,
- * to prevent numerical overflow and other undesirable things happening
- * for large data files (num_data about 1000 or so), where binomial
- * coefficients would explode, and powers of 'sr' (0 < sr < 1) become
- * extremely small. Method used: compute logarithms of these
- * extremely large and small numbers, and only go back to the
- * real numbers once they've cancelled out each other, leaving
- * a reasonable-sized one. */
+	/* HBB 990205: rewrote the 'bezier' interpolation routine,
+	 * to prevent numerical overflow and other undesirable things happening
+	 * for large data files (num_data about 1000 or so), where binomial
+	 * coefficients would explode, and powers of 'sr' (0 < sr < 1) become
+	 * extremely small. Method used: compute logarithms of these
+	 * extremely large and small numbers, and only go back to the
+	 * real numbers once they've cancelled out each other, leaving
+	 * a reasonable-sized one. */
 
-/*
- * cp_binomial() computes the binomial coefficients needed for BEZIER stuff
- *   and stores them into an array which is hooked to sdat.
- * (MGR 1992)
- */
-//C++ TO JAVA CONVERTER WARNING: Java has no equivalent to methods returning pointers to value types:
-//ORIGINAL LINE: static double * cp_binomial(int points)
+	/*
+	 * cp_binomial() computes the binomial coefficients needed for BEZIER stuff
+	 *   and stores them into an array which is hooked to sdat.
+	 * (MGR 1992)
+	 */
+	//C++ TO JAVA CONVERTER WARNING: Java has no equivalent to methods returning pointers to value types:
+	//ORIGINAL LINE: static double * cp_binomial(int points)
 	public static double cp_binomial(int points)
 	{
 		double[] coeff;
@@ -1963,7 +1959,7 @@ public class GlobalMembersInterpol
 		int e;
 
 		e = points; // well we're going from k=0 to k=p_count-1
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		coeff = GlobalMembersAlloc.gp_alloc(e * sizeof(double), "bezier coefficients");
 
 		n = points - 1;
@@ -1974,20 +1970,20 @@ public class GlobalMembersInterpol
 
 		for (k = 0; k < e; k++)
 		{
-		coeff[k + 1] = coeff[k] + Math.log(((double)(n - k)) / ((double)(k + 1)));
+			coeff[k + 1] = coeff[k] + Math.log(((double)(n - k)) / ((double)(k + 1)));
 		}
 
 		for (k = n; k >= e; k--)
-		coeff[k] = coeff[n - k];
+			coeff[k] = coeff[n - k];
 
 		return (coeff);
 	}
 
-/* This is a subfunction of do_bezier() for BEZIER style computations.
- * It is passed the stepration (STEP/MAXSTEPS) and the addresses of
- * the double values holding the next x and y coordinates.
- * (MGR 1992)
- */
+	/* This is a subfunction of do_bezier() for BEZIER style computations.
+	 * It is passed the stepration (STEP/MAXSTEPS) and the addresses of
+	 * the double values holding the next x and y coordinates.
+	 * (MGR 1992)
+	 */
 
 	public static void eval_bezier(curve_points cp, int first_point, int num_points, double sr, double px, double py, double[] c)
 	{
@@ -1998,43 +1994,43 @@ public class GlobalMembersInterpol
 
 		if (sr == 0.0)
 		{
-		px = this_points[0].x;
-		py = this_points[0].y;
+			px = this_points[0].x;
+			py = this_points[0].y;
 		}
 		else if (sr == 1.0)
 		{
-		px = this_points[n].x;
-		py = this_points[n].y;
+			px = this_points[n].x;
+			py = this_points[n].y;
 		}
 		else
 		{
-		/* HBB 990205: do calculation in 'logarithmic space',
-		 * to avoid over/underflow errors, which would exactly cancel
-		 * out each other, anyway, in an exact calculation
-		 */
-		int i;
-		double lx = 0.0;
-		double ly = 0.0;
-		double log_dsr_to_the_n = n * Math.log(1 - sr);
-		double log_sr_over_dsr = Math.log(sr) - Math.log(1 - sr);
+			/* HBB 990205: do calculation in 'logarithmic space',
+			 * to avoid over/underflow errors, which would exactly cancel
+			 * out each other, anyway, in an exact calculation
+			 */
+			int i;
+			double lx = 0.0;
+			double ly = 0.0;
+			double log_dsr_to_the_n = n * Math.log(1 - sr);
+			double log_sr_over_dsr = Math.log(sr) - Math.log(1 - sr);
 
-		for (i = 0; i <= n; i++)
-		{
-			double u = Math.exp(c[i] + log_dsr_to_the_n + i * log_sr_over_dsr);
+			for (i = 0; i <= n; i++)
+			{
+				double u = Math.exp(c[i] + log_dsr_to_the_n + i * log_sr_over_dsr);
 
-			lx += this_points[i].x * u;
-			ly += this_points[i].y * u;
-		}
+				lx += this_points[i].x * u;
+				ly += this_points[i].y * u;
+			}
 
-		px = lx;
-		py = ly;
+			px = lx;
+			py = ly;
 		}
 	}
 
-/*
- * generate a new set of coordinates representing the bezier curve and
- * set it to the plot
- */
+	/*
+	 * generate a new set of coordinates representing the bezier curve and
+	 * set it to the plot
+	 */
 
 	public static void do_bezier(curve_points cp, double bc, int first_point, int num_points, coordinate[] dest)
 	{
@@ -2066,139 +2062,135 @@ public class GlobalMembersInterpol
 
 		for (i = 0; i < GlobalMembersGadgets.samples_1; i++)
 		{
-		GlobalMembersInterpol.eval_bezier(cp, first_point, num_points, (double) i / (double)(GlobalMembersGadgets.samples_1 - 1), x, y, bc);
+			GlobalMembersInterpol.eval_bezier(cp, first_point, num_points, (double) i / (double)(GlobalMembersGadgets.samples_1 - 1), x, y, bc);
 
-		/* now we have to store the points and adjust the ranges */
+			/* now we have to store the points and adjust the ranges */
 
-		dest[i].type = coord_type.INRANGE;
-		do
-		{
-			dest[i].x = x;
-			if (dest[i].type != coord_type.INRANGE)
-				break;
+			dest[i].type = coord_type.INRANGE;
+			do
+			{
+				dest[i].x = x;
+				if (dest[i].type != coord_type.INRANGE)
+					break;
 				if ((x) < (ixmin))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(ixmin) = (x);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((x) > (ixmax))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(ixmax) = (x);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
-		do
-		{
-			dest[i].y = y;
-			if (dest[i].type != coord_type.INRANGE)
-				break;
+			} while (false);
+			do
+			{
+				dest[i].y = y;
+				if (dest[i].type != coord_type.INRANGE)
+					break;
 				if ((y) < (iymin))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(iymin) = (y);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((y) > (iymax))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(iymax) = (y);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
+			} while (false);
 
-		dest[i].xlow = dest[i].xhigh = dest[i].x;
-		dest[i].ylow = dest[i].yhigh = dest[i].y;
+			dest[i].xlow = dest[i].xhigh = dest[i].x;
+			dest[i].ylow = dest[i].yhigh = dest[i].y;
 
-		dest[i].z = -1;
+			dest[i].z = -1;
 		}
 
 		do
 		{
 			if (ixmax > sxmax)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((ixmax) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (ixmax));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (ixmin < sxmin)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((ixmin) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (ixmin));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (iymax > symax)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((iymax) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (iymax));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (iymin < symin)
 				(GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min) = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((iymin) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (iymin));
-		} while (0);
+		} while (false);
 	}
 
-/*
- * call contouring routines -- main entry
- */
+	/*
+	 * call contouring routines -- main entry
+	 */
 
-/*
- * it should be like this, but it doesn't run. If you find out why,
- * contact me: mgr@asgard.bo.open.de or Lars Hanke 2:243/4802.22@fidonet
- *
- * Well, all this had originally been inside contour.c, so maybe links
- * to functions and of contour.c are broken.
- * ***deleted***
- * end of unused entry point to Gershon's code
- *
- */
+	/*
+	 * it should be like this, but it doesn't run. If you find out why,
+	 * contact me: mgr@asgard.bo.open.de or Lars Hanke 2:243/4802.22@fidonet
+	 *
+	 * Well, all this had originally been inside contour.c, so maybe links
+	 * to functions and of contour.c are broken.
+	 * ***deleted***
+	 * end of unused entry point to Gershon's code
+	 *
+	 */
 
-/*
- * Solve five diagonal linear system equation. The five diagonal matrix is
- * defined via matrix M, right side is r, and solution X i.e. M * X = R.
- * Size of system given in n. Return TRUE if solution exist.
- *  G. Engeln-Muellges/ F.Reutter:
- *  "Formelsammlung zur Numerischen Mathematik mit Standard-FORTRAN-Programmen"
- *  ISBN 3-411-01677-9
- *
- * /  m02 m03 m04   0   0   0   0    .       .       . \   /  x0  \    / r0
- * I  m11 m12 m13 m14   0   0   0    .       .       . I   I  x1  I   I  r1  I
- * I  m20 m21 m22 m23 m24   0   0    .       .       . I * I  x2  I = I  r2  I
- * I    0 m30 m31 m32 m33 m34   0    .       .       . I   I  x3  I   I  r3  I
- *      .   .   .   .   .   .   .    .       .       .        .        .
- * \                           m(n-3)0 m(n-2)1 m(n-1)2 /   \x(n-1)/   \r(n-1)/
- *
- */
+	/*
+	 * Solve five diagonal linear system equation. The five diagonal matrix is
+	 * defined via matrix M, right side is r, and solution X i.e. M * X = R.
+	 * Size of system given in n. Return TRUE if solution exist.
+	 *  G. Engeln-Muellges/ F.Reutter:
+	 *  "Formelsammlung zur Numerischen Mathematik mit Standard-FORTRAN-Programmen"
+	 *  ISBN 3-411-01677-9
+	 *
+	 * /  m02 m03 m04   0   0   0   0    .       .       . \   /  x0  \    / r0
+	 * I  m11 m12 m13 m14   0   0   0    .       .       . I   I  x1  I   I  r1  I
+	 * I  m20 m21 m22 m23 m24   0   0    .       .       . I * I  x2  I = I  r2  I
+	 * I    0 m30 m31 m32 m33 m34   0    .       .       . I   I  x3  I   I  r3  I
+	 *      .   .   .   .   .   .   .    .       .       .        .        .
+	 * \                           m(n-3)0 m(n-2)1 m(n-1)2 /   \x(n-1)/   \r(n-1)/
+	 *
+	 */
 	public static int solve_five_diag(double[][] m, double[] r, double[] x, int n)
 	{
 		int i;
 		double[] hv = new double[5];
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		hv = GlobalMembersAlloc.gp_alloc((n + 1) * sizeof(double[5]), "five_diag help vars");
 
 		hv[0][0] = m[0][2];
 		if (hv[0][0] == 0)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(hv);
-		return false;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(hv);
+			return false;
 		}
 		hv[0][1] = m[0][3] / hv[0][0];
 		hv[0][2] = m[0][4] / hv[0][0];
@@ -2207,40 +2199,40 @@ public class GlobalMembersInterpol
 		hv[1][0] = m[1][2] - hv[1][3] * hv[0][1];
 		if (hv[1][0] == 0)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(hv);
-		return false;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(hv);
+			return false;
 		}
 		hv[1][1] = (m[1][3] - hv[1][3] * hv[0][2]) / hv[1][0];
 		hv[1][2] = m[1][4] / hv[1][0];
 
 		for (i = 2; i < n; i++)
 		{
-		hv[i][3] = m[i][1] - m[i][0] * hv[i - 2][1];
-		hv[i][0] = m[i][2] - m[i][0] * hv[i - 2][2] - hv[i][3] * hv[i - 1][1];
-		if (hv[i][0] == 0)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(hv);
-			return false;
-		}
-		hv[i][1] = (m[i][3] - hv[i][3] * hv[i - 1][2]) / hv[i][0];
-		hv[i][2] = m[i][4] / hv[i][0];
+			hv[i][3] = m[i][1] - m[i][0] * hv[i - 2][1];
+			hv[i][0] = m[i][2] - m[i][0] * hv[i - 2][2] - hv[i][3] * hv[i - 1][1];
+			if (hv[i][0] == 0)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(hv);
+				return false;
+			}
+			hv[i][1] = (m[i][3] - hv[i][3] * hv[i - 1][2]) / hv[i][0];
+			hv[i][2] = m[i][4] / hv[i][0];
 		}
 
 		hv[0][4] = 0;
 		hv[1][4] = r[0] / hv[0][0];
 		for (i = 1; i < n; i++)
 		{
-		hv[i + 1][4] = (r[i] - m[i][0] * hv[i - 1][4] - hv[i][3] * hv[i][4]) / hv[i][0];
+			hv[i + 1][4] = (r[i] - m[i][0] * hv[i - 1][4] - hv[i][3] * hv[i][4]) / hv[i][0];
 		}
 
 		x[n - 1] = hv[n][4];
 		x[n - 2] = hv[n - 1][4] - hv[n - 2][1] * x[n - 1];
 		for (i = n - 3; i >= 0; i--)
-		x[i] = hv[i + 1][4] - hv[i][1] * x[i + 1] - hv[i][2] * x[i + 2];
+			x[i] = hv[i + 1][4] - hv[i][1] * x[i + 1] - hv[i][2] * x[i + 2];
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(hv);
 		return true;
 	}
@@ -2285,104 +2277,100 @@ public class GlobalMembersInterpol
 
 		/* HBB 20010727: Sample only across the actual x range, not the
 		 * full range of input data */
-	///#if SAMPLE_CSPLINES_TO_FULL_RANGE
-	//    xstart = this_points[0].x;
-	//    xend = this_points[num_points - 1].x;
-	///#else
+		///#if SAMPLE_CSPLINES_TO_FULL_RANGE
+		//    xstart = this_points[0].x;
+		//    xend = this_points[num_points - 1].x;
+		///#else
 		xstart = ((this_points[0].x) > (sxmin) ? (this_points[0].x) : (sxmin));
 		xend = ((this_points[num_points - 1].x) < (sxmax) ? (this_points[num_points - 1].x) : (sxmax));
 
 		if (xstart >= xend)
-		GlobalMembersBf_test.int_error(plot.token, "Cannot smooth: no data within fixed xrange!");
-	///#endif
+			GlobalMembersBf_test.int_error(plot.token, "Cannot smooth: no data within fixed xrange!");
+		///#endif
 		xdiff = (xend - xstart) / (GlobalMembersGadgets.samples_1 - 1);
 
 		for (i = 0; i < GlobalMembersGadgets.samples_1; i++)
 		{
-		x = xstart + i * xdiff;
+			x = xstart + i * xdiff;
 
-		/* Move forward to the spline interval this point is in */
-		while ((x >= this_points[l + 1].x) && (l < num_points - 2))
-			l++;
+			/* Move forward to the spline interval this point is in */
+			while ((x >= this_points[l + 1].x) && (l < num_points - 2))
+				l++;
 
-		/* KB 981107: With logarithmic x axis the values were
+			/* KB 981107: With logarithmic x axis the values were
 			 * converted back to linear scale before calculating the
 			 * coefficients. Use exponential for log x values. */
-		temp = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (x)) - (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((this_points[l].x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (this_points[l].x));
+			temp = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (x)) - (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((this_points[l].x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (this_points[l].x));
 
-		/* Evaluate cubic spline polynomial */
-		y = ((sc[l][3] * temp + sc[l][2]) * temp + sc[l][1]) * temp + sc[l][0];
+			/* Evaluate cubic spline polynomial */
+			y = ((sc[l][3] * temp + sc[l][2]) * temp + sc[l][1]) * temp + sc[l][0];
 
-		/* With logarithmic y axis, we need to convert from linear to
+			/* With logarithmic y axis, we need to convert from linear to
 			 * log scale now. */
-		if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
-		{
-			if (y > 0.)
-			y = (Math.log(y) / GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
-			else
-			y = symin - (symax - symin);
-		}
+			if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
+			{
+				if (y > 0.)
+					y = (Math.log(y) / GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
+				else
+					y = symin - (symax - symin);
+			}
 
-		dest[i].type = coord_type.INRANGE;
-		do
-		{
-			dest[i].x = x;
-			if (dest[i].type != coord_type.INRANGE)
-				break;
+			dest[i].type = coord_type.INRANGE;
+			do
+			{
+				dest[i].x = x;
+				if (dest[i].type != coord_type.INRANGE)
+					break;
 				if ((x) < (ixmin))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(ixmin) = (x);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((x) > (ixmax))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(ixmax) = (x);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
-		do
-		{
-			dest[i].y = y;
-			if (dest[i].type != coord_type.INRANGE)
-				break;
+			} while (0);
+			do
+			{
+				dest[i].y = y;
+				if (dest[i].type != coord_type.INRANGE)
+					break;
 				if ((y) < (iymin))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(iymin) = (y);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((y) > (iymax))
 				{
 					if ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(iymax) = (y);
-						else
-						{
-							(dest[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(dest[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
+			} while (0);
 
-		dest[i].xlow = dest[i].xhigh = dest[i].x;
-		dest[i].ylow = dest[i].yhigh = dest[i].y;
+			dest[i].xlow = dest[i].xhigh = dest[i].x;
+			dest[i].ylow = dest[i].yhigh = dest[i].y;
 
-		dest[i].z = -1;
+			dest[i].z = -1;
 
 		}
 
@@ -2409,11 +2397,11 @@ public class GlobalMembersInterpol
 
 	}
 
-/*
- * do_freq() is like the other smoothers only in that it
- * needs to adjust the plot ranges. We don't have to copy
- * approximated curves or anything like that.
- */
+	/*
+	 * do_freq() is like the other smoothers only in that it
+	 * needs to adjust the plot ranges. We don't have to copy
+	 * approximated curves or anything like that.
+	 */
 
 	public static void do_freq(curve_points plot, int first_point, int num_points)
 	{
@@ -2448,116 +2436,112 @@ public class GlobalMembersInterpol
 		for (i = 0; i < num_points; i++)
 		{
 
-		x = this_Renamed[i].x;
-		y = this_Renamed[i].y;
+			x = this_Renamed[i].x;
+			y = this_Renamed[i].y;
 
-		this_Renamed[i].type = coord_type.INRANGE;
+			this_Renamed[i].type = coord_type.INRANGE;
 
-		do
-		{
-			this_Renamed[i].x = x;
-			if (this_Renamed[i].type != coord_type.INRANGE)
-				break;
+			do
+			{
+				this_Renamed[i].x = x;
+				if (this_Renamed[i].type != coord_type.INRANGE)
+					break;
 				if ((x) < (ixmin))
 				{
 					if ((GlobalMembersAxis.axis_array[x_axis].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(ixmin) = (x);
-						else
-						{
-							(this_Renamed[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(this_Renamed[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((x) > (ixmax))
 				{
 					if ((GlobalMembersAxis.axis_array[x_axis].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(ixmax) = (x);
-						else
-						{
-							(this_Renamed[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(this_Renamed[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
-		do
-		{
-			this_Renamed[i].y = y;
-			if (this_Renamed[i].type != coord_type.INRANGE)
-				break;
+			} while (0);
+			do
+			{
+				this_Renamed[i].y = y;
+				if (this_Renamed[i].type != coord_type.INRANGE)
+					break;
 				if ((y) < (iymin))
 				{
 					if ((GlobalMembersAxis.axis_array[y_axis].autoscale) & e_autoscale.AUTOSCALE_MIN)
 						(iymin) = (y);
-						else
-						{
-							(this_Renamed[i].type) = coord_type.OUTRANGE;
-							()0;
-							break;
-						}
+					else
+					{
+						(this_Renamed[i].type) = coord_type.OUTRANGE;
+						break;
+					}
 				}
 				if ((y) > (iymax))
 				{
 					if ((GlobalMembersAxis.axis_array[y_axis].autoscale) & e_autoscale.AUTOSCALE_MAX)
 						(iymax) = (y);
-						else
-						{
-							(this_Renamed[i].type) = coord_type.OUTRANGE;
-							()0;
-						}
+					else
+					{
+						(this_Renamed[i].type) = coord_type.OUTRANGE;
+					}
 				}
-		} while (0);
+			} while (false);
 
-		this_Renamed[i].xlow = this_Renamed[i].xhigh = this_Renamed[i].x;
-		this_Renamed[i].ylow = this_Renamed[i].yhigh = this_Renamed[i].y;
-		this_Renamed[i].z = -1;
+			this_Renamed[i].xlow = this_Renamed[i].xhigh = this_Renamed[i].x;
+			this_Renamed[i].ylow = this_Renamed[i].yhigh = this_Renamed[i].y;
+			this_Renamed[i].z = -1;
 		}
 
 		do
 		{
 			if (ixmax > sxmax)
 				(GlobalMembersAxis.axis_array[x_axis].max) = (GlobalMembersAxis.axis_array[x_axis].log ? Math.exp((ixmax) * GlobalMembersAxis.axis_array[x_axis].log_base): (ixmax));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (ixmin < sxmin)
 				(GlobalMembersAxis.axis_array[x_axis].min) = (GlobalMembersAxis.axis_array[x_axis].log ? Math.exp((ixmin) * GlobalMembersAxis.axis_array[x_axis].log_base): (ixmin));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (iymax > symax)
 				(GlobalMembersAxis.axis_array[y_axis].max) = (GlobalMembersAxis.axis_array[y_axis].log ? Math.exp((iymax) * GlobalMembersAxis.axis_array[y_axis].log_base): (iymax));
-		} while (0);
+		} while (false);
 		do
 		{
 			if (iymin < symin)
 				(GlobalMembersAxis.axis_array[y_axis].min) = (GlobalMembersAxis.axis_array[y_axis].log ? Math.exp((iymin) * GlobalMembersAxis.axis_array[y_axis].log_base): (iymin));
-		} while (0);
+		} while (false);
 	}
 
-/*
- * sort_points
- *
- * sort data succession for further evaluation by plot_splines, etc.
- * This routine is mainly introduced for compilers *NOT* supporting the
- * UNIX qsort() routine. You can then easily replace it by more convenient
- * stuff for your compiler.
- * (MGR 1992)
- */
+	/*
+	 * sort_points
+	 *
+	 * sort data succession for further evaluation by plot_splines, etc.
+	 * This routine is mainly introduced for compilers *NOT* supporting the
+	 * UNIX qsort() routine. You can then easily replace it by more convenient
+	 * stuff for your compiler.
+	 * (MGR 1992)
+	 */
 
-/* HBB 20010720: To avoid undefined behaviour that would be caused by
- * casting functions pointers around, changed arguments to what
- * qsort() *really* wants */
-/* HBB 20010720: removed 'static' to avoid HP-sUX gcc bug */
+	/* HBB 20010720: To avoid undefined behaviour that would be caused by
+	 * casting functions pointers around, changed arguments to what
+	 * qsort() *really* wants */
+	/* HBB 20010720: removed 'static' to avoid HP-sUX gcc bug */
 	public static int compare_points(Object arg1, Object arg2)
 	{
 		final coordinate p1 = arg1;
 		final coordinate p2 = arg2;
 
 		if (p1.x > p2.x)
-		return (1);
+			return (1);
 		if (p1.x < p2.x)
-		return (-1);
+			return (-1);
 		return (0);
 	}
 
@@ -2583,31 +2567,31 @@ public class GlobalMembersInterpol
 		GlobalMembersAxis.x_axis = plot.x_axis;
 		GlobalMembersAxis.y_axis = plot.y_axis;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		sc = GlobalMembersAlloc.gp_alloc((num_points) * sizeof(double[spline_coeff_size]), "spline matrix");
 
 		if (num_points < 4)
-		GlobalMembersBf_test.int_error(plot.token, "Can't calculate approximation splines, need at least 4 points");
+			GlobalMembersBf_test.int_error(plot.token, "Can't calculate approximation splines, need at least 4 points");
 
 		this_points = (plot.points) + first_point;
 
 		for (i = 0; i < num_points; i++)
-		if (this_points[i].z <= 0)
-			GlobalMembersBf_test.int_error(plot.token, "Can't calculate approximation splines, all weights have to be > 0");
+			if (this_points[i].z <= 0)
+				GlobalMembersBf_test.int_error(plot.token, "Can't calculate approximation splines, all weights have to be > 0");
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		m = GlobalMembersAlloc.gp_alloc((num_points - 2) * sizeof(double[5]), "spline help matrix");
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		r = GlobalMembersAlloc.gp_alloc((num_points - 2) * sizeof(double), "spline right side");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		x = GlobalMembersAlloc.gp_alloc((num_points - 2) * sizeof(double), "spline solution vector");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		h = GlobalMembersAlloc.gp_alloc((num_points - 1) * sizeof(double), "spline help vector");
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		xp = GlobalMembersAlloc.gp_alloc((num_points) * sizeof(double), "x pos");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		yp = GlobalMembersAlloc.gp_alloc((num_points) * sizeof(double), "y pos");
 
 		/* KB 981107: With logarithmic axis first convert back to linear scale */
@@ -2616,84 +2600,84 @@ public class GlobalMembersInterpol
 		yp[0] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((this_points[0].y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (this_points[0].y));
 		for (i = 1; i < num_points; i++)
 		{
-		xp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((this_points[i].x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (this_points[i].x));
-		yp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((this_points[i].y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (this_points[i].y));
-		h[i - 1] = xp[i] - xp[i - 1];
+			xp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((this_points[i].x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (this_points[i].x));
+			yp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((this_points[i].y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (this_points[i].y));
+			h[i - 1] = xp[i] - xp[i - 1];
 		}
 
 		/* set up the matrix and the vector */
 
 		for (i = 0; i <= num_points - 3; i++)
 		{
-		r[i] = 3 * ((yp[i + 2] - yp[i + 1]) / h[i + 1] - (yp[i + 1] - yp[i]) / h[i]);
+			r[i] = 3 * ((yp[i + 2] - yp[i + 1]) / h[i + 1] - (yp[i + 1] - yp[i]) / h[i]);
 
-		if (i < 2)
-			m[i][0] = 0;
-		else
-			m[i][0] = 6 / this_points[i].z / h[i - 1] / h[i];
+			if (i < 2)
+				m[i][0] = 0;
+			else
+				m[i][0] = 6 / this_points[i].z / h[i - 1] / h[i];
 
-		if (i < 1)
-			m[i][1] = 0;
-		else
-			m[i][1] = h[i] - 6 / this_points[i].z / h[i] * (1 / h[i - 1] + 1 / h[i]) - 6 / this_points[i + 1].z / h[i] * (1 / h[i] + 1 / h[i + 1]);
+			if (i < 1)
+				m[i][1] = 0;
+			else
+				m[i][1] = h[i] - 6 / this_points[i].z / h[i] * (1 / h[i - 1] + 1 / h[i]) - 6 / this_points[i + 1].z / h[i] * (1 / h[i] + 1 / h[i + 1]);
 
-		m[i][2] = 2 * (h[i] + h[i + 1]) + 6 / this_points[i].z / h[i] / h[i] + 6 / this_points[i + 1].z * (1 / h[i] + 1 / h[i + 1]) * (1 / h[i] + 1 / h[i + 1]) + 6 / this_points[i + 2].z / h[i + 1] / h[i + 1];
+			m[i][2] = 2 * (h[i] + h[i + 1]) + 6 / this_points[i].z / h[i] / h[i] + 6 / this_points[i + 1].z * (1 / h[i] + 1 / h[i + 1]) * (1 / h[i] + 1 / h[i + 1]) + 6 / this_points[i + 2].z / h[i + 1] / h[i + 1];
 
-		if (i > num_points - 4)
-			m[i][3] = 0;
-		else
-			m[i][3] = h[i + 1] - 6 / this_points[i + 1].z / h[i + 1] * (1 / h[i] + 1 / h[i + 1]) - 6 / this_points[i + 2].z / h[i + 1] * (1 / h[i + 1] + 1 / h[i + 2]);
+			if (i > num_points - 4)
+				m[i][3] = 0;
+			else
+				m[i][3] = h[i + 1] - 6 / this_points[i + 1].z / h[i + 1] * (1 / h[i] + 1 / h[i + 1]) - 6 / this_points[i + 2].z / h[i + 1] * (1 / h[i + 1] + 1 / h[i + 2]);
 
-		if (i > num_points - 5)
-			m[i][4] = 0;
-		else
-			m[i][4] = 6 / this_points[i + 2].z / h[i + 1] / h[i + 2];
+			if (i > num_points - 5)
+				m[i][4] = 0;
+			else
+				m[i][4] = 6 / this_points[i + 2].z / h[i + 1] / h[i + 2];
 		}
 
 		/* solve the matrix */
 		if (GlobalMembersInterpol.solve_five_diag(m, r, x, num_points - 2) == 0)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(h);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(r);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(m);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(xp);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(yp);
-		GlobalMembersBf_test.int_error(plot.token, "Can't calculate approximation splines");
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(h);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(x);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(r);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(m);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(xp);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(yp);
+			GlobalMembersBf_test.int_error(plot.token, "Can't calculate approximation splines");
 		}
 		sc[0][2] = 0;
 		for (i = 1; i <= num_points - 2; i++)
-		sc[i][2] = x[i - 1];
+			sc[i][2] = x[i - 1];
 		sc[num_points - 1][2] = 0;
 
 		sc[0][0] = yp[0] + 2 / this_points[0].z / h[0] * (sc[0][2] - sc[1][2]);
 		for (i = 1; i <= num_points - 2; i++)
-		sc[i][0] = yp[i] - 2 / this_points[i].z * (sc[i - 1][2] / h[i - 1] - sc[i][2] * (1 / h[i - 1] + 1 / h[i]) + sc[i + 1][2] / h[i]);
+			sc[i][0] = yp[i] - 2 / this_points[i].z * (sc[i - 1][2] / h[i - 1] - sc[i][2] * (1 / h[i - 1] + 1 / h[i]) + sc[i + 1][2] / h[i]);
 		sc[num_points - 1][0] = yp[num_points - 1] - 2 / this_points[num_points - 1].z / h[num_points - 2] * (sc[num_points - 2][2] - sc[num_points - 1][2]);
 
 		for (i = 0; i <= num_points - 2; i++)
 		{
-		sc[i][1] = (sc[i + 1][0] - sc[i][0]) / h[i] - h[i] / 3 * (sc[i + 1][2] + 2 * sc[i][2]);
-		sc[i][3] = (sc[i + 1][2] - sc[i][2]) / 3 / h[i];
+			sc[i][1] = (sc[i + 1][0] - sc[i][0]) / h[i] - h[i] / 3 * (sc[i + 1][2] + 2 * sc[i][2]);
+			sc[i][3] = (sc[i + 1][2] - sc[i][2]) / 3 / h[i];
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(h);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(r);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(m);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(xp);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(yp);
 
 		return (sc);
@@ -2723,25 +2707,25 @@ public class GlobalMembersInterpol
 		GlobalMembersAxis.x_axis = plot.x_axis;
 		GlobalMembersAxis.y_axis = plot.y_axis;
 		if (num_points < 3)
-		GlobalMembersBf_test.int_error(plot.token, "Can't calculate splines, need at least 3 points");
+			GlobalMembersBf_test.int_error(plot.token, "Can't calculate splines, need at least 3 points");
 
 		this_points = (plot.points) + first_point;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		sc = GlobalMembersAlloc.gp_alloc((num_points) * sizeof(double[spline_coeff_size]), "spline matrix");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		m = GlobalMembersAlloc.gp_alloc((num_points - 2) * sizeof(double[3]), "spline help matrix");
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		r = GlobalMembersAlloc.gp_alloc((num_points - 2) * sizeof(double), "spline right side");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		x = GlobalMembersAlloc.gp_alloc((num_points - 2) * sizeof(double), "spline solution vector");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		h = GlobalMembersAlloc.gp_alloc((num_points - 1) * sizeof(double), "spline help vector");
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		xp = GlobalMembersAlloc.gp_alloc((num_points) * sizeof(double), "x pos");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		yp = GlobalMembersAlloc.gp_alloc((num_points) * sizeof(double), "y pos");
 
 		/* KB 981107: With logarithmic axis first convert back to linear scale */
@@ -2750,72 +2734,72 @@ public class GlobalMembersInterpol
 		yp[0] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((this_points[0].y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (this_points[0].y));
 		for (i = 1; i < num_points; i++)
 		{
-		xp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((this_points[i].x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (this_points[i].x));
-		yp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((this_points[i].y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (this_points[i].y));
-		h[i - 1] = xp[i] - xp[i - 1];
+			xp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((this_points[i].x) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (this_points[i].x));
+			yp[i] = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log ? Math.exp((this_points[i].y) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base): (this_points[i].y));
+			h[i - 1] = xp[i] - xp[i - 1];
 		}
 
 		/* set up the matrix and the vector */
 
 		for (i = 0; i <= num_points - 3; i++)
 		{
-		r[i] = 3 * ((yp[i + 2] - yp[i + 1]) / h[i + 1] - (yp[i + 1] - yp[i]) / h[i]);
+			r[i] = 3 * ((yp[i + 2] - yp[i + 1]) / h[i + 1] - (yp[i + 1] - yp[i]) / h[i]);
 
-		if (i < 1)
-			m[i][0] = 0;
-		else
-			m[i][0] = h[i];
+			if (i < 1)
+				m[i][0] = 0;
+			else
+				m[i][0] = h[i];
 
-		m[i][1] = 2 * (h[i] + h[i + 1]);
+			m[i][1] = 2 * (h[i] + h[i + 1]);
 
-		if (i > num_points - 4)
-			m[i][2] = 0;
-		else
-			m[i][2] = h[i + 1];
+			if (i > num_points - 4)
+				m[i][2] = 0;
+			else
+				m[i][2] = h[i + 1];
 		}
 
 		/* solve the matrix */
 		if (GlobalMembersContour.solve_tri_diag(m, r, x, num_points - 2) == 0)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(h);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(r);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(m);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(xp);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(yp);
-		GlobalMembersBf_test.int_error(plot.token, "Can't calculate cubic splines");
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(h);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(x);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(r);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(m);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(xp);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(yp);
+			GlobalMembersBf_test.int_error(plot.token, "Can't calculate cubic splines");
 		}
 		sc[0][2] = 0;
 		for (i = 1; i <= num_points - 2; i++)
-		sc[i][2] = x[i - 1];
+			sc[i][2] = x[i - 1];
 		sc[num_points - 1][2] = 0;
 
 		for (i = 0; i <= num_points - 1; i++)
-		sc[i][0] = yp[i];
+			sc[i][0] = yp[i];
 
 		for (i = 0; i <= num_points - 2; i++)
 		{
-		sc[i][1] = (sc[i + 1][0] - sc[i][0]) / h[i] - h[i] / 3 * (sc[i + 1][2] + 2 * sc[i][2]);
-		sc[i][3] = (sc[i + 1][2] - sc[i][2]) / 3 / h[i];
+			sc[i][1] = (sc[i + 1][0] - sc[i][0]) / h[i] - h[i] / 3 * (sc[i + 1][2] + 2 * sc[i][2]);
+			sc[i][3] = (sc[i + 1][2] - sc[i][2]) / 3 / h[i];
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(h);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(r);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(m);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(xp);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(yp);
 
 		return (sc);

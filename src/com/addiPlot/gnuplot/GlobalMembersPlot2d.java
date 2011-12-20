@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersPlot2d
 {
 	///#define __STDC__ 1
@@ -168,10 +170,10 @@ public class GlobalMembersPlot2d
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: plot2d.c,v 1.193.2.7 2010/03/06 19:14:37 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: plot2d.c,v 1.193.2.7 2010/03/06 19:14:37 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - plot2d.c */
@@ -669,110 +671,110 @@ public class GlobalMembersPlot2d
 
 	/* Variables of plot2d.c needed by other modules: */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern struct curve_points *first_plot;
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern double boxwidth;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean boxwidth_is_absolute;
 
-/*
- * In the parametric case we can say plot [a= -4:4] [-2:2] [-1:1] sin(a),a**2
- * while in the non-parametric case we would say only plot [b= -2:2] [-1:1]
- * sin(b)
- */
+	/*
+	 * In the parametric case we can say plot [a= -4:4] [-2:2] [-1:1] sin(a),a**2
+	 * while in the non-parametric case we would say only plot [b= -2:2] [-1:1]
+	 * sin(b)
+	 */
 
 	/* prototypes from plot2d.c */
 
 	public static void plotrequest()
 	{
 		int dummy_token = -1;
-		int t_axis;
+		AXIS_INDEX t_axis;
 
 		if (GlobalMembersTerm.term == null) // unknown
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "use 'set term' to set terminal type first");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "use 'set term' to set terminal type first");
 
 		GlobalMembersGadgets.is_3d_plot = false;
 
 		/* Deactivate if 'set view map' is still running after the previous 'splot': */
 		GlobalMembersCommand.splot_map_deactivate();
 
-		if (GlobalMembersGadgets.parametric && strcmp(GlobalMembersParse.set_dummy_var[0], "u") == 0)
-		GlobalMembersParse.set_dummy_var[0] = "t";
+		if (GlobalMembersGadgets.parametric && StringFunctions.strcmp(GlobalMembersParse.set_dummy_var[0], "u") == 0)
+			GlobalMembersParse.set_dummy_var[0] = "t";
 
 		/* initialise the arrays from the 'set' scalars */
 
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_X_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Y_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.SECOND_X_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.SECOND_Y_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.T_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.R_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.COLOR_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-			this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			this_Renamed.min = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+			this_Renamed.max = (true && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 
 		t_axis = (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar) ? AXIS_INDEX.T_AXIS : AXIS_INDEX.FIRST_X_AXIS;
 
@@ -789,31 +791,31 @@ public class GlobalMembersPlot2d
 						GlobalMembersCommand.c_token += 2;
 					}
 				}
-				GlobalMembersAxis.axis_array[t_axis].autoscale = GlobalMembersAxis.load_range(t_axis, GlobalMembersAxis.axis_array[t_axis].min, GlobalMembersAxis.axis_array[t_axis].max, GlobalMembersAxis.axis_array[t_axis].autoscale);
+				GlobalMembersAxis.axis_array[t_axis.getValue()].autoscale = GlobalMembersAxis.load_range(t_axis, GlobalMembersAxis.axis_array[t_axis.getValue()].min, GlobalMembersAxis.axis_array[t_axis.getValue()].max, GlobalMembersAxis.axis_array[t_axis.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
-			}
-		} while (0);
-		if (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar) // set optional x ranges
-		do
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
-			{
 				GlobalMembersCommand.c_token++;
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_X_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale);
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
 			}
-		} while (0);
+		} while (false);
+		if (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar) // set optional x ranges
+			do
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_X_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
+					GlobalMembersCommand.c_token++;
+				}
+			} while (false);
 
 		/* possible reversal of x range *does* matter, even in parametric
 		 * or polar mode */
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_X_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -821,8 +823,8 @@ public class GlobalMembersPlot2d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 
 		do
 		{
@@ -832,13 +834,13 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.FIRST_Y_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
+				GlobalMembersCommand.c_token++;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Y_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -846,8 +848,8 @@ public class GlobalMembersPlot2d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 		do
 		{
 			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
@@ -856,13 +858,13 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.SECOND_X_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
+				GlobalMembersCommand.c_token++;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.SECOND_X_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -870,8 +872,8 @@ public class GlobalMembersPlot2d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 		do
 		{
 			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
@@ -880,13 +882,13 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale = GlobalMembersAxis.load_range(AXIS_INDEX.SECOND_Y_AXIS, GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].min, GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].max, GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale);
 				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
 					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					GlobalMembersCommand.c_token++;
+				GlobalMembersCommand.c_token++;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.SECOND_Y_AXIS;
-			if (((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE) && (this_Renamed.max < this_Renamed.min))
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()];
+			if (((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue()) && (this_Renamed.max < this_Renamed.min))
 			{
 				double temp = this_Renamed.min;
 				this_Renamed.min = this_Renamed.max;
@@ -894,35 +896,35 @@ public class GlobalMembersPlot2d
 				this_Renamed.range_is_reverted = true;
 			}
 			else
-				this_Renamed.range_is_reverted = (this_Renamed.range_flags & DefineConstants.RANGE_REVERSE);
-		} while (0);
+				this_Renamed.range_is_reverted = ((this_Renamed.range_flags & DefineConstants.RANGE_REVERSE) != 0);
+		} while (false);
 
 		/* Clear out any tick labels read from data files in previous plot */
 		for (t_axis = 0; t_axis < DefineConstants.AXIS_ARRAY_SIZE; t_axis++)
 		{
-		ticdef ticdef = GlobalMembersAxis.axis_array[t_axis].ticdef;
-		if (ticdef.def.user != null)
-			ticdef.def.user = GlobalMembersSet.prune_dataticks(ticdef.def.user);
-		if (ticdef.def.user == null && ticdef.type == en_ticseries_type.TIC_USER)
-			ticdef.type = en_ticseries_type.TIC_COMPUTED;
+			ticdef ticdef = GlobalMembersAxis.axis_array[t_axis.getValue()].ticdef;
+			if (ticdef.def.user != null)
+				ticdef.def.user = GlobalMembersSet.prune_dataticks(ticdef.def.user);
+			if (ticdef.def.user == null && ticdef.type == en_ticseries_type.TIC_USER)
+				ticdef.type = en_ticseries_type.TIC_COMPUTED;
 		}
 
 		/* use the default dummy variable unless changed */
 		if (dummy_token >= 0)
-		GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[0], dummy_token, DefineConstants.MAX_ID_LEN);
+			GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[0], dummy_token, DefineConstants.MAX_ID_LEN);
 		else
-		() strcpy(GlobalMembersParse.c_dummy_var[0], GlobalMembersParse.set_dummy_var[0]);
+			() strcpy(GlobalMembersParse.c_dummy_var[0], GlobalMembersParse.set_dummy_var[0]);
 
 		GlobalMembersPlot2d.eval_plots();
 	}
 
-///#ifdef VOLATILE_REFRESH
-/* Helper function for refresh command.  Reexamine each data point and update the
- * flags for INRANGE/OUTRANGE/UNDEFINED based on the current limits for that axis.
- * Normally the axis limits are already known at this point. But if the user has
- * forced "set autoscale" since the previous plot or refresh, we need to reset the
- * axis limits and try to approximate the full auto-scaling behaviour.
- */
+	///#ifdef VOLATILE_REFRESH
+	/* Helper function for refresh command.  Reexamine each data point and update the
+	 * flags for INRANGE/OUTRANGE/UNDEFINED based on the current limits for that axis.
+	 * Normally the axis limits are already known at this point. But if the user has
+	 * forced "set autoscale" since the previous plot or refresh, we need to reset the
+	 * axis limits and try to approximate the full auto-scaling behaviour.
+	 */
 	public static void refresh_bounds(curve_points first_plot, int nplots)
 	{
 		curve_points this_plot = first_plot;
@@ -930,139 +932,139 @@ public class GlobalMembersPlot2d
 
 		for (iplot = 0; iplot < nplots; iplot++, this_plot = this_plot.next)
 		{
-		int i; // point index
-		axis x_axis = GlobalMembersAxis.axis_array[this_plot.x_axis];
-		axis y_axis = GlobalMembersAxis.axis_array[this_plot.y_axis];
+			int i; // point index
+			axis x_axis = GlobalMembersAxis.axis_array[this_plot.x_axis];
+			axis y_axis = GlobalMembersAxis.axis_array[this_plot.y_axis];
 
-		/* IMAGE clipping is done elsewhere, so we don't need INRANGE/OUTRANGE
-		 * checks.
-		 */
-		if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE)
-		{
-			if (((int)x_axis.set_autoscale) != 0)
-			GlobalMembersGraphics.plot_image_or_update_axes(this_plot, true);
-			continue;
-		}
-
-		for (i = 0; i < this_plot.p_count; i++)
-		{
-			coordinate point = this_plot.points[i];
-
-			if (point.type == coord_type.UNDEFINED)
-			continue;
-			else
-			point.type = coord_type.INRANGE;
-
-			/* If the state has been set to autoscale since the last plot,
-			 * mark everything INRANGE and re-evaluate the axis limits now.
-			 * Otherwise test INRANGE/OUTRANGE against previous axis limits.
+			/* IMAGE clipping is done elsewhere, so we don't need INRANGE/OUTRANGE
+			 * checks.
 			 */
-			if (!this_plot.noautoscale && (x_axis.set_autoscale & (e_autoscale.AUTOSCALE_MIN | e_autoscale.AUTOSCALE_MAX)))
+			if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE)
 			{
-			if (point.x > x_axis.max)
-				x_axis.max = point.x;
-			if (point.x < x_axis.min)
-				x_axis.min = point.x;
-			}
-			else if (!(((x_axis.min)<(x_axis.max)) ? (((point.x) >= (x_axis.min)) && ((point.x) <= (x_axis.max))) : (((point.x) >= (x_axis.max)) && ((point.x) <= (x_axis.min)))))
-			{
-			point.type = coord_type.OUTRANGE;
-			continue;
+				if (x_axis.set_autoscale.getValue() != 0)
+					GlobalMembersGraphics.plot_image_or_update_axes(this_plot, true);
+				continue;
 			}
 
-			if (!this_plot.noautoscale && (y_axis.set_autoscale & (e_autoscale.AUTOSCALE_MIN | e_autoscale.AUTOSCALE_MAX)))
+			for (i = 0; i < this_plot.p_count; i++)
 			{
-			if (point.y > y_axis.max)
-				y_axis.max = point.y;
-			if (point.y < y_axis.min)
-				y_axis.min = point.y;
+				coordinate point = this_plot.points[i];
+
+				if (point.type == coord_type.UNDEFINED)
+					continue;
+				else
+					point.type = coord_type.INRANGE;
+
+				/* If the state has been set to autoscale since the last plot,
+				 * mark everything INRANGE and re-evaluate the axis limits now.
+				 * Otherwise test INRANGE/OUTRANGE against previous axis limits.
+				 */
+				if (!this_plot.noautoscale && ((x_axis.set_autoscale.getValue() & (e_autoscale.AUTOSCALE_MIN.getValue() | e_autoscale.AUTOSCALE_MAX.getValue())) != 0))
+				{
+					if (point.x > x_axis.max)
+						x_axis.max = point.x;
+					if (point.x < x_axis.min)
+						x_axis.min = point.x;
+				}
+				else if (!(((x_axis.min)<(x_axis.max)) ? (((point.x) >= (x_axis.min)) && ((point.x) <= (x_axis.max))) : (((point.x) >= (x_axis.max)) && ((point.x) <= (x_axis.min)))))
+				{
+					point.type = coord_type.OUTRANGE;
+					continue;
+				}
+
+				if (!this_plot.noautoscale && ((y_axis.set_autoscale.getValue() & (e_autoscale.AUTOSCALE_MIN.getValue() | e_autoscale.AUTOSCALE_MAX.getValue())) != 0))
+				{
+					if (point.y > y_axis.max)
+						y_axis.max = point.y;
+					if (point.y < y_axis.min)
+						y_axis.min = point.y;
+				}
+				else if (!(((y_axis.min)<(y_axis.max)) ? (((point.y) >= (y_axis.min)) && ((point.y) <= (y_axis.max))) : (((point.y) >= (y_axis.max)) && ((point.y) <= (y_axis.min)))))
+				{
+					point.type = coord_type.OUTRANGE;
+					continue;
+				}
 			}
-			else if (!(((y_axis.min)<(y_axis.max)) ? (((point.y) >= (y_axis.min)) && ((point.y) <= (y_axis.max))) : (((point.y) >= (y_axis.max)) && ((point.y) <= (y_axis.min)))))
-			{
-			point.type = coord_type.OUTRANGE;
-			continue;
-			}
-		}
 
 		}
 	}
 
-/*
- * cp_free() releases any memory which was previously malloc()'d to hold
- *   curve points (and recursively down the linked list).
- */
-/* HBB 20000506: instead of risking stack havoc by recursion, operate
- * iteratively */
+	/*
+	 * cp_free() releases any memory which was previously malloc()'d to hold
+	 *   curve points (and recursively down the linked list).
+	 */
+	/* HBB 20000506: instead of risking stack havoc by recursion, operate
+	 * iteratively */
 
 	/* internal and external variables */
 	public static void cp_free(curve_points cp)
 	{
 		while (cp != null)
 		{
-		curve_points next = cp.next;
+			curve_points next = cp.next;
 
-		if (cp.title != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(cp.title);
-		if (cp.points != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(cp.points);
-		if (cp.labels != null)
-		{
-			GlobalMembersGadgets.free_labels(cp.labels);
-			cp.labels = (GlobalMembersMouse.struct text_label *)DefineConstants.NULL;
-		}
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(cp);
-		cp = next;
+			if (cp.title != null)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(cp.title);
+			if (cp.points != null)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(cp.points);
+			if (cp.labels != null)
+			{
+				GlobalMembersGadgets.free_labels(cp.labels);
+				cp.labels = (GlobalMembersMouse.struct text_label *)DefineConstants.NULL;
+			}
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(cp);
+			cp = next;
 		}
 	}
 
-/*
- * cp_extend() reallocates a curve_points structure to hold "num"
- * points. This will either expand or shrink the storage.
- */
+	/*
+	 * cp_extend() reallocates a curve_points structure to hold "num"
+	 * points. This will either expand or shrink the storage.
+	 */
 	public static void cp_extend(curve_points cp, int num)
 	{
 
-	///#if defined(DOS16) || defined(WIN16)
-	// /* Make sure we do not allocate more than 64k points in msdos since
-	//  * indexing is done with 16-bit int
-	//  * Leave some bytes for malloc maintainance.
-	//  */
-	//    if (num > 32700)
-	//	int_error(NO_CARET, "Array index must be less than 32k in msdos");
-	///#endif // MSDOS
+		///#if defined(DOS16) || defined(WIN16)
+		// /* Make sure we do not allocate more than 64k points in msdos since
+		//  * indexing is done with 16-bit int
+		//  * Leave some bytes for malloc maintainance.
+		//  */
+		//    if (num > 32700)
+		//	int_error(NO_CARET, "Array index must be less than 32k in msdos");
+		///#endif // MSDOS
 
 		if (num == cp.p_max)
-		return;
+			return;
 
 		if (num > 0)
 		{
-		if (cp.points == DefineConstants.NULL)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			cp.points = GlobalMembersAlloc.gp_alloc(num * sizeof(cp.points[0]), "curve points");
+			if (cp.points == null)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				cp.points = GlobalMembersAlloc.gp_alloc(num * sizeof(cp.points[0]), "curve points");
+			}
+			else
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				cp.points = GlobalMembersAlloc.gp_realloc(cp.points, num * sizeof(cp.points[0]), "expanding curve points");
+			}
+			cp.p_max = num;
 		}
 		else
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			cp.points = GlobalMembersAlloc.gp_realloc(cp.points, num * sizeof(cp.points[0]), "expanding curve points");
-		}
-		cp.p_max = num;
-		}
-		else
-		{
-		if (cp.points != DefineConstants.NULL)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(cp.points);
-		cp.points = DefineConstants.NULL;
-		cp.p_max = 0;
+			if (cp.points != null)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(cp.points);
+			cp.points = null;
+			cp.p_max = 0;
 		}
 	}
 
-/* store_label() is called by get_data for each point */
-/* This routine is exported so it can be shared by plot3d */
+	/* store_label() is called by get_data for each point */
+	/* This routine is exported so it can be shared by plot3d */
 
 	///#ifdef HAVE_STRING_H
 	///#else
@@ -1538,10 +1540,10 @@ public class GlobalMembersPlot2d
 			tl = tl.next;
 
 		/* Allocate a new label structure and fill it in */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		tl.next = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct text_label), "labelpoint label");
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memcpy(tl.next,tl,sizeof(text_label));
 		tl = tl.next;
 		tl.next = (text_label)DefineConstants.NULL;
@@ -1552,47 +1554,47 @@ public class GlobalMembersPlot2d
 
 		/* Check for optional (textcolor palette ...) */
 		if (tl.textcolor.type == DefineConstants.TC_Z)
-		tl.textcolor.value = colorval;
+			tl.textcolor.value = colorval;
 		/* Check for optional (textcolor rgb variable) */
 		else if (tl.textcolor.type == DefineConstants.TC_RGB && tl.textcolor.value < 0)
-		tl.textcolor.lt = colorval;
+			tl.textcolor.lt = colorval;
 
 		/* Check for null string (no label) */
 		if (String == null)
-		String = "";
+			String = "";
 
 		textlen = 0;
 		/* FIXME EAM - this code is ugly but seems to work */
 		/* We need to handle quoted separators and quoted quotes */
 		if (GlobalMembersDatafile.df_separator != 0)
 		{
-		boolean in_quote = false;
-		while (String.charAt(textlen))
-		{
-			if (String.charAt(textlen) == '"')
-			in_quote = !in_quote;
-			else if (String.charAt(textlen) == GlobalMembersDatafile.df_separator && !in_quote)
-			break;
-			textlen++;
-		}
-		while (textlen > 0 && Character.isWhitespace(String.charAt(textlen - 1)))
-			textlen--;
+			boolean in_quote = false;
+			while (String.charAt(textlen))
+			{
+				if (String.charAt(textlen) == '"')
+					in_quote = !in_quote;
+				else if (String.charAt(textlen) == GlobalMembersDatafile.df_separator && !in_quote)
+					break;
+				textlen++;
+			}
+			while (textlen > 0 && Character.isWhitespace(String.charAt(textlen - 1)))
+				textlen--;
 		}
 		else
 		{
-		/* This is the normal case (no special separator character) */
-		if (String.equals('"'))
-		{
-			for (textlen = 1; String.charAt(textlen) && String.charAt(textlen) != '"'; textlen++)
-				;
-		}
-		while (String.charAt(textlen) && !Character.isWhitespace(String.charAt(textlen)))
-			textlen++;
+			/* This is the normal case (no special separator character) */
+			if (String.equals('"'))
+			{
+				for (textlen = 1; String.charAt(textlen) && String.charAt(textlen) != '"'; textlen++)
+					;
+			}
+			while (String.charAt(textlen) && !Character.isWhitespace(String.charAt(textlen)))
+				textlen++;
 		}
 
 		/* Strip double quote from both ends */
 		if (String.charAt(0) == '"' && String.charAt(textlen - 1) == '"')
-		textlen -= 2, String++;
+			textlen -= 2, String++;
 
 		tl.text = GlobalMembersAlloc.gp_alloc(textlen + 1, "labelpoint text");
 		tl.text = String.substring(0, textlen);
@@ -1602,15 +1604,15 @@ public class GlobalMembersPlot2d
 		GlobalMembersFit.a((stderr,"LABELPOINT %f %f \"%s\" \n", tl.place.x, tl.place.y, tl.text));
 	}
 
-/* function implementations */
+	/* function implementations */
 
-/* HBB 20000508: moved cp_alloc() &friends to the main module using them, and
- * made cp_alloc 'static'.
- */
-/*
- * cp_alloc() allocates a curve_points structure that can hold 'num'
- * points.   Initialize all fields to NULL.
- */
+	/* HBB 20000508: moved cp_alloc() &friends to the main module using them, and
+	 * made cp_alloc 'static'.
+	 */
+	/*
+	 * cp_alloc() allocates a curve_points structure that can hold 'num'
+	 * points.   Initialize all fields to NULL.
+	 */
 
 
 
@@ -2039,43 +2041,43 @@ public class GlobalMembersPlot2d
 		curve_points cp;
 		lp_style_type default_lp_properties = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		cp = (GlobalMembersMouse.struct curve_points *) GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct curve_points), "curve");
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memset' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memset' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memset(cp,0,sizeof(GlobalMembersMouse.struct curve_points));
 
 		cp.p_max = (num >= 0 ? num : 0);
 		if (num > 0)
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		cp.points = (GlobalMembersMouse.struct coordinate  *) GlobalMembersAlloc.gp_alloc(num * sizeof(GlobalMembersMouse.struct coordinate), "curve points");
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			cp.points = (GlobalMembersMouse.struct coordinate  *) GlobalMembersAlloc.gp_alloc(num * sizeof(GlobalMembersMouse.struct coordinate), "curve points");
 
 		/* Initialize various fields */
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: cp->lp_properties = default_lp_properties;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: cp->lp_properties = default_lp_properties;
 		cp.lp_properties.copyFrom(default_lp_properties);
 		GlobalMembersGadgets.default_arrow_style((cp.arrow_properties));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: cp->fill_properties = default_fillstyle;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: cp->fill_properties = default_fillstyle;
 		cp.fill_properties.copyFrom(GlobalMembersGadgets.default_fillstyle);
 
 		return (cp);
 	}
-///#endif
+	///#endif
 
 
-/* A quick note about boxes style. For boxwidth auto, we cannot
- * calculate widths yet, since it may be sorted, etc. But if
- * width is set, we must do it now, before logs of xmin/xmax
- * are taken.
- * We store -1 in point->z as a marker to mean width needs to be
- * calculated, or 0 to mean that xmin/xmax are set correctly
- */
-/* current_plot->token is after datafile spec, for error reporting
- * it will later be moved passed title/with/linetype/pointtype
- */
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static String get_data_errmsg = "Not enough columns for variable color";
+	/* A quick note about boxes style. For boxwidth auto, we cannot
+	 * calculate widths yet, since it may be sorted, etc. But if
+	 * width is set, we must do it now, before logs of xmin/xmax
+	 * are taken.
+	 * We store -1 in point->z as a marker to mean width needs to be
+	 * calculated, or 0 to mean that xmin/xmax are set correctly
+	 */
+	/* current_plot->token is after datafile spec, for error reporting
+	 * it will later be moved passed title/with/linetype/pointtype
+	 */
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static String get_data_errmsg = "Not enough columns for variable color";
 	public static int get_data(curve_points current_plot)
 	{
 		int i; // num. points !
@@ -2089,11 +2091,11 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		boolean variable_color = false;
 		double variable_color_value;
 		if ((current_plot.lp_properties.pm3d_color.type == DefineConstants.TC_RGB) && (current_plot.lp_properties.pm3d_color.value < 0))
-		variable_color = true;
+			variable_color = true;
 		if (current_plot.lp_properties.pm3d_color.type == DefineConstants.TC_Z)
-		variable_color = true;
+			variable_color = true;
 		if (current_plot.lp_properties.l_type == DefineConstants.LT_COLORFROMCOLUMN)
-		variable_color = true;
+			variable_color = true;
 
 		/* eval_plots has already opened file */
 
@@ -2107,157 +2109,157 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		 * it's y data.  df_axis[] has to reflect that, so df_readline()
 		 * will expect time/date input. */
 		if (GlobalMembersDatafile.df_no_use_specs == 1)
-		GlobalMembersDatafile.df_axis[0] = GlobalMembersDatafile.df_axis[1];
+			GlobalMembersDatafile.df_axis[0] = GlobalMembersDatafile.df_axis[1];
 
 		switch (current_plot.plot_style) // set maximum columns to scan
 		{
 		case XYERRORLINES:
 		case XYERRORBARS:
 		case BOXXYERROR:
-		min_cols = 4;
-		max_cols = 7; // HBB FIXME 20060427: what's 7th?
+			min_cols = 4;
+			max_cols = 7; // HBB FIXME 20060427: what's 7th?
 
-		if (GlobalMembersDatafile.df_no_use_specs >= 6)
-		{
-			/* HBB 20060427: signal 3rd and 4th column are absolute x
-			 * data --- needed so time/date parsing works */
-			GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[0];
-			/* and 5th and 6th are absolute y data */
-			GlobalMembersDatafile.df_axis[4] = GlobalMembersDatafile.df_axis[5] = GlobalMembersDatafile.df_axis[1];
-		}
+			if (GlobalMembersDatafile.df_no_use_specs >= 6)
+			{
+				/* HBB 20060427: signal 3rd and 4th column are absolute x
+				 * data --- needed so time/date parsing works */
+				GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[0];
+				/* and 5th and 6th are absolute y data */
+				GlobalMembersDatafile.df_axis[4] = GlobalMembersDatafile.df_axis[5] = GlobalMembersDatafile.df_axis[1];
+			}
 
-		break;
+			break;
 
 		case FINANCEBARS:
 		case CANDLESTICKS:
-		/* HBB 20000504: use 'z' coordinate for y-axis quantity */
-		current_plot.z_axis = current_plot.y_axis;
-		min_cols = max_cols = 5;
-		/* HBB 20060427: signal 3rd and 4th column are absolute y data
-		 * --- needed so time/date parsing works */
-		GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[4] = GlobalMembersDatafile.df_axis[1];
-		break;
+			/* HBB 20000504: use 'z' coordinate for y-axis quantity */
+			current_plot.z_axis = current_plot.y_axis;
+			min_cols = max_cols = 5;
+			/* HBB 20060427: signal 3rd and 4th column are absolute y data
+			 * --- needed so time/date parsing works */
+			GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[4] = GlobalMembersDatafile.df_axis[1];
+			break;
 
 		case BOXERROR:
-		min_cols = 3; // HBB 20040520: fixed, was 4
-		max_cols = 5;
+			min_cols = 3; // HBB 20040520: fixed, was 4
+			max_cols = 5;
 
-		/* There are four(!) possible cases: */
-		/* 3 cols --> (x,y,dy), auto dx */
-		/* 4 cols, boxwidth==-2 --> (x,y,ylow,yhigh), auto dx */
-		/* 4 cols, boxwidth!=-2 --> (x,y,dy,dx) */
-		/* 5 cols --> (x,y,ylow,yhigh,dx) */
-		if ((GlobalMembersDatafile.df_no_use_specs == 4 && boxwidth == -2) || GlobalMembersDatafile.df_no_use_specs == 5)
-			/* HBB 20060427: signal 3rd and 4th column are absolute y
-			 * data --- needed so time/date parsing works */
-			GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[1];
-		break;
+			/* There are four(!) possible cases: */
+			/* 3 cols --> (x,y,dy), auto dx */
+			/* 4 cols, boxwidth==-2 --> (x,y,ylow,yhigh), auto dx */
+			/* 4 cols, boxwidth!=-2 --> (x,y,dy,dx) */
+			/* 5 cols --> (x,y,ylow,yhigh,dx) */
+			if ((GlobalMembersDatafile.df_no_use_specs == 4 && boxwidth == -2) || GlobalMembersDatafile.df_no_use_specs == 5)
+				/* HBB 20060427: signal 3rd and 4th column are absolute y
+				 * data --- needed so time/date parsing works */
+				GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[1];
+			break;
 
 		case VECTOR: // x, y, dx, dy, variable_color
-		min_cols = 4;
-		max_cols = 5;
-		break;
+			min_cols = 4;
+			max_cols = 5;
+			break;
 
 		case XERRORLINES:
 		case XERRORBARS:
-		min_cols = 3;
-		max_cols = 4;
-		if (GlobalMembersDatafile.df_no_use_specs == 4)
-			/* HBB 20060427: signal 3rd and 4th column are absolute x
-			 * data --- needed so time/date parsing works */
-			GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[0];
-		break;
+			min_cols = 3;
+			max_cols = 4;
+			if (GlobalMembersDatafile.df_no_use_specs == 4)
+				/* HBB 20060427: signal 3rd and 4th column are absolute x
+				 * data --- needed so time/date parsing works */
+				GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[0];
+			break;
 
 		case YERRORLINES:
 		case YERRORBARS:
-		min_cols = 3;
-		max_cols = 4;
-		if (GlobalMembersDatafile.df_no_use_specs == 4)
-			/* HBB 20060427: signal 3rd and 4th column are absolute y
-			 * data --- needed so time/date parsing works */
-			GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[1];
-		break;
+			min_cols = 3;
+			max_cols = 4;
+			if (GlobalMembersDatafile.df_no_use_specs == 4)
+				/* HBB 20060427: signal 3rd and 4th column are absolute y
+				 * data --- needed so time/date parsing works */
+				GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[3] = GlobalMembersDatafile.df_axis[1];
+			break;
 
 		case HISTOGRAMS:
-		min_cols = 1;
-		max_cols = 3;
-		break;
+			min_cols = 1;
+			max_cols = 3;
+			break;
 
 		case BOXES:
-		min_cols = 1;
-		max_cols = 4;
+			min_cols = 1;
+			max_cols = 4;
 
-		break;
+			break;
 
 		case FILLEDCURVES:
-		min_cols = 1;
-		max_cols = 3;
-		GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[1]; // Both curves use same y axis
-		break;
+			min_cols = 1;
+			max_cols = 3;
+			GlobalMembersDatafile.df_axis[2] = GlobalMembersDatafile.df_axis[1]; // Both curves use same y axis
+			break;
 
 		case IMPULSES: // 2 + possible variable color
 		case LINES:
 		case DOTS:
-		min_cols = 1;
-		max_cols = 3;
-		break;
+			min_cols = 1;
+			max_cols = 3;
+			break;
 
 		case LABELPOINTS:
-		/* 3 column data: X Y Label */
-		/* 4th column allows rgb variable */
-		min_cols = 3;
-		max_cols = 4;
-		GlobalMembersDatafile.expect_string(3);
-		break;
+			/* 3 column data: X Y Label */
+			/* 4th column allows rgb variable */
+			min_cols = 3;
+			max_cols = 4;
+			GlobalMembersDatafile.expect_string(3);
+			break;
 
 		case IMAGE:
-		min_cols = 3;
-		max_cols = 3;
-		break;
+			min_cols = 3;
+			max_cols = 3;
+			break;
 
 		case RGBIMAGE:
-		min_cols = 5;
+			min_cols = 5;
 			max_cols = 6;
 			break;
 
 		case RGBA_IMAGE:
 			min_cols = 6;
 			max_cols = 6;
-		break;
+			break;
 
-	///#ifdef EAM_OBJECTS
+			///#ifdef EAM_OBJECTS
 		case CIRCLES: // 3 + possible variable color
-		min_cols = 3;
-		max_cols = 4;
-		break;
-	///#endif
+			min_cols = 3;
+			max_cols = 4;
+			break;
+			///#endif
 
 		case POINTSTYLE:
 		case LINESPOINTS:
-		/* Allow 3rd column because of 'pointsize variable' */
-		/* Allow 4th column because of 'lc rgb variable' */
-		min_cols = 1;
-		max_cols = 4;
-		break;
+			/* Allow 3rd column because of 'pointsize variable' */
+			/* Allow 4th column because of 'lc rgb variable' */
+			min_cols = 1;
+			max_cols = 4;
+			break;
 
 		default:
-		min_cols = 1;
-		max_cols = 2;
-		break;
+			min_cols = 1;
+			max_cols = 2;
+			break;
 		}
 
 		if (current_plot.plot_smooth == PLOT_SMOOTH.SMOOTH_ACSPLINES)
 		{
-		max_cols = 3;
-		current_plot.z_axis = AXIS_INDEX.FIRST_Z_AXIS.getValue();
-		GlobalMembersDatafile.df_axis[2] = AXIS_INDEX.FIRST_Z_AXIS;
+			max_cols = 3;
+			current_plot.z_axis = AXIS_INDEX.FIRST_Z_AXIS.getValue();
+			GlobalMembersDatafile.df_axis[2] = AXIS_INDEX.FIRST_Z_AXIS;
 		}
 
 		if (GlobalMembersDatafile.df_no_use_specs > max_cols)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Too many using specs for this style");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Too many using specs for this style");
 
 		if (GlobalMembersDatafile.df_no_use_specs > 0 && GlobalMembersDatafile.df_no_use_specs < min_cols)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Not enough columns for this style");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Not enough columns for this style");
 
 		i = 0;
 
@@ -2267,15 +2269,15 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 
 		while ((j = GlobalMembersDatafile.df_readline(v, max_cols)) != DefineConstants.DF_EOF)
 		{
-		/* j <= max_cols */
+			/* j <= max_cols */
 
-		if (i >= current_plot.p_max)
-		{
-			/* overflow about to occur. Extend size of points[]
-			 * array. Double the size, and add 1000 points, to avoid
-			 * needlessly small steps. */
-			GlobalMembersPlot2d.cp_extend(current_plot, i + i + 1000);
-		}
+			if (i >= current_plot.p_max)
+			{
+				/* overflow about to occur. Extend size of points[]
+				 * array. Double the size, and add 1000 points, to avoid
+				 * needlessly small steps. */
+				GlobalMembersPlot2d.cp_extend(current_plot, i + i + 1000);
+			}
 
 			if (j > 0)
 			{
@@ -2284,8 +2286,8 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				variable_color_value = 0;
 				if (variable_color)
 				{
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//				static sbyte *errmsg = "Not enough columns for variable color";
+					//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+					//				static sbyte *errmsg = "Not enough columns for variable color";
 					switch (current_plot.plot_style)
 					{
 					case VECTOR:
@@ -2303,408 +2305,408 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 					}
 				}
 			}
-		switch (j)
-		{
-		default:
-		{
-			GlobalMembersDatafile.df_close();
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "internal error : df_readline returned %d : datafile line %d", j, GlobalMembersDatafile.df_line_number);
-		}
-
-		case DefineConstants.DF_MISSING:
-			/* Plot type specific handling of missing points goes here. */
-			if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+			switch (j)
 			{
-			current_plot.points[i].type = coord_type.UNDEFINED;
-			i++;
-			continue;
+			default:
+			{
+				GlobalMembersDatafile.df_close();
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "internal error : df_readline returned %d : datafile line %d", j, GlobalMembersDatafile.df_line_number);
 			}
 
-			/* Jun 2006 - Return to behavior of 3.7 and current docs:
-			 *            do not interrupt plotted line because of missing data
-			 */
-			GlobalMembersFit.a((stderr,"Missing datum %d\n", i));
-			continue;
+			case DefineConstants.DF_MISSING:
+				/* Plot type specific handling of missing points goes here. */
+				if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+				{
+					current_plot.points[i].type = coord_type.UNDEFINED;
+					i++;
+					continue;
+				}
 
-		case DefineConstants.DF_UNDEFINED:
-			/* NaN or bad result from extended using expression */
-			current_plot.points[i].type = coord_type.UNDEFINED;
-			i++;
-			continue;
+				/* Jun 2006 - Return to behavior of 3.7 and current docs:
+				 *            do not interrupt plotted line because of missing data
+				 */
+				GlobalMembersFit.a((stderr,"Missing datum %d\n", i));
+				continue;
 
-		case DefineConstants.DF_FIRST_BLANK:
-			/* The binary input routines generate DF_FIRST_BLANK at the end
-			 * of scan lines, so that the data may be used for the isometric
-			 * splots.  Rather than turning that off inside the binary
-			 * reading routine based upon the plot mode, DF_FIRST_BLANK is
-			 * ignored for certain plot types requiring 3D coordinates in
-			 * MODE_PLOT.
-			 */
+			case DefineConstants.DF_UNDEFINED:
+				/* NaN or bad result from extended using expression */
+				current_plot.points[i].type = coord_type.UNDEFINED;
+				i++;
+				continue;
+
+			case DefineConstants.DF_FIRST_BLANK:
+				/* The binary input routines generate DF_FIRST_BLANK at the end
+				 * of scan lines, so that the data may be used for the isometric
+				 * splots.  Rather than turning that off inside the binary
+				 * reading routine based upon the plot mode, DF_FIRST_BLANK is
+				 * ignored for certain plot types requiring 3D coordinates in
+				 * MODE_PLOT.
+				 */
 				if (current_plot.plot_style == PLOT_STYLE.IMAGE || current_plot.plot_style == PLOT_STYLE.RGBIMAGE || current_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
-			continue;
+					continue;
 
-			/* break in data, make next point undefined */
-			/* FIXME: We really should distinguish between a blank	*/
-			/*        line and an undefined value on a non-blank line.	*/
-			current_plot.points[i].type = coord_type.UNDEFINED;
-			i++;
-			continue;
+				/* break in data, make next point undefined */
+				/* FIXME: We really should distinguish between a blank	*/
+				/*        line and an undefined value on a non-blank line.	*/
+				current_plot.points[i].type = coord_type.UNDEFINED;
+				i++;
+				continue;
 
-		case DefineConstants.DF_SECOND_BLANK:
-			/* second blank line. We dont do anything
-			 * (we did everything when we got FIRST one)
-			 */
-			continue;
+			case DefineConstants.DF_SECOND_BLANK:
+				/* second blank line. We dont do anything
+				 * (we did everything when we got FIRST one)
+				 */
+				continue;
 
-		case DefineConstants.DF_FOUND_KEY_TITLE:
-			GlobalMembersDatafile.df_set_key_title(current_plot);
-			continue;
-		case DefineConstants.DF_KEY_TITLE_MISSING:
-			fprintf(stderr,"get_data: key title not found in requested column\n");
-			continue;
+			case DefineConstants.DF_FOUND_KEY_TITLE:
+				GlobalMembersDatafile.df_set_key_title(current_plot);
+				continue;
+			case DefineConstants.DF_KEY_TITLE_MISSING:
+				fprintf(stderr,"get_data: key title not found in requested column\n");
+				continue;
 
-		case 0: // not blank line, but df_readline couldn't parse it
-		{
-			GlobalMembersDatafile.df_close();
-			GlobalMembersBf_test.int_error(current_plot.token, "Bad data on line %d", GlobalMembersDatafile.df_line_number);
-		}
-
-		case 1:
-		{ // only one number
-			/* x is index, assign number to y */
-			v[1] = v[0];
-			v[0] = GlobalMembersDatafile.df_datum;
-			/* nobreak */
-		}
-
-		case 2:
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			H_ERR_BARS:
-			if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+			case 0: // not blank line, but df_readline couldn't parse it
 			{
-			if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
-			{
-				/* The code is a tangle, but we can get here with j = 1, 2, or 3 */
-				if (j == 1)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Not enough columns in using specification");
-				else if (j == 2)
-				{
-				 v[3] = v[0] + v[1];
-				v[2] = v[0] - v[1];
-				}
-				else
-				{
-				 v[3] = v[2];
-				v[2] = v[1];
-				}
+				GlobalMembersDatafile.df_close();
+				GlobalMembersBf_test.int_error(current_plot.token, "Bad data on line %d", GlobalMembersDatafile.df_line_number);
+			}
+
+			case 1:
+			{ // only one number
+				/* x is index, assign number to y */
 				v[1] = v[0];
 				v[0] = GlobalMembersDatafile.df_datum;
+				/* nobreak */
 			}
-			else if (j >= 2)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Too many columns in using specification");
-			else
-				v[2] = v[3] = v[1];
 
-			if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_TOWERS.getValue())
-			{
-				histogram_rightmost = current_plot.histogram_sequence + current_plot.histogram.start;
-				current_plot.histogram.end = histogram_rightmost;
-			}
-			else if (v[0] + current_plot.histogram.start > histogram_rightmost)
-			{
-				histogram_rightmost = v[0] + current_plot.histogram.start;
-				current_plot.histogram.end = histogram_rightmost;
-			}
-			/* Histogram boxwidths are always absolute */
-			if (boxwidth > 0)
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[2], v[3], 0.0);
-			else
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - 0.5, v[0] + 0.5, v[2], v[3], 0.0);
+			case 2:
+				//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+				H_ERR_BARS:
+					if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+					{
+						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
+						{
+							/* The code is a tangle, but we can get here with j = 1, 2, or 3 */
+							if (j == 1)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Not enough columns in using specification");
+							else if (j == 2)
+							{
+								v[3] = v[0] + v[1];
+								v[2] = v[0] - v[1];
+							}
+							else
+							{
+								v[3] = v[2];
+								v[2] = v[1];
+							}
+							v[1] = v[0];
+							v[0] = GlobalMembersDatafile.df_datum;
+						}
+						else if (j >= 2)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Too many columns in using specification");
+						else
+							v[2] = v[3] = v[1];
 
-			/* x, y */
-			/* ylow and yhigh are same as y */
+						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_TOWERS.getValue())
+						{
+							histogram_rightmost = current_plot.histogram_sequence + current_plot.histogram.start;
+							current_plot.histogram.end = histogram_rightmost;
+						}
+						else if (v[0] + current_plot.histogram.start > histogram_rightmost)
+						{
+							histogram_rightmost = v[0] + current_plot.histogram.start;
+							current_plot.histogram.end = histogram_rightmost;
+						}
+						/* Histogram boxwidths are always absolute */
+						if (boxwidth > 0)
+							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[2], v[3], 0.0);
+						else
+							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - 0.5, v[0] + 0.5, v[2], v[3], 0.0);
 
-			}
-			else if ((current_plot.plot_style == PLOT_STYLE.BOXES) && boxwidth > 0 && boxwidth_is_absolute)
-			{
-				/* calculate width now */
-				if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
-				{
-				double base = GlobalMembersAxis.axis_array[current_plot.x_axis].base;
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] * Math.pow(base, -boxwidth / 2.), v[0] * Math.pow(base, boxwidth / 2.), v[1], variable_color_value, 0.0);
-				}
-				else
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[1], variable_color_value, 0.0);
+						/* x, y */
+						/* ylow and yhigh are same as y */
 
-			}
-			else
-			{
-				if (current_plot.plot_style == PLOT_STYLE.CANDLESTICKS || current_plot.plot_style == PLOT_STYLE.FINANCEBARS)
-				{
-				GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 1 or 2 cols. Setting to points");
-				current_plot.plot_style = PLOT_STYLE.POINTSTYLE;
-				}
-				/* xlow and xhigh are same as x */
-				/* auto width if boxes, else ignored */
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], variable_color_value, -1.0);
-			}
+					}
+					else if ((current_plot.plot_style == PLOT_STYLE.BOXES) && boxwidth > 0 && boxwidth_is_absolute)
+					{
+						/* calculate width now */
+						if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
+						{
+							double base = GlobalMembersAxis.axis_array[current_plot.x_axis].base;
+							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] * Math.pow(base, -boxwidth / 2.), v[0] * Math.pow(base, boxwidth / 2.), v[1], variable_color_value, 0.0);
+						}
+						else
+							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[1], variable_color_value, 0.0);
+
+					}
+					else
+					{
+						if (current_plot.plot_style == PLOT_STYLE.CANDLESTICKS || current_plot.plot_style == PLOT_STYLE.FINANCEBARS)
+						{
+							GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 1 or 2 cols. Setting to points");
+							current_plot.plot_style = PLOT_STYLE.POINTSTYLE;
+						}
+						/* xlow and xhigh are same as x */
+						/* auto width if boxes, else ignored */
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], variable_color_value, -1.0);
+					}
 			break;
 
 
-		case 3:
-			/* x, y, ydelta OR x, y, xdelta OR x, y, width */
-			if (current_plot.plot_smooth == PLOT_SMOOTH.SMOOTH_ACSPLINES)
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
-			else
-			switch (current_plot.plot_style)
-			{
-
-			case HISTOGRAMS:
-				if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto H_ERR_BARS;
+			case 3:
+				/* x, y, ydelta OR x, y, xdelta OR x, y, width */
+				if (current_plot.plot_smooth == PLOT_SMOOTH.SMOOTH_ACSPLINES)
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
 				else
-				/* fall through */
-			default:
-				GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 3 cols. Setting to yerrorbars");
-				current_plot.plot_style = PLOT_STYLE.YERRORBARS;
-				/* fall through */
-
-			case FILLEDCURVES:
-				current_plot.filledcurves_options.closeto = filledcurves_opts_id.FILLEDCURVES_BETWEEN.getValue();
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[2], -1.0);
-				break;
-
-			case YERRORLINES:
-			case YERRORBARS:
-			case BOXERROR: // x, y, dy
-				/* auto width if boxes, else ignored */
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1] - v[2], v[1] + v[2], -1.0);
-				break;
-
-			case XERRORLINES:
-			case XERRORBARS:
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2], v[0] + v[2], v[1], v[1], 0.0);
-				break;
-
-			case BOXES:
-				/* calculate xmin and xmax here, so that logs are taken if if necessary */
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2] / 2, v[0] + v[2] / 2, v[1], variable_color_value, 0.0);
-				break;
-
-			case LABELPOINTS:
-				/* Load the coords just as we would have for a point plot */
-				GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], -1.0);
-				/* Allocate and fill in a text_label structure to match it */
-				GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points[i]), i, GlobalMembersDatafile.df_tokens[2], 0.0);
-				i++;
-				break;
-
-			case IMAGE: // x_center y_center color_value
-				GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
-				cp = (current_plot.points[i]);
-				{
-					coord_type c_type_tmp = cp.type;
-					do
+					switch (current_plot.plot_style)
 					{
-						if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
-							break;
-							if (!(v[2] > -DefineConstants.VERYLARGE && v[2] < DefineConstants.VERYLARGE))
+
+					case HISTOGRAMS:
+						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto H_ERR_BARS;
+						else
+							/* fall through */
+					default:
+						GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 3 cols. Setting to yerrorbars");
+						current_plot.plot_style = PLOT_STYLE.YERRORBARS;
+						/* fall through */
+
+					case FILLEDCURVES:
+						current_plot.filledcurves_options.closeto = filledcurves_opts_id.FILLEDCURVES_BETWEEN.getValue();
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[2], -1.0);
+						break;
+
+					case YERRORLINES:
+					case YERRORBARS:
+					case BOXERROR: // x, y, dy
+						/* auto width if boxes, else ignored */
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1] - v[2], v[1] + v[2], -1.0);
+						break;
+
+					case XERRORLINES:
+					case XERRORBARS:
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2], v[0] + v[2], v[1], v[1], 0.0);
+						break;
+
+					case BOXES:
+						/* calculate xmin and xmax here, so that logs are taken if if necessary */
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2] / 2, v[0] + v[2] / 2, v[1], variable_color_value, 0.0);
+						break;
+
+					case LABELPOINTS:
+						/* Load the coords just as we would have for a point plot */
+						GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], -1.0);
+						/* Allocate and fill in a text_label structure to match it */
+						GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points[i]), i, GlobalMembersDatafile.df_tokens[2], 0.0);
+						i++;
+						break;
+
+					case IMAGE: // x_center y_center color_value
+						GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
+						cp = (current_plot.points[i]);
+						{
+							coord_type c_type_tmp = cp.type;
+							do
 							{
-								c_type_tmp = coord_type.UNDEFINED;
-								cp.ylow = v[2];
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
-							{
-								if (v[2] < 0.0)
+								if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+									break;
+								if (!(v[2] > -DefineConstants.VERYLARGE && v[2] < DefineConstants.VERYLARGE))
 								{
 									c_type_tmp = coord_type.UNDEFINED;
 									cp.ylow = v[2];
 									break;
 								}
-								else if (v[2] == 0.0)
+								if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
 								{
-									cp.ylow = -DefineConstants.VERYLARGE;
-									c_type_tmp = coord_type.OUTRANGE;
-									()0;
-									break;
+									if (v[2] < 0.0)
+									{
+										c_type_tmp = coord_type.UNDEFINED;
+										cp.ylow = v[2];
+										break;
+									}
+									else if (v[2] == 0.0)
+									{
+										cp.ylow = -DefineConstants.VERYLARGE;
+										c_type_tmp = coord_type.OUTRANGE;
+										()0;
+										break;
+									}
+									else
+									{
+										cp.ylow = (Math.log(v[2]) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
+									}
 								}
 								else
-								{
-									cp.ylow = (Math.log(v[2]) / GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log_base);
-								}
-							}
-							else
-								cp.ylow = v[2];
+									cp.ylow = v[2];
 								if (current_plot.noautoscale)
 									break;
-									if (c_type_tmp != coord_type.INRANGE)
+								if (c_type_tmp != coord_type.INRANGE)
+									break;
+								if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+									break;
+								if (v[2] < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
+									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = v[2];
+								if (v[2] < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
+								{
+									if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = v[2];
+									else
+									{
+										c_type_tmp = coord_type.OUTRANGE;
+										()0;
 										break;
-										if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
-											break;
-											if (v[2] < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
-												GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = v[2];
-												if (v[2] < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = v[2];
-														else
-														{
-															c_type_tmp = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (v[2] > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
-													GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = v[2];
-													if (v[2] > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = v[2];
-															else
-															{
-																c_type_tmp = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
-				};
-				i++;
+									}
+								}
+								if (v[2] > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
+									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = v[2];
+								if (v[2] > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
+								{
+									if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = v[2];
+									else
+									{
+										c_type_tmp = coord_type.OUTRANGE;
+										()0;
+									}
+								}
+							} while (0);
+						};
+						i++;
+						break;
+
+					case POINTSTYLE: // x, y, variable point size or variable color
+					case LINESPOINTS:
+					case IMPULSES:
+					case LINES:
+					case DOTS:
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[2], v[2]);
+						break;
+
+						///#ifdef EAM_OBJECTS
+					case CIRCLES: // x, y, radius
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2], v[0] + v[2], v[1], variable_color_value, v[2]);
+						break;
+						///#endif
+					} //inner switch
+
 				break;
 
-			case POINTSTYLE: // x, y, variable point size or variable color
-			case LINESPOINTS:
-			case IMPULSES:
-			case LINES:
-			case DOTS:
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[2], v[2]);
+
+
+			case 4:
+				/* x, y, ylow, yhigh OR
+				 * x, y, xlow, xhigh OR
+				 * x, y, xdelta, ydelta OR
+				 * x, y, ydelta, width
+				 */
+
+				switch (current_plot.plot_style)
+				{
+				default:
+					GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 4 cols. Setting to yerrorbars");
+					current_plot.plot_style = PLOT_STYLE.YERRORBARS;
+					/* fall through */
+
+				case YERRORLINES:
+				case YERRORBARS:
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[2], v[3], -1.0);
+					break;
+
+				case BOXXYERROR: // x, y, dx, dy
+				case XYERRORLINES:
+				case XYERRORBARS:
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2], v[0] + v[2], v[1] - v[3], v[1] + v[3], 0.0);
+					break;
+
+
+				case BOXES:
+					/* x, y, xmin, xmax */
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[1], variable_color_value, 0.0);
+					break;
+
+				case XERRORLINES:
+				case XERRORBARS:
+					/* x, y, xmin, xmax */
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[1], v[1], 0.0);
+					break;
+
+				case BOXERROR:
+					if (boxwidth == -2)
+						/* x,y, ylow, yhigh --- width automatic */
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[2], v[3], -1.0);
+					else
+						/* x, y, dy, width */
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[3] / 2, v[0] + v[3] / 2, v[1] - v[2], v[1] + v[2], 0.0);
+					break;
+
+				case VECTOR:
+					/* x,y,dx,dy */
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0] + v[2], v[1], v[1] + v[3], variable_color_value);
+					break;
+
+				case POINTSTYLE: // x, y, variable point size and variable color
+				case LINESPOINTS:
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[3], v[2]);
+					break;
+
+				case LABELPOINTS:
+					/* Load the coords just as we would have for a point plot */
+					GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], -1.0);
+					/* Allocate and fill in a text_label structure to match it */
+					GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points[i]), i, GlobalMembersDatafile.df_tokens[2], v[3]);
+					i++;
+					break;
+
+				} //inner switch
+
 				break;
 
-	///#ifdef EAM_OBJECTS
-			case CIRCLES: // x, y, radius
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2], v[0] + v[2], v[1], variable_color_value, v[2]);
+
+			case 5:
+			{ // x, y, ylow, yhigh, width  or  x open low high close
+				switch (current_plot.plot_style)
+				{
+				default:
+					GlobalMembersUtil.int_warn(storetoken, "Unrecognized 5 column plot style; resetting to boxerrorbars");
+					current_plot.plot_style = PLOT_STYLE.BOXERROR;
+					/*fall through */
+
+				case BOXERROR: // x, y, ylow, yhigh, width
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[4] / 2, v[0] + v[4] / 2, v[2], v[3], 0.0);
+					break;
+
+				case FINANCEBARS: // x yopen ylow yhigh yclose
+				case CANDLESTICKS:
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[2], v[3], v[4]);
+					break;
+
+				case RGBIMAGE: // x_center y_center r_value g_value b_value (rgb)
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto images;
+
+				}
 				break;
-	///#endif
-			} //inner switch
-
-			break;
-
-
-
-		case 4:
-			/* x, y, ylow, yhigh OR
-			 * x, y, xlow, xhigh OR
-			 * x, y, xdelta, ydelta OR
-			 * x, y, ydelta, width
-			 */
-
-			switch (current_plot.plot_style)
-			{
-			default:
-			GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 4 cols. Setting to yerrorbars");
-			current_plot.plot_style = PLOT_STYLE.YERRORBARS;
-			/* fall through */
-
-			case YERRORLINES:
-			case YERRORBARS:
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[2], v[3], -1.0);
-			break;
-
-			case BOXXYERROR: // x, y, dx, dy
-			case XYERRORLINES:
-			case XYERRORBARS:
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[2], v[0] + v[2], v[1] - v[3], v[1] + v[3], 0.0);
-			break;
-
-
-			case BOXES:
-			/* x, y, xmin, xmax */
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[1], variable_color_value, 0.0);
-			break;
-
-			case XERRORLINES:
-			case XERRORBARS:
-			/* x, y, xmin, xmax */
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[1], v[1], 0.0);
-			break;
-
-			case BOXERROR:
-			if (boxwidth == -2)
-				/* x,y, ylow, yhigh --- width automatic */
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[2], v[3], -1.0);
-			else
-				/* x, y, dy, width */
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[3] / 2, v[0] + v[3] / 2, v[1] - v[2], v[1] + v[2], 0.0);
-			break;
-
-			case VECTOR:
-			/* x,y,dx,dy */
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0] + v[2], v[1], v[1] + v[3], variable_color_value);
-			break;
-
-			case POINTSTYLE: // x, y, variable point size and variable color
-			case LINESPOINTS:
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], v[3], v[2]);
-			break;
-
-			case LABELPOINTS:
-			/* Load the coords just as we would have for a point plot */
-			GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], -1.0);
-			/* Allocate and fill in a text_label structure to match it */
-			GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points[i]), i, GlobalMembersDatafile.df_tokens[2], v[3]);
-			i++;
-			break;
-
-			} //inner switch
-
-			break;
-
-
-		case 5:
-		{ // x, y, ylow, yhigh, width  or  x open low high close
-			switch (current_plot.plot_style)
-			{
-			default:
-				GlobalMembersUtil.int_warn(storetoken, "Unrecognized 5 column plot style; resetting to boxerrorbars");
-				current_plot.plot_style = PLOT_STYLE.BOXERROR;
-				/*fall through */
-
-			case BOXERROR: // x, y, ylow, yhigh, width
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - v[4] / 2, v[0] + v[4] / 2, v[2], v[3], 0.0);
-				break;
-
-			case FINANCEBARS: // x yopen ylow yhigh yclose
-			case CANDLESTICKS:
-				GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[2], v[3], v[4]);
-				break;
-
-			case RGBIMAGE: // x_center y_center r_value g_value b_value (rgb)
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto images;
-
 			}
-			break;
-		}
 
-		case 7:
-			/* same as six columns. Width ignored */
-			/* eh ? - fall through */
-		case 6:
-			/* x, y, xlow, xhigh, ylow, yhigh */
-			switch (current_plot.plot_style)
-			{
-			default:
-			GlobalMembersUtil.int_warn(storetoken, "This plot style not work with 6 cols. Setting to xyerrorbars");
-			current_plot.plot_style = PLOT_STYLE.XYERRORBARS;
-			/*fall through */
-			case XYERRORLINES:
-			case XYERRORBARS:
-			case BOXXYERROR:
-			GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[4], v[5], 0.0);
-			break;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-	images:
+			case 7:
+				/* same as six columns. Width ignored */
+				/* eh ? - fall through */
+			case 6:
+				/* x, y, xlow, xhigh, ylow, yhigh */
+				switch (current_plot.plot_style)
+				{
+				default:
+					GlobalMembersUtil.int_warn(storetoken, "This plot style not work with 6 cols. Setting to xyerrorbars");
+					current_plot.plot_style = PLOT_STYLE.XYERRORBARS;
+					/*fall through */
+				case XYERRORLINES:
+				case XYERRORBARS:
+				case BOXXYERROR:
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[4], v[5], 0.0);
+					break;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					images:
 				case RGBA_IMAGE: // x_cent y_cent red green blue alpha
 				case RGBIMAGE: // x_cent y_cent red green blue
 					GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
@@ -2718,9 +2720,9 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 					cp.ylow = v[5]; // Alpha channel
 					i++;
 					break;
-			}
+				}
 
-		} //switch
+			} //switch
 
 		} //while
 
@@ -2735,7 +2737,7 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		return i; // i==0 indicates an 'empty' file
 	}
 
-/* called by get_data for each point */
+	/* called by get_data for each point */
 	public static void store2d_point(curve_points current_plot, int i, double x, double y, double xlow, double xhigh, double ylow, double yhigh, double width)
 	{
 		coordinate cp = (current_plot.points[i]);
@@ -2745,78 +2747,78 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		/* div -- y is dummy variable 2 - copy value there */
 		if (GlobalMembersDatafile.ydata_func.at != null)
 		{
-		value val = new value();
+			value val = new value();
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], y, 0.0);
-		() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), y, 0.0);
-		GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
-		GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
-		y = GlobalMembersEval.undefined ? 0.0 : GlobalMembersEval.real(val);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], y, 0.0);
+			() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), y, 0.0);
+			GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
+			GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
+			y = GlobalMembersEval.undefined ? 0.0 : GlobalMembersEval.real(val);
 
-		/* EAM FIXME - filtering ylow and yhigh is nonsense for many plot styles */
+			/* EAM FIXME - filtering ylow and yhigh is nonsense for many plot styles */
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], ylow, 0.0);
-		() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), ylow, 0.0);
-		GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
-		GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
-		ylow = GlobalMembersEval.undefined ? 0 : GlobalMembersEval.real(val);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], ylow, 0.0);
+			() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), ylow, 0.0);
+			GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
+			GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
+			ylow = GlobalMembersEval.undefined ? 0 : GlobalMembersEval.real(val);
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], yhigh, 0.0);
-		() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), yhigh, 0.0);
-		GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
-		GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
-		yhigh = GlobalMembersEval.undefined ? 0 : GlobalMembersEval.real(val);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], yhigh, 0.0);
+			() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), yhigh, 0.0);
+			GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
+			GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
+			yhigh = GlobalMembersEval.undefined ? 0 : GlobalMembersEval.real(val);
 		}
 		dummy_type = cp.type = coord_type.INRANGE;
 
 		if (GlobalMembersGadgets.polar)
 		{
-		double newx;
-		double newy;
-		if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && y > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
-		{
-			cp.type = coord_type.OUTRANGE;
-		}
-		if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
-		{
-			/* we store internally as if plotting r(t)-rmin */
-			y -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
-		}
-		newx = y * Math.cos(x * GlobalMembersGadgets.ang2rad);
-		newy = y * Math.sin(x * GlobalMembersGadgets.ang2rad);
-		y = newy;
-		x = newx;
+			double newx;
+			double newy;
+			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && y > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+			{
+				cp.type = coord_type.OUTRANGE;
+			}
+			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+			{
+				/* we store internally as if plotting r(t)-rmin */
+				y -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
+			}
+			newx = y * Math.cos(x * GlobalMembersGadgets.ang2rad);
+			newy = y * Math.sin(x * GlobalMembersGadgets.ang2rad);
+			y = newy;
+			x = newx;
 
-		if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && yhigh > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
-		{
-			cp.type = coord_type.OUTRANGE;
-		}
-		if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
-		{
-			/* we store internally as if plotting r(t)-rmin */
-			yhigh -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
-		}
-		newx = yhigh * Math.cos(xhigh * GlobalMembersGadgets.ang2rad);
-		newy = yhigh * Math.sin(xhigh * GlobalMembersGadgets.ang2rad);
-		yhigh = newy;
-		xhigh = newx;
+			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && yhigh > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+			{
+				cp.type = coord_type.OUTRANGE;
+			}
+			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+			{
+				/* we store internally as if plotting r(t)-rmin */
+				yhigh -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
+			}
+			newx = yhigh * Math.cos(xhigh * GlobalMembersGadgets.ang2rad);
+			newy = yhigh * Math.sin(xhigh * GlobalMembersGadgets.ang2rad);
+			yhigh = newy;
+			xhigh = newx;
 
-		if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && ylow > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
-		{
-			cp.type = coord_type.OUTRANGE;
-		}
-		if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
-		{
-			/* we store internally as if plotting r(t)-rmin */
-			ylow -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
-		}
-		newx = ylow * Math.cos(xlow * GlobalMembersGadgets.ang2rad);
-		newy = ylow * Math.sin(xlow * GlobalMembersGadgets.ang2rad);
-		ylow = newy;
-		xlow = newx;
+			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && ylow > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+			{
+				cp.type = coord_type.OUTRANGE;
+			}
+			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+			{
+				/* we store internally as if plotting r(t)-rmin */
+				ylow -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
+			}
+			newx = ylow * Math.cos(xlow * GlobalMembersGadgets.ang2rad);
+			newy = ylow * Math.sin(xlow * GlobalMembersGadgets.ang2rad);
+			ylow = newy;
+			xlow = newx;
 		}
 		/* return immediately if x or y are undefined
 		 * we dont care if outrange for high/low.
@@ -2828,129 +2830,129 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		{
 			if (current_plot.x_axis == DefineConstants.NO_AXIS)
 				break;
-				if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
+			if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
+			{
+				cp.type = coord_type.UNDEFINED;
+				return;
+				break;
+			}
+			if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
+			{
+				if (x < 0.0)
 				{
 					cp.type = coord_type.UNDEFINED;
 					return;
 					break;
 				}
-				if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
+				else if (x == 0.0)
 				{
-					if (x < 0.0)
-					{
-						cp.type = coord_type.UNDEFINED;
-						return;
-						break;
-					}
-					else if (x == 0.0)
-					{
-						cp.x = -DefineConstants.VERYLARGE;
-						cp.type = coord_type.OUTRANGE;
-						()0;
-						break;
-					}
-					else
-					{
-						cp.x = (Math.log(x) / GlobalMembersAxis.axis_array[current_plot.x_axis].log_base);
-					}
+					cp.x = -DefineConstants.VERYLARGE;
+					cp.type = coord_type.OUTRANGE;
+					()0;
+					break;
 				}
 				else
-					cp.x = x;
-					if (current_plot.noautoscale)
-						break;
-						if (cp.type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.x_axis < 0)
-								break;
-								if (x < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = x;
-									if (x < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.x_axis].min = x;
-											else
-											{
-												cp.type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (x > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = x;
-										if (x > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.x_axis].max = x;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
+				{
+					cp.x = (Math.log(x) / GlobalMembersAxis.axis_array[current_plot.x_axis].log_base);
+				}
+			}
+			else
+				cp.x = x;
+			if (current_plot.noautoscale)
+				break;
+			if (cp.type != coord_type.INRANGE)
+				break;
+			if ((int)current_plot.x_axis < 0)
+				break;
+			if (x < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
+				GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = x;
+			if (x < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
+			{
+				if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].min = x;
+				else
+				{
+					cp.type = coord_type.OUTRANGE;
+					()0;
+					break;
+				}
+			}
+			if (x > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
+				GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = x;
+			if (x > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
+			{
+				if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].max = x;
+				else
+				{
+					cp.type = coord_type.OUTRANGE;
+					()0;
+				}
+			}
 		} while (0);
 		do
 		{
 			if (current_plot.y_axis == DefineConstants.NO_AXIS)
 				break;
-				if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
+			if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
+			{
+				cp.type = coord_type.UNDEFINED;
+				return;
+				break;
+			}
+			if (GlobalMembersAxis.axis_array[current_plot.y_axis].log)
+			{
+				if (y < 0.0)
 				{
 					cp.type = coord_type.UNDEFINED;
 					return;
 					break;
 				}
-				if (GlobalMembersAxis.axis_array[current_plot.y_axis].log)
+				else if (y == 0.0)
 				{
-					if (y < 0.0)
-					{
-						cp.type = coord_type.UNDEFINED;
-						return;
-						break;
-					}
-					else if (y == 0.0)
-					{
-						cp.y = -DefineConstants.VERYLARGE;
-						cp.type = coord_type.OUTRANGE;
-						()0;
-						break;
-					}
-					else
-					{
-						cp.y = (Math.log(y) / GlobalMembersAxis.axis_array[current_plot.y_axis].log_base);
-					}
+					cp.y = -DefineConstants.VERYLARGE;
+					cp.type = coord_type.OUTRANGE;
+					()0;
+					break;
 				}
 				else
-					cp.y = y;
-					if (current_plot.noautoscale)
-						break;
-						if (cp.type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.y_axis < 0)
-								break;
-								if (y < GlobalMembersAxis.axis_array[current_plot.y_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = y;
-									if (y < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.y_axis].min = y;
-											else
-											{
-												cp.type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (y > GlobalMembersAxis.axis_array[current_plot.y_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = y;
-										if (y > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.y_axis].max = y;
-												else
-												{
-													cp.type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
+				{
+					cp.y = (Math.log(y) / GlobalMembersAxis.axis_array[current_plot.y_axis].log_base);
+				}
+			}
+			else
+				cp.y = y;
+			if (current_plot.noautoscale)
+				break;
+			if (cp.type != coord_type.INRANGE)
+				break;
+			if ((int)current_plot.y_axis < 0)
+				break;
+			if (y < GlobalMembersAxis.axis_array[current_plot.y_axis].data_min)
+				GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = y;
+			if (y < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
+			{
+				if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					GlobalMembersAxis.axis_array[current_plot.y_axis].min = y;
+				else
+				{
+					cp.type = coord_type.OUTRANGE;
+					()0;
+					break;
+				}
+			}
+			if (y > GlobalMembersAxis.axis_array[current_plot.y_axis].data_max)
+				GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = y;
+			if (y > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
+			{
+				if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					GlobalMembersAxis.axis_array[current_plot.y_axis].max = y;
+				else
+				{
+					cp.type = coord_type.OUTRANGE;
+					()0;
+				}
+			}
 		} while (0);
 
 		switch (current_plot.plot_style)
@@ -2964,19 +2966,19 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		case STEPS:
 		case FSTEPS:
 		case HISTEPS:
-		cp.xlow = xlow;
-		cp.xhigh = xhigh;
-		cp.ylow = ylow;
-		cp.yhigh = yhigh;
-		break;
+			cp.xlow = xlow;
+			cp.xhigh = xhigh;
+			cp.ylow = ylow;
+			cp.yhigh = yhigh;
+			break;
 		case BOXES: // auto-scale to xlow xhigh
 		case CIRCLES:
-		cp.ylow = y;
-		cp.yhigh = yhigh; // really variable_color_data
-		do
-		{
-			if (current_plot.x_axis == DefineConstants.NO_AXIS)
-				break;
+			cp.ylow = y;
+			cp.yhigh = yhigh; // really variable_color_data
+			do
+			{
+				if (current_plot.x_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3005,42 +3007,42 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.xlow = xlow;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.x_axis < 0)
+					break;
+				if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xlow;
+				if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xlow;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.x_axis < 0)
-								break;
-								if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xlow;
-									if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.x_axis].min = xlow;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xlow;
-										if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.x_axis].max = xlow;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
-		do
-		{
-			if (current_plot.x_axis == DefineConstants.NO_AXIS)
-				break;
+					}
+				}
+				if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xlow;
+				if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xlow;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
+			do
+			{
+				if (current_plot.x_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3069,44 +3071,44 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.xhigh = xhigh;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.x_axis < 0)
+					break;
+				if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xhigh;
+				if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xhigh;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.x_axis < 0)
-								break;
-								if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xhigh;
-									if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.x_axis].min = xhigh;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xhigh;
-										if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.x_axis].max = xhigh;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
-		break;
+					}
+				}
+				if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xhigh;
+				if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xhigh;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
+			break;
 		default: // auto-scale to xlow xhigh ylow yhigh
-		do
-		{
-			if (current_plot.x_axis == DefineConstants.NO_AXIS)
-				break;
+			do
+			{
+				if (current_plot.x_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3135,42 +3137,42 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.xlow = xlow;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.x_axis < 0)
+					break;
+				if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xlow;
+				if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xlow;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.x_axis < 0)
-								break;
-								if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xlow;
-									if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.x_axis].min = xlow;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xlow;
-										if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.x_axis].max = xlow;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
-		do
-		{
-			if (current_plot.x_axis == DefineConstants.NO_AXIS)
-				break;
+					}
+				}
+				if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xlow;
+				if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xlow;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
+			do
+			{
+				if (current_plot.x_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3199,42 +3201,42 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.xhigh = xhigh;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.x_axis < 0)
+					break;
+				if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xhigh;
+				if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xhigh;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.x_axis < 0)
-								break;
-								if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xhigh;
-									if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.x_axis].min = xhigh;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xhigh;
-										if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.x_axis].max = xhigh;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
-		do
-		{
-			if (current_plot.y_axis == DefineConstants.NO_AXIS)
-				break;
+					}
+				}
+				if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xhigh;
+				if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xhigh;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
+			do
+			{
+				if (current_plot.y_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(ylow > -DefineConstants.VERYLARGE && ylow < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3263,42 +3265,42 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.ylow = ylow;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.y_axis < 0)
+					break;
+				if (ylow < GlobalMembersAxis.axis_array[current_plot.y_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = ylow;
+				if (ylow < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.y_axis].min = ylow;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.y_axis < 0)
-								break;
-								if (ylow < GlobalMembersAxis.axis_array[current_plot.y_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = ylow;
-									if (ylow < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.y_axis].min = ylow;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (ylow > GlobalMembersAxis.axis_array[current_plot.y_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = ylow;
-										if (ylow > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.y_axis].max = ylow;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
-		do
-		{
-			if (current_plot.y_axis == DefineConstants.NO_AXIS)
-				break;
+					}
+				}
+				if (ylow > GlobalMembersAxis.axis_array[current_plot.y_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = ylow;
+				if (ylow > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.y_axis].max = ylow;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
+			do
+			{
+				if (current_plot.y_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(yhigh > -DefineConstants.VERYLARGE && yhigh < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3327,48 +3329,48 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.yhigh = yhigh;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.y_axis < 0)
+					break;
+				if (yhigh < GlobalMembersAxis.axis_array[current_plot.y_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = yhigh;
+				if (yhigh < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.y_axis].min = yhigh;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.y_axis < 0)
-								break;
-								if (yhigh < GlobalMembersAxis.axis_array[current_plot.y_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = yhigh;
-									if (yhigh < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.y_axis].min = yhigh;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (yhigh > GlobalMembersAxis.axis_array[current_plot.y_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = yhigh;
-										if (yhigh > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.y_axis].max = yhigh;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
-		break;
+					}
+				}
+				if (yhigh > GlobalMembersAxis.axis_array[current_plot.y_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = yhigh;
+				if (yhigh > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.y_axis].max = yhigh;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
+			break;
 		}
 
 		/* HBB 20010214: if z is not used for some actual value, just
 		 * store 'width' to that axis and be done with it */
 		if ((int)current_plot.z_axis != DefineConstants.NO_AXIS)
-		do
-		{
-			if (current_plot.z_axis == DefineConstants.NO_AXIS)
-				break;
+			do
+			{
+				if (current_plot.z_axis == DefineConstants.NO_AXIS)
+					break;
 				if (!(width > -DefineConstants.VERYLARGE && width < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3397,47 +3399,47 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.z = width;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if ((int)current_plot.z_axis < 0)
+					break;
+				if (width < GlobalMembersAxis.axis_array[current_plot.z_axis].data_min)
+					GlobalMembersAxis.axis_array[current_plot.z_axis].data_min = width;
+				if (width < GlobalMembersAxis.axis_array[current_plot.z_axis].min)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[current_plot.z_axis].min = width;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if ((int)current_plot.z_axis < 0)
-								break;
-								if (width < GlobalMembersAxis.axis_array[current_plot.z_axis].data_min)
-									GlobalMembersAxis.axis_array[current_plot.z_axis].data_min = width;
-									if (width < GlobalMembersAxis.axis_array[current_plot.z_axis].min)
-									{
-										if (GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[current_plot.z_axis].min = width;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (width > GlobalMembersAxis.axis_array[current_plot.z_axis].data_max)
-										GlobalMembersAxis.axis_array[current_plot.z_axis].data_max = width;
-										if (width > GlobalMembersAxis.axis_array[current_plot.z_axis].max)
-										{
-											if (GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[current_plot.z_axis].max = width;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
+					}
+				}
+				if (width > GlobalMembersAxis.axis_array[current_plot.z_axis].data_max)
+					GlobalMembersAxis.axis_array[current_plot.z_axis].data_max = width;
+				if (width > GlobalMembersAxis.axis_array[current_plot.z_axis].max)
+				{
+					if (GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[current_plot.z_axis].max = width;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
 		else
-		cp.z = width;
+			cp.z = width;
 
 		/* If we have variable color corresponding to a z-axis value, use it to autoscale */
 		if (current_plot.lp_properties.pm3d_color.type == DefineConstants.TC_Z)
-		do
-		{
-			if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
-				break;
+			do
+			{
+				if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+					break;
 				if (!(cp.z > -DefineConstants.VERYLARGE && cp.z < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
@@ -3466,51 +3468,51 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				}
 				else
 					cp.z = cp.z;
-					if (current_plot.noautoscale)
+				if (current_plot.noautoscale)
+					break;
+				if (dummy_type != coord_type.INRANGE)
+					break;
+				if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
+					break;
+				if (cp.z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = cp.z;
+				if (cp.z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
+				{
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = cp.z;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
 						break;
-						if (dummy_type != coord_type.INRANGE)
-							break;
-							if (AXIS_INDEX.COLOR_AXIS.getValue() < 0)
-								break;
-								if (cp.z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min)
-									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = cp.z;
-									if (cp.z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
-									{
-										if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-											GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = cp.z;
-											else
-											{
-												dummy_type = coord_type.OUTRANGE;
-												()0;
-												break;
-											}
-									}
-									if (cp.z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
-										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = cp.z;
-										if (cp.z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
-										{
-											if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-												GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = cp.z;
-												else
-												{
-													dummy_type = coord_type.OUTRANGE;
-													()0;
-												}
-										}
-		} while (0);
+					}
+				}
+				if (cp.z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = cp.z;
+				if (cp.z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
+				{
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = cp.z;
+					else
+					{
+						dummy_type = coord_type.OUTRANGE;
+						()0;
+					}
+				}
+			} while (0);
 
 	} // store2d_point
 
-/*
- * This parses the plot command after any range specifications. To support
- * autoscaling on the x axis, we want any data files to define the x range,
- * then to plot any functions using that range. We thus parse the input
- * twice, once to pick up the data files, and again to pick up the functions.
- * Definitions are processed twice, but that won't hurt.
- * div - okay, it doesn't hurt, but every time an option as added for
- * datafiles, code to parse it has to be added here. Change so that
- * we store starting-token in the plot structure.
- */
+	/*
+	 * This parses the plot command after any range specifications. To support
+	 * autoscaling on the x axis, we want any data files to define the x range,
+	 * then to plot any functions using that range. We thus parse the input
+	 * twice, once to pick up the data files, and again to pick up the functions.
+	 * Definitions are processed twice, but that won't hurt.
+	 * div - okay, it doesn't hurt, but every time an option as added for
+	 * datafiles, code to parse it has to be added here. Change so that
+	 * we store starting-token in the plot structure.
+	 */
 	public static void eval_plots()
 	{
 		int i;
@@ -3535,8 +3537,8 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		int newhist_color = 0;
 		int newhist_pattern = DefineConstants.LT_UNDEFINED;
 		histogram_rightmost = 0.0;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: free_histlist(&histogram_opts);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: free_histlist(&histogram_opts);
 		GlobalMembersGraphics.free_histlist(new histogram_style(GlobalMembersGadgets.histogram_opts));
 		GlobalMembersGraphics.init_histogram(DefineConstants.NULL, DefineConstants.NULL);
 
@@ -3551,7 +3553,7 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		 * order to be able to refresh/zoom them without re-reading all the data.
 		 */
 		if (first_plot != null)
-		GlobalMembersPlot2d.cp_free(first_plot);
+			GlobalMembersPlot2d.cp_free(first_plot);
 		first_plot = DefineConstants.NULL;
 
 		tp_ptr = &(first_plot);
@@ -3573,774 +3575,774 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		GlobalMembersParse.check_for_iteration();
 		while (true)
 		{
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "function to plot expected");
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "function to plot expected");
 
-		this_plot = DefineConstants.NULL;
-		if (!in_parametric && !was_definition)
-			start_token = GlobalMembersCommand.c_token;
+			this_plot = DefineConstants.NULL;
+			if (!in_parametric && !was_definition)
+				start_token = GlobalMembersCommand.c_token;
 
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "newhist$ogram") != 0)
-		{
-			lp_style_type lp = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
-			fill_style_type fs = new fill_style_type();
-			int previous_token;
-			GlobalMembersCommand.c_token++;
-			histogram_sequence = -1;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(histogram_title);
-			histogram_title = DefineConstants.NULL;
-
-			if (histogram_rightmost > 0)
-			newhist_start = histogram_rightmost + 2;
-
-			lp.l_type = line_num;
-			fs.fillpattern = DefineConstants.LT_UNDEFINED;
-
-			do
+			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "newhist$ogram") != 0)
 			{
-			previous_token = GlobalMembersCommand.c_token;
-
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0)
-			{
-				GlobalMembersCommand.c_token++;
-				newhist_start = GlobalMembersParse.real_expression();
-			}
-
-			/* Store title in temporary variable and then copy into the */
-			/* new histogram structure when it is allocated.            */
-			if (histogram_title == null && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-				histogram_title = GlobalMembersUtil.try_to_get_string();
-
-			/* Allow explicit starting color or pattern for this histogram */
-			GlobalMembersMisc.lp_parse(lp, false, false);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_fillstyle(&fs, FS_SOLID, 100, fs.fillpattern, default_fillstyle.border_color);
-			GlobalMembersMisc.parse_fillstyle(fs, t_fillstyle.FS_SOLID, 100, fs.fillpattern, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
-
-			} while (GlobalMembersCommand.c_token != previous_token);
-
-			newhist_color = lp.l_type;
-			newhist_pattern = fs.fillpattern;
-		}
-		else
-
-		if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
-		{
-			GlobalMembersCommand.define();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			{
-			was_definition = true;
-			continue;
-			}
-
-		}
-		else
-		{
-			int specs = 0;
-
-			/* for datafile plot, record datafile spec for title */
-			String name_str;
-
-			boolean duplication = false;
-			boolean set_smooth = false;
-			boolean set_axes = false;
-			boolean set_title = false;
-			boolean set_with = false;
-			boolean set_lpstyle = false;
-			boolean set_fillstyle = false;
-			boolean set_labelstyle = false;
-
-			plot_num++;
-
-			was_definition = false;
-			GlobalMembersCommand.dummy_func = plot_func;
-			/* should this be saved in "this_plot"? */
-			name_str = GlobalMembersParse.string_or_express(DefineConstants.NULL);
-			GlobalMembersCommand.dummy_func = DefineConstants.NULL;
-
-			if (name_str != null) // data file to plot
-			{
-			if (GlobalMembersGadgets.parametric && in_parametric)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "previous parametric function not fully specified");
-
-			if (tp_ptr != null)
-				this_plot = tp_ptr;
-			else // no memory malloc()'d there yet
-			{
-				this_plot = GlobalMembersPlot2d.cp_alloc(DefineConstants.MIN_CRV_POINTS);
-				tp_ptr = this_plot;
-			}
-			this_plot.plot_type = PLOT_TYPE.DATA;
-			this_plot.plot_style = GlobalMembersGadgets.data_style;
-			this_plot.plot_smooth = PLOT_SMOOTH.SMOOTH_NONE;
-			this_plot.filledcurves_options.opt_given = 0;
-			/* default no palette */
-			this_plot.lp_properties.use_palette = false;
-
-			/* up to MAXDATACOLS cols */
-			GlobalMembersDatafile.df_set_plot_mode(MODE_PLOT_TYPE.MODE_PLOT); // Needed for binary datafiles
-			specs = GlobalMembersDatafile.df_open(name_str, DefineConstants.MAXDATACOLS, this_plot);
-
-			/* include modifiers in default title */
-			this_plot.token = end_token = GlobalMembersCommand.c_token - 1;
-
-			}
-			else
-			{
-
-			/* function to plot */
-
-			some_functions = 1;
-			if (GlobalMembersGadgets.parametric) // working on x parametric function
-				in_parametric = !in_parametric;
-			if (tp_ptr != null)
-			{
-				this_plot = tp_ptr;
-				GlobalMembersPlot2d.cp_extend(this_plot, GlobalMembersGadgets.samples_1 + 1);
-			} // no memory malloc()'d there yet
-			else
-			{
-				this_plot = GlobalMembersPlot2d.cp_alloc(GlobalMembersGadgets.samples_1 + 1);
-				tp_ptr = this_plot;
-			}
-			this_plot.plot_type = PLOT_TYPE.FUNC;
-			this_plot.plot_style = GlobalMembersGadgets.func_style;
-			this_plot.filledcurves_options.opt_given = 0;
-			/* default no palette */
-			this_plot.lp_properties.use_palette = false;
-			end_token = GlobalMembersCommand.c_token - 1;
-			} // end of IS THIS A FILE OR A FUNC block
-
-			/* axis defaults */
-			GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
-			GlobalMembersAxis.y_axis = AXIS_INDEX.FIRST_Y_AXIS;
-
-			/* pm 25.11.2001 allow any order of options */
-			while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			{
-
-			/*  deal with smooth */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$mooth") != 0)
-			{
-				int found_token;
-
-				if (set_smooth)
-				{
-				duplication = true;
-				break;
-				}
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: found_token = lookup_table(plot_smooth_tbl, ++c_token);
-				found_token = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.plot_smooth_tbl), ++GlobalMembersCommand.c_token);
-
-				switch (found_token)
-				{
-				case SMOOTH_ACSPLINES:
-				case SMOOTH_BEZIER:
-				case SMOOTH_CSPLINES:
-				case SMOOTH_SBEZIER:
-				case SMOOTH_UNIQUE:
-				case SMOOTH_FREQUENCY:
-				case SMOOTH_CUMULATIVE:
-				case SMOOTH_KDENSITY:
-				this_plot.plot_smooth = found_token;
-				break;
-				case SMOOTH_NONE:
-				default:
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'unique', 'frequency', 'cumulative', 'kdensity', 'acsplines', 'csplines', 'bezier' or 'sbezier'");
-				break;
-				}
-				this_plot.plot_style = PLOT_STYLE.LINES;
-				GlobalMembersCommand.c_token++; // skip format
-				set_smooth = true;
-				continue;
-			}
-
-			/* look for axes/axis */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$es") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$is") != 0)
-			{
-				if (set_axes)
-				{
-				duplication = true;
-				break;
-				}
-				if (GlobalMembersGadgets.parametric && in_parametric)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "previous parametric function not fully specified");
-
-				GlobalMembersCommand.c_token++;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch(lookup_table(&plot_axes_tbl[0],c_token))
-				switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.plot_axes_tbl[0]), GlobalMembersCommand.c_token))
-				{
-				case AXES_X1Y1:
-				GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
-				GlobalMembersAxis.y_axis = AXIS_INDEX.FIRST_Y_AXIS;
-				++GlobalMembersCommand.c_token;
-				break;
-				case AXES_X2Y2:
-				GlobalMembersAxis.x_axis = AXIS_INDEX.SECOND_X_AXIS;
-				GlobalMembersAxis.y_axis = AXIS_INDEX.SECOND_Y_AXIS;
-				++GlobalMembersCommand.c_token;
-				break;
-				case AXES_X1Y2:
-				GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
-				GlobalMembersAxis.y_axis = AXIS_INDEX.SECOND_Y_AXIS;
-				++GlobalMembersCommand.c_token;
-				break;
-				case AXES_X2Y1:
-				GlobalMembersAxis.x_axis = AXIS_INDEX.SECOND_X_AXIS;
-				GlobalMembersAxis.y_axis = AXIS_INDEX.FIRST_Y_AXIS;
-				++GlobalMembersCommand.c_token;
-				break;
-				case AXES_NONE:
-				default:
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "axes must be x1y1, x1y2, x2y1 or x2y2");
-				break;
-				}
-				set_axes = true;
-				continue;
-			}
-
-			/* deal with title */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$itle") != 0)
-			{
-				if (set_title)
-				{
-				duplication = true;
-				break;
-				}
-				this_plot.title_no_enhanced = !key.enhanced;
-				/* title can be enhanced if not explicitly disabled */
-				if (GlobalMembersGadgets.parametric)
-				{
-				if (in_parametric)
-					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"title\" allowed only after parametric function fully specified");
-				else if (!xtitle.equals(DefineConstants.NULL))
-					xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0'); // Remove default title .
-				}
-				GlobalMembersCommand.c_token++;
-
-				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "col$umnheader") != 0)
-				{
-				GlobalMembersDatafile.df_set_key_title_columnhead(this_plot.plot_type);
-				}
-				else
-
-	///#ifdef BACKWARDS_COMPATIBLE
-	// /* Annoying backwards-compatibility hack - deprecate! */
-	//		    if (isanumber(c_token)) {
-	//			c_token--;
-	//			df_set_key_title_columnhead(this_plot->plot_type);
-	//		    } else
-	///#endif
-
-				if (!(this_plot.title = GlobalMembersUtil.try_to_get_string()))
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting \"title\" for plot");
-				set_title = true;
-				continue;
-			}
-
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "not$itle") != 0)
-			{
-				if (set_title)
-				{
-				duplication = true;
-				break;
-				}
-				GlobalMembersCommand.c_token++;
-				if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
-				GlobalMembersUtil.try_to_get_string(); // ignore optionally given title string
-				this_plot.title_is_suppressed = true;
-				if (!xtitle.equals(DefineConstants.NULL))
-				xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
-				set_title = true;
-				continue;
-			}
-
-			/* deal with style */
-			if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "w$ith") != 0)
-			{
-				if (set_with)
-				{
-				duplication = true;
-				break;
-				}
-				if (GlobalMembersGadgets.parametric && in_parametric)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"with\" allowed only after parametric function fully specified");
-				this_plot.plot_style = GlobalMembersMisc.get_style();
-				if (this_plot.plot_style == PLOT_STYLE.FILLEDCURVES)
-				{
-				/* read a possible option for 'with filledcurves' */
-				GlobalMembersMisc.get_filledcurves_style_options(this_plot.filledcurves_options);
-				}
-				if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
-				GlobalMembersMisc.get_image_options(this_plot.image_properties);
-
-				if ((this_plot.plot_type == PLOT_TYPE.FUNC) && ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_ERRORBAR) || (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)))
-				{
-					GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "This plot style is only for datafiles, reverting to \"points\"");
-					this_plot.plot_style = PLOT_STYLE.POINTSTYLE;
-				}
-				set_with = true;
-				continue;
-			}
-
-			/* Labels can have font and text property info as plot options */
-			/* In any case we must allocate one instance of the text style */
-			/* that all labels in the plot will share.                     */
-			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			{
-				int stored_token = GlobalMembersCommand.c_token;
-
-				if (this_plot.labels == DefineConstants.NULL)
-				{
-				this_plot.labels = GlobalMembersSet.new_text_label(-1);
-				this_plot.labels.pos = VERT_JUSTIFY.JUST_CENTRE;
-				this_plot.labels.layer = DefineConstants.LAYER_PLOTLABELS;
-				}
-				GlobalMembersSet.parse_label_options(this_plot.labels);
-				if (stored_token != GlobalMembersCommand.c_token)
-				{
-				if (set_labelstyle)
-				{
-					duplication = true;
-					break;
-				}
-				else
-				{
-					set_labelstyle = true;
-					continue;
-				}
-				}
-			}
-
-			/* pick up line/point specs and other style-specific keywords
-			 * - point spec allowed if style uses points, ie style&2 != 0
-			 * - keywords for lt and pt are optional
-			 */
-			if (this_plot.plot_style == PLOT_STYLE.CANDLESTICKS)
-			{
-				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "whisker$bars") != 0)
-				{
-				this_plot.arrow_properties.head = e_arrow_head.BOTH_HEADS;
-				GlobalMembersCommand.c_token++;
-				if (GlobalMembersUtil.isanumber(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.INTGR || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.CMPLX)
-					this_plot.arrow_properties.head_length = GlobalMembersParse.real_expression();
-				}
-			}
-
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-				int stored_token = GlobalMembersCommand.c_token;
-
-				if (!set_lpstyle)
-				{
-				GlobalMembersGadgets.default_arrow_style((this_plot.arrow_properties));
-				if (GlobalMembersGadgets.prefer_line_styles)
-					GlobalMembersTerm.lp_use_properties((this_plot.arrow_properties.lp_properties), line_num + 1);
-				else
-					this_plot.arrow_properties.lp_properties.l_type = line_num;
-				}
-
-				GlobalMembersMisc.arrow_parse((this_plot.arrow_properties), true);
-				if (stored_token != GlobalMembersCommand.c_token)
-				{
-				if (set_lpstyle)
-				{
-					duplication = true;
-					break;
-				}
-				else
-				{
-					set_lpstyle = true;
-					continue;
-				}
-				}
-			}
-			else
-			{
-				int stored_token = GlobalMembersCommand.c_token;
 				lp_style_type lp = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
+				fill_style_type fs = new fill_style_type();
+				int previous_token;
+				GlobalMembersCommand.c_token++;
+				histogram_sequence = -1;
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(histogram_title);
+				histogram_title = DefineConstants.NULL;
+
+				if (histogram_rightmost > 0)
+					newhist_start = histogram_rightmost + 2;
 
 				lp.l_type = line_num;
-				lp.p_type = point_num;
+				fs.fillpattern = DefineConstants.LT_UNDEFINED;
 
-				/* user may prefer explicit line styles */
-				if (GlobalMembersGadgets.prefer_line_styles)
-				GlobalMembersTerm.lp_use_properties(lp, line_num + 1);
-
-				GlobalMembersMisc.lp_parse(lp, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
-				if (stored_token != GlobalMembersCommand.c_token)
+				do
 				{
-				if (set_lpstyle)
-				{
-					duplication = true;
-					break;
-				}
-				else
-				{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_plot->lp_properties = lp;
-					this_plot.lp_properties.copyFrom(lp);
-					set_lpstyle = true;
-					continue;
-				}
-				}
-			}
+					previous_token = GlobalMembersCommand.c_token;
 
-			/* Some plots have a fill style as well */
-			if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_FILL != 0)
-			{
-				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "fs") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fill$style") != 0)
-				{
-				int stored_token = GlobalMembersCommand.c_token;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_fillstyle(&this_plot->fill_properties, default_fillstyle.fillstyle, default_fillstyle.filldensity, pattern_num, default_fillstyle.border_color);
-				GlobalMembersMisc.parse_fillstyle(this_plot.fill_properties, GlobalMembersGadgets.default_fillstyle.fillstyle, GlobalMembersGadgets.default_fillstyle.filldensity, pattern_num, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
-				if (this_plot.plot_style == PLOT_STYLE.FILLEDCURVES && this_plot.fill_properties.fillstyle == t_fillstyle.FS_EMPTY.getValue())
-					this_plot.fill_properties.fillstyle = t_fillstyle.FS_SOLID.getValue();
-				set_fillstyle = true;
-				if (stored_token != GlobalMembersCommand.c_token)
-					continue;
-				}
-			}
-
-			break; // unknown option
-
-			} // while (!END_OF_COMMAND)
-
-			if (duplication)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "duplicated or contradicting arguments in plot options");
-
-			/* set default values for title if this has not been specified */
-			this_plot.title_is_filename = false;
-			if (!set_title)
-			{
-			this_plot.title_no_enhanced = true; // filename or function cannot be enhanced
-			if (key.auto_titles == keytitle_type.FILENAME_KEYTITLES)
-			{
-				GlobalMembersUtil.m_capture((this_plot.title), start_token, end_token);
-				if (in_parametric)
-				xtitle = this_plot.title;
-				this_plot.title_is_filename = true;
-			}
-			else if (!xtitle.equals(DefineConstants.NULL))
-				xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
-			}
-
-			/* Vectors will be drawn using linetype from arrow style, so we
-			 * copy this to overall plot linetype so that the key sample matches */
-			if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			{
-			if (!set_lpstyle)
-			{
-				if (GlobalMembersGadgets.prefer_line_styles)
-				GlobalMembersTerm.lp_use_properties((this_plot.arrow_properties.lp_properties), line_num + 1);
-				else
-				this_plot.arrow_properties.lp_properties.l_type = line_num;
-				GlobalMembersMisc.arrow_parse(this_plot.arrow_properties, true);
-			}
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: this_plot->lp_properties = this_plot->arrow_properties.lp_properties;
-			this_plot.lp_properties.copyFrom(this_plot.arrow_properties.lp_properties);
-			set_lpstyle = true;
-			}
-			/* No line/point style given. As lp_parse also supplies
-			 * the defaults for linewidth and pointsize, call it now
-			 * to define them. */
-			if (!set_lpstyle)
-			{
-			this_plot.lp_properties.l_type = line_num;
-			this_plot.lp_properties.l_width = 1.0;
-			this_plot.lp_properties.p_type = point_num;
-			this_plot.lp_properties.p_size = GlobalMembersGadgets.pointsize;
-			this_plot.lp_properties.use_palette = false;
-
-			/* user may prefer explicit line styles */
-			if (GlobalMembersGadgets.prefer_line_styles)
-				GlobalMembersTerm.lp_use_properties(this_plot.lp_properties, line_num + 1);
-
-			GlobalMembersMisc.lp_parse(this_plot.lp_properties, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
-
-	///#ifdef BACKWARDS_COMPATIBLE
-	// /* allow old-style syntax - ignore case lt 3 4 for example */
-	//		if (!END_OF_COMMAND && isanumber(c_token)) {
-	//		    this_plot->lp_properties.l_type =
-	//			this_plot->lp_properties.p_type = int_expression() - 1;
-	//		    if (isanumber(c_token))
-	//			this_plot->lp_properties.p_type = int_expression() - 1;
-	//		}
-	///#endif // BACKWARDS_COMPATIBLE
-
-			}
-
-			/* Some low-level routines expect to find the pointflag attribute */
-			/* in lp_properties (they don't have access to the full header.   */
-			if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
-			this_plot.lp_properties.pointflag = true;
-
-			/* Rule out incompatible line/point/style options */
-			if (this_plot.plot_type == PLOT_TYPE.FUNC)
-			{
-			if ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT) && (this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE))
-				this_plot.lp_properties.p_size = 1;
-			}
-
-	///#if (0) // FIXME:  restore this after fixing initialization problems with df_matrix
-	//	    if (df_matrix) {
-	//		if (!(this_plot->plot_style == IMAGE || this_plot->plot_style == RGBIMAGE
-	//	              || this_plot->plot_style == RGBA_IMAGE || this_plot->plot_style == LINES
-	//		      || this_plot->plot_style == POINTSTYLE))
-	//		int_error(NO_CARET, "this 2D plot style cannot handle matrix data");
-	//	    }
-	///#endif
-
-			/* Similar argument for check that all fill styles were set */
-			if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_FILL != 0)
-			{
-			if (!set_fillstyle)
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: parse_fillstyle(&this_plot->fill_properties, default_fillstyle.fillstyle, default_fillstyle.filldensity, pattern_num, default_fillstyle.border_color);
-				GlobalMembersMisc.parse_fillstyle(this_plot.fill_properties, GlobalMembersGadgets.default_fillstyle.fillstyle, GlobalMembersGadgets.default_fillstyle.filldensity, pattern_num, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
-			if ((this_plot.fill_properties.fillstyle == t_fillstyle.FS_PATTERN.getValue()) || (this_plot.fill_properties.fillstyle == t_fillstyle.FS_TRANSPARENT_PATTERN.getValue()))
-				pattern_num = this_plot.fill_properties.fillpattern + 1;
-			if (this_plot.plot_style == PLOT_STYLE.FILLEDCURVES && this_plot.fill_properties.fillstyle == t_fillstyle.FS_EMPTY.getValue())
-				this_plot.fill_properties.fillstyle = t_fillstyle.FS_SOLID.getValue();
-			}
-
-			this_plot.x_axis = (int)GlobalMembersAxis.x_axis;
-			this_plot.y_axis = (int)GlobalMembersAxis.y_axis;
-
-			/* If we got this far without initializing the label list, do it now */
-			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			{
-			if (this_plot.labels == DefineConstants.NULL)
-			{
-				this_plot.labels = GlobalMembersSet.new_text_label(-1);
-				this_plot.labels.pos = VERT_JUSTIFY.JUST_CENTRE;
-				this_plot.labels.layer = DefineConstants.LAYER_PLOTLABELS;
-			}
-			this_plot.labels.place.scalex = (GlobalMembersAxis.x_axis == AXIS_INDEX.SECOND_X_AXIS) ? position_type.second_axes : position_type.first_axes;
-			this_plot.labels.place.scaley = (GlobalMembersAxis.y_axis == AXIS_INDEX.SECOND_Y_AXIS) ? position_type.second_axes : position_type.first_axes;
-			}
-
-			/* Initialize histogram data structure */
-			if (this_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
-			{
-			if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Log scale on X is incompatible with histogram plots\n");
-
-			if ((GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_LAYERS.getValue() || GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_TOWERS.getValue()) && GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Log scale on Y is incompatible with stacked histogram plot\n");
-			this_plot.histogram_sequence = ++histogram_sequence;
-			/* Current histogram always goes at the front of the list */
-			if (this_plot.histogram_sequence == 0)
-			{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				this_plot.histogram = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct histogram_style), "New histogram");
-				GlobalMembersGraphics.init_histogram(this_plot.histogram, histogram_title);
-				histogram_title = DefineConstants.NULL;
-				this_plot.histogram.start = newhist_start;
-				this_plot.histogram.startcolor = newhist_color;
-				this_plot.histogram.startpattern = newhist_pattern;
-			}
-			else
-			{
-				this_plot.histogram = GlobalMembersGadgets.histogram_opts.next;
-				this_plot.histogram.clustersize++;
-			}
-
-			/* Normally each histogram gets a new set of colors, but in */
-			/* 'newhistogram' you can force a starting color instead.   */
-			if (!set_lpstyle && this_plot.histogram.startcolor != DefineConstants.LT_UNDEFINED)
-				this_plot.lp_properties.l_type = this_plot.histogram_sequence + this_plot.histogram.startcolor;
-			if (this_plot.histogram.startpattern != DefineConstants.LT_UNDEFINED)
-				this_plot.fill_properties.fillpattern = this_plot.histogram_sequence + this_plot.histogram.startpattern;
-			}
-
-			/* Styles that use palette */
-			if (this_plot.plot_style == PLOT_STYLE.IMAGE)
-			this_plot.lp_properties.use_palette = true;
-
-			/* we can now do some checks that we deferred earlier */
-
-			if (this_plot.plot_type == PLOT_TYPE.DATA)
-			{
-			if (specs < 0)
-			{
-				/* Error check to handle missing or unreadable file */
-				if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
-				++point_num;
-				++line_num;
-				this_plot.plot_type = PLOT_TYPE.NODATA;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto SKIPPED_EMPTY_FILE;
-			}
-			if (!(uses_axis[GlobalMembersAxis.x_axis.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA) && ((int)GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) != 0)
-			{
-				if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = DefineConstants.VERYLARGE;
-				if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = -DefineConstants.VERYLARGE;
-			}
-			if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].is_timedata)
-			{
-				if (specs < 2)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for x time data");
-			}
-			if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].is_timedata)
-			{
-				if (specs < 1)
-				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need using spec for y time data");
-			}
-			/* need other cols, but I'm lazy */
-			GlobalMembersDatafile.df_axis[0] = GlobalMembersAxis.x_axis;
-			GlobalMembersDatafile.df_axis[1] = GlobalMembersAxis.y_axis;
-
-			/* separate record of datafile and func */
-			uses_axis[GlobalMembersAxis.x_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_DATA;
-			uses_axis[GlobalMembersAxis.y_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_DATA;
-			}
-			else if (!GlobalMembersGadgets.parametric || !in_parametric)
-			{
-			/* for x part of a parametric function, axes are
-			 * possibly wrong */
-			/* separate record of data and func */
-			uses_axis[GlobalMembersAxis.x_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_FUNC;
-			uses_axis[GlobalMembersAxis.y_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_FUNC;
-			}
-
-			if (!in_parametric && this_plot.plot_style != PLOT_STYLE.IMAGE && this_plot.plot_style != PLOT_STYLE.RGBIMAGE && this_plot.plot_style != PLOT_STYLE.RGBA_IMAGE)
-			/* don't increment the default line/point properties if
-			 * this_plot is an image */
-			{
-			if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
-				++point_num;
-			++line_num;
-			}
-			if (this_plot.plot_type == PLOT_TYPE.DATA)
-			{
-			/* actually get the data now */
-			if (GlobalMembersPlot2d.get_data(this_plot) == 0)
-			{
-				/* EAM 2005 - warn, but keep going */
-				GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token - 1,"Skipping data file with no valid points");
-				this_plot.plot_type = PLOT_TYPE.NODATA;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				goto SKIPPED_EMPTY_FILE;
-			}
-
-			/* Fiddle the auto-scaling data for specific plot styles */
-			if (this_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
-				GlobalMembersPlot2d.histogram_range_fiddling(this_plot);
-			if (this_plot.plot_style == PLOT_STYLE.BOXES)
-				GlobalMembersPlot2d.box_range_fiddling(this_plot);
-			if (this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
-			{
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = 0;
-				if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = 255;
-			}
-
-			/* sort */
-			switch (this_plot.plot_smooth)
-			{
-			/* sort and average, if the style requires */
-			case SMOOTH_UNIQUE:
-			case SMOOTH_FREQUENCY:
-			case SMOOTH_CUMULATIVE:
-			case SMOOTH_CSPLINES:
-			case SMOOTH_ACSPLINES:
-			case SMOOTH_SBEZIER:
-				GlobalMembersInterpol.sort_points(this_plot);
-				GlobalMembersInterpol.cp_implode(this_plot);
-			case SMOOTH_NONE:
-			case SMOOTH_BEZIER:
-			case SMOOTH_KDENSITY:
-			default:
-				break;
-			}
-			switch (this_plot.plot_smooth)
-			{
-			/* create new data set by evaluation of
-			 * interpolation routines */
-			case SMOOTH_FREQUENCY:
-			case SMOOTH_CUMULATIVE:
-				GlobalMembersInterpol.gen_interp_frequency(this_plot);
-				break;
-			case SMOOTH_CSPLINES:
-			case SMOOTH_ACSPLINES:
-			case SMOOTH_BEZIER:
-			case SMOOTH_SBEZIER:
-			case SMOOTH_KDENSITY:
-				GlobalMembersInterpol.gen_interp(this_plot);
-			case SMOOTH_NONE:
-			case SMOOTH_UNIQUE:
-			default:
-				break;
-			}
-
-			/* now that we know the plot style, adjust the x- and yrange */
-			/* adjust_range(this_plot); no longer needed */
-
-			/* Images are defined by a grid representing centers of pixels.
-			 * Compensate for extent of the image so `set autoscale fix`
-			 * uses outer edges of outer pixels in axes adjustment.
-			 */
-					if ((this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE))
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "at") != 0)
 					{
-				this_plot.image_properties.type = t_imagecolor.IC_PALETTE;
-				GlobalMembersGraphics.plot_image_or_update_axes(this_plot, true);
+						GlobalMembersCommand.c_token++;
+						newhist_start = GlobalMembersParse.real_expression();
 					}
 
-			}
+					/* Store title in temporary variable and then copy into the */
+					/* new histogram structure when it is allocated.            */
+					if (histogram_title == null && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+						histogram_title = GlobalMembersUtil.try_to_get_string();
 
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			SKIPPED_EMPTY_FILE:
-			/* Note position in command line for second pass */
-			this_plot.token = GlobalMembersCommand.c_token;
-			tp_ptr = &(this_plot.next);
+					/* Allow explicit starting color or pattern for this histogram */
+					GlobalMembersMisc.lp_parse(lp, false, false);
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: parse_fillstyle(&fs, FS_SOLID, 100, fs.fillpattern, default_fillstyle.border_color);
+					GlobalMembersMisc.parse_fillstyle(fs, t_fillstyle.FS_SOLID, 100, fs.fillpattern, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
 
-		} // !is_defn
+				} while (GlobalMembersCommand.c_token != previous_token);
 
-		if (in_parametric)
-		{
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-			{
-			GlobalMembersCommand.c_token++;
-			continue;
+				newhist_color = lp.l_type;
+				newhist_pattern = fs.fillpattern;
 			}
 			else
-			break;
-		}
 
-		/* Iterate-over-plot mechanism */
-		if (GlobalMembersParse.empty_iteration() && this_plot != null)
-		{
-			this_plot.plot_type = PLOT_TYPE.NODATA;
-		}
-		else if (GlobalMembersParse.next_iteration())
-		{
-			GlobalMembersCommand.c_token = start_token;
-			continue;
-		}
+				if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
+				{
+					GlobalMembersCommand.define();
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
+					{
+						was_definition = true;
+						continue;
+					}
 
-		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-		{
-			GlobalMembersCommand.c_token++;
-			GlobalMembersParse.check_for_iteration();
-		}
-		else
-			break;
+				}
+				else
+				{
+					int specs = 0;
+
+					/* for datafile plot, record datafile spec for title */
+					String name_str;
+
+					boolean duplication = false;
+					boolean set_smooth = false;
+					boolean set_axes = false;
+					boolean set_title = false;
+					boolean set_with = false;
+					boolean set_lpstyle = false;
+					boolean set_fillstyle = false;
+					boolean set_labelstyle = false;
+
+					plot_num++;
+
+					was_definition = false;
+					GlobalMembersCommand.dummy_func = plot_func;
+					/* should this be saved in "this_plot"? */
+					name_str = GlobalMembersParse.string_or_express(DefineConstants.NULL);
+					GlobalMembersCommand.dummy_func = DefineConstants.NULL;
+
+					if (name_str != null) // data file to plot
+					{
+						if (GlobalMembersGadgets.parametric && in_parametric)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "previous parametric function not fully specified");
+
+						if (tp_ptr != null)
+							this_plot = tp_ptr;
+						else // no memory malloc()'d there yet
+						{
+							this_plot = GlobalMembersPlot2d.cp_alloc(DefineConstants.MIN_CRV_POINTS);
+							tp_ptr = this_plot;
+						}
+						this_plot.plot_type = PLOT_TYPE.DATA;
+						this_plot.plot_style = GlobalMembersGadgets.data_style;
+						this_plot.plot_smooth = PLOT_SMOOTH.SMOOTH_NONE;
+						this_plot.filledcurves_options.opt_given = 0;
+						/* default no palette */
+						this_plot.lp_properties.use_palette = false;
+
+						/* up to MAXDATACOLS cols */
+						GlobalMembersDatafile.df_set_plot_mode(MODE_PLOT_TYPE.MODE_PLOT); // Needed for binary datafiles
+						specs = GlobalMembersDatafile.df_open(name_str, DefineConstants.MAXDATACOLS, this_plot);
+
+						/* include modifiers in default title */
+						this_plot.token = end_token = GlobalMembersCommand.c_token - 1;
+
+					}
+					else
+					{
+
+						/* function to plot */
+
+						some_functions = 1;
+						if (GlobalMembersGadgets.parametric) // working on x parametric function
+							in_parametric = !in_parametric;
+						if (tp_ptr != null)
+						{
+							this_plot = tp_ptr;
+							GlobalMembersPlot2d.cp_extend(this_plot, GlobalMembersGadgets.samples_1 + 1);
+						} // no memory malloc()'d there yet
+						else
+						{
+							this_plot = GlobalMembersPlot2d.cp_alloc(GlobalMembersGadgets.samples_1 + 1);
+							tp_ptr = this_plot;
+						}
+						this_plot.plot_type = PLOT_TYPE.FUNC;
+						this_plot.plot_style = GlobalMembersGadgets.func_style;
+						this_plot.filledcurves_options.opt_given = 0;
+						/* default no palette */
+						this_plot.lp_properties.use_palette = false;
+						end_token = GlobalMembersCommand.c_token - 1;
+					} // end of IS THIS A FILE OR A FUNC block
+
+					/* axis defaults */
+					GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
+					GlobalMembersAxis.y_axis = AXIS_INDEX.FIRST_Y_AXIS;
+
+					/* pm 25.11.2001 allow any order of options */
+					while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					{
+
+						/*  deal with smooth */
+						if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "s$mooth") != 0)
+						{
+							int found_token;
+
+							if (set_smooth)
+							{
+								duplication = true;
+								break;
+							}
+							//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+							//ORIGINAL LINE: found_token = lookup_table(plot_smooth_tbl, ++c_token);
+							found_token = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.plot_smooth_tbl), ++GlobalMembersCommand.c_token);
+
+							switch (found_token)
+							{
+							case SMOOTH_ACSPLINES:
+							case SMOOTH_BEZIER:
+							case SMOOTH_CSPLINES:
+							case SMOOTH_SBEZIER:
+							case SMOOTH_UNIQUE:
+							case SMOOTH_FREQUENCY:
+							case SMOOTH_CUMULATIVE:
+							case SMOOTH_KDENSITY:
+								this_plot.plot_smooth = found_token;
+								break;
+							case SMOOTH_NONE:
+							default:
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'unique', 'frequency', 'cumulative', 'kdensity', 'acsplines', 'csplines', 'bezier' or 'sbezier'");
+								break;
+							}
+							this_plot.plot_style = PLOT_STYLE.LINES;
+							GlobalMembersCommand.c_token++; // skip format
+							set_smooth = true;
+							continue;
+						}
+
+						/* look for axes/axis */
+						if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$es") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "ax$is") != 0)
+						{
+							if (set_axes)
+							{
+								duplication = true;
+								break;
+							}
+							if (GlobalMembersGadgets.parametric && in_parametric)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "previous parametric function not fully specified");
+
+							GlobalMembersCommand.c_token++;
+							//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+							//ORIGINAL LINE: switch(lookup_table(&plot_axes_tbl[0],c_token))
+							switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.plot_axes_tbl[0]), GlobalMembersCommand.c_token))
+							{
+							case AXES_X1Y1:
+								GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
+								GlobalMembersAxis.y_axis = AXIS_INDEX.FIRST_Y_AXIS;
+								++GlobalMembersCommand.c_token;
+								break;
+							case AXES_X2Y2:
+								GlobalMembersAxis.x_axis = AXIS_INDEX.SECOND_X_AXIS;
+								GlobalMembersAxis.y_axis = AXIS_INDEX.SECOND_Y_AXIS;
+								++GlobalMembersCommand.c_token;
+								break;
+							case AXES_X1Y2:
+								GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
+								GlobalMembersAxis.y_axis = AXIS_INDEX.SECOND_Y_AXIS;
+								++GlobalMembersCommand.c_token;
+								break;
+							case AXES_X2Y1:
+								GlobalMembersAxis.x_axis = AXIS_INDEX.SECOND_X_AXIS;
+								GlobalMembersAxis.y_axis = AXIS_INDEX.FIRST_Y_AXIS;
+								++GlobalMembersCommand.c_token;
+								break;
+							case AXES_NONE:
+							default:
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "axes must be x1y1, x1y2, x2y1 or x2y2");
+								break;
+							}
+							set_axes = true;
+							continue;
+						}
+
+						/* deal with title */
+						if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$itle") != 0)
+						{
+							if (set_title)
+							{
+								duplication = true;
+								break;
+							}
+							this_plot.title_no_enhanced = !key.enhanced;
+							/* title can be enhanced if not explicitly disabled */
+							if (GlobalMembersGadgets.parametric)
+							{
+								if (in_parametric)
+									GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"title\" allowed only after parametric function fully specified");
+								else if (!xtitle.equals(DefineConstants.NULL))
+									xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0'); // Remove default title .
+							}
+							GlobalMembersCommand.c_token++;
+
+							if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "col$umnheader") != 0)
+							{
+								GlobalMembersDatafile.df_set_key_title_columnhead(this_plot.plot_type);
+							}
+							else
+
+								///#ifdef BACKWARDS_COMPATIBLE
+								// /* Annoying backwards-compatibility hack - deprecate! */
+								//		    if (isanumber(c_token)) {
+								//			c_token--;
+								//			df_set_key_title_columnhead(this_plot->plot_type);
+								//		    } else
+								///#endif
+
+								if (!(this_plot.title = GlobalMembersUtil.try_to_get_string()))
+									GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting \"title\" for plot");
+							set_title = true;
+							continue;
+						}
+
+						if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "not$itle") != 0)
+						{
+							if (set_title)
+							{
+								duplication = true;
+								break;
+							}
+							GlobalMembersCommand.c_token++;
+							if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+								GlobalMembersUtil.try_to_get_string(); // ignore optionally given title string
+							this_plot.title_is_suppressed = true;
+							if (!xtitle.equals(DefineConstants.NULL))
+								xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
+							set_title = true;
+							continue;
+						}
+
+						/* deal with style */
+						if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "w$ith") != 0)
+						{
+							if (set_with)
+							{
+								duplication = true;
+								break;
+							}
+							if (GlobalMembersGadgets.parametric && in_parametric)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"with\" allowed only after parametric function fully specified");
+							this_plot.plot_style = GlobalMembersMisc.get_style();
+							if (this_plot.plot_style == PLOT_STYLE.FILLEDCURVES)
+							{
+								/* read a possible option for 'with filledcurves' */
+								GlobalMembersMisc.get_filledcurves_style_options(this_plot.filledcurves_options);
+							}
+							if (this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
+								GlobalMembersMisc.get_image_options(this_plot.image_properties);
+
+							if ((this_plot.plot_type == PLOT_TYPE.FUNC) && ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_ERRORBAR) || (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)))
+							{
+								GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "This plot style is only for datafiles, reverting to \"points\"");
+								this_plot.plot_style = PLOT_STYLE.POINTSTYLE;
+							}
+							set_with = true;
+							continue;
+						}
+
+						/* Labels can have font and text property info as plot options */
+						/* In any case we must allocate one instance of the text style */
+						/* that all labels in the plot will share.                     */
+						if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+						{
+							int stored_token = GlobalMembersCommand.c_token;
+
+							if (this_plot.labels == DefineConstants.NULL)
+							{
+								this_plot.labels = GlobalMembersSet.new_text_label(-1);
+								this_plot.labels.pos = VERT_JUSTIFY.JUST_CENTRE;
+								this_plot.labels.layer = DefineConstants.LAYER_PLOTLABELS;
+							}
+							GlobalMembersSet.parse_label_options(this_plot.labels);
+							if (stored_token != GlobalMembersCommand.c_token)
+							{
+								if (set_labelstyle)
+								{
+									duplication = true;
+									break;
+								}
+								else
+								{
+									set_labelstyle = true;
+									continue;
+								}
+							}
+						}
+
+						/* pick up line/point specs and other style-specific keywords
+						 * - point spec allowed if style uses points, ie style&2 != 0
+						 * - keywords for lt and pt are optional
+						 */
+						if (this_plot.plot_style == PLOT_STYLE.CANDLESTICKS)
+						{
+							if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "whisker$bars") != 0)
+							{
+								this_plot.arrow_properties.head = e_arrow_head.BOTH_HEADS;
+								GlobalMembersCommand.c_token++;
+								if (GlobalMembersUtil.isanumber(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.INTGR || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.CMPLX)
+									this_plot.arrow_properties.head_length = GlobalMembersParse.real_expression();
+							}
+						}
+
+						if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+						{
+							int stored_token = GlobalMembersCommand.c_token;
+
+							if (!set_lpstyle)
+							{
+								GlobalMembersGadgets.default_arrow_style((this_plot.arrow_properties));
+								if (GlobalMembersGadgets.prefer_line_styles)
+									GlobalMembersTerm.lp_use_properties((this_plot.arrow_properties.lp_properties), line_num + 1);
+								else
+									this_plot.arrow_properties.lp_properties.l_type = line_num;
+							}
+
+							GlobalMembersMisc.arrow_parse((this_plot.arrow_properties), true);
+							if (stored_token != GlobalMembersCommand.c_token)
+							{
+								if (set_lpstyle)
+								{
+									duplication = true;
+									break;
+								}
+								else
+								{
+									set_lpstyle = true;
+									continue;
+								}
+							}
+						}
+						else
+						{
+							int stored_token = GlobalMembersCommand.c_token;
+							lp_style_type lp = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
+
+							lp.l_type = line_num;
+							lp.p_type = point_num;
+
+							/* user may prefer explicit line styles */
+							if (GlobalMembersGadgets.prefer_line_styles)
+								GlobalMembersTerm.lp_use_properties(lp, line_num + 1);
+
+							GlobalMembersMisc.lp_parse(lp, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
+							if (stored_token != GlobalMembersCommand.c_token)
+							{
+								if (set_lpstyle)
+								{
+									duplication = true;
+									break;
+								}
+								else
+								{
+									//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+									//ORIGINAL LINE: this_plot->lp_properties = lp;
+									this_plot.lp_properties.copyFrom(lp);
+									set_lpstyle = true;
+									continue;
+								}
+							}
+						}
+
+						/* Some plots have a fill style as well */
+						if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_FILL != 0)
+						{
+							if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "fs") != 0 || GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fill$style") != 0)
+							{
+								int stored_token = GlobalMembersCommand.c_token;
+								//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+								//ORIGINAL LINE: parse_fillstyle(&this_plot->fill_properties, default_fillstyle.fillstyle, default_fillstyle.filldensity, pattern_num, default_fillstyle.border_color);
+								GlobalMembersMisc.parse_fillstyle(this_plot.fill_properties, GlobalMembersGadgets.default_fillstyle.fillstyle, GlobalMembersGadgets.default_fillstyle.filldensity, pattern_num, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
+								if (this_plot.plot_style == PLOT_STYLE.FILLEDCURVES && this_plot.fill_properties.fillstyle == t_fillstyle.FS_EMPTY.getValue())
+									this_plot.fill_properties.fillstyle = t_fillstyle.FS_SOLID.getValue();
+								set_fillstyle = true;
+								if (stored_token != GlobalMembersCommand.c_token)
+									continue;
+							}
+						}
+
+						break; // unknown option
+
+					} // while (!END_OF_COMMAND)
+
+					if (duplication)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "duplicated or contradicting arguments in plot options");
+
+					/* set default values for title if this has not been specified */
+					this_plot.title_is_filename = false;
+					if (!set_title)
+					{
+						this_plot.title_no_enhanced = true; // filename or function cannot be enhanced
+						if (key.auto_titles == keytitle_type.FILENAME_KEYTITLES)
+						{
+							GlobalMembersUtil.m_capture((this_plot.title), start_token, end_token);
+							if (in_parametric)
+								xtitle = this_plot.title;
+							this_plot.title_is_filename = true;
+						}
+						else if (!xtitle.equals(DefineConstants.NULL))
+							xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0');
+					}
+
+					/* Vectors will be drawn using linetype from arrow style, so we
+					 * copy this to overall plot linetype so that the key sample matches */
+					if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					{
+						if (!set_lpstyle)
+						{
+							if (GlobalMembersGadgets.prefer_line_styles)
+								GlobalMembersTerm.lp_use_properties((this_plot.arrow_properties.lp_properties), line_num + 1);
+							else
+								this_plot.arrow_properties.lp_properties.l_type = line_num;
+							GlobalMembersMisc.arrow_parse(this_plot.arrow_properties, true);
+						}
+						//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+						//ORIGINAL LINE: this_plot->lp_properties = this_plot->arrow_properties.lp_properties;
+						this_plot.lp_properties.copyFrom(this_plot.arrow_properties.lp_properties);
+						set_lpstyle = true;
+					}
+					/* No line/point style given. As lp_parse also supplies
+					 * the defaults for linewidth and pointsize, call it now
+					 * to define them. */
+					if (!set_lpstyle)
+					{
+						this_plot.lp_properties.l_type = line_num;
+						this_plot.lp_properties.l_width = 1.0;
+						this_plot.lp_properties.p_type = point_num;
+						this_plot.lp_properties.p_size = GlobalMembersGadgets.pointsize;
+						this_plot.lp_properties.use_palette = false;
+
+						/* user may prefer explicit line styles */
+						if (GlobalMembersGadgets.prefer_line_styles)
+							GlobalMembersTerm.lp_use_properties(this_plot.lp_properties, line_num + 1);
+
+						GlobalMembersMisc.lp_parse(this_plot.lp_properties, true, this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT);
+
+						///#ifdef BACKWARDS_COMPATIBLE
+						// /* allow old-style syntax - ignore case lt 3 4 for example */
+						//		if (!END_OF_COMMAND && isanumber(c_token)) {
+						//		    this_plot->lp_properties.l_type =
+						//			this_plot->lp_properties.p_type = int_expression() - 1;
+						//		    if (isanumber(c_token))
+						//			this_plot->lp_properties.p_type = int_expression() - 1;
+						//		}
+						///#endif // BACKWARDS_COMPATIBLE
+
+					}
+
+					/* Some low-level routines expect to find the pointflag attribute */
+					/* in lp_properties (they don't have access to the full header.   */
+					if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
+						this_plot.lp_properties.pointflag = true;
+
+					/* Rule out incompatible line/point/style options */
+					if (this_plot.plot_type == PLOT_TYPE.FUNC)
+					{
+						if ((this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT) && (this_plot.lp_properties.p_size == DefineConstants.PTSZ_VARIABLE))
+							this_plot.lp_properties.p_size = 1;
+					}
+
+					///#if (0) // FIXME:  restore this after fixing initialization problems with df_matrix
+					//	    if (df_matrix) {
+					//		if (!(this_plot->plot_style == IMAGE || this_plot->plot_style == RGBIMAGE
+					//	              || this_plot->plot_style == RGBA_IMAGE || this_plot->plot_style == LINES
+					//		      || this_plot->plot_style == POINTSTYLE))
+					//		int_error(NO_CARET, "this 2D plot style cannot handle matrix data");
+					//	    }
+					///#endif
+
+					/* Similar argument for check that all fill styles were set */
+					if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_FILL != 0)
+					{
+						if (!set_fillstyle)
+							//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+							//ORIGINAL LINE: parse_fillstyle(&this_plot->fill_properties, default_fillstyle.fillstyle, default_fillstyle.filldensity, pattern_num, default_fillstyle.border_color);
+							GlobalMembersMisc.parse_fillstyle(this_plot.fill_properties, GlobalMembersGadgets.default_fillstyle.fillstyle, GlobalMembersGadgets.default_fillstyle.filldensity, pattern_num, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
+						if ((this_plot.fill_properties.fillstyle == t_fillstyle.FS_PATTERN.getValue()) || (this_plot.fill_properties.fillstyle == t_fillstyle.FS_TRANSPARENT_PATTERN.getValue()))
+							pattern_num = this_plot.fill_properties.fillpattern + 1;
+						if (this_plot.plot_style == PLOT_STYLE.FILLEDCURVES && this_plot.fill_properties.fillstyle == t_fillstyle.FS_EMPTY.getValue())
+							this_plot.fill_properties.fillstyle = t_fillstyle.FS_SOLID.getValue();
+					}
+
+					this_plot.x_axis = (int)GlobalMembersAxis.x_axis;
+					this_plot.y_axis = (int)GlobalMembersAxis.y_axis;
+
+					/* If we got this far without initializing the label list, do it now */
+					if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+					{
+						if (this_plot.labels == DefineConstants.NULL)
+						{
+							this_plot.labels = GlobalMembersSet.new_text_label(-1);
+							this_plot.labels.pos = VERT_JUSTIFY.JUST_CENTRE;
+							this_plot.labels.layer = DefineConstants.LAYER_PLOTLABELS;
+						}
+						this_plot.labels.place.scalex = (GlobalMembersAxis.x_axis == AXIS_INDEX.SECOND_X_AXIS) ? position_type.second_axes : position_type.first_axes;
+						this_plot.labels.place.scaley = (GlobalMembersAxis.y_axis == AXIS_INDEX.SECOND_Y_AXIS) ? position_type.second_axes : position_type.first_axes;
+					}
+
+					/* Initialize histogram data structure */
+					if (this_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+					{
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Log scale on X is incompatible with histogram plots\n");
+
+						if ((GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_LAYERS.getValue() || GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_TOWERS.getValue()) && GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Log scale on Y is incompatible with stacked histogram plot\n");
+						this_plot.histogram_sequence = ++histogram_sequence;
+						/* Current histogram always goes at the front of the list */
+						if (this_plot.histogram_sequence == 0)
+						{
+							//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+							this_plot.histogram = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct histogram_style), "New histogram");
+							GlobalMembersGraphics.init_histogram(this_plot.histogram, histogram_title);
+							histogram_title = DefineConstants.NULL;
+							this_plot.histogram.start = newhist_start;
+							this_plot.histogram.startcolor = newhist_color;
+							this_plot.histogram.startpattern = newhist_pattern;
+						}
+						else
+						{
+							this_plot.histogram = GlobalMembersGadgets.histogram_opts.next;
+							this_plot.histogram.clustersize++;
+						}
+
+						/* Normally each histogram gets a new set of colors, but in */
+						/* 'newhistogram' you can force a starting color instead.   */
+						if (!set_lpstyle && this_plot.histogram.startcolor != DefineConstants.LT_UNDEFINED)
+							this_plot.lp_properties.l_type = this_plot.histogram_sequence + this_plot.histogram.startcolor;
+						if (this_plot.histogram.startpattern != DefineConstants.LT_UNDEFINED)
+							this_plot.fill_properties.fillpattern = this_plot.histogram_sequence + this_plot.histogram.startpattern;
+					}
+
+					/* Styles that use palette */
+					if (this_plot.plot_style == PLOT_STYLE.IMAGE)
+						this_plot.lp_properties.use_palette = true;
+
+					/* we can now do some checks that we deferred earlier */
+
+					if (this_plot.plot_type == PLOT_TYPE.DATA)
+					{
+						if (specs < 0)
+						{
+							/* Error check to handle missing or unreadable file */
+							if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
+								++point_num;
+							++line_num;
+							this_plot.plot_type = PLOT_TYPE.NODATA;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto SKIPPED_EMPTY_FILE;
+						}
+						if (!(uses_axis[GlobalMembersAxis.x_axis.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA) && ((int)GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale) != 0)
+						{
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = DefineConstants.VERYLARGE;
+							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+								GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = -DefineConstants.VERYLARGE;
+						}
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].is_timedata)
+						{
+							if (specs < 2)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for x time data");
+						}
+						if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].is_timedata)
+						{
+							if (specs < 1)
+								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need using spec for y time data");
+						}
+						/* need other cols, but I'm lazy */
+						GlobalMembersDatafile.df_axis[0] = GlobalMembersAxis.x_axis;
+						GlobalMembersDatafile.df_axis[1] = GlobalMembersAxis.y_axis;
+
+						/* separate record of datafile and func */
+						uses_axis[GlobalMembersAxis.x_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_DATA;
+						uses_axis[GlobalMembersAxis.y_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_DATA;
+					}
+					else if (!GlobalMembersGadgets.parametric || !in_parametric)
+					{
+						/* for x part of a parametric function, axes are
+						 * possibly wrong */
+						/* separate record of data and func */
+						uses_axis[GlobalMembersAxis.x_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_FUNC;
+						uses_axis[GlobalMembersAxis.y_axis.getValue()] |= e_uses_axis.USES_AXIS_FOR_FUNC;
+					}
+
+					if (!in_parametric && this_plot.plot_style != PLOT_STYLE.IMAGE && this_plot.plot_style != PLOT_STYLE.RGBIMAGE && this_plot.plot_style != PLOT_STYLE.RGBA_IMAGE)
+						/* don't increment the default line/point properties if
+						 * this_plot is an image */
+					{
+						if (this_plot.plot_style & e_PLOT_STYLE_FLAGS.PLOT_STYLE_HAS_POINT != 0)
+							++point_num;
+						++line_num;
+					}
+					if (this_plot.plot_type == PLOT_TYPE.DATA)
+					{
+						/* actually get the data now */
+						if (GlobalMembersPlot2d.get_data(this_plot) == 0)
+						{
+							/* EAM 2005 - warn, but keep going */
+							GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token - 1,"Skipping data file with no valid points");
+							this_plot.plot_type = PLOT_TYPE.NODATA;
+							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+							goto SKIPPED_EMPTY_FILE;
+						}
+
+						/* Fiddle the auto-scaling data for specific plot styles */
+						if (this_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+							GlobalMembersPlot2d.histogram_range_fiddling(this_plot);
+						if (this_plot.plot_style == PLOT_STYLE.BOXES)
+							GlobalMembersPlot2d.box_range_fiddling(this_plot);
+						if (this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE)
+						{
+							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+								GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = 0;
+							if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+								GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = 255;
+						}
+
+						/* sort */
+						switch (this_plot.plot_smooth)
+						{
+						/* sort and average, if the style requires */
+						case SMOOTH_UNIQUE:
+						case SMOOTH_FREQUENCY:
+						case SMOOTH_CUMULATIVE:
+						case SMOOTH_CSPLINES:
+						case SMOOTH_ACSPLINES:
+						case SMOOTH_SBEZIER:
+							GlobalMembersInterpol.sort_points(this_plot);
+							GlobalMembersInterpol.cp_implode(this_plot);
+						case SMOOTH_NONE:
+						case SMOOTH_BEZIER:
+						case SMOOTH_KDENSITY:
+						default:
+							break;
+						}
+						switch (this_plot.plot_smooth)
+						{
+						/* create new data set by evaluation of
+						 * interpolation routines */
+						case SMOOTH_FREQUENCY:
+						case SMOOTH_CUMULATIVE:
+							GlobalMembersInterpol.gen_interp_frequency(this_plot);
+							break;
+						case SMOOTH_CSPLINES:
+						case SMOOTH_ACSPLINES:
+						case SMOOTH_BEZIER:
+						case SMOOTH_SBEZIER:
+						case SMOOTH_KDENSITY:
+							GlobalMembersInterpol.gen_interp(this_plot);
+						case SMOOTH_NONE:
+						case SMOOTH_UNIQUE:
+						default:
+							break;
+						}
+
+						/* now that we know the plot style, adjust the x- and yrange */
+						/* adjust_range(this_plot); no longer needed */
+
+						/* Images are defined by a grid representing centers of pixels.
+						 * Compensate for extent of the image so `set autoscale fix`
+						 * uses outer edges of outer pixels in axes adjustment.
+						 */
+						if ((this_plot.plot_style == PLOT_STYLE.IMAGE || this_plot.plot_style == PLOT_STYLE.RGBIMAGE || this_plot.plot_style == PLOT_STYLE.RGBA_IMAGE))
+						{
+							this_plot.image_properties.type = t_imagecolor.IC_PALETTE;
+							GlobalMembersGraphics.plot_image_or_update_axes(this_plot, true);
+						}
+
+					}
+
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					SKIPPED_EMPTY_FILE:
+						/* Note position in command line for second pass */
+						this_plot.token = GlobalMembersCommand.c_token;
+					tp_ptr = &(this_plot.next);
+
+				} // !is_defn
+
+			if (in_parametric)
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					continue;
+				}
+				else
+					break;
+			}
+
+			/* Iterate-over-plot mechanism */
+			if (GlobalMembersParse.empty_iteration() && this_plot != null)
+			{
+				this_plot.plot_type = PLOT_TYPE.NODATA;
+			}
+			else if (GlobalMembersParse.next_iteration())
+			{
+				GlobalMembersCommand.c_token = start_token;
+				continue;
+			}
+
+			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+			{
+				GlobalMembersCommand.c_token++;
+				GlobalMembersParse.check_for_iteration();
+			}
+			else
+				break;
 		}
 
 		if (GlobalMembersGadgets.parametric && in_parametric)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "parametric function not fully specified");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "parametric function not fully specified");
 
 
-	/*** Second Pass: Evaluate the functions ***/
+		/*** Second Pass: Evaluate the functions ***/
 		/*
 		 * Everything is defined now, except the function data. We expect
 		 * no syntax errors, etc, since the above parsed it all. This
@@ -4351,722 +4353,722 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		/* parametric or polar fns can still affect x ranges */
 		if (!GlobalMembersGadgets.parametric && !GlobalMembersGadgets.polar)
 		{
-		/* If we were expecting to autoscale on X but found no usable
-		 * points in the data files, then the axis limits are still sitting
-		 * at +/- VERYLARGE.  The default range for bare functions is [-10:10].
-		 * Or we could give up and fall through to "x range invalid".
-		 */
-		if (some_functions != 0 && ((int)uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()]) != 0)
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min == DefineConstants.VERYLARGE)
+			/* If we were expecting to autoscale on X but found no usable
+			 * points in the data files, then the axis limits are still sitting
+			 * at +/- VERYLARGE.  The default range for bare functions is [-10:10].
+			 * Or we could give up and fall through to "x range invalid".
+			 */
+			if (some_functions != 0 && ((int)uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()]) != 0)
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min == DefineConstants.VERYLARGE)
+				{
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = -10;
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = 10;
+				}
+
+			/* check that xmin -> xmax is not too small */
+			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, "x range is invalid");
+
+			if (uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA != 0)
 			{
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = -10;
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = 10;
+				/* check that x2min -> x2max is not too small */
+				GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.SECOND_X_AXIS, "x2 range is invalid");
 			}
-
-		/* check that xmin -> xmax is not too small */
-		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, "x range is invalid");
-
-		if (uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA != 0)
-		{
-			/* check that x2min -> x2max is not too small */
-			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.SECOND_X_AXIS, "x2 range is invalid");
-		}
-		else if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale) != 0)
-		{
-			/* copy x1's range */
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
-		}
+			else if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale) != 0)
+			{
+				/* copy x1's range */
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
+				if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
+			}
 		}
 		if (some_functions != 0)
 		{
 
-		/* call the controlled variable t, since x_min can also mean
-		 * smallest x */
-		double t_min = 0.;
-		double t_max = 0.;
-		double t_step = 0.;
+			/* call the controlled variable t, since x_min can also mean
+			 * smallest x */
+			double t_min = 0.;
+			double t_max = 0.;
+			double t_step = 0.;
 
-		if (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar)
-		{
-			if (!(uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA))
+			if (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar)
 			{
-			/* these have not yet been set to full width */
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
-			}
-			if (!(uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA))
-			{
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
-			}
-		}
-
-		/* FIXME HBB 20000430: here and elsewhere, the code explicitly
-		 * assumes that the dummy variables (t, u, v) cannot possibly
-		 * be logscaled in parametric or polar mode. Does this
-		 * *really* hold? */
-		if (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar)
-		{
-			t_min = GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].min;
-			t_max = GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].max;
-			t_step = (t_max - t_min) / (GlobalMembersGadgets.samples_1 - 1);
-		}
-		/* else we'll do it on each plot (see below) */
-
-		tp_ptr = &(first_plot);
-		plot_num = 0;
-		this_plot = first_plot;
-		GlobalMembersCommand.c_token = begin_token; // start over
-
-		GlobalMembersParse.check_for_iteration();
-
-		/* Read through functions */
-		while (true)
-		{
-			if (!in_parametric && !was_definition)
-			start_token = GlobalMembersCommand.c_token;
-
-			if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
-			{
-			GlobalMembersCommand.define();
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
-			{
-				was_definition = true;
-				continue;
-			}
-
-			}
-			else
-			{
-			at_type at_ptr;
-			String name_str;
-			was_definition = false;
-
-			/* HBB 20000820: now globals in 'axis.c' */
-			GlobalMembersAxis.x_axis = this_plot.x_axis;
-			GlobalMembersAxis.y_axis = this_plot.y_axis;
-
-			plot_num++;
-
-			GlobalMembersCommand.dummy_func = plot_func;
-			/* WARNING: do NOT free name_str */
-			/* FIXME: should this be saved in "this_plot"? */
-			name_str = GlobalMembersParse.string_or_express(at_ptr);
-
-			if (name_str == null) // function to plot
-			{
-				if (GlobalMembersGadgets.parametric) // toggle parametric axes
+				if (!(uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA))
 				{
-				in_parametric = !in_parametric;
+					/* these have not yet been set to full width */
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
 				}
-				plot_func.at = at_ptr;
-
-				if (!GlobalMembersGadgets.parametric && !GlobalMembersGadgets.polar)
+				if (!(uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()] & e_uses_axis.USES_AXIS_FOR_DATA))
 				{
-				t_min = GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min;
-				t_max = GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max;
-				GlobalMembersAxis.axis_unlog_interval(GlobalMembersAxis.x_axis, t_min, t_max, 1);
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min = DefineConstants.VERYLARGE;
+					if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max = -DefineConstants.VERYLARGE;
+				}
+			}
+
+			/* FIXME HBB 20000430: here and elsewhere, the code explicitly
+			 * assumes that the dummy variables (t, u, v) cannot possibly
+			 * be logscaled in parametric or polar mode. Does this
+			 * *really* hold? */
+			if (GlobalMembersGadgets.parametric || GlobalMembersGadgets.polar)
+			{
+				t_min = GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].min;
+				t_max = GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].max;
 				t_step = (t_max - t_min) / (GlobalMembersGadgets.samples_1 - 1);
-				}
-				for (i = 0; i < GlobalMembersGadgets.samples_1; i++)
-				{
-				double temp;
-				value a = new value();
-				double t = t_min + i * t_step;
-				/* parametric/polar => NOT a log quantity */
-				double x = (!GlobalMembersGadgets.parametric && !GlobalMembersGadgets.polar) ? (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((t) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (t)) : t;
+			}
+			/* else we'll do it on each plot (see below) */
 
-				() GlobalMembersEval.Gcomplex(plot_func.dummy_values[0], x, 0.0);
-				GlobalMembersEval.evaluate_at(plot_func.at, a);
+			tp_ptr = &(first_plot);
+			plot_num = 0;
+			this_plot = first_plot;
+			GlobalMembersCommand.c_token = begin_token; // start over
 
-				if (GlobalMembersEval.undefined || (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero))
-				{
-					this_plot.points[i].type = coord_type.UNDEFINED;
-					continue;
-				}
-				temp = GlobalMembersEval.real(a);
+			GlobalMembersParse.check_for_iteration();
 
-				/* width of box not specified */
-				this_plot.points[i].z = -1.0;
-				/* for the moment */
-				this_plot.points[i].type = coord_type.INRANGE;
+			/* Read through functions */
+			while (true)
+			{
+				if (!in_parametric && !was_definition)
+					start_token = GlobalMembersCommand.c_token;
 
-				if (GlobalMembersGadgets.parametric)
+				if (GlobalMembersUtil.is_definition(GlobalMembersCommand.c_token) != 0)
 				{
-					/* we cannot do range-checking now, since for
-					 * the x function we did not know which axes
-					 * we were using
-					 * DO NOT TAKE LOGS YET - do it in parametric_fixup
-					 */
-					/* ignored, actually... */
-					this_plot.points[i].x = t;
-					this_plot.points[i].y = temp;
-					if (boxwidth >= 0 && boxwidth_is_absolute)
-					this_plot.points[i].z = 0;
-				}
-				else if (GlobalMembersGadgets.polar)
-				{
-					double y;
-					if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && temp > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
-					this_plot.points[i].type = coord_type.OUTRANGE;
-					if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
-					temp -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
-					y = temp * Math.sin(x * GlobalMembersGadgets.ang2rad);
-					x = temp * Math.cos(x * GlobalMembersGadgets.ang2rad);
-					if (boxwidth >= 0 && boxwidth_is_absolute)
+					GlobalMembersCommand.define();
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
 					{
-					double xlow;
-					double xhigh;
-					coord_type dmy_type = coord_type.INRANGE;
-					this_plot.points[i].z = 0;
-					if (GlobalMembersAxis.axis_array[this_plot.x_axis].log)
-					{
-						double base = GlobalMembersAxis.axis_array[this_plot.x_axis].base;
-						xlow = x * Math.pow(base, -boxwidth / 2.);
-						xhigh = x * Math.pow(base, boxwidth / 2.);
+						was_definition = true;
+						continue;
 					}
-					else
-					{
-						xlow = x - boxwidth / 2;
-						xhigh = x + boxwidth / 2;
-					}
-					do
-					{
-						if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
-							{
-								dmy_type = coord_type.UNDEFINED;
-								()0;
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
-							{
-								if (xlow < 0.0)
-								{
-									dmy_type = coord_type.UNDEFINED;
-									()0;
-									break;
-								}
-								else if (xlow == 0.0)
-								{
-									this_plot.points[i].xlow = -DefineConstants.VERYLARGE;
-									dmy_type = coord_type.OUTRANGE;
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].xlow = (Math.log(xlow) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-								}
-							}
-							else
-								this_plot.points[i].xlow = xlow;
-								if (this_plot.noautoscale)
-									break;
-									if (dmy_type != coord_type.INRANGE)
-										break;
-										if (GlobalMembersAxis.x_axis.getValue() < 0)
-											break;
-											if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xlow;
-												if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xlow;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xlow;
-													if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xlow;
-															else
-															{
-																dmy_type = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
-					dmy_type = coord_type.INRANGE;
-					do
-					{
-						if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
-							{
-								dmy_type = coord_type.UNDEFINED;
-								()0;
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
-							{
-								if (xhigh < 0.0)
-								{
-									dmy_type = coord_type.UNDEFINED;
-									()0;
-									break;
-								}
-								else if (xhigh == 0.0)
-								{
-									this_plot.points[i].xhigh = -DefineConstants.VERYLARGE;
-									dmy_type = coord_type.OUTRANGE;
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].xhigh = (Math.log(xhigh) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-								}
-							}
-							else
-								this_plot.points[i].xhigh = xhigh;
-								if (this_plot.noautoscale)
-									break;
-									if (dmy_type != coord_type.INRANGE)
-										break;
-										if (GlobalMembersAxis.x_axis.getValue() < 0)
-											break;
-											if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xhigh;
-												if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xhigh;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xhigh;
-													if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xhigh;
-															else
-															{
-																dmy_type = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
-					}
-					temp = y;
-					do
-					{
-						if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
-							{
-								this_plot.points[i].type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-								goto come_here_if_undefined;
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
-							{
-								if (x < 0.0)
-								{
-									this_plot.points[i].type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-									goto come_here_if_undefined;
-									break;
-								}
-								else if (x == 0.0)
-								{
-									this_plot.points[i].x = -DefineConstants.VERYLARGE;
-									this_plot.points[i].type = coord_type.OUTRANGE;
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].x = (Math.log(x) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-								}
-							}
-							else
-								this_plot.points[i].x = x;
-								if (this_plot.noautoscale)
-									break;
-									if (this_plot.points[i].type != coord_type.INRANGE)
-										break;
-										if (GlobalMembersAxis.x_axis.getValue() < 0)
-											break;
-											if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = x;
-												if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = x;
-														else
-														{
-															this_plot.points[i].type = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = x;
-													if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = x;
-															else
-															{
-																this_plot.points[i].type = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
-					do
-					{
-						if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
-							{
-								this_plot.points[i].type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-								goto come_here_if_undefined;
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
-							{
-								if (y < 0.0)
-								{
-									this_plot.points[i].type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-									goto come_here_if_undefined;
-									break;
-								}
-								else if (y == 0.0)
-								{
-									this_plot.points[i].y = -DefineConstants.VERYLARGE;
-									this_plot.points[i].type = coord_type.OUTRANGE;
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].y = (Math.log(y) / GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
-								}
-							}
-							else
-								this_plot.points[i].y = y;
-								if (this_plot.noautoscale)
-									break;
-									if (this_plot.points[i].type != coord_type.INRANGE)
-										break;
-										if (GlobalMembersAxis.y_axis.getValue() < 0)
-											break;
-											if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min = y;
-												if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min = y;
-														else
-														{
-															this_plot.points[i].type = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max = y;
-													if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max = y;
-															else
-															{
-																this_plot.points[i].type = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
-				} // neither parametric or polar
+
+				}
 				else
 				{
-					/* If non-para, it must be INRANGE */
-					/* logscale ? log(x) : x */
-					this_plot.points[i].x = t;
-					if (boxwidth >= 0 && boxwidth_is_absolute)
+					at_type at_ptr;
+					String name_str;
+					was_definition = false;
+
+					/* HBB 20000820: now globals in 'axis.c' */
+					GlobalMembersAxis.x_axis = this_plot.x_axis;
+					GlobalMembersAxis.y_axis = this_plot.y_axis;
+
+					plot_num++;
+
+					GlobalMembersCommand.dummy_func = plot_func;
+					/* WARNING: do NOT free name_str */
+					/* FIXME: should this be saved in "this_plot"? */
+					name_str = GlobalMembersParse.string_or_express(at_ptr);
+
+					if (name_str == null) // function to plot
 					{
-					double xlow;
-					double xhigh;
-					int dmy_type = coord_type.INRANGE.getValue();
-					this_plot.points[i].z = 0;
-					if (GlobalMembersAxis.axis_array[this_plot.x_axis].log)
-					{
-						double base = GlobalMembersAxis.axis_array[this_plot.x_axis].base;
-						xlow = x * Math.pow(base, -boxwidth / 2.);
-						xhigh = x * Math.pow(base, boxwidth / 2.);
-					}
-					else
-					{
-						xlow = x - boxwidth / 2;
-						xhigh = x + boxwidth / 2;
-					}
-					do
-					{
-						if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
-							{
-								dmy_type = coord_type.UNDEFINED.getValue();
-								()0;
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
-							{
-								if (xlow < 0.0)
-								{
-									dmy_type = coord_type.UNDEFINED.getValue();
-									()0;
-									break;
-								}
-								else if (xlow == 0.0)
-								{
-									this_plot.points[i].xlow = -DefineConstants.VERYLARGE;
-									dmy_type = coord_type.OUTRANGE.getValue();
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].xlow = (Math.log(xlow) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-								}
-							}
-							else
-								this_plot.points[i].xlow = xlow;
-								if (this_plot.noautoscale)
-									break;
-									if (dmy_type != coord_type.INRANGE.getValue())
-										break;
-										if (GlobalMembersAxis.x_axis.getValue() < 0)
-											break;
-											if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xlow;
-												if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xlow;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE.getValue();
-															()0;
-															break;
-														}
-												}
-												if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xlow;
-													if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xlow;
-															else
-															{
-																dmy_type = coord_type.OUTRANGE.getValue();
-																()0;
-															}
-													}
-					} while (0);
-					dmy_type = coord_type.INRANGE.getValue();
-					do
-					{
-						if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
-							{
-								dmy_type = coord_type.UNDEFINED.getValue();
-								()0;
-								break;
-							}
-							if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
-							{
-								if (xhigh < 0.0)
-								{
-									dmy_type = coord_type.UNDEFINED.getValue();
-									()0;
-									break;
-								}
-								else if (xhigh == 0.0)
-								{
-									this_plot.points[i].xhigh = -DefineConstants.VERYLARGE;
-									dmy_type = coord_type.OUTRANGE.getValue();
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].xhigh = (Math.log(xhigh) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
-								}
-							}
-							else
-								this_plot.points[i].xhigh = xhigh;
-								if (this_plot.noautoscale)
-									break;
-									if (dmy_type != coord_type.INRANGE.getValue())
-										break;
-										if (GlobalMembersAxis.x_axis.getValue() < 0)
-											break;
-											if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
-												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xhigh;
-												if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
-												{
-													if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xhigh;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE.getValue();
-															()0;
-															break;
-														}
-												}
-												if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
-													GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xhigh;
-													if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
-													{
-														if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xhigh;
-															else
-															{
-																dmy_type = coord_type.OUTRANGE.getValue();
-																()0;
-															}
-													}
-					} while (0);
-					}
-					do
-					{
-						if (in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
-							break;
-							if (!(temp > -DefineConstants.VERYLARGE && temp < DefineConstants.VERYLARGE))
+						if (GlobalMembersGadgets.parametric) // toggle parametric axes
+						{
+							in_parametric = !in_parametric;
+						}
+						plot_func.at = at_ptr;
+
+						if (!GlobalMembersGadgets.parametric && !GlobalMembersGadgets.polar)
+						{
+							t_min = GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min;
+							t_max = GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max;
+							GlobalMembersAxis.axis_unlog_interval(GlobalMembersAxis.x_axis, t_min, t_max, 1);
+							t_step = (t_max - t_min) / (GlobalMembersGadgets.samples_1 - 1);
+						}
+						for (i = 0; i < GlobalMembersGadgets.samples_1; i++)
+						{
+							double temp;
+							value a = new value();
+							double t = t_min + i * t_step;
+							/* parametric/polar => NOT a log quantity */
+							double x = (!GlobalMembersGadgets.parametric && !GlobalMembersGadgets.polar) ? (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((t) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (t)) : t;
+
+							() GlobalMembersEval.Gcomplex(plot_func.dummy_values[0], x, 0.0);
+							GlobalMembersEval.evaluate_at(plot_func.at, a);
+
+							if (GlobalMembersEval.undefined || (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero))
 							{
 								this_plot.points[i].type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-								goto come_here_if_undefined;
-								break;
+								continue;
 							}
-							if (GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].log)
+							temp = GlobalMembersEval.real(a);
+
+							/* width of box not specified */
+							this_plot.points[i].z = -1.0;
+							/* for the moment */
+							this_plot.points[i].type = coord_type.INRANGE;
+
+							if (GlobalMembersGadgets.parametric)
 							{
-								if (temp < 0.0)
-								{
-									this_plot.points[i].type = coord_type.UNDEFINED;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-									goto come_here_if_undefined;
-									break;
-								}
-								else if (temp == 0.0)
-								{
-									this_plot.points[i].y = -DefineConstants.VERYLARGE;
-									this_plot.points[i].type = coord_type.OUTRANGE;
-									()0;
-									break;
-								}
-								else
-								{
-									this_plot.points[i].y = (Math.log(temp) / GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].log_base);
-								}
-							}
-							else
+								/* we cannot do range-checking now, since for
+								 * the x function we did not know which axes
+								 * we were using
+								 * DO NOT TAKE LOGS YET - do it in parametric_fixup
+								 */
+								/* ignored, actually... */
+								this_plot.points[i].x = t;
 								this_plot.points[i].y = temp;
-								if (this_plot.noautoscale)
-									break;
+								if (boxwidth >= 0 && boxwidth_is_absolute)
+									this_plot.points[i].z = 0;
+							}
+							else if (GlobalMembersGadgets.polar)
+							{
+								double y;
+								if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && temp > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+									this_plot.points[i].type = coord_type.OUTRANGE;
+								if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+									temp -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
+								y = temp * Math.sin(x * GlobalMembersGadgets.ang2rad);
+								x = temp * Math.cos(x * GlobalMembersGadgets.ang2rad);
+								if (boxwidth >= 0 && boxwidth_is_absolute)
+								{
+									double xlow;
+									double xhigh;
+									coord_type dmy_type = coord_type.INRANGE;
+									this_plot.points[i].z = 0;
+									if (GlobalMembersAxis.axis_array[this_plot.x_axis].log)
+									{
+										double base = GlobalMembersAxis.axis_array[this_plot.x_axis].base;
+										xlow = x * Math.pow(base, -boxwidth / 2.);
+										xhigh = x * Math.pow(base, boxwidth / 2.);
+									}
+									else
+									{
+										xlow = x - boxwidth / 2;
+										xhigh = x + boxwidth / 2;
+									}
+									do
+									{
+										if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+											break;
+										if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
+										{
+											dmy_type = coord_type.UNDEFINED;
+											()0;
+											break;
+										}
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+										{
+											if (xlow < 0.0)
+											{
+												dmy_type = coord_type.UNDEFINED;
+												()0;
+												break;
+											}
+											else if (xlow == 0.0)
+											{
+												this_plot.points[i].xlow = -DefineConstants.VERYLARGE;
+												dmy_type = coord_type.OUTRANGE;
+												()0;
+												break;
+											}
+											else
+											{
+												this_plot.points[i].xlow = (Math.log(xlow) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+											}
+										}
+										else
+											this_plot.points[i].xlow = xlow;
+										if (this_plot.noautoscale)
+											break;
+										if (dmy_type != coord_type.INRANGE)
+											break;
+										if (GlobalMembersAxis.x_axis.getValue() < 0)
+											break;
+										if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xlow;
+										if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xlow;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE;
+												()0;
+												break;
+											}
+										}
+										if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xlow;
+										if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xlow;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE;
+												()0;
+											}
+										}
+									} while (0);
+									dmy_type = coord_type.INRANGE;
+									do
+									{
+										if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+											break;
+										if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
+										{
+											dmy_type = coord_type.UNDEFINED;
+											()0;
+											break;
+										}
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+										{
+											if (xhigh < 0.0)
+											{
+												dmy_type = coord_type.UNDEFINED;
+												()0;
+												break;
+											}
+											else if (xhigh == 0.0)
+											{
+												this_plot.points[i].xhigh = -DefineConstants.VERYLARGE;
+												dmy_type = coord_type.OUTRANGE;
+												()0;
+												break;
+											}
+											else
+											{
+												this_plot.points[i].xhigh = (Math.log(xhigh) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+											}
+										}
+										else
+											this_plot.points[i].xhigh = xhigh;
+										if (this_plot.noautoscale)
+											break;
+										if (dmy_type != coord_type.INRANGE)
+											break;
+										if (GlobalMembersAxis.x_axis.getValue() < 0)
+											break;
+										if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xhigh;
+										if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xhigh;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE;
+												()0;
+												break;
+											}
+										}
+										if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xhigh;
+										if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xhigh;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE;
+												()0;
+											}
+										}
+									} while (0);
+								}
+								temp = y;
+								do
+								{
+									if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+										break;
+									if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
+									{
+										this_plot.points[i].type = coord_type.UNDEFINED;
+										//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+										goto come_here_if_undefined;
+										break;
+									}
+									if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+									{
+										if (x < 0.0)
+										{
+											this_plot.points[i].type = coord_type.UNDEFINED;
+											//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+											goto come_here_if_undefined;
+											break;
+										}
+										else if (x == 0.0)
+										{
+											this_plot.points[i].x = -DefineConstants.VERYLARGE;
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+										else
+										{
+											this_plot.points[i].x = (Math.log(x) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+										}
+									}
+									else
+										this_plot.points[i].x = x;
+									if (this_plot.noautoscale)
+										break;
 									if (this_plot.points[i].type != coord_type.INRANGE)
 										break;
-										if ((int)in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis < 0)
+									if (GlobalMembersAxis.x_axis.getValue() < 0)
+										break;
+									if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+										GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = x;
+									if (x < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+									{
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = x;
+										else
+										{
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
 											break;
-											if (temp < GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_min)
-												GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_min = temp;
-												if (temp < GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].min)
-												{
-													if (GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-														GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].min = temp;
-														else
-														{
-															this_plot.points[i].type = coord_type.OUTRANGE;
-															()0;
-															break;
-														}
-												}
-												if (temp > GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_max)
-													GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_max = temp;
-													if (temp > GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].max)
-													{
-														if (GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-															GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].max = temp;
-															else
-															{
-																this_plot.points[i].type = coord_type.OUTRANGE;
-																()0;
-															}
-													}
-					} while (0);
+										}
+									}
+									if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+										GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = x;
+									if (x > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+									{
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = x;
+										else
+										{
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+										}
+									}
+								} while (0);
+								do
+								{
+									if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
+										break;
+									if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
+									{
+										this_plot.points[i].type = coord_type.UNDEFINED;
+										//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+										goto come_here_if_undefined;
+										break;
+									}
+									if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log)
+									{
+										if (y < 0.0)
+										{
+											this_plot.points[i].type = coord_type.UNDEFINED;
+											//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+											goto come_here_if_undefined;
+											break;
+										}
+										else if (y == 0.0)
+										{
+											this_plot.points[i].y = -DefineConstants.VERYLARGE;
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+										else
+										{
+											this_plot.points[i].y = (Math.log(y) / GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].log_base);
+										}
+									}
+									else
+										this_plot.points[i].y = y;
+									if (this_plot.noautoscale)
+										break;
+									if (this_plot.points[i].type != coord_type.INRANGE)
+										break;
+									if (GlobalMembersAxis.y_axis.getValue() < 0)
+										break;
+									if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min)
+										GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_min = y;
+									if (y < GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min)
+									{
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min = y;
+										else
+										{
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+									}
+									if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max)
+										GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].data_max = y;
+									if (y > GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max)
+									{
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max = y;
+										else
+										{
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+										}
+									}
+								} while (0);
+							} // neither parametric or polar
+							else
+							{
+								/* If non-para, it must be INRANGE */
+								/* logscale ? log(x) : x */
+								this_plot.points[i].x = t;
+								if (boxwidth >= 0 && boxwidth_is_absolute)
+								{
+									double xlow;
+									double xhigh;
+									int dmy_type = coord_type.INRANGE.getValue();
+									this_plot.points[i].z = 0;
+									if (GlobalMembersAxis.axis_array[this_plot.x_axis].log)
+									{
+										double base = GlobalMembersAxis.axis_array[this_plot.x_axis].base;
+										xlow = x * Math.pow(base, -boxwidth / 2.);
+										xhigh = x * Math.pow(base, boxwidth / 2.);
+									}
+									else
+									{
+										xlow = x - boxwidth / 2;
+										xhigh = x + boxwidth / 2;
+									}
+									do
+									{
+										if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+											break;
+										if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
+										{
+											dmy_type = coord_type.UNDEFINED.getValue();
+											()0;
+											break;
+										}
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+										{
+											if (xlow < 0.0)
+											{
+												dmy_type = coord_type.UNDEFINED.getValue();
+												()0;
+												break;
+											}
+											else if (xlow == 0.0)
+											{
+												this_plot.points[i].xlow = -DefineConstants.VERYLARGE;
+												dmy_type = coord_type.OUTRANGE.getValue();
+												()0;
+												break;
+											}
+											else
+											{
+												this_plot.points[i].xlow = (Math.log(xlow) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+											}
+										}
+										else
+											this_plot.points[i].xlow = xlow;
+										if (this_plot.noautoscale)
+											break;
+										if (dmy_type != coord_type.INRANGE.getValue())
+											break;
+										if (GlobalMembersAxis.x_axis.getValue() < 0)
+											break;
+										if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xlow;
+										if (xlow < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xlow;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE.getValue();
+												()0;
+												break;
+											}
+										}
+										if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xlow;
+										if (xlow > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xlow;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE.getValue();
+												()0;
+											}
+										}
+									} while (0);
+									dmy_type = coord_type.INRANGE.getValue();
+									do
+									{
+										if (GlobalMembersAxis.x_axis == DefineConstants.NO_AXIS)
+											break;
+										if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
+										{
+											dmy_type = coord_type.UNDEFINED.getValue();
+											()0;
+											break;
+										}
+										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
+										{
+											if (xhigh < 0.0)
+											{
+												dmy_type = coord_type.UNDEFINED.getValue();
+												()0;
+												break;
+											}
+											else if (xhigh == 0.0)
+											{
+												this_plot.points[i].xhigh = -DefineConstants.VERYLARGE;
+												dmy_type = coord_type.OUTRANGE.getValue();
+												()0;
+												break;
+											}
+											else
+											{
+												this_plot.points[i].xhigh = (Math.log(xhigh) / GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base);
+											}
+										}
+										else
+											this_plot.points[i].xhigh = xhigh;
+										if (this_plot.noautoscale)
+											break;
+										if (dmy_type != coord_type.INRANGE.getValue())
+											break;
+										if (GlobalMembersAxis.x_axis.getValue() < 0)
+											break;
+										if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_min = xhigh;
+										if (xhigh < GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min = xhigh;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE.getValue();
+												()0;
+												break;
+											}
+										}
+										if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max)
+											GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].data_max = xhigh;
+										if (xhigh > GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max)
+										{
+											if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+												GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max = xhigh;
+											else
+											{
+												dmy_type = coord_type.OUTRANGE.getValue();
+												()0;
+											}
+										}
+									} while (0);
+								}
+								do
+								{
+									if (in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
+										break;
+									if (!(temp > -DefineConstants.VERYLARGE && temp < DefineConstants.VERYLARGE))
+									{
+										this_plot.points[i].type = coord_type.UNDEFINED;
+										//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+										goto come_here_if_undefined;
+										break;
+									}
+									if (GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].log)
+									{
+										if (temp < 0.0)
+										{
+											this_plot.points[i].type = coord_type.UNDEFINED;
+											//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+											goto come_here_if_undefined;
+											break;
+										}
+										else if (temp == 0.0)
+										{
+											this_plot.points[i].y = -DefineConstants.VERYLARGE;
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+										else
+										{
+											this_plot.points[i].y = (Math.log(temp) / GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].log_base);
+										}
+									}
+									else
+										this_plot.points[i].y = temp;
+									if (this_plot.noautoscale)
+										break;
+									if (this_plot.points[i].type != coord_type.INRANGE)
+										break;
+									if ((int)in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis < 0)
+										break;
+									if (temp < GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_min)
+										GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_min = temp;
+									if (temp < GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].min)
+									{
+										if (GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+											GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].min = temp;
+										else
+										{
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+											break;
+										}
+									}
+									if (temp > GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_max)
+										GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].data_max = temp;
+									if (temp > GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].max)
+									{
+										if (GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+											GlobalMembersAxis.axis_array[in_parametric ? GlobalMembersAxis.x_axis : GlobalMembersAxis.y_axis].max = temp;
+										else
+										{
+											this_plot.points[i].type = coord_type.OUTRANGE;
+											()0;
+										}
+									}
+								} while (0);
 
-					/* could not use a continue in this case */
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				  come_here_if_undefined:
-					; // ansi requires a statement after a label
+								/* could not use a continue in this case */
+								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+								come_here_if_undefined:
+									; // ansi requires a statement after a label
+							}
+
+						} // loop over samples_1
+						this_plot.p_count = i; // samples_1
+					}
+					/* skip all modifers func / whole of data plots */
+					GlobalMembersCommand.c_token = this_plot.token;
+
+					/* used below */
+					tp_ptr = &(this_plot.next);
+					this_plot = this_plot.next;
 				}
 
-				} // loop over samples_1
-				this_plot.p_count = i; // samples_1
-			}
-			/* skip all modifers func / whole of data plots */
-			GlobalMembersCommand.c_token = this_plot.token;
+				/* Iterate-over-plot mechanism */
+				if (!in_parametric && GlobalMembersParse.next_iteration())
+				{
+					GlobalMembersCommand.c_token = start_token;
+					continue;
+				}
 
-			/* used below */
-			tp_ptr = &(this_plot.next);
-			this_plot = this_plot.next;
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					if (!in_parametric)
+						GlobalMembersParse.check_for_iteration();
+				}
+				else
+					break;
 			}
-
-			/* Iterate-over-plot mechanism */
-			if (!in_parametric && GlobalMembersParse.next_iteration())
+			/* when step debugging, set breakpoint here to get through
+			 * the 'read function' loop above quickly */
+			if (GlobalMembersGadgets.parametric)
 			{
-			GlobalMembersCommand.c_token = start_token;
-			continue;
+				/* Now actually fix the plot pairs to be single plots
+				 * also fixes up polar&&parametric fn plots */
+				GlobalMembersPlot2d.parametric_fixup(first_plot, plot_num);
+				/* we omitted earlier check for range too small */
+				GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, DefineConstants.NULL);
+				if (((int)uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()]) != 0)
+				{
+					GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.SECOND_X_AXIS, DefineConstants.NULL);
+				}
 			}
-
-			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") != 0)
-			{
-			GlobalMembersCommand.c_token++;
-			if (!in_parametric)
-				GlobalMembersParse.check_for_iteration();
-			}
-			else
-			break;
-		}
-		/* when step debugging, set breakpoint here to get through
-		 * the 'read function' loop above quickly */
-		if (GlobalMembersGadgets.parametric)
-		{
-			/* Now actually fix the plot pairs to be single plots
-			 * also fixes up polar&&parametric fn plots */
-			GlobalMembersPlot2d.parametric_fixup(first_plot, plot_num);
-			/* we omitted earlier check for range too small */
-			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_X_AXIS, DefineConstants.NULL);
-			if (((int)uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()]) != 0)
-			{
-			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.SECOND_X_AXIS, DefineConstants.NULL);
-			}
-		}
 		} // some_functions
 
 		/* if first_plot is NULL, we have no functions or data at all. This can
@@ -5074,75 +5076,75 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 
 		if (plot_num == 0 || first_plot == DefineConstants.NULL)
 		{
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "no functions or data to plot");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "no functions or data to plot");
 		}
 
 		if (((int)uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()]) == 0 && ((int)uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()]) == 0)
-		if (first_plot.plot_type == PLOT_TYPE.NODATA)
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "No data in plot");
+			if (first_plot.plot_type == PLOT_TYPE.NODATA)
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "No data in plot");
 
 		if (((int)uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()]) != 0)
 		{
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min == DefineConstants.VERYLARGE)
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "all points undefined!");
-		GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.FIRST_X_AXIS);
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min == DefineConstants.VERYLARGE)
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "all points undefined!");
+			GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.FIRST_X_AXIS);
 		}
 		if (((int)uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()]) != 0)
 		{
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min == DefineConstants.VERYLARGE)
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "all points undefined!");
-		GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_X_AXIS);
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max == -DefineConstants.VERYLARGE || GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min == DefineConstants.VERYLARGE)
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "all points undefined!");
+			GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_X_AXIS);
 		}
 		else
 		{
-		assert uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()];
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
-		if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale) == 0)
-			GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_X_AXIS);
+			assert uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()];
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
+			if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].autoscale) == 0)
+				GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_X_AXIS);
 		}
 		if (((int)uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()]) == 0)
 		{
-		assert uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()];
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min;
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max;
+			assert uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()];
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].min;
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].max;
 		}
 
 
 		if (((int)uses_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()]) != 0)
 		{
-		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Y_AXIS, "all points y value undefined!");
-		GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.FIRST_Y_AXIS);
+			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.FIRST_Y_AXIS, "all points y value undefined!");
+			GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.FIRST_Y_AXIS);
 		}
 		if (((int)uses_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()]) != 0)
 		{
-		GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.SECOND_Y_AXIS, "all points y2 value undefined!");
-		GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_Y_AXIS);
+			GlobalMembersAxis.axis_checked_extend_empty_range(AXIS_INDEX.SECOND_Y_AXIS, "all points y2 value undefined!");
+			GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_Y_AXIS);
 		}
 		else
 		{
-		/* else we want to copy y2 range */
-		assert uses_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min;
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max;
-		/* Log() fixup is only necessary if the range was *not* copied from
-		 * the (already logarithmized) yrange */
-		if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale) == 0)
-			GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_Y_AXIS);
+			/* else we want to copy y2 range */
+			assert uses_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min;
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max;
+			/* Log() fixup is only necessary if the range was *not* copied from
+			 * the (already logarithmized) yrange */
+			if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].autoscale) == 0)
+				GlobalMembersAxis.axis_revert_and_unlog_range(AXIS_INDEX.SECOND_Y_AXIS);
 		}
 		if (((int)uses_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()]) == 0)
 		{
-		assert uses_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()];
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].min;
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].max;
+			assert uses_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()];
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].min;
+			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].max;
 		}
 
 		/* the following ~5 lines were moved from the end of the
@@ -5154,52 +5156,52 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		/* if we get here, all went well, so record this line for replot */
 		if (GlobalMembersCommand.plot_token != -1)
 		{
-		/* note that m_capture also frees the old replot_line */
-	tangible.RefObject<String[]> tempRef_replot_line = new tangible.RefObject<String[]>(GlobalMembersCommand.replot_line);
-		GlobalMembersUtil.m_capture(tempRef_replot_line, GlobalMembersCommand.plot_token, GlobalMembersCommand.c_token - 1);
-		GlobalMembersCommand.replot_line = tempRef_replot_line.argvalue;
-		GlobalMembersCommand.plot_token = -1;
-		GlobalMembersEval.fill_gpval_string("GPVAL_LAST_PLOT", GlobalMembersCommand.replot_line);
+			/* note that m_capture also frees the old replot_line */
+			tangible.RefObject<String[]> tempRef_replot_line = new tangible.RefObject<String[]>(GlobalMembersCommand.replot_line);
+			GlobalMembersUtil.m_capture(tempRef_replot_line, GlobalMembersCommand.plot_token, GlobalMembersCommand.c_token - 1);
+			GlobalMembersCommand.replot_line = tempRef_replot_line.argvalue;
+			GlobalMembersCommand.plot_token = -1;
+			GlobalMembersEval.fill_gpval_string("GPVAL_LAST_PLOT", GlobalMembersCommand.replot_line);
 		}
 
 		if (GlobalMembersGadgets.table_mode)
-		GlobalMembersTabulate.print_table(first_plot, plot_num);
+			GlobalMembersTabulate.print_table(first_plot, plot_num);
 		else
 		{
-		START_LEAK_CHECK(); // check for memory leaks in this routine
+			START_LEAK_CHECK(); // check for memory leaks in this routine
 
-		/* do_plot now uses axis_array[] */
-		GlobalMembersGraphics.do_plot(first_plot, plot_num);
+			/* do_plot now uses axis_array[] */
+			GlobalMembersGraphics.do_plot(first_plot, plot_num);
 
-		END_LEAK_CHECK();
+			END_LEAK_CHECK();
 
-		/* after do_plot(), axis_array[].min and .max
-		 * contain the plotting range actually used (rounded
-		 * to tic marks, not only the min/max data values)
-		 *  --> save them now for writeback if requested
-		 */
-		do {AXIS_INDEX axis; for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++) if (GlobalMembersAxis.axis_array[axis].range_flags & DefineConstants.RANGE_WRITEBACK) {GlobalMembersAxis.set_writeback_min(axis); GlobalMembersAxis.set_writeback_max(axis);}} while (0);
-		/* update GPVAL_ variables available to user */
-		GlobalMembersEval.update_gpval_variables(1);
+			/* after do_plot(), axis_array[].min and .max
+			 * contain the plotting range actually used (rounded
+			 * to tic marks, not only the min/max data values)
+			 *  --> save them now for writeback if requested
+			 */
+			do {AXIS_INDEX axis; for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++) if (GlobalMembersAxis.axis_array[axis].range_flags & DefineConstants.RANGE_WRITEBACK) {GlobalMembersAxis.set_writeback_min(axis); GlobalMembersAxis.set_writeback_max(axis);}} while (0);
+			/* update GPVAL_ variables available to user */
+			GlobalMembersEval.update_gpval_variables(1);
 
-	///#ifdef VOLATILE_REFRESH
-		/* Mark these plots as safe for quick refresh */
-		GlobalMembersGadgets.refresh_nplots = plot_num;
-		GlobalMembersGadgets.refresh_ok = 2;
-	///#endif
+			///#ifdef VOLATILE_REFRESH
+			/* Mark these plots as safe for quick refresh */
+			GlobalMembersGadgets.refresh_nplots = plot_num;
+			GlobalMembersGadgets.refresh_ok = 2;
+			///#endif
 		}
 
 	} // eval_plots
 
-/*
- * The hardest part of this routine is collapsing the FUNC plot types in the
- * list (which are garanteed to occur in (x,y) pairs while preserving the
- * non-FUNC type plots intact.  This means we have to work our way through
- * various lists.  Examples (hand checked): start_plot:F1->F2->NULL ==>
- * F2->NULL start_plot:F1->F2->F3->F4->F5->F6->NULL ==> F2->F4->F6->NULL
- * start_plot:F1->F2->D1->D2->F3->F4->D3->NULL ==> F2->D1->D2->F4->D3->NULL
- *
- */
+	/*
+	 * The hardest part of this routine is collapsing the FUNC plot types in the
+	 * list (which are garanteed to occur in (x,y) pairs while preserving the
+	 * non-FUNC type plots intact.  This means we have to work our way through
+	 * various lists.  Examples (hand checked): start_plot:F1->F2->NULL ==>
+	 * F2->NULL start_plot:F1->F2->F3->F4->F5->F6->NULL ==> F2->F4->F6->NULL
+	 * start_plot:F1->F2->D1->D2->F3->F4->D3->NULL ==> F2->D1->D2->F4->D3->NULL
+	 *
+	 */
 	public static void parametric_fixup(curve_points start_plot, int plot_num)
 	{
 		curve_points xp;
@@ -5229,603 +5231,563 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 
 		while (++curve <= plot_num)
 		{
-		if (xp.plot_type == PLOT_TYPE.FUNC)
-		{
-			/* Here's a FUNC parametric function defined as two parts. */
-			curve_points yp = xp.next;
-
-			--(plot_num);
-
-			assert xp.p_count == yp.p_count;
-
-			/* because syntax is   plot x(t), y(t) axes ..., only
-			 * the y function axes are correct
-			 */
-
-
-			/*
-			 * Go through all the points assigning the y's from xp to be
-			 * the x's for yp. In polar mode, we need to check max's and
-			 * min's as we go.
-			 */
-
-			for (i = 0; i < yp.p_count; ++i)
+			if (xp.plot_type == PLOT_TYPE.FUNC)
 			{
-			if (GlobalMembersGadgets.polar)
-			{
-				double r = yp.points[i].y;
-				double t = xp.points[i].y * GlobalMembersGadgets.ang2rad;
-				double x;
-				double y;
-				if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && r > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
-				yp.points[i].type = coord_type.OUTRANGE;
-				if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+				/* Here's a FUNC parametric function defined as two parts. */
+				curve_points yp = xp.next;
+
+				--(plot_num);
+
+				assert xp.p_count == yp.p_count;
+
+				/* because syntax is   plot x(t), y(t) axes ..., only
+				 * the y function axes are correct
+				 */
+
+
+				/*
+				 * Go through all the points assigning the y's from xp to be
+				 * the x's for yp. In polar mode, we need to check max's and
+				 * min's as we go.
+				 */
+
+				for (i = 0; i < yp.p_count; ++i)
 				{
-				/* store internally as if plotting r(t)-rmin */
-				r -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
-				}
-				x = r * Math.cos(t);
-				y = r * Math.sin(t);
-				if (boxwidth >= 0 && boxwidth_is_absolute)
-				{
-				int dmy_type = coord_type.INRANGE.getValue();
-				do
-				{
-					if (xp.x_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(x - boxwidth / 2 > -DefineConstants.VERYLARGE && x - boxwidth / 2 < DefineConstants.VERYLARGE))
+					if (GlobalMembersGadgets.polar)
+					{
+						double r = yp.points[i].y;
+						double t = xp.points[i].y * GlobalMembersGadgets.ang2rad;
+						double x;
+						double y;
+						if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && r > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+							yp.points[i].type = coord_type.OUTRANGE;
+						if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
 						{
-							dmy_type = coord_type.UNDEFINED.getValue();
-							()0;
-							break;
+							/* store internally as if plotting r(t)-rmin */
+							r -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
 						}
-						if (GlobalMembersAxis.axis_array[xp.x_axis].log)
+						x = r * Math.cos(t);
+						y = r * Math.sin(t);
+						if (boxwidth >= 0 && boxwidth_is_absolute)
 						{
-							if (x - boxwidth / 2 < 0.0)
+							int dmy_type = coord_type.INRANGE.getValue();
+							do
 							{
-								dmy_type = coord_type.UNDEFINED.getValue();
-								()0;
-								break;
-							}
-							else if (x - boxwidth / 2 == 0.0)
-							{
-								yp.points[i].xlow = -DefineConstants.VERYLARGE;
-								dmy_type = coord_type.OUTRANGE.getValue();
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].xlow = (Math.log(x - boxwidth / 2) / GlobalMembersAxis.axis_array[xp.x_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].xlow = x - boxwidth / 2;
-							if (xp.noautoscale)
-								break;
+								if (xp.x_axis == DefineConstants.NO_AXIS)
+									break;
+								if (!(x - boxwidth / 2 > -DefineConstants.VERYLARGE && x - boxwidth / 2 < DefineConstants.VERYLARGE))
+								{
+									dmy_type = coord_type.UNDEFINED.getValue();
+									break;
+								}
+								if (GlobalMembersAxis.axis_array[xp.x_axis].log)
+								{
+									if (x - boxwidth / 2 < 0.0)
+									{
+										dmy_type = coord_type.UNDEFINED.getValue();
+										break;
+									}
+									else if (x - boxwidth / 2 == 0.0)
+									{
+										yp.points[i].xlow = -DefineConstants.VERYLARGE;
+										dmy_type = coord_type.OUTRANGE.getValue();
+										break;
+									}
+									else
+									{
+										yp.points[i].xlow = (Math.log(x - boxwidth / 2) / GlobalMembersAxis.axis_array[xp.x_axis].log_base);
+									}
+								}
+								else
+									yp.points[i].xlow = x - boxwidth / 2;
+								if (xp.noautoscale)
+									break;
 								if (dmy_type != coord_type.INRANGE.getValue())
 									break;
-									if ((int)xp.x_axis < 0)
+								if ((int)xp.x_axis < 0)
+									break;
+								if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].data_min)
+									GlobalMembersAxis.axis_array[xp.x_axis].data_min = x - boxwidth / 2;
+								if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].min)
+								{
+									if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+										GlobalMembersAxis.axis_array[xp.x_axis].min = x - boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
 										break;
-										if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].data_min)
-											GlobalMembersAxis.axis_array[xp.x_axis].data_min = x - boxwidth / 2;
-											if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[xp.x_axis].min = x - boxwidth / 2;
-													else
-													{
-														dmy_type = coord_type.OUTRANGE.getValue();
-														()0;
-														break;
-													}
-											}
-											if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].data_max)
-												GlobalMembersAxis.axis_array[xp.x_axis].data_max = x - boxwidth / 2;
-												if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[xp.x_axis].max = x - boxwidth / 2;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE.getValue();
-															()0;
-														}
-												}
-				} while (0);
-				dmy_type = coord_type.INRANGE.getValue();
-				do
-				{
-					if (xp.x_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(x + boxwidth / 2 > -DefineConstants.VERYLARGE && x + boxwidth / 2 < DefineConstants.VERYLARGE))
-						{
-							dmy_type = coord_type.UNDEFINED.getValue();
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[xp.x_axis].log)
-						{
-							if (x + boxwidth / 2 < 0.0)
+									}
+								}
+								if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].data_max)
+									GlobalMembersAxis.axis_array[xp.x_axis].data_max = x - boxwidth / 2;
+								if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].max)
+								{
+									if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+										GlobalMembersAxis.axis_array[xp.x_axis].max = x - boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
+									}
+								}
+							} while (0);
+							dmy_type = coord_type.INRANGE.getValue();
+							do
 							{
-								dmy_type = coord_type.UNDEFINED.getValue();
-								()0;
-								break;
-							}
-							else if (x + boxwidth / 2 == 0.0)
-							{
-								yp.points[i].xhigh = -DefineConstants.VERYLARGE;
-								dmy_type = coord_type.OUTRANGE.getValue();
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].xhigh = (Math.log(x + boxwidth / 2) / GlobalMembersAxis.axis_array[xp.x_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].xhigh = x + boxwidth / 2;
-							if (xp.noautoscale)
-								break;
+								if (xp.x_axis == DefineConstants.NO_AXIS)
+									break;
+								if (!(x + boxwidth / 2 > -DefineConstants.VERYLARGE && x + boxwidth / 2 < DefineConstants.VERYLARGE))
+								{
+									dmy_type = coord_type.UNDEFINED.getValue();
+									break;
+								}
+								if (GlobalMembersAxis.axis_array[xp.x_axis].log)
+								{
+									if (x + boxwidth / 2 < 0.0)
+									{
+										dmy_type = coord_type.UNDEFINED.getValue();
+										break;
+									}
+									else if (x + boxwidth / 2 == 0.0)
+									{
+										yp.points[i].xhigh = -DefineConstants.VERYLARGE;
+										dmy_type = coord_type.OUTRANGE.getValue();
+										break;
+									}
+									else
+									{
+										yp.points[i].xhigh = (Math.log(x + boxwidth / 2) / GlobalMembersAxis.axis_array[xp.x_axis].log_base);
+									}
+								}
+								else
+									yp.points[i].xhigh = x + boxwidth / 2;
+								if (xp.noautoscale)
+									break;
 								if (dmy_type != coord_type.INRANGE.getValue())
 									break;
-									if ((int)xp.x_axis < 0)
+								if ((int)xp.x_axis < 0)
+									break;
+								if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].data_min)
+									GlobalMembersAxis.axis_array[xp.x_axis].data_min = x + boxwidth / 2;
+								if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].min)
+								{
+									if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+										GlobalMembersAxis.axis_array[xp.x_axis].min = x + boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
 										break;
-										if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].data_min)
-											GlobalMembersAxis.axis_array[xp.x_axis].data_min = x + boxwidth / 2;
-											if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[xp.x_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[xp.x_axis].min = x + boxwidth / 2;
-													else
-													{
-														dmy_type = coord_type.OUTRANGE.getValue();
-														()0;
-														break;
-													}
-											}
-											if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].data_max)
-												GlobalMembersAxis.axis_array[xp.x_axis].data_max = x + boxwidth / 2;
-												if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[xp.x_axis].max = x + boxwidth / 2;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE.getValue();
-															()0;
-														}
-												}
-				} while (0);
+									}
+								}
+								if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].data_max)
+									GlobalMembersAxis.axis_array[xp.x_axis].data_max = x + boxwidth / 2;
+								if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[xp.x_axis].max)
+								{
+									if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+										GlobalMembersAxis.axis_array[xp.x_axis].max = x + boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
+									}
+								}
+							} while (0);
+						}
+						/* we hadn't done logs when we stored earlier */
+						do
+						{
+							if (xp.x_axis == DefineConstants.NO_AXIS)
+								break;
+							if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
+							{
+								yp.points[i].type = coord_type.UNDEFINED;
+								break;
+							}
+							if (GlobalMembersAxis.axis_array[xp.x_axis].log)
+							{
+								if (x < 0.0)
+								{
+									yp.points[i].type = coord_type.UNDEFINED;
+									break;
+								}
+								else if (x == 0.0)
+								{
+									yp.points[i].x = -DefineConstants.VERYLARGE;
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+								else
+								{
+									yp.points[i].x = (Math.log(x) / GlobalMembersAxis.axis_array[xp.x_axis].log_base);
+								}
+							}
+							else
+								yp.points[i].x = x;
+							if (xp.noautoscale)
+								break;
+							if (yp.points[i].type != coord_type.INRANGE)
+								break;
+							if ((int)xp.x_axis < 0)
+								break;
+							if (x < GlobalMembersAxis.axis_array[xp.x_axis].data_min)
+								GlobalMembersAxis.axis_array[xp.x_axis].data_min = x;
+							if (x < GlobalMembersAxis.axis_array[xp.x_axis].min)
+							{
+								if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[xp.x_axis].min = x;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+							}
+							if (x > GlobalMembersAxis.axis_array[xp.x_axis].data_max)
+								GlobalMembersAxis.axis_array[xp.x_axis].data_max = x;
+							if (x > GlobalMembersAxis.axis_array[xp.x_axis].max)
+							{
+								if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[xp.x_axis].max = x;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+								}
+							}
+						} while (0);
+						do
+						{
+							if (xp.y_axis == DefineConstants.NO_AXIS)
+								break;
+							if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
+							{
+								yp.points[i].type = coord_type.UNDEFINED;
+								break;
+							}
+							if (GlobalMembersAxis.axis_array[xp.y_axis].log)
+							{
+								if (y < 0.0)
+								{
+									yp.points[i].type = coord_type.UNDEFINED;
+									break;
+								}
+								else if (y == 0.0)
+								{
+									yp.points[i].y = -DefineConstants.VERYLARGE;
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+								else
+								{
+									yp.points[i].y = (Math.log(y) / GlobalMembersAxis.axis_array[xp.y_axis].log_base);
+								}
+							}
+							else
+								yp.points[i].y = y;
+							if (xp.noautoscale)
+								break;
+							if (yp.points[i].type != coord_type.INRANGE)
+								break;
+							if ((int)xp.y_axis < 0)
+								break;
+							if (y < GlobalMembersAxis.axis_array[xp.y_axis].data_min)
+								GlobalMembersAxis.axis_array[xp.y_axis].data_min = y;
+							if (y < GlobalMembersAxis.axis_array[xp.y_axis].min)
+							{
+								if (GlobalMembersAxis.axis_array[xp.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[xp.y_axis].min = y;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+							}
+							if (y > GlobalMembersAxis.axis_array[xp.y_axis].data_max)
+								GlobalMembersAxis.axis_array[xp.y_axis].data_max = y;
+							if (y > GlobalMembersAxis.axis_array[xp.y_axis].max)
+							{
+								if (GlobalMembersAxis.axis_array[xp.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[xp.y_axis].max = y;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+								}
+							}
+						} while (0);
+					}
+					else
+					{
+						double x = xp.points[i].y;
+						double y = yp.points[i].y;
+
+						if (boxwidth >= 0 && boxwidth_is_absolute)
+						{
+							int dmy_type = coord_type.INRANGE.getValue();
+							do
+							{
+								if (yp.x_axis == DefineConstants.NO_AXIS)
+									break;
+								if (!(x - boxwidth / 2 > -DefineConstants.VERYLARGE && x - boxwidth / 2 < DefineConstants.VERYLARGE))
+								{
+									dmy_type = coord_type.UNDEFINED.getValue();
+									break;
+								}
+								if (GlobalMembersAxis.axis_array[yp.x_axis].log)
+								{
+									if (x - boxwidth / 2 < 0.0)
+									{
+										dmy_type = coord_type.UNDEFINED.getValue();
+										break;
+									}
+									else if (x - boxwidth / 2 == 0.0)
+									{
+										yp.points[i].xlow = -DefineConstants.VERYLARGE;
+										dmy_type = coord_type.OUTRANGE.getValue();
+										break;
+									}
+									else
+									{
+										yp.points[i].xlow = (Math.log(x - boxwidth / 2) / GlobalMembersAxis.axis_array[yp.x_axis].log_base);
+									}
+								}
+								else
+									yp.points[i].xlow = x - boxwidth / 2;
+								if (xp.noautoscale)
+									break;
+								if (dmy_type != coord_type.INRANGE.getValue())
+									break;
+								if ((int)yp.x_axis < 0)
+									break;
+								if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].data_min)
+									GlobalMembersAxis.axis_array[yp.x_axis].data_min = x - boxwidth / 2;
+								if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].min)
+								{
+									if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+										GlobalMembersAxis.axis_array[yp.x_axis].min = x - boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
+										break;
+									}
+								}
+								if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].data_max)
+									GlobalMembersAxis.axis_array[yp.x_axis].data_max = x - boxwidth / 2;
+								if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].max)
+								{
+									if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+										GlobalMembersAxis.axis_array[yp.x_axis].max = x - boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
+									}
+								}
+							} while (0);
+							dmy_type = coord_type.INRANGE.getValue();
+							do
+							{
+								if (yp.x_axis == DefineConstants.NO_AXIS)
+									break;
+								if (!(x + boxwidth / 2 > -DefineConstants.VERYLARGE && x + boxwidth / 2 < DefineConstants.VERYLARGE))
+								{
+									dmy_type = coord_type.UNDEFINED.getValue();
+									break;
+								}
+								if (GlobalMembersAxis.axis_array[yp.x_axis].log)
+								{
+									if (x + boxwidth / 2 < 0.0)
+									{
+										dmy_type = coord_type.UNDEFINED.getValue();
+										break;
+									}
+									else if (x + boxwidth / 2 == 0.0)
+									{
+										yp.points[i].xhigh = -DefineConstants.VERYLARGE;
+										dmy_type = coord_type.OUTRANGE.getValue();
+										break;
+									}
+									else
+									{
+										yp.points[i].xhigh = (Math.log(x + boxwidth / 2) / GlobalMembersAxis.axis_array[yp.x_axis].log_base);
+									}
+								}
+								else
+									yp.points[i].xhigh = x + boxwidth / 2;
+								if (xp.noautoscale)
+									break;
+								if (dmy_type != coord_type.INRANGE.getValue())
+									break;
+								if ((int)yp.x_axis < 0)
+									break;
+								if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].data_min)
+									GlobalMembersAxis.axis_array[yp.x_axis].data_min = x + boxwidth / 2;
+								if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].min)
+								{
+									if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+										GlobalMembersAxis.axis_array[yp.x_axis].min = x + boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
+										break;
+									}
+								}
+								if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].data_max)
+									GlobalMembersAxis.axis_array[yp.x_axis].data_max = x + boxwidth / 2;
+								if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].max)
+								{
+									if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+										GlobalMembersAxis.axis_array[yp.x_axis].max = x + boxwidth / 2;
+									else
+									{
+										dmy_type = coord_type.OUTRANGE.getValue();
+									}
+								}
+							} while (0);
+						}
+						do
+						{
+							if (yp.x_axis == DefineConstants.NO_AXIS)
+								break;
+							if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
+							{
+								yp.points[i].type = coord_type.UNDEFINED;
+								break;
+							}
+							if (GlobalMembersAxis.axis_array[yp.x_axis].log)
+							{
+								if (x < 0.0)
+								{
+									yp.points[i].type = coord_type.UNDEFINED;
+									break;
+								}
+								else if (x == 0.0)
+								{
+									yp.points[i].x = -DefineConstants.VERYLARGE;
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+								else
+								{
+									yp.points[i].x = (Math.log(x) / GlobalMembersAxis.axis_array[yp.x_axis].log_base);
+								}
+							}
+							else
+								yp.points[i].x = x;
+							if (xp.noautoscale)
+								break;
+							if (yp.points[i].type != coord_type.INRANGE)
+								break;
+							if ((int)yp.x_axis < 0)
+								break;
+							if (x < GlobalMembersAxis.axis_array[yp.x_axis].data_min)
+								GlobalMembersAxis.axis_array[yp.x_axis].data_min = x;
+							if (x < GlobalMembersAxis.axis_array[yp.x_axis].min)
+							{
+								if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[yp.x_axis].min = x;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+							}
+							if (x > GlobalMembersAxis.axis_array[yp.x_axis].data_max)
+								GlobalMembersAxis.axis_array[yp.x_axis].data_max = x;
+							if (x > GlobalMembersAxis.axis_array[yp.x_axis].max)
+							{
+								if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[yp.x_axis].max = x;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+								}
+							}
+						} while (0);
+						do
+						{
+							if (yp.y_axis == DefineConstants.NO_AXIS)
+								break;
+							if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
+							{
+								yp.points[i].type = coord_type.UNDEFINED;
+								break;
+							}
+							if (GlobalMembersAxis.axis_array[yp.y_axis].log)
+							{
+								if (y < 0.0)
+								{
+									yp.points[i].type = coord_type.UNDEFINED;
+									break;
+								}
+								else if (y == 0.0)
+								{
+									yp.points[i].y = -DefineConstants.VERYLARGE;
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+								else
+								{
+									yp.points[i].y = (Math.log(y) / GlobalMembersAxis.axis_array[yp.y_axis].log_base);
+								}
+							}
+							else
+								yp.points[i].y = y;
+							if (xp.noautoscale)
+								break;
+							if (yp.points[i].type != coord_type.INRANGE)
+								break;
+							if ((int)yp.y_axis < 0)
+								break;
+							if (y < GlobalMembersAxis.axis_array[yp.y_axis].data_min)
+								GlobalMembersAxis.axis_array[yp.y_axis].data_min = y;
+							if (y < GlobalMembersAxis.axis_array[yp.y_axis].min)
+							{
+								if (GlobalMembersAxis.axis_array[yp.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									GlobalMembersAxis.axis_array[yp.y_axis].min = y;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+									break;
+								}
+							}
+							if (y > GlobalMembersAxis.axis_array[yp.y_axis].data_max)
+								GlobalMembersAxis.axis_array[yp.y_axis].data_max = y;
+							if (y > GlobalMembersAxis.axis_array[yp.y_axis].max)
+							{
+								if (GlobalMembersAxis.axis_array[yp.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									GlobalMembersAxis.axis_array[yp.y_axis].max = y;
+								else
+								{
+									yp.points[i].type = coord_type.OUTRANGE;
+								}
+							}
+						} while (0);
+					}
 				}
-				/* we hadn't done logs when we stored earlier */
-				do
+
+				/* Ok, fix up the title to include both the xp and yp plots. */
+				if (xp.title != null && xp.title.charAt(0) != '\0' && yp.title != null)
 				{
-					if (xp.x_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
-						{
-							yp.points[i].type = coord_type.UNDEFINED;
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[xp.x_axis].log)
-						{
-							if (x < 0.0)
-							{
-								yp.points[i].type = coord_type.UNDEFINED;
-								()0;
-								break;
-							}
-							else if (x == 0.0)
-							{
-								yp.points[i].x = -DefineConstants.VERYLARGE;
-								yp.points[i].type = coord_type.OUTRANGE;
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].x = (Math.log(x) / GlobalMembersAxis.axis_array[xp.x_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].x = x;
-							if (xp.noautoscale)
-								break;
-								if (yp.points[i].type != coord_type.INRANGE)
-									break;
-									if ((int)xp.x_axis < 0)
-										break;
-										if (x < GlobalMembersAxis.axis_array[xp.x_axis].data_min)
-											GlobalMembersAxis.axis_array[xp.x_axis].data_min = x;
-											if (x < GlobalMembersAxis.axis_array[xp.x_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[xp.x_axis].min = x;
-													else
-													{
-														yp.points[i].type = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (x > GlobalMembersAxis.axis_array[xp.x_axis].data_max)
-												GlobalMembersAxis.axis_array[xp.x_axis].data_max = x;
-												if (x > GlobalMembersAxis.axis_array[xp.x_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[xp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[xp.x_axis].max = x;
-														else
-														{
-															yp.points[i].type = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
-				do
-				{
-					if (xp.y_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
-						{
-							yp.points[i].type = coord_type.UNDEFINED;
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[xp.y_axis].log)
-						{
-							if (y < 0.0)
-							{
-								yp.points[i].type = coord_type.UNDEFINED;
-								()0;
-								break;
-							}
-							else if (y == 0.0)
-							{
-								yp.points[i].y = -DefineConstants.VERYLARGE;
-								yp.points[i].type = coord_type.OUTRANGE;
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].y = (Math.log(y) / GlobalMembersAxis.axis_array[xp.y_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].y = y;
-							if (xp.noautoscale)
-								break;
-								if (yp.points[i].type != coord_type.INRANGE)
-									break;
-									if ((int)xp.y_axis < 0)
-										break;
-										if (y < GlobalMembersAxis.axis_array[xp.y_axis].data_min)
-											GlobalMembersAxis.axis_array[xp.y_axis].data_min = y;
-											if (y < GlobalMembersAxis.axis_array[xp.y_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[xp.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[xp.y_axis].min = y;
-													else
-													{
-														yp.points[i].type = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (y > GlobalMembersAxis.axis_array[xp.y_axis].data_max)
-												GlobalMembersAxis.axis_array[xp.y_axis].data_max = y;
-												if (y > GlobalMembersAxis.axis_array[xp.y_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[xp.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[xp.y_axis].max = y;
-														else
-														{
-															yp.points[i].type = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
-			}
+					tlen = yp.title.length() + xp.title.length() + 3;
+					new_title = GlobalMembersAlloc.gp_alloc(tlen, "string");
+					new_title = xp.title;
+					new_title += ", ";
+					new_title += yp.title;
+					//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+					free(yp.title);
+					yp.title = new_title;
+				}
+				/* move xp to head of free list */
+				xp.next = free_list;
+				free_list = xp;
+
+				/* append yp to new_list */
+				last_pointer = yp;
+				last_pointer = &(yp.next);
+				xp = yp.next;
+
+			} // data plot
 			else
 			{
-				double x = xp.points[i].y;
-				double y = yp.points[i].y;
-
-				if (boxwidth >= 0 && boxwidth_is_absolute)
-				{
-				int dmy_type = coord_type.INRANGE.getValue();
-				do
-				{
-					if (yp.x_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(x - boxwidth / 2 > -DefineConstants.VERYLARGE && x - boxwidth / 2 < DefineConstants.VERYLARGE))
-						{
-							dmy_type = coord_type.UNDEFINED.getValue();
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[yp.x_axis].log)
-						{
-							if (x - boxwidth / 2 < 0.0)
-							{
-								dmy_type = coord_type.UNDEFINED.getValue();
-								()0;
-								break;
-							}
-							else if (x - boxwidth / 2 == 0.0)
-							{
-								yp.points[i].xlow = -DefineConstants.VERYLARGE;
-								dmy_type = coord_type.OUTRANGE.getValue();
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].xlow = (Math.log(x - boxwidth / 2) / GlobalMembersAxis.axis_array[yp.x_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].xlow = x - boxwidth / 2;
-							if (xp.noautoscale)
-								break;
-								if (dmy_type != coord_type.INRANGE.getValue())
-									break;
-									if ((int)yp.x_axis < 0)
-										break;
-										if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].data_min)
-											GlobalMembersAxis.axis_array[yp.x_axis].data_min = x - boxwidth / 2;
-											if (x - boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[yp.x_axis].min = x - boxwidth / 2;
-													else
-													{
-														dmy_type = coord_type.OUTRANGE.getValue();
-														()0;
-														break;
-													}
-											}
-											if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].data_max)
-												GlobalMembersAxis.axis_array[yp.x_axis].data_max = x - boxwidth / 2;
-												if (x - boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[yp.x_axis].max = x - boxwidth / 2;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE.getValue();
-															()0;
-														}
-												}
-				} while (0);
-				dmy_type = coord_type.INRANGE.getValue();
-				do
-				{
-					if (yp.x_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(x + boxwidth / 2 > -DefineConstants.VERYLARGE && x + boxwidth / 2 < DefineConstants.VERYLARGE))
-						{
-							dmy_type = coord_type.UNDEFINED.getValue();
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[yp.x_axis].log)
-						{
-							if (x + boxwidth / 2 < 0.0)
-							{
-								dmy_type = coord_type.UNDEFINED.getValue();
-								()0;
-								break;
-							}
-							else if (x + boxwidth / 2 == 0.0)
-							{
-								yp.points[i].xhigh = -DefineConstants.VERYLARGE;
-								dmy_type = coord_type.OUTRANGE.getValue();
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].xhigh = (Math.log(x + boxwidth / 2) / GlobalMembersAxis.axis_array[yp.x_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].xhigh = x + boxwidth / 2;
-							if (xp.noautoscale)
-								break;
-								if (dmy_type != coord_type.INRANGE.getValue())
-									break;
-									if ((int)yp.x_axis < 0)
-										break;
-										if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].data_min)
-											GlobalMembersAxis.axis_array[yp.x_axis].data_min = x + boxwidth / 2;
-											if (x + boxwidth / 2 < GlobalMembersAxis.axis_array[yp.x_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[yp.x_axis].min = x + boxwidth / 2;
-													else
-													{
-														dmy_type = coord_type.OUTRANGE.getValue();
-														()0;
-														break;
-													}
-											}
-											if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].data_max)
-												GlobalMembersAxis.axis_array[yp.x_axis].data_max = x + boxwidth / 2;
-												if (x + boxwidth / 2 > GlobalMembersAxis.axis_array[yp.x_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[yp.x_axis].max = x + boxwidth / 2;
-														else
-														{
-															dmy_type = coord_type.OUTRANGE.getValue();
-															()0;
-														}
-												}
-				} while (0);
-				}
-				do
-				{
-					if (yp.x_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(x > -DefineConstants.VERYLARGE && x < DefineConstants.VERYLARGE))
-						{
-							yp.points[i].type = coord_type.UNDEFINED;
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[yp.x_axis].log)
-						{
-							if (x < 0.0)
-							{
-								yp.points[i].type = coord_type.UNDEFINED;
-								()0;
-								break;
-							}
-							else if (x == 0.0)
-							{
-								yp.points[i].x = -DefineConstants.VERYLARGE;
-								yp.points[i].type = coord_type.OUTRANGE;
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].x = (Math.log(x) / GlobalMembersAxis.axis_array[yp.x_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].x = x;
-							if (xp.noautoscale)
-								break;
-								if (yp.points[i].type != coord_type.INRANGE)
-									break;
-									if ((int)yp.x_axis < 0)
-										break;
-										if (x < GlobalMembersAxis.axis_array[yp.x_axis].data_min)
-											GlobalMembersAxis.axis_array[yp.x_axis].data_min = x;
-											if (x < GlobalMembersAxis.axis_array[yp.x_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[yp.x_axis].min = x;
-													else
-													{
-														yp.points[i].type = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (x > GlobalMembersAxis.axis_array[yp.x_axis].data_max)
-												GlobalMembersAxis.axis_array[yp.x_axis].data_max = x;
-												if (x > GlobalMembersAxis.axis_array[yp.x_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[yp.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[yp.x_axis].max = x;
-														else
-														{
-															yp.points[i].type = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
-				do
-				{
-					if (yp.y_axis == DefineConstants.NO_AXIS)
-						break;
-						if (!(y > -DefineConstants.VERYLARGE && y < DefineConstants.VERYLARGE))
-						{
-							yp.points[i].type = coord_type.UNDEFINED;
-							()0;
-							break;
-						}
-						if (GlobalMembersAxis.axis_array[yp.y_axis].log)
-						{
-							if (y < 0.0)
-							{
-								yp.points[i].type = coord_type.UNDEFINED;
-								()0;
-								break;
-							}
-							else if (y == 0.0)
-							{
-								yp.points[i].y = -DefineConstants.VERYLARGE;
-								yp.points[i].type = coord_type.OUTRANGE;
-								()0;
-								break;
-							}
-							else
-							{
-								yp.points[i].y = (Math.log(y) / GlobalMembersAxis.axis_array[yp.y_axis].log_base);
-							}
-						}
-						else
-							yp.points[i].y = y;
-							if (xp.noautoscale)
-								break;
-								if (yp.points[i].type != coord_type.INRANGE)
-									break;
-									if ((int)yp.y_axis < 0)
-										break;
-										if (y < GlobalMembersAxis.axis_array[yp.y_axis].data_min)
-											GlobalMembersAxis.axis_array[yp.y_axis].data_min = y;
-											if (y < GlobalMembersAxis.axis_array[yp.y_axis].min)
-											{
-												if (GlobalMembersAxis.axis_array[yp.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-													GlobalMembersAxis.axis_array[yp.y_axis].min = y;
-													else
-													{
-														yp.points[i].type = coord_type.OUTRANGE;
-														()0;
-														break;
-													}
-											}
-											if (y > GlobalMembersAxis.axis_array[yp.y_axis].data_max)
-												GlobalMembersAxis.axis_array[yp.y_axis].data_max = y;
-												if (y > GlobalMembersAxis.axis_array[yp.y_axis].max)
-												{
-													if (GlobalMembersAxis.axis_array[yp.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-														GlobalMembersAxis.axis_array[yp.y_axis].max = y;
-														else
-														{
-															yp.points[i].type = coord_type.OUTRANGE;
-															()0;
-														}
-												}
-				} while (0);
+				assert last_pointer == xp;
+				last_pointer = &(xp.next);
+				xp = xp.next;
 			}
-			}
-
-			/* Ok, fix up the title to include both the xp and yp plots. */
-			if (xp.title != null && xp.title.charAt(0) != '\0' && yp.title != null)
-			{
-			tlen = yp.title.length() + xp.title.length() + 3;
-			new_title = GlobalMembersAlloc.gp_alloc(tlen, "string");
-			new_title = xp.title;
-			new_title += ", ";
-			new_title += yp.title;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(yp.title);
-			yp.title = new_title;
-			}
-			/* move xp to head of free list */
-			xp.next = free_list;
-			free_list = xp;
-
-			/* append yp to new_list */
-			last_pointer = yp;
-			last_pointer = &(yp.next);
-			xp = yp.next;
-
-		} // data plot
-		else
-		{
-			assert last_pointer == xp;
-			last_pointer = &(xp.next);
-			xp = xp.next;
-		}
 		} // loop over plots
 
 		first_plot = new_list;
@@ -5834,37 +5796,37 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		last_pointer = free_list;
 	}
 
-/* Autoscaling of box plots cuts off half of the box on each end. */
-/* Add a half-boxwidth to the range in this case.  EAM Aug 2007   */
+	/* Autoscaling of box plots cuts off half of the box on each end. */
+	/* Add a half-boxwidth to the range in this case.  EAM Aug 2007   */
 	public static void box_range_fiddling(curve_points plot)
 	{
 		double xlow;
 		double xhigh;
 
-		if (GlobalMembersAxis.axis_array[plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+		if ((GlobalMembersAxis.axis_array[plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 		{
-		if (plot.points[0].type != coord_type.UNDEFINED && plot.points[1].type != coord_type.UNDEFINED)
-		{
-			xlow = plot.points[0].x - (plot.points[1].x - plot.points[0].x) / 2.;
-			if (GlobalMembersAxis.axis_array[plot.x_axis].min > xlow)
-			GlobalMembersAxis.axis_array[plot.x_axis].min = xlow;
-		}
+			if (plot.points[0].type != coord_type.UNDEFINED && plot.points[1].type != coord_type.UNDEFINED)
+			{
+				xlow = plot.points[0].x - (plot.points[1].x - plot.points[0].x) / 2.;
+				if (GlobalMembersAxis.axis_array[plot.x_axis].min > xlow)
+					GlobalMembersAxis.axis_array[plot.x_axis].min = xlow;
+			}
 		}
 		if (GlobalMembersAxis.axis_array[plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
 		{
-		int i = plot.p_count - 1;
-		if (plot.points[i].type != coord_type.UNDEFINED && plot.points[i - 1].type != coord_type.UNDEFINED)
-		{
-			xhigh = plot.points[i].x + (plot.points[i].x - plot.points[i - 1].x) / 2.;
-			if (GlobalMembersAxis.axis_array[plot.x_axis].max < xhigh)
-			GlobalMembersAxis.axis_array[plot.x_axis].max = xhigh;
-		}
+			int i = plot.p_count - 1;
+			if (plot.points[i].type != coord_type.UNDEFINED && plot.points[i - 1].type != coord_type.UNDEFINED)
+			{
+				xhigh = plot.points[i].x + (plot.points[i].x - plot.points[i - 1].x) / 2.;
+				if (GlobalMembersAxis.axis_array[plot.x_axis].max < xhigh)
+					GlobalMembersAxis.axis_array[plot.x_axis].max = xhigh;
+			}
 		}
 	}
 
-/* Since the stored x values for histogrammed data do not correspond exactly */
-/* to the eventual x coordinates, we need to modify the x axis range bounds. */
-/* Also the two stacked histogram modes need adjustment of the y axis bounds.*/
+	/* Since the stored x values for histogrammed data do not correspond exactly */
+	/* to the eventual x coordinates, we need to modify the x axis range bounds. */
+	/* Also the two stacked histogram modes need adjustment of the y axis bounds.*/
 	public static void histogram_range_fiddling(curve_points plot)
 	{
 		double xlow;
@@ -5879,44 +5841,44 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 		case HT_STACKED_IN_LAYERS:
 			if (GlobalMembersAxis.axis_array[plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
 			{
-			if (plot.histogram_sequence == 0)
-			{
-				if (stackheight != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(stackheight);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				stackheight = GlobalMembersAlloc.gp_alloc(plot.p_count * sizeof(GlobalMembersMouse.struct coordinate), "stackheight array");
-				for (stack_count = 0; stack_count < plot.p_count; stack_count++)
+				if (plot.histogram_sequence == 0)
 				{
-				stackheight[stack_count].yhigh = 0;
-				stackheight[stack_count].ylow = 0;
+					if (stackheight != null)
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(stackheight);
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					stackheight = GlobalMembersAlloc.gp_alloc(plot.p_count * sizeof(GlobalMembersMouse.struct coordinate), "stackheight array");
+					for (stack_count = 0; stack_count < plot.p_count; stack_count++)
+					{
+						stackheight[stack_count].yhigh = 0;
+						stackheight[stack_count].ylow = 0;
+					}
 				}
-			}
-			else if (plot.p_count > stack_count)
-			{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				stackheight = GlobalMembersAlloc.gp_realloc(stackheight, plot.p_count * sizeof(GlobalMembersMouse.struct coordinate), "stackheight array");
-				for (; stack_count < plot.p_count; stack_count++)
+				else if (plot.p_count > stack_count)
 				{
-				stackheight[stack_count].yhigh = 0;
-				stackheight[stack_count].ylow = 0;
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					stackheight = GlobalMembersAlloc.gp_realloc(stackheight, plot.p_count * sizeof(GlobalMembersMouse.struct coordinate), "stackheight array");
+					for (; stack_count < plot.p_count; stack_count++)
+					{
+						stackheight[stack_count].yhigh = 0;
+						stackheight[stack_count].ylow = 0;
+					}
 				}
-			}
-			for (i = 0; i < stack_count; i++)
-			{
-				if (plot.points[i].type == coord_type.UNDEFINED)
-				continue;
-				if (plot.points[i].y >= 0)
-				stackheight[i].yhigh += plot.points[i].y;
-				else
-				stackheight[i].ylow += plot.points[i].y;
+				for (i = 0; i < stack_count; i++)
+				{
+					if (plot.points[i].type == coord_type.UNDEFINED)
+						continue;
+					if (plot.points[i].y >= 0)
+						stackheight[i].yhigh += plot.points[i].y;
+					else
+						stackheight[i].ylow += plot.points[i].y;
 
-				if (GlobalMembersAxis.axis_array[plot.y_axis].max < stackheight[i].yhigh)
-				GlobalMembersAxis.axis_array[plot.y_axis].max = stackheight[i].yhigh;
-				if (GlobalMembersAxis.axis_array[plot.y_axis].min > stackheight[i].ylow)
-				GlobalMembersAxis.axis_array[plot.y_axis].min = stackheight[i].ylow;
+					if (GlobalMembersAxis.axis_array[plot.y_axis].max < stackheight[i].yhigh)
+						GlobalMembersAxis.axis_array[plot.y_axis].max = stackheight[i].yhigh;
+					if (GlobalMembersAxis.axis_array[plot.y_axis].min > stackheight[i].ylow)
+						GlobalMembersAxis.axis_array[plot.y_axis].min = stackheight[i].ylow;
 
-			}
+				}
 			}
 			/* fall through to checks on x range */
 		case HT_CLUSTERED:
@@ -5927,21 +5889,21 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 			{
 				xlow = plot.histogram.start - 1.0;
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min > xlow)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = xlow;
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = xlow;
 			}
 			if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
 			{
 				/* FIXME - why did we increment p_count on UNDEFINED points? */
 				while (plot.points[plot.p_count - 1].type == coord_type.UNDEFINED)
 				{
-				plot.p_count--;
-				if (plot.p_count == 0)
-					GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "All points in histogram UNDEFINED");
+					plot.p_count--;
+					if (plot.p_count == 0)
+						GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "All points in histogram UNDEFINED");
 				}
 				xhigh = plot.points[plot.p_count - 1].x;
 				xhigh += plot.histogram.start + 1.0;
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max < xhigh)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = xhigh;
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = xhigh;
 			}
 			break;
 		case HT_STACKED_IN_TOWERS:
@@ -5953,28 +5915,28 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 				xhigh = plot.histogram_sequence;
 				xhigh += plot.histogram.start + 1.0;
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min > xlow)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = xlow;
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min = xlow;
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max != xhigh)
-				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = xhigh;
+					GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max = xhigh;
 			}
 			if (((int)GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale) != 0)
 			{
 				double ylow;
 				double yhigh;
 				for (i = 0, yhigh = ylow = 0.0; i < plot.p_count; i++)
-				if (plot.points[i].type != coord_type.UNDEFINED)
-				{
-					if (plot.points[i].y >= 0)
-					yhigh += plot.points[i].y;
-					else
-					ylow += plot.points[i].y;
-				}
+					if (plot.points[i].type != coord_type.UNDEFINED)
+					{
+						if (plot.points[i].y >= 0)
+							yhigh += plot.points[i].y;
+						else
+							ylow += plot.points[i].y;
+					}
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-				if (GlobalMembersAxis.axis_array[plot.y_axis].max < yhigh)
-					GlobalMembersAxis.axis_array[plot.y_axis].max = yhigh;
+					if (GlobalMembersAxis.axis_array[plot.y_axis].max < yhigh)
+						GlobalMembersAxis.axis_array[plot.y_axis].max = yhigh;
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-				if (GlobalMembersAxis.axis_array[plot.y_axis].min > ylow)
-					GlobalMembersAxis.axis_array[plot.y_axis].min = ylow;
+					if (GlobalMembersAxis.axis_array[plot.y_axis].min > ylow)
+						GlobalMembersAxis.axis_array[plot.y_axis].min = ylow;
 			}
 			break;
 		}
@@ -5983,7 +5945,7 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 	/* internal and external variables */
 
 	/* the curves/surfaces of the plot */
-	public static curve_points first_plot = DefineConstants.NULL;
+	public static curve_points first_plot = null;
 	public static udft_entry plot_func = new udft_entry();
 
 	/* box width (automatic) */
@@ -5992,7 +5954,7 @@ private static String get_data_errmsg = "Not enough columns for variable color";
 	public static boolean boxwidth_is_absolute = true;
 
 	public static double histogram_rightmost = 0.0; // Highest x-coord of histogram so far
-	public static String histogram_title = DefineConstants.NULL; // Subtitle for this histogram
-	public static coordinate stackheight = DefineConstants.NULL; // Scratch space for y autoscale
+	public static String histogram_title = null; // Subtitle for this histogram
+	public static coordinate stackheight = null; // Scratch space for y autoscale
 	public static int stack_count = 0; // counter for stackheight
 }

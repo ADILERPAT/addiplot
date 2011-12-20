@@ -168,10 +168,10 @@ public class GlobalMembersInternal
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: internal.c,v 1.51 2008/09/25 18:33:50 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: internal.c,v 1.51 2008/09/25 18:33:50 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - internal.c */
@@ -689,7 +689,7 @@ public class GlobalMembersInternal
 		udv = x.udv_arg;
 		if (udv.udv_undef) // undefined
 		{
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "undefined variable: %s", udv.udv_name);
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "undefined variable: %s", udv.udv_name);
 		}
 		GlobalMembersEval.push((udv.udv_value));
 	}
@@ -708,7 +708,7 @@ public class GlobalMembersInternal
 	public static void f_pushd(argument x)
 	{
 		value param = new value();
-		() GlobalMembersEval.pop(param);
+		GlobalMembersEval.pop(param);
 		GlobalMembersEval.push((x.udf_arg.dummy_values[param.v.int_val]));
 	}
 	public static void f_pop(argument x)
@@ -718,7 +718,7 @@ public class GlobalMembersInternal
 		GlobalMembersEval.gpfree_string(dummy);
 	}
 
-/* execute a udf */
+	/* execute a udf */
 	public static void f_call(argument x)
 	{
 		udft_entry udf;
@@ -727,20 +727,20 @@ public class GlobalMembersInternal
 		udf = x.udf_arg;
 		if (udf.at == null) // undefined
 		{
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "undefined function: %s", udf.udf_name);
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "undefined function: %s", udf.udf_name);
 		}
 		save_dummy = udf.dummy_values[0];
-		() GlobalMembersEval.pop((udf.dummy_values[0]));
+		GlobalMembersEval.pop((udf.dummy_values[0]));
 
 		if (udf.dummy_num != 1)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "function %s requires %d variables", udf.udf_name, udf.dummy_num);
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "function %s requires %d variables", udf.udf_name, udf.dummy_num);
 
 		GlobalMembersEval.execute_at(udf.at);
 		GlobalMembersEval.gpfree_string(udf.dummy_values[0]);
 		udf.dummy_values[0] = save_dummy;
 	}
 
-/* execute a udf of n variables */
+	/* execute a udf of n variables */
 	public static void f_calln(argument x)
 	{
 		udft_entry udf;
@@ -752,47 +752,46 @@ public class GlobalMembersInternal
 
 		udf = x.udf_arg;
 		if (udf.at == null) // undefined
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "undefined function: %s", udf.udf_name);
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "undefined function: %s", udf.udf_name);
 		for (i = 0; i < DefineConstants.MAX_NUM_VAR; i++)
-		save_dummy[i] = udf.dummy_values[i];
+			save_dummy[i] = udf.dummy_values[i];
 
-		() GlobalMembersEval.pop(num_params);
+		GlobalMembersEval.pop(num_params);
 
 		if (num_params.v.int_val != udf.dummy_num)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "function %s requires %d variable%c", udf.udf_name, udf.dummy_num, (udf.dummy_num == 1)?'\0':'s');
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "function %s requires %d variable%c", udf.udf_name, udf.dummy_num, (udf.dummy_num == 1)?'\0':'s');
 
 		/* if there are more parameters than the function is expecting */
 		/* simply ignore the excess */
 		if (num_params.v.int_val > DefineConstants.MAX_NUM_VAR)
 		{
-		/* pop and discard the dummies that there is no room for */
-		num_pop = num_params.v.int_val - DefineConstants.MAX_NUM_VAR;
-		for (i = 0; i < num_pop; i++)
-			() GlobalMembersEval.pop((udf.dummy_values[0]));
+			/* pop and discard the dummies that there is no room for */
+			num_pop = num_params.v.int_val - DefineConstants.MAX_NUM_VAR;
+			for (i = 0; i < num_pop; i++)
+				GlobalMembersEval.pop((udf.dummy_values[0]));
 
-		num_pop = DefineConstants.MAX_NUM_VAR;
+			num_pop = DefineConstants.MAX_NUM_VAR;
 		}
 		else
 		{
-		num_pop = num_params.v.int_val;
+			num_pop = num_params.v.int_val;
 		}
 
 		/* pop parameters we can use */
 		for (i = num_pop - 1; i >= 0; i--)
-		() GlobalMembersEval.pop((udf.dummy_values[i]));
+			GlobalMembersEval.pop((udf.dummy_values[i]));
 
 		GlobalMembersEval.execute_at(udf.at);
 		for (i = 0; i < DefineConstants.MAX_NUM_VAR; i++)
 		{
-		GlobalMembersEval.gpfree_string(udf.dummy_values[i]);
-		udf.dummy_values[i] = save_dummy[i];
+			GlobalMembersEval.gpfree_string(udf.dummy_values[i]);
+			udf.dummy_values[i] = save_dummy[i];
 		}
 	}
 	public static void f_lnot(argument arg)
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val == 0));
 	}
@@ -800,7 +799,6 @@ public class GlobalMembersInternal
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, ~a.v.int_val));
 	}
@@ -809,7 +807,6 @@ public class GlobalMembersInternal
 		value a = new value();
 		value b = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val || b.v.int_val != 0));
@@ -819,7 +816,6 @@ public class GlobalMembersInternal
 		value a = new value();
 		value b = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val && b.v.int_val != 0));
@@ -829,7 +825,6 @@ public class GlobalMembersInternal
 		value a = new value();
 		value b = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val | b.v.int_val));
@@ -839,7 +834,6 @@ public class GlobalMembersInternal
 		value a = new value();
 		value b = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val ^ b.v.int_val));
@@ -849,7 +843,6 @@ public class GlobalMembersInternal
 		value a = new value();
 		value b = new value();
 
-		() arg; // avoid -Wunused warning
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val & b.v.int_val));
@@ -858,17 +851,16 @@ public class GlobalMembersInternal
 	{
 		value a = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		a.v.int_val = -a.v.int_val;
-		break;
+			a.v.int_val = -a.v.int_val;
+			break;
 		case CMPLX:
-		a.v.cmplx_val.real = -a.v.cmplx_val.real;
-		a.v.cmplx_val.imag = -a.v.cmplx_val.imag;
-		break;
+			a.v.cmplx_val.real = -a.v.cmplx_val.real;
+			a.v.cmplx_val.imag = -a.v.cmplx_val.imag;
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(a);
@@ -880,36 +872,35 @@ public class GlobalMembersInternal
 		value b = new value();
 		int result = 0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.int_val == b.v.int_val);
-			break;
-		case CMPLX:
-			result = (a.v.int_val == b.v.cmplx_val.real && b.v.cmplx_val.imag == 0.0);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.int_val == b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.int_val == b.v.cmplx_val.real && b.v.cmplx_val.imag == 0.0);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (b.v.int_val == a.v.cmplx_val.real && a.v.cmplx_val.imag == 0.0);
+			}
 			break;
 		case CMPLX:
-			result = (a.v.cmplx_val.real == b.v.cmplx_val.real && a.v.cmplx_val.imag == b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (b.v.int_val == a.v.cmplx_val.real && a.v.cmplx_val.imag == 0.0);
+				break;
+			case CMPLX:
+				result = (a.v.cmplx_val.real == b.v.cmplx_val.real && a.v.cmplx_val.imag == b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, result));
@@ -920,35 +911,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		int result = 0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.int_val != b.v.int_val);
-			break;
-		case CMPLX:
-			result = (a.v.int_val != b.v.cmplx_val.real || b.v.cmplx_val.imag != 0.0);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.int_val != b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.int_val != b.v.cmplx_val.real || b.v.cmplx_val.imag != 0.0);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (b.v.int_val != a.v.cmplx_val.real || a.v.cmplx_val.imag != 0.0);
+			}
 			break;
 		case CMPLX:
-			result = (a.v.cmplx_val.real != b.v.cmplx_val.real || a.v.cmplx_val.imag != b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (b.v.int_val != a.v.cmplx_val.real || a.v.cmplx_val.imag != 0.0);
+				break;
+			case CMPLX:
+				result = (a.v.cmplx_val.real != b.v.cmplx_val.real || a.v.cmplx_val.imag != b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, result));
@@ -959,35 +949,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		int result = 0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.int_val > b.v.int_val);
-			break;
-		case CMPLX:
-			result = (a.v.int_val > b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.int_val > b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.int_val > b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.cmplx_val.real > b.v.int_val);
+			}
 			break;
 		case CMPLX:
-			result = (a.v.cmplx_val.real > b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.cmplx_val.real > b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.cmplx_val.real > b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, result));
@@ -998,35 +987,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		int result = 0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.int_val < b.v.int_val);
-			break;
-		case CMPLX:
-			result = (a.v.int_val < b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.int_val < b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.int_val < b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.cmplx_val.real < b.v.int_val);
+			}
 			break;
 		case CMPLX:
-			result = (a.v.cmplx_val.real < b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.cmplx_val.real < b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.cmplx_val.real < b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, result));
@@ -1037,35 +1025,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		int result = 0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.int_val >= b.v.int_val);
-			break;
-		case CMPLX:
-			result = (a.v.int_val >= b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.int_val >= b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.int_val >= b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.cmplx_val.real >= b.v.int_val);
+			}
 			break;
 		case CMPLX:
-			result = (a.v.cmplx_val.real >= b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.cmplx_val.real >= b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.cmplx_val.real >= b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, result));
@@ -1076,35 +1063,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		int result = 0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.int_val <= b.v.int_val);
-			break;
-		case CMPLX:
-			result = (a.v.int_val <= b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.int_val <= b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.int_val <= b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			result = (a.v.cmplx_val.real <= b.v.int_val);
+			}
 			break;
 		case CMPLX:
-			result = (a.v.cmplx_val.real <= b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				result = (a.v.cmplx_val.real <= b.v.int_val);
+				break;
+			case CMPLX:
+				result = (a.v.cmplx_val.real <= b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, result));
@@ -1115,35 +1101,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		value result = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			() GlobalMembersEval.Ginteger(result, a.v.int_val + b.v.int_val);
-			break;
-		case CMPLX:
-			() GlobalMembersEval.Gcomplex(result, a.v.int_val + b.v.cmplx_val.real, b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				GlobalMembersEval.Ginteger(result, a.v.int_val + b.v.int_val);
+				break;
+			case CMPLX:
+				GlobalMembersEval.Gcomplex(result, a.v.int_val + b.v.cmplx_val.real, b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			() GlobalMembersEval.Gcomplex(result, b.v.int_val + a.v.cmplx_val.real, a.v.cmplx_val.imag);
+			}
 			break;
 		case CMPLX:
-			() GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real + b.v.cmplx_val.real, a.v.cmplx_val.imag + b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				GlobalMembersEval.Gcomplex(result, b.v.int_val + a.v.cmplx_val.real, a.v.cmplx_val.imag);
+				break;
+			case CMPLX:
+				GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real + b.v.cmplx_val.real, a.v.cmplx_val.imag + b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(result);
@@ -1154,35 +1139,34 @@ public class GlobalMembersInternal
 		value b = new value();
 		value result = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			() GlobalMembersEval.Ginteger(result, a.v.int_val - b.v.int_val);
-			break;
-		case CMPLX:
-			() GlobalMembersEval.Gcomplex(result, a.v.int_val - b.v.cmplx_val.real, -b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				GlobalMembersEval.Ginteger(result, a.v.int_val - b.v.int_val);
+				break;
+			case CMPLX:
+				GlobalMembersEval.Gcomplex(result, a.v.int_val - b.v.cmplx_val.real, -b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			() GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real - b.v.int_val, a.v.cmplx_val.imag);
+			}
 			break;
 		case CMPLX:
-			() GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real - b.v.cmplx_val.real, a.v.cmplx_val.imag - b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real - b.v.int_val, a.v.cmplx_val.imag);
+				break;
+			case CMPLX:
+				GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real - b.v.cmplx_val.real, a.v.cmplx_val.imag - b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(result);
@@ -1193,36 +1177,35 @@ public class GlobalMembersInternal
 		value b = new value();
 		value result = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			() GlobalMembersEval.Ginteger(result, a.v.int_val * b.v.int_val);
-			break;
-		case CMPLX:
-			() GlobalMembersEval.Gcomplex(result, a.v.int_val * b.v.cmplx_val.real, a.v.int_val * b.v.cmplx_val.imag);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				GlobalMembersEval.Ginteger(result, a.v.int_val * b.v.int_val);
+				break;
+			case CMPLX:
+				GlobalMembersEval.Gcomplex(result, a.v.int_val * b.v.cmplx_val.real, a.v.int_val * b.v.cmplx_val.imag);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			() GlobalMembersEval.Gcomplex(result, b.v.int_val * a.v.cmplx_val.real, b.v.int_val * a.v.cmplx_val.imag);
+			}
 			break;
 		case CMPLX:
-			() GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real * b.v.cmplx_val.real - a.v.cmplx_val.imag * b.v.cmplx_val.imag, a.v.cmplx_val.real * b.v.cmplx_val.imag + a.v.cmplx_val.imag * b.v.cmplx_val.real);
-			break;
+			switch (b.type)
+			{
+			case INTGR:
+				GlobalMembersEval.Gcomplex(result, b.v.int_val * a.v.cmplx_val.real, b.v.int_val * a.v.cmplx_val.imag);
+				break;
+			case CMPLX:
+				GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real * b.v.cmplx_val.real - a.v.cmplx_val.imag * b.v.cmplx_val.imag, a.v.cmplx_val.real * b.v.cmplx_val.imag + a.v.cmplx_val.imag * b.v.cmplx_val.real);
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(result);
@@ -1234,62 +1217,61 @@ public class GlobalMembersInternal
 		value result = new value();
 		double square;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			if (b.v.int_val != 0)
-			() GlobalMembersEval.Ginteger(result, a.v.int_val / b.v.int_val);
-			else
+			switch (b.type)
 			{
-			() GlobalMembersEval.Ginteger(result, 0);
-			GlobalMembersEval.undefined = true;
-			}
-			break;
-		case CMPLX:
-			square = b.v.cmplx_val.real * b.v.cmplx_val.real + b.v.cmplx_val.imag * b.v.cmplx_val.imag;
-			if (square != 0)
-			() GlobalMembersEval.Gcomplex(result, a.v.int_val * b.v.cmplx_val.real / square, -a.v.int_val * b.v.cmplx_val.imag / square);
-			else
-			{
-			() GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
-			GlobalMembersEval.undefined = true;
-			}
-			break;
+			case INTGR:
+				if (b.v.int_val != 0)
+					GlobalMembersEval.Ginteger(result, a.v.int_val / b.v.int_val);
+				else
+				{
+					GlobalMembersEval.Ginteger(result, 0);
+					GlobalMembersEval.undefined = true;
+				}
+				break;
+			case CMPLX:
+				square = b.v.cmplx_val.real * b.v.cmplx_val.real + b.v.cmplx_val.imag * b.v.cmplx_val.imag;
+				if (square != 0)
+					GlobalMembersEval.Gcomplex(result, a.v.int_val * b.v.cmplx_val.real / square, -a.v.int_val * b.v.cmplx_val.imag / square);
+				else
+				{
+					GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
+					GlobalMembersEval.undefined = true;
+				}
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			if (b.v.int_val != 0)
-			() GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real / b.v.int_val, a.v.cmplx_val.imag / b.v.int_val);
-			else
-			{
-			() GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
-			GlobalMembersEval.undefined = true;
 			}
 			break;
 		case CMPLX:
-			square = b.v.cmplx_val.real * b.v.cmplx_val.real + b.v.cmplx_val.imag * b.v.cmplx_val.imag;
-			if (square != 0)
-			() GlobalMembersEval.Gcomplex(result, (a.v.cmplx_val.real * b.v.cmplx_val.real + a.v.cmplx_val.imag * b.v.cmplx_val.imag) / square, (a.v.cmplx_val.imag * b.v.cmplx_val.real - a.v.cmplx_val.real * b.v.cmplx_val.imag) / square);
-			else
+			switch (b.type)
 			{
-			() GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
-			GlobalMembersEval.undefined = true;
-			}
-			break;
+			case INTGR:
+				if (b.v.int_val != 0)
+					GlobalMembersEval.Gcomplex(result, a.v.cmplx_val.real / b.v.int_val, a.v.cmplx_val.imag / b.v.int_val);
+				else
+				{
+					GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
+					GlobalMembersEval.undefined = true;
+				}
+				break;
+			case CMPLX:
+				square = b.v.cmplx_val.real * b.v.cmplx_val.real + b.v.cmplx_val.imag * b.v.cmplx_val.imag;
+				if (square != 0)
+					GlobalMembersEval.Gcomplex(result, (a.v.cmplx_val.real * b.v.cmplx_val.real + a.v.cmplx_val.imag * b.v.cmplx_val.imag) / square, (a.v.cmplx_val.imag * b.v.cmplx_val.real - a.v.cmplx_val.real * b.v.cmplx_val.imag) / square);
+				else
+				{
+					GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
+					GlobalMembersEval.undefined = true;
+				}
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(result);
@@ -1299,18 +1281,17 @@ public class GlobalMembersInternal
 		value a = new value();
 		value b = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (a.type != DATA_TYPES.INTGR || b.type != DATA_TYPES.INTGR)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only mod ints");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "can only mod ints");
 		if (b.v.int_val != 0)
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val % b.v.int_val));
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val % b.v.int_val));
 		else
 		{
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, 0));
-		GlobalMembersEval.undefined = true;
+			GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, 0));
+			GlobalMembersEval.undefined = true;
 		}
 	}
 	public static void f_power(argument arg)
@@ -1324,118 +1305,117 @@ public class GlobalMembersInternal
 		double mag;
 		double ang;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		switch (a.type)
 		{
 		case INTGR:
-		switch (b.type)
-		{
-		case INTGR:
-			count = Math.abs(b.v.int_val);
-			t = 1;
-			/* this ought to use bit-masks and squares, etc */
-			for (i = 0; i < count; i++)
-			t *= a.v.int_val;
-			if (b.v.int_val >= 0)
-			() GlobalMembersEval.Ginteger(result, t);
-			else if (t != 0)
-			() GlobalMembersEval.Gcomplex(result, 1.0 / t, 0.0);
-			else
+			switch (b.type)
 			{
-			GlobalMembersEval.undefined = true;
-			() GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
-			}
-			break;
-		case CMPLX:
-			if (a.v.int_val == 0)
-			{
-			if (b.v.cmplx_val.imag != 0 || b.v.cmplx_val.real < 0)
-			{
-				GlobalMembersEval.undefined = true;
-			}
-			/* return 1.0 for 0**0 */
-			GlobalMembersEval.Gcomplex(result, b.v.cmplx_val.real == 0 ? 1.0 : 0.0, 0.0);
-			}
-			else
-			{
-			mag = Math.pow(GlobalMembersEval.magnitude(a), Math.abs(b.v.cmplx_val.real));
-			if (b.v.cmplx_val.real < 0.0)
-			{
-				if (mag != 0.0)
-				mag = 1.0 / mag;
+			case INTGR:
+				count = Math.abs(b.v.int_val);
+				t = 1;
+				/* this ought to use bit-masks and squares, etc */
+				for (i = 0; i < count; i++)
+					t *= a.v.int_val;
+				if (b.v.int_val >= 0)
+					GlobalMembersEval.Ginteger(result, t);
+				else if (t != 0)
+					GlobalMembersEval.Gcomplex(result, 1.0 / t, 0.0);
 				else
-				GlobalMembersEval.undefined = true;
-			}
-			mag *= GlobalMembersEval.gp_exp(-b.v.cmplx_val.imag * GlobalMembersEval.angle(a));
-			ang = b.v.cmplx_val.real * GlobalMembersEval.angle(a) + b.v.cmplx_val.imag * Math.log(GlobalMembersEval.magnitude(a));
-			() GlobalMembersEval.Gcomplex(result, mag * Math.cos(ang), mag * Math.sin(ang));
-			}
-			break;
+				{
+					GlobalMembersEval.undefined = true;
+					GlobalMembersEval.Gcomplex(result, 0.0, 0.0);
+				}
+				break;
+			case CMPLX:
+				if (a.v.int_val == 0)
+				{
+					if (b.v.cmplx_val.imag != 0 || b.v.cmplx_val.real < 0)
+					{
+						GlobalMembersEval.undefined = true;
+					}
+					/* return 1.0 for 0**0 */
+					GlobalMembersEval.Gcomplex(result, b.v.cmplx_val.real == 0 ? 1.0 : 0.0, 0.0);
+				}
+				else
+				{
+					mag = Math.pow(GlobalMembersEval.magnitude(a), Math.abs(b.v.cmplx_val.real));
+					if (b.v.cmplx_val.real < 0.0)
+					{
+						if (mag != 0.0)
+							mag = 1.0 / mag;
+						else
+							GlobalMembersEval.undefined = true;
+					}
+					mag *= GlobalMembersEval.gp_exp(-b.v.cmplx_val.imag * GlobalMembersEval.angle(a));
+					ang = b.v.cmplx_val.real * GlobalMembersEval.angle(a) + b.v.cmplx_val.imag * Math.log(GlobalMembersEval.magnitude(a));
+					GlobalMembersEval.Gcomplex(result, mag * Math.cos(ang), mag * Math.sin(ang));
+				}
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
-		case CMPLX:
-		switch (b.type)
-		{
-		case INTGR:
-			if (a.v.cmplx_val.imag == 0.0)
-			{
-			mag = Math.pow(a.v.cmplx_val.real, (double) Math.abs(b.v.int_val));
-			if (b.v.int_val < 0)
-			{
-				if (mag != 0.0)
-				mag = 1.0 / mag;
-				else
-				GlobalMembersEval.undefined = true;
-			}
-			() GlobalMembersEval.Gcomplex(result, mag, 0.0);
-			}
-			else
-			{
-			/* not so good, but...! */
-			mag = Math.pow(GlobalMembersEval.magnitude(a), (double) Math.abs(b.v.int_val));
-			if (b.v.int_val < 0)
-			{
-				if (mag != 0.0)
-				mag = 1.0 / mag;
-				else
-				GlobalMembersEval.undefined = true;
-			}
-			ang = GlobalMembersEval.angle(a) * b.v.int_val;
-			() GlobalMembersEval.Gcomplex(result, mag * Math.cos(ang), mag * Math.sin(ang));
 			}
 			break;
 		case CMPLX:
-			if (a.v.cmplx_val.real == 0 && a.v.cmplx_val.imag == 0)
+			switch (b.type)
 			{
-			if (b.v.cmplx_val.imag != 0 || b.v.cmplx_val.real < 0)
-			{
-				GlobalMembersEval.undefined = true;
-			}
-			/* return 1.0 for 0**0 */
-			GlobalMembersEval.Gcomplex(result, b.v.cmplx_val.real == 0 ? 1.0 : 0.0, 0.0);
-			}
-			else
-			{
-			mag = Math.pow(GlobalMembersEval.magnitude(a), Math.abs(b.v.cmplx_val.real));
-			if (b.v.cmplx_val.real < 0.0)
-			{
-				if (mag != 0.0)
-				mag = 1.0 / mag;
+			case INTGR:
+				if (a.v.cmplx_val.imag == 0.0)
+				{
+					mag = Math.pow(a.v.cmplx_val.real, (double) Math.abs(b.v.int_val));
+					if (b.v.int_val < 0)
+					{
+						if (mag != 0.0)
+							mag = 1.0 / mag;
+						else
+							GlobalMembersEval.undefined = true;
+					}
+					GlobalMembersEval.Gcomplex(result, mag, 0.0);
+				}
 				else
-				GlobalMembersEval.undefined = true;
-			}
-			mag *= GlobalMembersEval.gp_exp(-b.v.cmplx_val.imag * GlobalMembersEval.angle(a));
-			ang = b.v.cmplx_val.real * GlobalMembersEval.angle(a) + b.v.cmplx_val.imag * Math.log(GlobalMembersEval.magnitude(a));
-			() GlobalMembersEval.Gcomplex(result, mag * Math.cos(ang), mag * Math.sin(ang));
-			}
-			break;
+				{
+					/* not so good, but...! */
+					mag = Math.pow(GlobalMembersEval.magnitude(a), (double) Math.abs(b.v.int_val));
+					if (b.v.int_val < 0)
+					{
+						if (mag != 0.0)
+							mag = 1.0 / mag;
+						else
+							GlobalMembersEval.undefined = true;
+					}
+					ang = GlobalMembersEval.angle(a) * b.v.int_val;
+					GlobalMembersEval.Gcomplex(result, mag * Math.cos(ang), mag * Math.sin(ang));
+				}
+				break;
+			case CMPLX:
+				if (a.v.cmplx_val.real == 0 && a.v.cmplx_val.imag == 0)
+				{
+					if (b.v.cmplx_val.imag != 0 || b.v.cmplx_val.real < 0)
+					{
+						GlobalMembersEval.undefined = true;
+					}
+					/* return 1.0 for 0**0 */
+					GlobalMembersEval.Gcomplex(result, b.v.cmplx_val.real == 0 ? 1.0 : 0.0, 0.0);
+				}
+				else
+				{
+					mag = Math.pow(GlobalMembersEval.magnitude(a), Math.abs(b.v.cmplx_val.real));
+					if (b.v.cmplx_val.real < 0.0)
+					{
+						if (mag != 0.0)
+							mag = 1.0 / mag;
+						else
+							GlobalMembersEval.undefined = true;
+					}
+					mag *= GlobalMembersEval.gp_exp(-b.v.cmplx_val.imag * GlobalMembersEval.angle(a));
+					ang = b.v.cmplx_val.real * GlobalMembersEval.angle(a) + b.v.cmplx_val.imag * Math.log(GlobalMembersEval.magnitude(a));
+					GlobalMembersEval.Gcomplex(result, mag * Math.cos(ang), mag * Math.sin(ang));
+				}
+				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
-		}
-		break;
+			}
+			break;
 		default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 		}
 		GlobalMembersEval.push(result);
@@ -1446,19 +1426,18 @@ public class GlobalMembersInternal
 		int i;
 		double val = 0.0;
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		switch (a.type)
 		{
 		case INTGR:
-		val = 1.0;
-		for (i = a.v.int_val; i > 1; i--) //fpe's should catch overflows
-			val *= i;
-		break;
+			val = 1.0;
+			for (i = a.v.int_val; i > 1; i--) //fpe's should catch overflows
+				val *= i;
+			break;
 		default:
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "factorial (!) argument must be an integer");
-		return; // avoid gcc -Wall warning about val
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "factorial (!) argument must be an integer");
+			return; // avoid gcc -Wall warning about val
 		}
 
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(a, val, 0.0));
@@ -1471,26 +1450,25 @@ public class GlobalMembersInternal
 		value b = new value();
 		value result = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (b.type == DATA_TYPES.INTGR)
 		{
-		int i = b.v.int_val;
-		b.type = DATA_TYPES.STRING;
-		b.v.string_val = (String)GlobalMembersAlloc.gp_alloc(32, "str_const");
-	///#ifdef HAVE_SNPRINTF
-		snprintf(b.v.string_val,32,"%d",i);
-	///#else
-	//	sprintf(b.v.string_val,"%d",i);
-	///#endif
+			int i = b.v.int_val;
+			b.type = DATA_TYPES.STRING;
+			b.v.string_val = (String)GlobalMembersAlloc.gp_alloc(32, "str_const");
+			///#ifdef HAVE_SNPRINTF
+			snprintf(b.v.string_val,32,"%d",i);
+			///#else
+			//	sprintf(b.v.string_val,"%d",i);
+			///#endif
 		}
 
 		if (a.type != DATA_TYPES.STRING || b.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
 
-		() GlobalMembersEval.Gstring(result, GlobalMembersUtil.gp_stradd(a.v.string_val, b.v.string_val));
+		GlobalMembersEval.Gstring(result, GlobalMembersUtil.gp_stradd(a.v.string_val, b.v.string_val));
 		GlobalMembersEval.gpfree_string(a);
 		GlobalMembersEval.gpfree_string(b);
 		GlobalMembersEval.push(result);
@@ -1502,14 +1480,13 @@ public class GlobalMembersInternal
 		value b = new value();
 		value result = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (a.type != DATA_TYPES.STRING || b.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
 
-		() GlobalMembersEval.Ginteger(result, !strcmp(a.v.string_val, b.v.string_val));
+		GlobalMembersEval.Ginteger(result, !strcmp(a.v.string_val, b.v.string_val));
 		GlobalMembersEval.gpfree_string(a);
 		GlobalMembersEval.gpfree_string(b);
 		GlobalMembersEval.push(result);
@@ -1520,23 +1497,22 @@ public class GlobalMembersInternal
 		value b = new value();
 		value result = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (a.type != DATA_TYPES.STRING || b.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
 
-		() GlobalMembersEval.Ginteger(result, (int)(strcmp(a.v.string_val, b.v.string_val) != 0));
+		GlobalMembersEval.Ginteger(result, (int)(strcmp(a.v.string_val, b.v.string_val) != 0));
 		GlobalMembersEval.gpfree_string(a);
 		GlobalMembersEval.gpfree_string(b);
 		GlobalMembersEval.push(result);
 	}
 
-/* EAM July 2004 - Gnuplot's own string formatting conventions.
- * Currently this routine assumes base 10 representation, because
- * it is not clear where it could be specified to be anything else.
- */
+	/* EAM July 2004 - Gnuplot's own string formatting conventions.
+	 * Currently this routine assumes base 10 representation, because
+	 * it is not clear where it could be specified to be anything else.
+	 */
 	public static void f_gprintf(argument arg)
 	{
 		value fmt = new value();
@@ -1550,17 +1526,17 @@ public class GlobalMembersInternal
 		GlobalMembersEval.pop_or_convert_from_string(val);
 		GlobalMembersEval.pop_or_convert_from_string(fmt);
 
-	///#ifdef DEBUG
-	//    fprintf(stderr,"----------\nGot gprintf parameters\nfmt: ");
-	//	disp_value(stderr, &fmt, TRUE);
-	//    fprintf(stderr,"\nval: ");
-	//	disp_value(stderr, &val, TRUE);
-	//    fprintf(stderr,"\n----------\n");
-	///#endif
+		///#ifdef DEBUG
+		//    fprintf(stderr,"----------\nGot gprintf parameters\nfmt: ");
+		//	disp_value(stderr, &fmt, TRUE);
+		//    fprintf(stderr,"\nval: ");
+		//	disp_value(stderr, &val, TRUE);
+		//    fprintf(stderr,"\n----------\n");
+		///#endif
 
 		/* Make sure parameters are of the correct type */
 		if (fmt.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "First parameter to gprintf must be a format string");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "First parameter to gprintf must be a format string");
 
 		/* EAM FIXME - I have no idea where we would learn another base is wanted */
 		base = 10.;
@@ -1576,7 +1552,7 @@ public class GlobalMembersInternal
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(result, buffer));
 
 		GlobalMembersEval.gpfree_string(fmt);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(buffer);
 	}
 	public static void f_range(argument arg)
@@ -1586,37 +1562,36 @@ public class GlobalMembersInternal
 		value full = new value();
 		value substr = new value();
 
-		() arg; // avoid -Wunused warning
-		() GlobalMembersEval.pop_or_convert_from_string(end);
-		() GlobalMembersEval.pop_or_convert_from_string(beg);
-		() GlobalMembersEval.pop_or_convert_from_string(full);
+		GlobalMembersEval.pop_or_convert_from_string(end);
+		GlobalMembersEval.pop_or_convert_from_string(beg);
+		GlobalMembersEval.pop_or_convert_from_string(full);
 
 		if (end.type != DATA_TYPES.INTGR || beg.type != DATA_TYPES.INTGR)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: substring range specifiers must have integer values");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: substring range specifiers must have integer values");
 
 		if (full.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: substring range operator applied to non-STRING type");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: substring range operator applied to non-STRING type");
 
 		GlobalMembersFit.a((stderr,"f_range( \"%s\", %d, %d)\n", full.v.string_val, beg.v.int_val, end.v.int_val));
 
 		if (end.v.int_val > full.v.string_val.length())
-		end.v.int_val = full.v.string_val.length();
+			end.v.int_val = full.v.string_val.length();
 		if (beg.v.int_val < 1)
-		beg.v.int_val = 1;
+			beg.v.int_val = 1;
 		if (beg.v.int_val > end.v.int_val)
-		beg.v.int_val = full.v.string_val.length() + 1;
+			beg.v.int_val = full.v.string_val.length() + 1;
 
 		full.v.string_val = tangible.StringFunctions.changeCharacter(full.v.string_val, end.v.int_val, '\0');
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(substr, full.v.string_val.charAt(beg.v.int_val - 1)));
 		GlobalMembersEval.gpfree_string(full);
 	}
 
-/* EAM July 2004  (revised to dynamic buffer July 2005)
- * There are probably an infinite number of things that can
- * go wrong if the user mis-matches arguments and format strings
- * in the call to sprintf, but I hope none will do worse than
- * result in a garbage output string.
- */
+	/* EAM July 2004  (revised to dynamic buffer July 2005)
+	 * There are probably an infinite number of things that can
+	 * go wrong if the user mis-matches arguments and format strings
+	 * in the call to sprintf, but I hope none will do worse than
+	 * result in a garbage output string.
+	 */
 	public static void f_sprintf(argument arg)
 	{
 		value[] a = new value[10];
@@ -1641,18 +1616,18 @@ public class GlobalMembersInternal
 		nargs = num_params.v.int_val;
 		if (nargs > 10) // Fall back to slow but sure allocation
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		args = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct GlobalMembersGplt_x11.value) * nargs, "sprintf args");
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			args = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct GlobalMembersGplt_x11.value) * nargs, "sprintf args");
 		}
 		else
-		args = a;
+			args = a;
 
 		for (i = 0; i < nargs; i++)
-		GlobalMembersEval.pop_or_convert_from_string(args[i]);
+			GlobalMembersEval.pop_or_convert_from_string(args[i]);
 
 		/* Make sure we got a format string of some sort */
 		if (args[nargs - 1].type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "First parameter to sprintf must be a format string");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "First parameter to sprintf must be a format string");
 
 		/* Allocate space for the output string. If this isn't */
 		/* long enough we can reallocate a larger space later. */
@@ -1675,90 +1650,90 @@ public class GlobalMembersInternal
 
 		/* If the user has set an explicit LC_NUMERIC locale, apply it */
 		/* to sprintf calls during expression evaluation.              */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (0)();
+		do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (0)();
 
 		/* Each time we start this loop we are pointing to a % character */
 		while (remaining - .0 && next_start.charAt(0) && next_start.charAt(1))
 		{
-		value next_param = args[remaining];
+			value next_param = args[remaining];
 
-		/* Check for %%; print as literal and don't consume a parameter */
-		if (!strncmp(next_start,"%%",2))
-		{
-			next_start++;
-			do
+			/* Check for %%; print as literal and don't consume a parameter */
+			if (!strncmp(next_start,"%%",2))
 			{
-			outpos++= next_start++;
-			} while (next_start != null && !next_start.equals('%'));
-			remaining++;
-			continue;
-		}
+				next_start++;
+				do
+				{
+					outpos++= next_start++;
+				} while (next_start != null && !next_start.equals('%'));
+				remaining++;
+				continue;
+			}
 
-		next_length = strcspn(next_start + 1,"%") + 1;
-		tempchar = next_start.charAt(next_length);
-		next_start = tangible.StringFunctions.changeCharacter(next_start, next_length, '\0');
+			next_length = strcspn(next_start + 1,"%") + 1;
+			tempchar = next_start.charAt(next_length);
+			next_start = tangible.StringFunctions.changeCharacter(next_start, next_length, '\0');
 
-		spec_type = GlobalMembersInternal.sprintf_specifier(next_start);
+			spec_type = GlobalMembersInternal.sprintf_specifier(next_start);
 
-		/* string value <-> numerical value check */
-		if (spec_type == DATA_TYPES.STRING && next_param.type != DATA_TYPES.STRING)
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "f_sprintf: attempt to print numeric value with string format");
-		if (spec_type != DATA_TYPES.STRING && next_param.type == DATA_TYPES.STRING)
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "f_sprintf: attempt to print string value with numeric format");
+			/* string value <-> numerical value check */
+			if (spec_type == DATA_TYPES.STRING && next_param.type != DATA_TYPES.STRING)
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "f_sprintf: attempt to print numeric value with string format");
+			if (spec_type != DATA_TYPES.STRING && next_param.type == DATA_TYPES.STRING)
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "f_sprintf: attempt to print string value with numeric format");
 
-	///#ifdef HAVE_SNPRINTF
-		/* Use the format to print next arg */
-		switch (spec_type)
-		{
-		case INTGR:
-			snprintf(outpos,DefineConstants.bufsize - (outpos - buffer), next_start, (int)GlobalMembersEval.real(next_param));
-			break;
-		case CMPLX:
-			snprintf(outpos,DefineConstants.bufsize - (outpos - buffer), next_start, GlobalMembersEval.real(next_param));
-			break;
-		case STRING:
-			snprintf(outpos,DefineConstants.bufsize - (outpos - buffer), next_start, next_param.v.string_val);
-			break;
-		default:
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: invalid spec_type");
-		}
-	///#else
-	// /* FIXME - this is bad; we should dummy up an snprintf equivalent */
-	//	switch(spec_type) {
-	//	case INTGR:
-	//	    sprintf(outpos, next_start, (int)real(next_param));
-	//	    break;
-	//	case CMPLX:
-	//	    sprintf(outpos, next_start, real(next_param));
-	//	    break;
-	//	case STRING:
-	//	    sprintf(outpos, next_start, next_param->v.string_val);
-	//	    break;
-	//	default:
-	//	    int_error(NO_CARET,"internal error: invalid spec_type");
-	//	}
-	///#endif
+			///#ifdef HAVE_SNPRINTF
+			/* Use the format to print next arg */
+			switch (spec_type)
+			{
+			case INTGR:
+				snprintf(outpos,DefineConstants.bufsize - (outpos - buffer), next_start, (int)GlobalMembersEval.real(next_param));
+				break;
+			case CMPLX:
+				snprintf(outpos,DefineConstants.bufsize - (outpos - buffer), next_start, GlobalMembersEval.real(next_param));
+				break;
+			case STRING:
+				snprintf(outpos,DefineConstants.bufsize - (outpos - buffer), next_start, next_param.v.string_val);
+				break;
+			default:
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: invalid spec_type");
+			}
+			///#else
+			// /* FIXME - this is bad; we should dummy up an snprintf equivalent */
+			//	switch(spec_type) {
+			//	case INTGR:
+			//	    sprintf(outpos, next_start, (int)real(next_param));
+			//	    break;
+			//	case CMPLX:
+			//	    sprintf(outpos, next_start, real(next_param));
+			//	    break;
+			//	case STRING:
+			//	    sprintf(outpos, next_start, next_param->v.string_val);
+			//	    break;
+			//	default:
+			//	    int_error(NO_CARET,"internal error: invalid spec_type");
+			//	}
+			///#endif
 
-		next_start = tangible.StringFunctions.changeCharacter(next_start, next_length, tempchar);
-		next_start += next_length;
-		outpos = buffer.charAt(buffer.length());
+			next_start = tangible.StringFunctions.changeCharacter(next_start, next_length, tempchar);
+			next_start += next_length;
+			outpos = buffer.charAt(buffer.length());
 
-		/* Check whether previous parameter output hit the end of the buffer */
-		/* If so, reallocate a larger buffer, go back and try it again.      */
-		if (buffer.length() >= DefineConstants.bufsize-2)
-		{
-			DefineConstants.bufsize *= 2;
-			buffer = GlobalMembersAlloc.gp_realloc(buffer, DefineConstants.bufsize, "f_sprintf");
-			next_start = prev_start;
-			outpos = buffer + prev_pos;
-			remaining++;
-			continue;
-		}
-		else
-		{
-			prev_start = next_start;
-			prev_pos = outpos - buffer;
-		}
+			/* Check whether previous parameter output hit the end of the buffer */
+			/* If so, reallocate a larger buffer, go back and try it again.      */
+			if (buffer.length() >= DefineConstants.bufsize-2)
+			{
+				DefineConstants.bufsize *= 2;
+				buffer = GlobalMembersAlloc.gp_realloc(buffer, DefineConstants.bufsize, "f_sprintf");
+				next_start = prev_start;
+				outpos = buffer + prev_pos;
+				remaining++;
+				continue;
+			}
+			else
+			{
+				prev_start = next_start;
+				prev_pos = outpos - buffer;
+			}
 
 		}
 
@@ -1768,27 +1743,27 @@ public class GlobalMembersInternal
 		i = DefineConstants.bufsize - (outpos - buffer);
 		while (next_start != null && --i > 0)
 		{
-		if (next_start.equals('%') && *(next_start + 1) == '%')
-			next_start++;
-		outpos++= next_start++;
+			if (next_start.equals('%') && *(next_start + 1) == '%')
+				next_start++;
+			outpos++= next_start++;
 		}
 		outpos = '\0';
 
 		a((stderr," snprintf result = \"%s\"\n",buffer));
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(result, buffer));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(buffer);
 
 		/* Free any strings from parameters we have now used */
 		for (i = 0; i < nargs; i++)
-		GlobalMembersEval.gpfree_string(args[i]);
+			GlobalMembersEval.gpfree_string(args[i]);
 
 		if (args != a)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(args);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(args);
 
 		/* Return to C locale for internal use */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+		do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
 
 	}
 	public static void f_strlen(argument arg)
@@ -1796,13 +1771,12 @@ public class GlobalMembersInternal
 		value a = new value();
 		value result = new value();
 
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (a.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : strlen of non-STRING argument");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : strlen of non-STRING argument");
 
-		() GlobalMembersEval.Ginteger(result, (int)a.v.string_val.length());
+		GlobalMembersEval.Ginteger(result, (int)a.v.string_val.length());
 		GlobalMembersEval.gpfree_string(a);
 		GlobalMembersEval.push(result);
 	}
@@ -1813,21 +1787,20 @@ public class GlobalMembersInternal
 		value result = new value();
 		String start;
 
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(needle);
-		() GlobalMembersEval.pop_or_convert_from_string(haystack);
+		GlobalMembersEval.pop_or_convert_from_string(needle);
+		GlobalMembersEval.pop_or_convert_from_string(haystack);
 
 		if (needle.type != DATA_TYPES.STRING || haystack.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-STRING argument to strstrt");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-STRING argument to strstrt");
 
 		start = tangible.StringFunctions.strStr(haystack.v.string_val, needle.v.string_val);
-		() GlobalMembersEval.Ginteger(result, (int)(start != null ? (start - haystack.v.string_val) + 1 : 0));
+		GlobalMembersEval.Ginteger(result, (int)(start != null ? (start - haystack.v.string_val) + 1 : 0));
 		GlobalMembersEval.gpfree_string(needle);
 		GlobalMembersEval.gpfree_string(haystack);
 		GlobalMembersEval.push(result);
 	}
 
-/* execute a system call and return stream from STDOUT */
+	/* execute a system call and return stream from STDOUT */
 	public static void f_system(argument arg)
 	{
 		value val = new value();
@@ -1842,23 +1815,23 @@ public class GlobalMembersInternal
 
 		/* Make sure parameters are of the correct type */
 		if (val.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "non-string argument to system()");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "non-string argument to system()");
 
 		GlobalMembersFit.a((stderr," f_system input = \"%s\"\n", val.v.string_val));
 
-	tangible.RefObject<String[]> tempRef_output = new tangible.RefObject<String[]>(output);
+		tangible.RefObject<String[]> tempRef_output = new tangible.RefObject<String[]>(output);
 		ierr = GlobalMembersCommand.do_system_func(val.v.string_val, tempRef_output);
 		output = tempRef_output.argvalue;
 		if ((errno_var = GlobalMembersEval.add_udv_by_name("ERRNO")))
 		{
-		errno_var.udv_undef = false;
-		GlobalMembersEval.Ginteger(errno_var.udv_value, ierr);
+			errno_var.udv_undef = false;
+			GlobalMembersEval.Ginteger(errno_var.udv_value, ierr);
 		}
 		output_len = output.length();
 
 		/* chomp result */
 		if (output_len > 0 && output.charAt(output_len - 1) == '\n')
-		output = tangible.StringFunctions.changeCharacter(output, output_len - 1, DefineConstants.NUL);
+			output = tangible.StringFunctions.changeCharacter(output, output_len - 1, DefineConstants.NUL);
 
 		GlobalMembersFit.a((stderr," f_system result = \"%s\"\n", output));
 
@@ -1874,49 +1847,48 @@ public class GlobalMembersInternal
 		value result = new value();
 		int nwords = 0;
 		int ntarget;
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * s;
 
-		() arg;
 		if (GlobalMembersEval.pop_or_convert_from_string(b).type != DATA_TYPES.INTGR)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-INTGR argument");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-INTGR argument");
 		ntarget = b.v.int_val;
 
 		if (GlobalMembersEval.pop_or_convert_from_string(a).type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-STRING argument");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-STRING argument");
 		s = a.v.string_val;
 
 		GlobalMembersEval.Gstring(result, "");
 		while (*s)
 		{
-		while (Character.isWhitespace(*s))
-			s++;
-		if (!*s)
-			break;
-		nwords++;
-		if (nwords == ntarget) // Found the one we wanted
-		{
-			GlobalMembersEval.Gstring(result, s);
-			s = result.v.string_val;
-		}
-		while (*s && !Character.isWhitespace(*s))
-			s++;
-		if (nwords == ntarget) // Terminate this word cleanly
-		{
-			*s = (byte)'\0';
-			break;
-		}
+			while (Character.isWhitespace(*s))
+				s++;
+			if (!*s)
+				break;
+			nwords++;
+			if (nwords == ntarget) // Found the one we wanted
+			{
+				GlobalMembersEval.Gstring(result, s);
+				s = result.v.string_val;
+			}
+			while (*s && !Character.isWhitespace(*s))
+				s++;
+			if (nwords == ntarget) // Terminate this word cleanly
+			{
+				*s = (byte)'\0';
+				break;
+			}
 		}
 
 		if (ntarget < 0)
-		/* words(s) = word(s,-1) = # of words in string */
-		GlobalMembersEval.Ginteger(result, nwords);
+			/* words(s) = word(s,-1) = # of words in string */
+			GlobalMembersEval.Ginteger(result, nwords);
 
 		GlobalMembersEval.push(result);
 		GlobalMembersEval.gpfree_string(a);
 	}
 
-/* Output time given in seconds from year 2000 into string */
+	/* Output time given in seconds from year 2000 into string */
 	public static void f_strftime(argument arg)
 	{
 		value fmt = new value();
@@ -1927,13 +1899,11 @@ public class GlobalMembersInternal
 		int buflen;
 		int length;
 
-		() arg; // Avoid compiler warnings
-
 		/* Retrieve parameters from top of stack */
 		GlobalMembersEval.pop_or_convert_from_string(val);
 		GlobalMembersEval.pop_or_convert_from_string(fmt);
 		if (fmt.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "First parameter to strftime must be a format string");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "First parameter to strftime must be a format string");
 
 		/* Prepare format string.
 		 * Make sure the resulting string not empty by adding a space.
@@ -1950,7 +1920,7 @@ public class GlobalMembersInternal
 		/* Get time_str */
 		length = GlobalMembersTime.gstrftime(buffer, buflen, fmtstr, GlobalMembersEval.real(val));
 		if (length == 0 || length >= buflen)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Resulting string is too long");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Resulting string is too long");
 
 		/* Remove trailing space */
 		assert buffer.charAt(length - 1) == ' ';
@@ -1958,15 +1928,15 @@ public class GlobalMembersInternal
 
 		GlobalMembersEval.gpfree_string(val);
 		GlobalMembersEval.gpfree_string(fmt);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(fmtstr);
 
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(val, buffer));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(buffer);
 	}
 
-/* Convert string into seconds from year 2000 */
+	/* Convert string into seconds from year 2000 */
 	public static void f_strptime(argument arg)
 	{
 		value fmt = new value();
@@ -1974,15 +1944,13 @@ public class GlobalMembersInternal
 		tm time_tm = new tm();
 		double result;
 
-		() arg; // Avoid compiler warnings
-
 		GlobalMembersEval.pop_or_convert_from_string(val);
 		GlobalMembersEval.pop_or_convert_from_string(fmt);
 
 		if (fmt.type != DATA_TYPES.STRING || val.type != DATA_TYPES.STRING)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Both parameters to strptime must be strings");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Both parameters to strptime must be strings");
 		if (fmt.v.string_val == null || val.v.string_val == null)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Internal error: string not allocated");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Internal error: string not allocated");
 
 
 		/* string -> time_tm */
@@ -1997,43 +1965,42 @@ public class GlobalMembersInternal
 		GlobalMembersEval.push(GlobalMembersEval.Gcomplex(val, result, 0.0));
 	}
 
-/* Variable assignment operator */
+	/* Variable assignment operator */
 	public static void f_assign(argument arg)
 	{
 		value a = new value();
 		value b = new value();
-		() arg;
-		() GlobalMembersEval.pop_or_convert_from_string(b);
-		() GlobalMembersEval.pop_or_convert_from_string(a);
+		GlobalMembersEval.pop_or_convert_from_string(b);
+		GlobalMembersEval.pop_or_convert_from_string(a);
 
 		if (a.type == DATA_TYPES.STRING)
 		{
-		udvt_entry udv;
-		if (!strncmp(a.v.string_val,"GPVAL_",6) || !strncmp(a.v.string_val,"MOUSE_",6))
-			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Attempt to assign to a read-only variable");
-		udv = GlobalMembersEval.add_udv_by_name(a.v.string_val);
-		GlobalMembersEval.gpfree_string(a);
-		if (!udv.udv_undef)
-			GlobalMembersEval.gpfree_string((udv.udv_value));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: udv->udv_value = b;
-		udv.udv_value.copyFrom(b);
-		udv.udv_undef = false;
-		GlobalMembersEval.push(b);
+			udvt_entry udv;
+			if (!strncmp(a.v.string_val,"GPVAL_",6) || !strncmp(a.v.string_val,"MOUSE_",6))
+				GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Attempt to assign to a read-only variable");
+			udv = GlobalMembersEval.add_udv_by_name(a.v.string_val);
+			GlobalMembersEval.gpfree_string(a);
+			if (!udv.udv_undef)
+				GlobalMembersEval.gpfree_string((udv.udv_value));
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: udv->udv_value = b;
+			udv.udv_value.copyFrom(b);
+			udv.udv_undef = false;
+			GlobalMembersEval.push(b);
 		}
 		else
 		{
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "attempt to assign to something other than a named variable");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "attempt to assign to something other than a named variable");
 		}
 	}
 
-/* Return which argument type sprintf will need for this format string:
- *   char*       STRING
- *   int         INTGR
- *   double      CMPLX
- * Should call int_err for any other type.
- * format is expected to start with '%'
- */
+	/* Return which argument type sprintf will need for this format string:
+	 *   char*       STRING
+	 *   int         INTGR
+	 *   double      CMPLX
+	 * Should call int_err for any other type.
+	 * format is expected to start with '%'
+	 */
 
 
 
@@ -2623,7 +2590,7 @@ public class GlobalMembersInternal
 
 		/* check if really format specifier */
 		if (format.charAt(0) != '%')
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: sprintf_specifier called without '%'\n");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: sprintf_specifier called without '%'\n");
 
 		string_pos = strcspn(format, string_spec);
 		real_pos = strcspn(format, real_spec);
@@ -2631,15 +2598,15 @@ public class GlobalMembersInternal
 		illegal_pos = strcspn(format, illegal_spec);
 
 		if (illegal_pos < int_pos && illegal_pos < real_pos && illegal_pos < string_pos)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "sprintf_specifier: used with invalid format specifier\n");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "sprintf_specifier: used with invalid format specifier\n");
 		else if (string_pos < real_pos && string_pos < int_pos)
-		return DATA_TYPES.STRING;
+			return DATA_TYPES.STRING;
 		else if (real_pos < int_pos)
-		return DATA_TYPES.CMPLX;
+			return DATA_TYPES.CMPLX;
 		else if (int_pos < format.length())
-		return DATA_TYPES.INTGR;
+			return DATA_TYPES.INTGR;
 		else
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "sprintf_specifier: no format specifier\n");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "sprintf_specifier: no format specifier\n");
 
 		return DATA_TYPES.INTGR; // Can't happen, but the compiler doesn't realize that
 	}
