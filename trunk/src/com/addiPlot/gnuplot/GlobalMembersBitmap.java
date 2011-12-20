@@ -1507,7 +1507,7 @@ public class GlobalMembersBitmap
 /*
  * set pixel (x, y, value) to value value (this can be 1/0 or a color number).
  */
-	public static __inline__ void b_setpixel(int x, int y, int value)
+	public static void b_setpixel(int x, int y, int value)
 	{
 		int row;
 		byte mask;
@@ -1550,7 +1550,7 @@ public class GlobalMembersBitmap
 /*
  * set pixel at (x,y) with color b_value and dotted mask b_linemask.
  */
-	public static __inline__ void b_setmaskpixel(int x, int y, int value)
+	public static void b_setmaskpixel(int x, int y, int value)
 	{
 		/* dotted line generator */
 		if ((b_linemask >> b_maskcount) & (int)(1))
