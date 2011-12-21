@@ -1136,7 +1136,7 @@ public class GlobalMembersUtil
 		if (count >= max)
 		{
 			count = max - 1;
-			GlobalMembersFit.a((stderr, "str buffer overflow in copy_str"));
+			GlobalMembersFit.a(stderr, "str buffer overflow in copy_str");
 		}
 
 		do
@@ -1167,7 +1167,7 @@ public class GlobalMembersUtil
 		if ((count = GlobalMembersCommand.token[t_num].length - 2) >= max)
 		{
 			count = max - 1;
-			GlobalMembersFit.a((stderr, "str buffer overflow in quote_str"));
+			GlobalMembersFit.a(stderr, "str buffer overflow in quote_str");
 		}
 		if (count > 0)
 		{
@@ -1255,12 +1255,12 @@ public class GlobalMembersUtil
 	 */
 	public static String try_to_get_string()
 	{
-		String newstring = DefineConstants.NULL;
+		String newstring = null;
 		value a = new value();
 		int save_token = GlobalMembersCommand.c_token;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			return DefineConstants.NULL;
+			return null;
 		GlobalMembersParse.const_string_express(a);
 		if (a.type == DATA_TYPES.STRING)
 			newstring = a.v.string_val;
@@ -1393,7 +1393,7 @@ public class GlobalMembersUtil
 		String d;
 
 		if (s == null)
-			return DefineConstants.NULL;
+			return null;
 
 		///#ifndef HAVE_STRDUP
 		//    d = gp_alloc(strlen(s) + 1, "gp_strdup");
@@ -1426,7 +1426,7 @@ public class GlobalMembersUtil
 	                                   output earlier */
 		boolean got_hash = false;
 
-		() do {if (numeric_locale != null && strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,numeric_locale);} while (0)();
+		do {if (numeric_locale != null && StringFunctions.strcmp(numeric_locale,"C")) setlocale(LC_NUMERIC,numeric_locale);} while (0)();
 
 		for (;;)
 		{

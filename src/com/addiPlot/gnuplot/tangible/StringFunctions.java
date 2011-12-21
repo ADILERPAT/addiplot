@@ -136,4 +136,8 @@ public final class StringFunctions
 		//CCX need to figure out
 		return 0;
 	}
+
+	public static void strcpy(String destination, String source) {
+		destination = new String(source);
+	}
  }

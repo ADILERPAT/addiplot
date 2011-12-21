@@ -900,9 +900,9 @@ public class GlobalMembersPlot2d
 		} while (false);
 
 		/* Clear out any tick labels read from data files in previous plot */
-		for (t_axis = 0; t_axis < DefineConstants.AXIS_ARRAY_SIZE; t_axis++)
+		for (int axisLoop; axisLoop < DefineConstants.AXIS_ARRAY_SIZE; axisLoop++)
 		{
-			ticdef ticdef = GlobalMembersAxis.axis_array[t_axis.getValue()].ticdef;
+			ticdef ticdef = GlobalMembersAxis.axis_array[axisLoop].ticdef;
 			if (ticdef.def.user != null)
 				ticdef.def.user = GlobalMembersSet.prune_dataticks(ticdef.def.user);
 			if (ticdef.def.user == null && ticdef.type == en_ticseries_type.TIC_USER)
@@ -913,7 +913,7 @@ public class GlobalMembersPlot2d
 		if (dummy_token >= 0)
 			GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[0], dummy_token, DefineConstants.MAX_ID_LEN);
 		else
-			() strcpy(GlobalMembersParse.c_dummy_var[0], GlobalMembersParse.set_dummy_var[0]);
+			StringFunctions.strcpy(GlobalMembersParse.c_dummy_var[0], GlobalMembersParse.set_dummy_var[0]);
 
 		GlobalMembersPlot2d.eval_plots();
 	}

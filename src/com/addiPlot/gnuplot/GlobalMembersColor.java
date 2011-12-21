@@ -1,5 +1,9 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
+import com.addiPlot.term;
+
 public class GlobalMembersColor
 {
 	///#define __STDC__ 1
@@ -168,22 +172,22 @@ public class GlobalMembersColor
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: color.c,v 1.85.2.3 2009/11/04 16:10:48 mikulik Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: color.c,v 1.85.2.3 2009/11/04 16:10:48 mikulik Exp $");
+	//}
 	///#endif
 
 
 
 	/* GLOBAL VARIABLES */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern t_sm_palette sm_palette;
 
-/* *******************************************************************
+	/* *******************************************************************
   ROUTINES
- */
+	 */
 
 
 
@@ -197,196 +201,187 @@ public class GlobalMembersColor
 
 	public static void init_color()
 	{
-	  /* initialize global palette */
-	  sm_palette.colorFormulae = 37; // const
-	  sm_palette.formulaR = 7;
-	  sm_palette.formulaG = 5;
-	  sm_palette.formulaB = 15;
-	  sm_palette.positive = DefineConstants.SMPAL_POSITIVE;
-	  sm_palette.use_maxcolors = 0;
-	  sm_palette.colors = 0;
-	  sm_palette.color = DefineConstants.NULL;
-	  sm_palette.ps_allcF = 0;
-	  sm_palette.gradient_num = 0;
-	  sm_palette.gradient = DefineConstants.NULL;
-	  sm_palette.cmodel = color_models_id.C_MODEL_RGB.getValue();
-	  sm_palette.Afunc.at = sm_palette.Bfunc.at = sm_palette.Cfunc.at = DefineConstants.NULL;
-	  sm_palette.gamma = 1.5;
+		/* initialize global palette */
+		sm_palette.colorFormulae = 37; // const
+		sm_palette.formulaR = 7;
+		sm_palette.formulaG = 5;
+		sm_palette.formulaB = 15;
+		sm_palette.positive = DefineConstants.SMPAL_POSITIVE;
+		sm_palette.use_maxcolors = 0;
+		sm_palette.colors = 0;
+		sm_palette.color = null;
+		sm_palette.ps_allcF = 0;
+		sm_palette.gradient_num = 0;
+		sm_palette.gradient = null;
+		sm_palette.cmodel = color_models_id.C_MODEL_RGB.getValue();
+		sm_palette.Afunc.at = sm_palette.Bfunc.at = sm_palette.Cfunc.at = null;
+		sm_palette.gamma = 1.5;
 
-	  /* initialisation of smooth color box */
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: color_box = default_color_box;
-	  GlobalMembersGadgets.color_box.copyFrom(GlobalMembersGadgets.default_color_box);
+		/* initialisation of smooth color box */
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: color_box = default_color_box;
+		GlobalMembersGadgets.color_box.copyFrom(GlobalMembersGadgets.default_color_box);
 	}
 
-/*
+	/*
    Make the colour palette. Return 0 on success
    Put number of allocated colours into sm_palette.colors
- */
+	 */
 
 
 	/*
 	  Make the colour palette. Return 0 on success
 	  Put number of allocated colours into sm_palette.colors
-	*/
+	 */
 	public static int make_palette()
 	{
 		int i;
 		double gray;
 
-		if (!GlobalMembersTerm.term.make_palette)
-		{
-		return 1;
-		}
-
 		/* ask for suitable number of colours in the palette */
-		i = GlobalMembersTerm.term.make_palette(DefineConstants.NULL);
+		i = term.make_palette(null);
 		if (i == 0)
 		{
-		/* terminal with its own mapping (PostScript, for instance)
+			/* terminal with its own mapping (PostScript, for instance)
 		   It will not change palette passed below, but non-NULL has to be
 		   passed there to create the header or force its initialization
-		 */
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcmp' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		if (memcmp(prev_palette, sm_palette, sizeof(t_sm_palette)))
-		{
-			GlobalMembersTerm.term.make_palette(sm_palette);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: prev_palette = sm_palette;
-			prev_palette.copyFrom(sm_palette);
-			GlobalMembersFit.a((stderr,"make_palette: calling term->make_palette for term with ncolors == 0\n"));
-		}
-		else
-			GlobalMembersFit.a((stderr,"make_palette: skipping duplicate palette for term with ncolors == 0\n"));
-		return 0;
+			 */
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcmp' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			if (memcmp(prev_palette, sm_palette, sizeof(t_sm_palette)))
+			{
+				term.make_palette(sm_palette);
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+				//ORIGINAL LINE: prev_palette = sm_palette;
+				prev_palette.copyFrom(sm_palette);
+				GlobalMembersFit.a((stderr,"make_palette: calling term->make_palette for term with ncolors == 0\n"));
+			}
+			else
+				GlobalMembersFit.a((stderr,"make_palette: skipping duplicate palette for term with ncolors == 0\n"));
+			return 0;
 		}
 
 		/* set the number of colours to be used (allocated) */
 		sm_palette.colors = i;
 		if (sm_palette.use_maxcolors > 0 && i > sm_palette.use_maxcolors)
-		sm_palette.colors = sm_palette.use_maxcolors;
+			sm_palette.colors = sm_palette.use_maxcolors;
 
 		if (prev_palette.colorFormulae < 0 || sm_palette.colorFormulae != prev_palette.colorFormulae || sm_palette.colorMode != prev_palette.colorMode || sm_palette.formulaR != prev_palette.formulaR || sm_palette.formulaG != prev_palette.formulaG || sm_palette.formulaB != prev_palette.formulaB || sm_palette.positive != prev_palette.positive || sm_palette.colors != prev_palette.colors)
 		{
-		/* print the message only if colors have changed */
-		if (GlobalMembersPlot.interactive)
-		fprintf(stderr, "smooth palette in %s: available %i color positions; using %i of them\n", GlobalMembersTerm.term.name, i, sm_palette.colors);
+			/* print the message only if colors have changed */
+			if (GlobalMembersPlot.interactive)
+				fprintf(stderr, "smooth palette in %s: available %i color positions; using %i of them\n", GlobalMembersTerm.term.name, i, sm_palette.colors);
 		}
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: prev_palette = sm_palette;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: prev_palette = sm_palette;
 		prev_palette.copyFrom(sm_palette);
 
-		if (sm_palette.color != DefineConstants.NULL)
+		if (sm_palette.color != null)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(sm_palette.color);
-		sm_palette.color = DefineConstants.NULL;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(sm_palette.color);
+			sm_palette.color = null;
 		}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		sm_palette.color = GlobalMembersAlloc.gp_alloc(sm_palette.colors * sizeof(rgb_color), "pm3d palette color");
 
 		/*  fill sm_palette.color[]  */
 		for (i = 0; i < sm_palette.colors; i++)
 		{
-		gray = (double) i / (sm_palette.colors - 1); // rescale to [0;1]
-		GlobalMembersGetcolor.rgb1_from_gray(gray, (sm_palette.color[i]));
+			gray = (double) i / (sm_palette.colors - 1); // rescale to [0;1]
+			GlobalMembersGetcolor.rgb1_from_gray(gray, (sm_palette.color[i]));
 		}
 
 		/* let the terminal make the palette from the supplied RGB triplets */
-		GlobalMembersTerm.term.make_palette(sm_palette);
+		term.make_palette(sm_palette);
 
 		return 0;
 	}
 
-/*
- * Force a mismatch between the current palette and whatever is sent next,
- * so that the new one will always be loaded 
- */
+	/*
+	 * Force a mismatch between the current palette and whatever is sent next,
+	 * so that the new one will always be loaded 
+	 */
 
 	public static void invalidate_palette()
 	{
 		prev_palette.colors = -1;
 	}
 
-/*
+	/*
    Set the colour on the terminal
    Currently, each terminal takes care of remembering the current colour,
    so there is not much to do here.
- */
+	 */
 
 	/*
 	   Set the colour on the terminal
 	   Currently, each terminal takes care of remembering the current colour,
 	   so there is not much to do here---well, except for reversing the gray
 	   according to sm_palette.positive == SMPAL_POSITIVE or SMPAL_NEGATIVE
-	*/
+	 */
 	public static void set_color(double gray)
 	{
 		t_colorspec color = new t_colorspec();
-		if (!(GlobalMembersTerm.term.set_color))
-		return;
 		color.type = DefineConstants.TC_FRAC;
 		color.value = gray;
-		GlobalMembersTerm.term.set_color(color);
+		term.set_color(color);
 	}
 	public static void set_rgbcolor(int rgblt)
 	{
 		t_colorspec color = new t_colorspec();
-		if (!(GlobalMembersTerm.term.set_color))
-		return;
 		color.type = DefineConstants.TC_RGB;
 		color.lt = rgblt;
-		GlobalMembersTerm.term.set_color(color);
+		term.set_color(color);
 	}
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
 
 	public static void ifilled_quadrangle(gpiPoint[] icorners)
 	{
 		if (GlobalMembersGadgets.default_fillstyle.fillstyle == t_fillstyle.FS_EMPTY.getValue())
-		icorners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
+			icorners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
 		else
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: icorners->style = style_from_fill(&default_fillstyle);
-		icorners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
-		GlobalMembersTerm.term.filled_polygon(4, icorners);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: icorners->style = style_from_fill(&default_fillstyle);
+			icorners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
+		term.filled_polygon(4, icorners);
 
 		if (GlobalMembersPm3d.pm3d.hidden3d_tag != 0)
 		{
 
-		int i;
+			int i;
 
-		/* Colour has changed, so we must apply line properties again.
-		 * FIXME: It would be cleaner to apply the general line properties
-		 * outside this loop, and limit ourselves to apply_pm3dcolor().
-		 */
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static struct lp_style_type lp = {0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0}};
-		GlobalMembersTerm.lp_use_properties(lp, GlobalMembersPm3d.pm3d.hidden3d_tag);
-		GlobalMembersTerm.term_apply_lp_properties(lp);
+			/* Colour has changed, so we must apply line properties again.
+			 * FIXME: It would be cleaner to apply the general line properties
+			 * outside this loop, and limit ourselves to apply_pm3dcolor().
+			 */
+			//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+			//	static struct lp_style_type lp = {0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0}};
+			GlobalMembersTerm.lp_use_properties(lp, GlobalMembersPm3d.pm3d.hidden3d_tag);
+			GlobalMembersTerm.term_apply_lp_properties(lp);
 
-		GlobalMembersTerm.term.move(icorners[0].x, icorners[0].y);
-		for (i = 3; i >= 0; i--)
-		{
-			GlobalMembersTerm.term.vector(icorners[i].x, icorners[i].y);
-		}
+			term.move(icorners[0].x, icorners[0].y);
+			for (i = 3; i >= 0; i--)
+			{
+				term.vector(icorners[i].x, icorners[i].y);
+			}
 		}
 	}
 
-/* The routine above for 4 points explicitly.
- * This is the only routine which supportes extended
- * color specs currently.
- */
-///#ifdef EXTENDED_COLOR_SPECS
-//void
-//filled_quadrangle(gpdPoint * corners, gpiPoint * icorners)
-///#else
+	/* The routine above for 4 points explicitly.
+	 * This is the only routine which supportes extended
+	 * color specs currently.
+	 */
+	///#ifdef EXTENDED_COLOR_SPECS
+	//void
+	//filled_quadrangle(gpdPoint * corners, gpiPoint * icorners)
+	///#else
 
 	/*
 	   The routine above for 4 points explicitly
-	*/
+	 */
 	///#ifdef EXTENDED_COLOR_SPECS
 	//void filled_quadrangle __PROTO((gpdPoint *corners, gpiPoint* icorners));
 	///#else
@@ -396,31 +391,31 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 		int i;
 		double x;
 		double y;
-	///#ifndef EXTENDED_COLOR_SPECS
+		///#ifndef EXTENDED_COLOR_SPECS
 		gpiPoint[] icorners = new gpiPoint[4];
-	///#endif
+		///#endif
 		for (i = 0; i < 4; i++)
 		{
-		GlobalMembersUtil3d.map3d_xy_double(corners[i].x, corners[i].y, corners[i].z, x, y);
-		icorners[i].x = x;
-		icorners[i].y = y;
+			GlobalMembersUtil3d.map3d_xy_double(corners[i].x, corners[i].y, corners[i].z, x, y);
+			icorners[i].x = (int) x;
+			icorners[i].y = (int) y;
 		}
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: ifilled_quadrangle(icorners);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: ifilled_quadrangle(icorners);
 		GlobalMembersColor.ifilled_quadrangle(new gpiPoint(icorners));
 	}
 
-/*
+	/*
    Makes mapping from real 3D coordinates, passed as coords array,
    to 2D terminal coordinates, then draws filled polygon
- */
+	 */
 	///#endif
 
 	/*
 	   Makes mapping from real 3D coordinates, passed as coords array,
 	   to 2D terminal coordinates, then draws filled polygon
-	*/
+	 */
 	/* HBB 20010216: added 'GPHUGE' attribute */
 	public static void filled_polygon_3dcoords(int points, coordinate[] coords)
 	{
@@ -428,89 +423,87 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 		double x;
 		double y;
 		gpiPoint[] icorners;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		icorners = GlobalMembersAlloc.gp_alloc(points * sizeof(gpiPoint), "filled_polygon3d corners");
 		for (i = 0; i < points; i++)
 		{
-		GlobalMembersUtil3d.map3d_xy_double(coords[i].x, coords[i].y, coords[i].z, x, y);
-		icorners[i].x = x;
-		icorners[i].y = y;
+			GlobalMembersUtil3d.map3d_xy_double(coords[i].x, coords[i].y, coords[i].z, x, y);
+			icorners[i].x = (int) x;
+			icorners[i].y = (int) y;
 		}
-	///#ifdef EXTENDED_COLOR_SPECS
-	//    if (supply_extended_color_specs) {
-	//	icorners[0].spec.gray = -1;	// force solid color
-	//    }
-	///#endif
+		///#ifdef EXTENDED_COLOR_SPECS
+		//    if (supply_extended_color_specs) {
+		//	icorners[0].spec.gray = -1;	// force solid color
+		//    }
+		///#endif
 		if (GlobalMembersGadgets.default_fillstyle.fillstyle == t_fillstyle.FS_EMPTY.getValue())
-		icorners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
+			icorners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
 		else
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: icorners->style = style_from_fill(&default_fillstyle);
-		icorners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
-		GlobalMembersTerm.term.filled_polygon(points, icorners);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: icorners->style = style_from_fill(&default_fillstyle);
+			icorners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
+		term.filled_polygon(points, icorners);
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(icorners);
 	}
 
-/*
+	/*
    Makes mapping from real 3D coordinates, passed as coords array, but at z coordinate
    fixed (base_z, for instance) to 2D terminal coordinates, then draws filled polygon
- */
+	 */
 
 	/*
 	   Makes mapping from real 3D coordinates, passed as coords array, but at z coordinate
 	   fixed (base_z, for instance) to 2D terminal coordinates, then draws filled polygon
-	*/
+	 */
 	public static void filled_polygon_3dcoords_zfixed(int points, coordinate[] coords, double z)
 	{
 		int i;
 		double x;
 		double y;
 		gpiPoint[] icorners;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		icorners = GlobalMembersAlloc.gp_alloc(points * sizeof(gpiPoint), "filled_polygon_zfix corners");
 		for (i = 0; i < points; i++)
 		{
-		GlobalMembersUtil3d.map3d_xy_double(coords[i].x, coords[i].y, z, x, y);
-		icorners[i].x = x;
-		icorners[i].y = y;
+			GlobalMembersUtil3d.map3d_xy_double(coords[i].x, coords[i].y, z, x, y);
+			icorners[i].x = (int) x;
+			icorners[i].y = (int) y;
 		}
-	///#ifdef EXTENDED_COLOR_SPECS
-	//    if (supply_extended_color_specs) {
-	//	icorners[0].spec.gray = -1;	// force solid color
-	//    }
-	///#endif
+		///#ifdef EXTENDED_COLOR_SPECS
+		//    if (supply_extended_color_specs) {
+		//	icorners[0].spec.gray = -1;	// force solid color
+		//    }
+		///#endif
 		if (GlobalMembersGadgets.default_fillstyle.fillstyle == t_fillstyle.FS_EMPTY.getValue())
-		icorners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
+			icorners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
 		else
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: icorners->style = style_from_fill(&default_fillstyle);
-		icorners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
-		GlobalMembersTerm.term.filled_polygon(points, icorners);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: icorners->style = style_from_fill(&default_fillstyle);
+			icorners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
+		term.filled_polygon(points, icorners);
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(icorners);
 	}
 
-/*
+	/*
    Finally the main colour smooth box drawing routine
- */
+	 */
 
 	/*
 	  Draw colour smooth box
-	*/
+	 */
 	public static void draw_color_smooth_box(int plot_mode)
 	{
 		double tmp;
-		FILE out = GlobalMembersTerm.gppsfile; // either gpoutfile or PSLATEX_auxfile
+		File out = GlobalMembersTerm.gppsfile; // either gpoutfile or PSLATEX_auxfile
 
 		if (GlobalMembersGadgets.color_box.where == DefineConstants.SMCOLOR_BOX_NO)
-		return;
-		if (!GlobalMembersTerm.term.filled_polygon)
-		return;
+			return;
 
 		/*
 		   firstly, choose some good position of the color box
-	
+
 		   user's position like that (?):
 		   else {
 		   x_from = color_box.xlow;
@@ -519,205 +512,201 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 		 */
 		if (GlobalMembersGadgets.color_box.where == DefineConstants.SMCOLOR_BOX_USER)
 		{
-		if (!GlobalMembersGadgets.is_3d_plot)
-		{
-			double xtemp;
-			double ytemp;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: map_position(&color_box.origin, &color_box.bounds.xleft, &color_box.bounds.ybot, "cbox");
-			GlobalMembersGraphics.map_position(new position(GlobalMembersGadgets.color_box.origin), GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot, "cbox");
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: map_position_r(&color_box.size, &xtemp, &ytemp, "cbox");
-			GlobalMembersGraphics.map_position_r(new position(GlobalMembersGadgets.color_box.size), xtemp, ytemp, "cbox");
-			GlobalMembersGadgets.color_box.bounds.xright = xtemp;
-			GlobalMembersGadgets.color_box.bounds.ytop = ytemp;
-		}
-		else if (GlobalMembersGraph3d.splot_map != 0 && GlobalMembersGadgets.is_3d_plot)
-		{
-			/* In map view mode we allow any coordinate system for placement */
-			double xtemp;
-			double ytemp;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: map3d_position_double(&color_box.origin, &xtemp, &ytemp, "cbox");
-			GlobalMembersGraph3d.map3d_position_double(new position(GlobalMembersGadgets.color_box.origin), xtemp, ytemp, "cbox");
-			GlobalMembersGadgets.color_box.bounds.xleft = xtemp;
-			GlobalMembersGadgets.color_box.bounds.ybot = ytemp;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: map3d_position_r(&color_box.size, &color_box.bounds.xright, &color_box.bounds.ytop, "cbox");
-			GlobalMembersGraph3d.map3d_position_r(new position(GlobalMembersGadgets.color_box.size), GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ytop, "cbox");
-		}
-		else
-		{
-			/* But in full 3D mode we only allow screen coordinates */
-			GlobalMembersGadgets.color_box.bounds.xleft = GlobalMembersGadgets.color_box.origin.x * (GlobalMembersTerm.term.xmax) + 0.5;
-			GlobalMembersGadgets.color_box.bounds.ybot = GlobalMembersGadgets.color_box.origin.y * (GlobalMembersTerm.term.ymax) + 0.5;
-			GlobalMembersGadgets.color_box.bounds.xright = GlobalMembersGadgets.color_box.size.x * (GlobalMembersTerm.term.xmax - 1) + 0.5;
-			GlobalMembersGadgets.color_box.bounds.ytop = GlobalMembersGadgets.color_box.size.y * (GlobalMembersTerm.term.ymax - 1) + 0.5;
-		}
-		GlobalMembersGadgets.color_box.bounds.xright += GlobalMembersGadgets.color_box.bounds.xleft;
-		GlobalMembersGadgets.color_box.bounds.ytop += GlobalMembersGadgets.color_box.bounds.ybot;
+			if (!GlobalMembersGadgets.is_3d_plot)
+			{
+				double xtemp;
+				double ytemp;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: map_position(&color_box.origin, &color_box.bounds.xleft, &color_box.bounds.ybot, "cbox");
+				GlobalMembersGraphics.map_position(new position(GlobalMembersGadgets.color_box.origin), GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot, "cbox");
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: map_position_r(&color_box.size, &xtemp, &ytemp, "cbox");
+				GlobalMembersGraphics.map_position_r(new position(GlobalMembersGadgets.color_box.size), xtemp, ytemp, "cbox");
+				GlobalMembersGadgets.color_box.bounds.xright = (int) xtemp;
+				GlobalMembersGadgets.color_box.bounds.ytop = (int) ytemp;
+			}
+			else if (GlobalMembersGraph3d.splot_map != 0 && GlobalMembersGadgets.is_3d_plot)
+			{
+				/* In map view mode we allow any coordinate system for placement */
+				double xtemp;
+				double ytemp;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: map3d_position_double(&color_box.origin, &xtemp, &ytemp, "cbox");
+				GlobalMembersGraph3d.map3d_position_double(new position(GlobalMembersGadgets.color_box.origin), xtemp, ytemp, "cbox");
+				GlobalMembersGadgets.color_box.bounds.xleft = (int) xtemp;
+				GlobalMembersGadgets.color_box.bounds.ybot = (int) ytemp;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: map3d_position_r(&color_box.size, &color_box.bounds.xright, &color_box.bounds.ytop, "cbox");
+				GlobalMembersGraph3d.map3d_position_r(new position(GlobalMembersGadgets.color_box.size), GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ytop, "cbox");
+			}
+			else
+			{
+				/* But in full 3D mode we only allow screen coordinates */
+				GlobalMembersGadgets.color_box.bounds.xleft = (int) (GlobalMembersGadgets.color_box.origin.x * (GlobalMembersTerm.term.xmax) + 0.5);
+				GlobalMembersGadgets.color_box.bounds.ybot = (int) (GlobalMembersGadgets.color_box.origin.y * (GlobalMembersTerm.term.ymax) + 0.5);
+				GlobalMembersGadgets.color_box.bounds.xright = (int) (GlobalMembersGadgets.color_box.size.x * (GlobalMembersTerm.term.xmax - 1) + 0.5);
+				GlobalMembersGadgets.color_box.bounds.ytop = (int) (GlobalMembersGadgets.color_box.size.y * (GlobalMembersTerm.term.ymax - 1) + 0.5);
+			}
+			GlobalMembersGadgets.color_box.bounds.xright += GlobalMembersGadgets.color_box.bounds.xleft;
+			GlobalMembersGadgets.color_box.bounds.ytop += GlobalMembersGadgets.color_box.bounds.ybot;
 
 		} // color_box.where == SMCOLOR_BOX_DEFAULT
 		else
 		{
-		if (plot_mode == MODE_PLOT_TYPE.MODE_SPLOT.getValue() && GlobalMembersGraph3d.splot_map == 0)
-		{
-			/* HBB 20031215: new code.  Constants fixed to what the result
-			 * of the old code in default view (set view 60,30,1,1)
-			 * happened to be. Somebody fix them if they're not right! */
-			GlobalMembersGadgets.color_box.bounds.xleft = GlobalMembersGraph3d.xmiddle + 0.709 * GlobalMembersGraph3d.xscaler;
-			GlobalMembersGadgets.color_box.bounds.xright = GlobalMembersGraph3d.xmiddle + 0.778 * GlobalMembersGraph3d.xscaler;
-			GlobalMembersGadgets.color_box.bounds.ybot = GlobalMembersGraph3d.ymiddle - 0.147 * GlobalMembersGraph3d.yscaler;
-			GlobalMembersGadgets.color_box.bounds.ytop = GlobalMembersGraph3d.ymiddle + 0.497 * GlobalMembersGraph3d.yscaler;
-
-		}
-		else if (GlobalMembersGadgets.is_3d_plot)
-		{
-			/* MWS 09-Dec-05, make color box full size for splot maps. */
-			double dx = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max - GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min);
-			GlobalMembersUtil3d.map3d_xy(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max + dx * 0.025, GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min, GlobalMembersGraph3d.base_z, GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot);
-			GlobalMembersUtil3d.map3d_xy(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max + dx * 0.075, GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max, GlobalMembersGraph3d.ceiling_z, GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ytop);
-		} // 2D plot
-		else
-		{
-			position default_origin = new position(position_type.graph,position_type.graph,position_type.graph, 1.025, 0, 0);
-			position default_size = new position(position_type.graph,position_type.graph,position_type.graph, 0.05, 1.0, 0);
-			double xtemp;
-			double ytemp;
-			GlobalMembersGraphics.map_position(default_origin, GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot, "cbox");
-			GlobalMembersGadgets.color_box.bounds.xleft += GlobalMembersGadgets.color_box.xoffset;
-			GlobalMembersGraphics.map_position_r(default_size, xtemp, ytemp, "cbox");
-			GlobalMembersGadgets.color_box.bounds.xright = xtemp + GlobalMembersGadgets.color_box.bounds.xleft;
-			GlobalMembersGadgets.color_box.bounds.ytop = ytemp + GlobalMembersGadgets.color_box.bounds.ybot;
-		}
-
-		/* now corrections for outer tics */
-		if (GlobalMembersGadgets.color_box.rotation == 'v')
-		{
-			int cblen = (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? - 1 : 1) * GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale * (GlobalMembersTerm.term.h_tic); // positive for outer tics
-			int ylen = (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].tic_in ? - 1 : 1) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].ticscale * (GlobalMembersTerm.term.h_tic); // positive for outer tics
-			if ((cblen > 0) && (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode & DefineConstants.TICS_MIRROR))
+			if (plot_mode == MODE_PLOT_TYPE.MODE_SPLOT.getValue() && GlobalMembersGraph3d.splot_map == 0)
 			{
-			GlobalMembersGadgets.color_box.bounds.xleft += cblen;
-			GlobalMembersGadgets.color_box.bounds.xright += cblen;
+				/* HBB 20031215: new code.  Constants fixed to what the result
+				 * of the old code in default view (set view 60,30,1,1)
+				 * happened to be. Somebody fix them if they're not right! */
+				GlobalMembersGadgets.color_box.bounds.xleft = (int) (GlobalMembersGraph3d.xmiddle + 0.709 * GlobalMembersGraph3d.xscaler);
+				GlobalMembersGadgets.color_box.bounds.xright = (int) (GlobalMembersGraph3d.xmiddle + 0.778 * GlobalMembersGraph3d.xscaler);
+				GlobalMembersGadgets.color_box.bounds.ybot = (int) (GlobalMembersGraph3d.ymiddle - 0.147 * GlobalMembersGraph3d.yscaler);
+				GlobalMembersGadgets.color_box.bounds.ytop = (int) (GlobalMembersGraph3d.ymiddle + 0.497 * GlobalMembersGraph3d.yscaler);
+
 			}
-			if ((ylen > 0) && (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].ticmode & DefineConstants.TICS_MIRROR))
+			else if (GlobalMembersGadgets.is_3d_plot)
 			{
-			GlobalMembersGadgets.color_box.bounds.xleft += ylen;
-			GlobalMembersGadgets.color_box.bounds.xright += ylen;
+				/* MWS 09-Dec-05, make color box full size for splot maps. */
+				double dx = (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max - GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].min);
+				GlobalMembersUtil3d.map3d_xy(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max + dx * 0.025, GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min, GlobalMembersGraph3d.base_z, GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot);
+				GlobalMembersUtil3d.map3d_xy(GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].max + dx * 0.075, GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max, GlobalMembersGraph3d.ceiling_z, GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ytop);
+			} // 2D plot
+			else
+			{
+				position default_origin = new position(position_type.graph,position_type.graph,position_type.graph, 1.025, 0, 0);
+				position default_size = new position(position_type.graph,position_type.graph,position_type.graph, 0.05, 1.0, 0);
+				double xtemp;
+				double ytemp;
+				GlobalMembersGraphics.map_position(default_origin, GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot, "cbox");
+				GlobalMembersGadgets.color_box.bounds.xleft += GlobalMembersGadgets.color_box.xoffset;
+				GlobalMembersGraphics.map_position_r(default_size, xtemp, ytemp, "cbox");
+				GlobalMembersGadgets.color_box.bounds.xright = (int) (xtemp + GlobalMembersGadgets.color_box.bounds.xleft);
+				GlobalMembersGadgets.color_box.bounds.ytop = (int) (ytemp + GlobalMembersGadgets.color_box.bounds.ybot);
 			}
-		}
+
+			/* now corrections for outer tics */
+			if (GlobalMembersGadgets.color_box.rotation == 'v')
+			{
+				int cblen = (int) ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? - 1 : 1) * GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale * (GlobalMembersTerm.term.h_tic)); // positive for outer tics
+				int ylen = (int) ((GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].tic_in ? - 1 : 1) * GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].ticscale * (GlobalMembersTerm.term.h_tic)); // positive for outer tics
+				if ((cblen > 0) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode & DefineConstants.TICS_MIRROR) != 0))
+				{
+					GlobalMembersGadgets.color_box.bounds.xleft += cblen;
+					GlobalMembersGadgets.color_box.bounds.xright += cblen;
+				}
+				if ((ylen > 0) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].ticmode & DefineConstants.TICS_MIRROR) != 0))
+				{
+					GlobalMembersGadgets.color_box.bounds.xleft += ylen;
+					GlobalMembersGadgets.color_box.bounds.xright += ylen;
+				}
+			}
 		}
 
 		if (GlobalMembersGadgets.color_box.bounds.ybot > GlobalMembersGadgets.color_box.bounds.ytop) // switch them
 		{
-		tmp = GlobalMembersGadgets.color_box.bounds.ytop;
-		GlobalMembersGadgets.color_box.bounds.ytop = GlobalMembersGadgets.color_box.bounds.ybot;
-		GlobalMembersGadgets.color_box.bounds.ybot = tmp;
+			tmp = GlobalMembersGadgets.color_box.bounds.ytop;
+			GlobalMembersGadgets.color_box.bounds.ytop = GlobalMembersGadgets.color_box.bounds.ybot;
+			GlobalMembersGadgets.color_box.bounds.ybot = tmp;
 		}
 
 		/* Optimized version of the smooth colour box in postscript. Advantage:
 		   only few lines of code is written into the output file.
 		 */
 		if (GlobalMembersTerm.gppsfile != null)
-		GlobalMembersColor.draw_inside_color_smooth_box_postscript(out);
+			GlobalMembersColor.draw_inside_color_smooth_box_postscript(out);
 		else
-		GlobalMembersColor.draw_inside_color_smooth_box_bitmap(out);
+			GlobalMembersColor.draw_inside_color_smooth_box_bitmap(out);
 
 		if (GlobalMembersGadgets.color_box.border != 0)
 		{
-		/* now make boundary around the colour box */
-		if (GlobalMembersGadgets.color_box.border_lt_tag >= 0)
-		{
-			/* user specified line type */
-			lp_style_type lp = GlobalMembersGadgets.border_lp;
-			GlobalMembersTerm.lp_use_properties(lp, GlobalMembersGadgets.color_box.border_lt_tag);
-			GlobalMembersTerm.term_apply_lp_properties(lp);
-		}
-		else
-		{
-			/* black solid colour should be chosen, so it's border linetype */
-			GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp);
-		}
-		GlobalMembersTerm.newpath();
-		(GlobalMembersTerm.term.move)(GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot);
-		(GlobalMembersTerm.term.vector)(GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ybot);
-		(GlobalMembersTerm.term.vector)(GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ytop);
-		(GlobalMembersTerm.term.vector)(GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ytop);
-		(GlobalMembersTerm.term.vector)(GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot);
-		GlobalMembersTerm.closepath();
+			/* now make boundary around the colour box */
+			if (GlobalMembersGadgets.color_box.border_lt_tag >= 0)
+			{
+				/* user specified line type */
+				lp_style_type lp = GlobalMembersGadgets.border_lp;
+				GlobalMembersTerm.lp_use_properties(lp, GlobalMembersGadgets.color_box.border_lt_tag);
+				GlobalMembersTerm.term_apply_lp_properties(lp);
+			}
+			else
+			{
+				/* black solid colour should be chosen, so it's border linetype */
+				GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp);
+			}
+			GlobalMembersTerm.newpath();
+			term.move(GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot);
+			term.vector(GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ybot);
+			term.vector(GlobalMembersGadgets.color_box.bounds.xright, GlobalMembersGadgets.color_box.bounds.ytop);
+			term.vector(GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ytop);
+			term.vector(GlobalMembersGadgets.color_box.bounds.xleft, GlobalMembersGadgets.color_box.bounds.ybot);
+			GlobalMembersTerm.closepath();
 
-		/* Set line properties to some value, this also draws lines in postscript terminals. */
+			/* Set line properties to some value, this also draws lines in postscript terminals. */
 			GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp);
 		}
 
 		/* draw tics */
 		if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode != 0)
 		{
-		GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp); // border linetype
-		GlobalMembersAxis.gen_tics(AXIS_INDEX.COLOR_AXIS, GlobalMembersColor.cbtick_callback);
+			GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp); // border linetype
+			GlobalMembersAxis.gen_tics(AXIS_INDEX.COLOR_AXIS, GlobalMembersColor.cbtick_callback);
 		}
 
 		/* write the colour box label */
 		if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text != null)
 		{
-		int x;
-		int y;
-		GlobalMembersGadgets.apply_pm3dcolor((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor), GlobalMembersTerm.term);
-		if (GlobalMembersGadgets.color_box.rotation == 'h')
-		{
-			int len = GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale * (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? 1 : -1) * (GlobalMembersTerm.term.v_tic);
-
-			GlobalMembersGraph3d.map3d_position_r((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.offset), x, y, "smooth_box");
-			x += (GlobalMembersGadgets.color_box.bounds.xleft + GlobalMembersGadgets.color_box.bounds.xright) / 2;
-
-	///#define DEFAULT_Y_DISTANCE 1.0
-			y += GlobalMembersGadgets.color_box.bounds.ybot + (- DefineConstants.DEFAULT_Y_DISTANCE - 1.7) * GlobalMembersTerm.term.v_char;
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef DEFAULT_Y_DISTANCE
-			if (len < 0)
-				y += len;
-			if (x < 0)
-				x = 0;
-			if (y < 0)
-				y = 0;
-			GlobalMembersTerm.write_multiline(x, y, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text, JUSTIFY.CENTRE, VERT_JUSTIFY.JUST_CENTRE, 0, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.font);
-		}
-		else
-		{
-			int len = GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale * (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? - 1 : 1) * (GlobalMembersTerm.term.h_tic);
-			/* calculate max length of cb-tics labels */
-			GlobalMembersAxis.widest_tic_strlen = 0;
-			if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode & DefineConstants.TICS_ON_BORDER != 0)
+			int x;
+			int y;
+			GlobalMembersGadgets.apply_pm3dcolor(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor);
+			if (GlobalMembersGadgets.color_box.rotation == 'h')
 			{
-				  GlobalMembersAxis.widest_tic_strlen = 0; // reset the global variable
-			GlobalMembersAxis.gen_tics(AXIS_INDEX.COLOR_AXIS, GlobalMembersAxis.widest_tic_callback); // 0,
+				int len = (int) (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale * (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? 1 : -1) * (GlobalMembersTerm.term.v_tic));
+
+				GlobalMembersGraph3d.map3d_position_r((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.offset), x, y, "smooth_box");
+				x += (GlobalMembersGadgets.color_box.bounds.xleft + GlobalMembersGadgets.color_box.bounds.xright) / 2;
+
+				y += GlobalMembersGadgets.color_box.bounds.ybot + (- DefineConstants.DEFAULT_Y_DISTANCE - 1.7) * GlobalMembersTerm.term.v_char;
+				
+				if (len < 0)
+					y += len;
+				if (x < 0)
+					x = 0;
+				if (y < 0)
+					y = 0;
+				GlobalMembersTerm.write_multiline(x, y, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text, JUSTIFY.CENTRE, VERT_JUSTIFY.JUST_CENTRE, 0, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.font);
 			}
-			GlobalMembersGraph3d.map3d_position_r((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.offset), x, y, "smooth_box");
-	///#define DEFAULT_X_DISTANCE 0.0
-			x += GlobalMembersGadgets.color_box.bounds.xright + (GlobalMembersAxis.widest_tic_strlen + DefineConstants.DEFAULT_X_DISTANCE + 1.5) * GlobalMembersTerm.term.h_char;
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef DEFAULT_X_DISTANCE
-			if (len > 0)
-				x += len;
-			y += (GlobalMembersGadgets.color_box.bounds.ybot + GlobalMembersGadgets.color_box.bounds.ytop) / 2;
-			if (x < 0)
-				x = 0;
-			if (y < 0)
-				y = 0;
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		if ((*GlobalMembersTerm.term.text_angle)(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.rotate))
-				{
-			GlobalMembersTerm.write_multiline(x, y, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text, JUSTIFY.CENTRE, VERT_JUSTIFY.JUST_TOP, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.rotate, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.font);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.text_angle)(0);
-				}
 			else
 			{
-			GlobalMembersTerm.write_multiline(x, y, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text, JUSTIFY.LEFT, VERT_JUSTIFY.JUST_TOP, 0, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.font);
+				int len = (int) (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale * (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? - 1 : 1) * (GlobalMembersTerm.term.h_tic));
+				/* calculate max length of cb-tics labels */
+				GlobalMembersAxis.widest_tic_strlen = 0;
+				if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode & ((DefineConstants.TICS_ON_BORDER != 0) ? 1 : 0)) != 0)
+				{
+					GlobalMembersAxis.widest_tic_strlen = 0; // reset the global variable
+					GlobalMembersAxis.gen_tics(AXIS_INDEX.COLOR_AXIS, GlobalMembersAxis.widest_tic_callback); // 0,
+				}
+				GlobalMembersGraph3d.map3d_position_r((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.offset), x, y, "smooth_box");
+				///#define DEFAULT_X_DISTANCE 0.0
+				x += GlobalMembersGadgets.color_box.bounds.xright + (GlobalMembersAxis.widest_tic_strlen + DefineConstants.DEFAULT_X_DISTANCE + 1.5) * GlobalMembersTerm.term.h_char;
+				//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+				///#undef DEFAULT_X_DISTANCE
+				if (len > 0)
+					x += len;
+				y += (GlobalMembersGadgets.color_box.bounds.ybot + GlobalMembersGadgets.color_box.bounds.ytop) / 2;
+				if (x < 0)
+					x = 0;
+				if (y < 0)
+					y = 0;
+				if (term.text_angle(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.rotate) != 0)
+				{
+					GlobalMembersTerm.write_multiline(x, y, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text, JUSTIFY.CENTRE, VERT_JUSTIFY.JUST_TOP, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.rotate, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.font);
+					term.text_angle(0);
+				}
+				else
+				{
+					GlobalMembersTerm.write_multiline(x, y, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.text, JUSTIFY.LEFT, VERT_JUSTIFY.JUST_TOP, 0, GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.font);
+				}
 			}
-		}
-		GlobalMembersGadgets.reset_textcolor((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor), GlobalMembersTerm.term);
+			GlobalMembersGadgets.reset_textcolor(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].label.textcolor);
 		}
 
 	}
@@ -1336,18 +1325,18 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 	 */
 	public static t_sm_palette prev_palette = new t_sm_palette(-1, -1, -1, -1, -1, -1, -1, -1, (rgb_color *) 0, -1);
 
-/*
+	/*
    Draw colour smooth box
 
    Firstly two helper routines for plotting inside of the box
    for postscript and for other terminals, finally the main routine
- */
+	 */
 
 
-/* plot the colour smooth box for from terminal's integer coordinates
+	/* plot the colour smooth box for from terminal's integer coordinates
    This routine is for postscript files --- actually, it writes a small
    PS routine.
- */
+	 */
 
 
 	///#ifdef EXTENDED_COLOR_SPECS
@@ -1356,7 +1345,7 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 
 	/* Internal prototype declarations: */
 
-	public static void draw_inside_color_smooth_box_postscript(FILE out)
+	public static void draw_inside_color_smooth_box_postscript(File out)
 	{
 		int scale_x = (GlobalMembersGadgets.color_box.bounds.xright - GlobalMembersGadgets.color_box.bounds.xleft);
 		int scale_y = (GlobalMembersGadgets.color_box.bounds.ytop - GlobalMembersGadgets.color_box.bounds.ybot);
@@ -1370,22 +1359,22 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 		fprintf(out, "/ystep 1 imax div def /y0 0 def /ii 0 def\n");
 		/* local variables; y-step, current y position and counter ii;  */
 		if (sm_palette.positive == DefineConstants.SMPAL_NEGATIVE) // inverted gray for negative figure
-		fputs("{ 0.99999 y0 sub g ", out); // 1 > x > 1-1.0/1024
+			fputs("{ 0.99999 y0 sub g ", out); // 1 > x > 1-1.0/1024
 		else
-		fputs("{ y0 g ", out);
+			fputs("{ y0 g ", out);
 		if (GlobalMembersGadgets.color_box.rotation == 'v')
-		fputs("0 y0 N 1 0 V 0 ystep V -1 0 f\n", out);
+			fputs("0 y0 N 1 0 V 0 ystep V -1 0 f\n", out);
 		else
-		fputs("y0 0 N 0 1 V ystep 0 V 0 -1 f\n", out);
+			fputs("y0 0 N 0 1 V ystep 0 V 0 -1 f\n", out);
 		fputs("/y0 y0 ystep add def /ii ii 1 add def\n" + "ii imax ge {exit} if } loop\n" + "grestore 0 setgray\n", out);
 	}
 
-/* plot the colour smooth box for from terminal's integer coordinates
+	/* plot the colour smooth box for from terminal's integer coordinates
    [x_from,y_from] to [x_to,y_to].
    This routine is for non-postscript files, as it does explicitly the loop
    over all thin rectangles
- */
-	public static void draw_inside_color_smooth_box_bitmap(FILE out)
+	 */
+	public static void draw_inside_color_smooth_box_bitmap(File out)
 	{
 		int steps = 128; // I think that nobody can distinguish more colours drawn in the palette
 		int i;
@@ -1397,63 +1386,62 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 		double gray;
 		gpiPoint[] corners = new gpiPoint[4];
 
-		() out; // to avoid "unused parameter" warning
 		if (GlobalMembersGadgets.color_box.rotation == 'v')
 		{
-		corners[0].x = corners[3].x = GlobalMembersGadgets.color_box.bounds.xleft;
-		corners[1].x = corners[2].x = GlobalMembersGadgets.color_box.bounds.xright;
-		xy_from = GlobalMembersGadgets.color_box.bounds.ybot;
-		xy_to = GlobalMembersGadgets.color_box.bounds.ytop;
+			corners[0].x = corners[3].x = GlobalMembersGadgets.color_box.bounds.xleft;
+			corners[1].x = corners[2].x = GlobalMembersGadgets.color_box.bounds.xright;
+			xy_from = GlobalMembersGadgets.color_box.bounds.ybot;
+			xy_to = GlobalMembersGadgets.color_box.bounds.ytop;
 		}
 		else
 		{
-		corners[0].y = corners[1].y = GlobalMembersGadgets.color_box.bounds.ybot;
-		corners[2].y = corners[3].y = GlobalMembersGadgets.color_box.bounds.ytop;
-		xy_from = GlobalMembersGadgets.color_box.bounds.xleft;
-		xy_to = GlobalMembersGadgets.color_box.bounds.xright;
+			corners[0].y = corners[1].y = GlobalMembersGadgets.color_box.bounds.ybot;
+			corners[2].y = corners[3].y = GlobalMembersGadgets.color_box.bounds.ytop;
+			xy_from = GlobalMembersGadgets.color_box.bounds.xleft;
+			xy_to = GlobalMembersGadgets.color_box.bounds.xright;
 		}
 		xy_step = (GlobalMembersGadgets.color_box.rotation == 'h' ? GlobalMembersGadgets.color_box.bounds.xright - GlobalMembersGadgets.color_box.bounds.xleft : GlobalMembersGadgets.color_box.bounds.ytop - GlobalMembersGadgets.color_box.bounds.ybot) / (double) steps;
 
 		for (i = 0; i < steps; i++)
 		{
-		gray = (double) i / steps; // colours equidistantly from [0,1]
-		if (sm_palette.positive == DefineConstants.SMPAL_NEGATIVE)
-			gray = 1 - gray;
-		/* Set the colour (also for terminals which support extended specs). */
-		GlobalMembersColor.set_color(gray);
-		xy = xy_from + (int)(xy_step * i);
-		xy2 = xy_from + (int)(xy_step * (i + 1));
-		if (GlobalMembersGadgets.color_box.rotation == 'v')
-		{
-			corners[0].y = corners[1].y = xy;
-			corners[2].y = corners[3].y = (i == steps - 1) ? xy_to : xy2;
-		}
-		else
-		{
-			corners[0].x = corners[3].x = xy;
-			corners[1].x = corners[2].x = (i == steps - 1) ? xy_to : xy2;
-		}
-	///#ifdef EXTENDED_COLOR_SPECS
-	//	if (supply_extended_color_specs) {
-	//	    corners[0].spec.gray = -1;	// force solid color
-	//	}
-	///#endif
-		/* print the rectangle with the given colour */
-		if (GlobalMembersGadgets.default_fillstyle.fillstyle == t_fillstyle.FS_EMPTY.getValue())
-			corners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
-		else
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: corners->style = style_from_fill(&default_fillstyle);
-			corners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
-		GlobalMembersTerm.term.filled_polygon(4, corners);
+			gray = (double) i / steps; // colours equidistantly from [0,1]
+			if (sm_palette.positive == DefineConstants.SMPAL_NEGATIVE)
+				gray = 1 - gray;
+			/* Set the colour (also for terminals which support extended specs). */
+			GlobalMembersColor.set_color(gray);
+			xy = xy_from + (int)(xy_step * i);
+			xy2 = xy_from + (int)(xy_step * (i + 1));
+			if (GlobalMembersGadgets.color_box.rotation == 'v')
+			{
+				corners[0].y = corners[1].y = xy;
+				corners[2].y = corners[3].y = (i == steps - 1) ? xy_to : xy2;
+			}
+			else
+			{
+				corners[0].x = corners[3].x = xy;
+				corners[1].x = corners[2].x = (i == steps - 1) ? xy_to : xy2;
+			}
+			///#ifdef EXTENDED_COLOR_SPECS
+			//	if (supply_extended_color_specs) {
+			//	    corners[0].spec.gray = -1;	// force solid color
+			//	}
+			///#endif
+			/* print the rectangle with the given colour */
+			if (GlobalMembersGadgets.default_fillstyle.fillstyle == t_fillstyle.FS_EMPTY.getValue())
+				corners.style = t_fillstyle.FS_SOLID.getValue() + (100 << 4);
+			else
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: corners->style = style_from_fill(&default_fillstyle);
+				corners.style = GlobalMembersTerm.style_from_fill(new fill_style_type(GlobalMembersGadgets.default_fillstyle));
+			term.filled_polygon(4, corners);
 		}
 	}
 
-/* Notice HBB 20010720: would be static, but HP-UX gcc bug forbids
- * this, for now */
+	/* Notice HBB 20010720: would be static, but HP-UX gcc bug forbids
+	 * this, for now */
 	public static void cbtick_callback(AXIS_INDEX axis, double place, String text, lp_style_type grid, ticmark userlabels)
 	{
-		int len = (text != null ? GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale : GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].miniticscale) * (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? - 1 : 1) * (GlobalMembersTerm.term.h_tic);
+		int len = (int) ((text != null ? GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticscale : GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].miniticscale) * (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].tic_in ? - 1 : 1) * (term.h_tic));
 		double cb_place = (place - GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min) / (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max - GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min);
 		/* relative z position along the colorbox axis */
 		int x1;
@@ -1464,98 +1452,88 @@ private static ifilled_quadrangle_lp_style_type lp = new ifilled_quadrangle_lp_s
 		/* calculate tic position */
 		if (GlobalMembersGadgets.color_box.rotation == 'h')
 		{
-		x1 = x2 = GlobalMembersGadgets.color_box.bounds.xleft + cb_place * (GlobalMembersGadgets.color_box.bounds.xright - GlobalMembersGadgets.color_box.bounds.xleft);
-		y1 = GlobalMembersGadgets.color_box.bounds.ybot;
-		y2 = GlobalMembersGadgets.color_box.bounds.ybot - len;
+			x1 = x2 = (int) (GlobalMembersGadgets.color_box.bounds.xleft + cb_place * (GlobalMembersGadgets.color_box.bounds.xright - GlobalMembersGadgets.color_box.bounds.xleft));
+			y1 = GlobalMembersGadgets.color_box.bounds.ybot;
+			y2 = GlobalMembersGadgets.color_box.bounds.ybot - len;
 		}
 		else
 		{
-		x1 = GlobalMembersGadgets.color_box.bounds.xright;
-		x2 = GlobalMembersGadgets.color_box.bounds.xright + len;
-		y1 = y2 = GlobalMembersGadgets.color_box.bounds.ybot + cb_place * (GlobalMembersGadgets.color_box.bounds.ytop - GlobalMembersGadgets.color_box.bounds.ybot);
+			x1 = GlobalMembersGadgets.color_box.bounds.xright;
+			x2 = GlobalMembersGadgets.color_box.bounds.xright + len;
+			y1 = y2 = (int) (GlobalMembersGadgets.color_box.bounds.ybot + cb_place * (GlobalMembersGadgets.color_box.bounds.ytop - GlobalMembersGadgets.color_box.bounds.ybot));
 		}
 
 		/* draw grid line */
 		if (grid.l_type > DefineConstants.LT_NODRAW)
 		{
-		GlobalMembersTerm.term_apply_lp_properties(grid); // grid linetype
-		if (GlobalMembersGadgets.color_box.rotation == 'h')
-		{
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.move)(x1, GlobalMembersGadgets.color_box.bounds.ybot);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.vector)(x1, GlobalMembersGadgets.color_box.bounds.ytop);
-		}
-		else
-		{
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.move)(GlobalMembersGadgets.color_box.bounds.xleft, y1);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.vector)(GlobalMembersGadgets.color_box.bounds.xright, y1);
-		}
-		GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp); // border linetype
+			GlobalMembersTerm.term_apply_lp_properties(grid); // grid linetype
+			if (GlobalMembersGadgets.color_box.rotation == 'h')
+			{
+				term.move(x1, GlobalMembersGadgets.color_box.bounds.ybot);
+				term.vector(x1, GlobalMembersGadgets.color_box.bounds.ytop);
+			}
+			else
+			{
+				term.move(GlobalMembersGadgets.color_box.bounds.xleft, y1);
+				term.vector(GlobalMembersGadgets.color_box.bounds.xright, y1);
+			}
+			GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp); // border linetype
 		}
 
 		/* draw tic */
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*GlobalMembersTerm.term.move)(x1, y1);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*GlobalMembersTerm.term.vector)(x2, y2);
+		term.move(x1, y1);
+		term.vector(x2, y2);
 
 		/* draw label */
 		if (text != null)
 		{
-		/* get offset */
-		int offsetx;
-		int offsety;
-		GlobalMembersGraph3d.map3d_position_r((GlobalMembersAxis.axis_array[axis.getValue()].ticdef.offset), offsetx, offsety, "cbtics");
-		/* User-specified different color for the tics text */
-		if (GlobalMembersAxis.axis_array[axis.getValue()].ticdef.textcolor.type != DefineConstants.TC_DEFAULT)
-			GlobalMembersGadgets.apply_pm3dcolor((GlobalMembersAxis.axis_array[axis.getValue()].ticdef.textcolor), GlobalMembersTerm.term);
-		if (GlobalMembersGadgets.color_box.rotation == 'h')
-		{
-			int y3 = GlobalMembersGadgets.color_box.bounds.ybot - (GlobalMembersTerm.term.v_char);
-			int hrotate = 0;
+			/* get offset */
+			int offsetx;
+			int offsety;
+			GlobalMembersGraph3d.map3d_position_r((GlobalMembersAxis.axis_array[axis.getValue()].ticdef.offset), offsetx, offsety, "cbtics");
+			/* User-specified different color for the tics text */
+			if (GlobalMembersAxis.axis_array[axis.getValue()].ticdef.textcolor.type != DefineConstants.TC_DEFAULT)
+				GlobalMembersGadgets.apply_pm3dcolor(GlobalMembersAxis.axis_array[axis.getValue()].ticdef.textcolor);
+			if (GlobalMembersGadgets.color_box.rotation == 'h')
+			{
+				int y3 = GlobalMembersGadgets.color_box.bounds.ybot - (GlobalMembersTerm.term.v_char);
+				int hrotate = 0;
 
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		if (GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate != 0 && (*GlobalMembersTerm.term.text_angle)(GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate))
-				hrotate = GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate;
-			if (len > 0) // add outer tics len
-				y3 -= len;
-			if (y3 < 0)
-				y3 = 0;
-			GlobalMembersTerm.write_multiline(x2 + offsetx, y3 + offsety, text, (hrotate != 0 ? JUSTIFY.LEFT : JUSTIFY.CENTRE), JUSTIFY.CENTRE, hrotate, GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font);
-			if (hrotate != 0)
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//		(*GlobalMembersTerm.term.text_angle)(0);
-		}
-		else
-		{
-			int x3 = GlobalMembersGadgets.color_box.bounds.xright + (GlobalMembersTerm.term.h_char);
-			if (len > 0) // add outer tics len
-				x3 += len;
-			GlobalMembersTerm.write_multiline(x3 + offsetx, y2 + offsety, text, JUSTIFY.LEFT, JUSTIFY.CENTRE, 0.0, GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font);
-		}
-		GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp); // border linetype
+				if (GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate != 0 && (term.text_angle(GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate) != 0))
+					hrotate = GlobalMembersAxis.axis_array[axis.getValue()].tic_rotate;
+				if (len > 0) // add outer tics len
+					y3 -= len;
+				if (y3 < 0)
+					y3 = 0;
+				GlobalMembersTerm.write_multiline(x2 + offsetx, y3 + offsety, text, (hrotate != 0 ? JUSTIFY.LEFT : JUSTIFY.CENTRE), VERT_JUSTIFY.JUST_CENTRE, hrotate, GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font);
+				if (hrotate != 0)
+					term.text_angle(0);
+			}
+			else
+			{
+				int x3 = GlobalMembersGadgets.color_box.bounds.xright + (GlobalMembersTerm.term.h_char);
+				if (len > 0) // add outer tics len
+					x3 += len;
+				GlobalMembersTerm.write_multiline(x3 + offsetx, y2 + offsety, text, JUSTIFY.LEFT, VERT_JUSTIFY.JUST_CENTRE, 0, GlobalMembersAxis.axis_array[axis.getValue()].ticdef.font);
+			}
+			GlobalMembersTerm.term_apply_lp_properties(GlobalMembersGadgets.border_lp); // border linetype
 		}
 
 		/* draw tic on the mirror side */
-		if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode & DefineConstants.TICS_MIRROR != 0)
+		if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].ticmode & ((DefineConstants.TICS_MIRROR != 0) ? 1 : 0)) != 0)
 		{
-		if (GlobalMembersGadgets.color_box.rotation == 'h')
-		{
-			y1 = GlobalMembersGadgets.color_box.bounds.ytop;
-			y2 = GlobalMembersGadgets.color_box.bounds.ytop + len;
-		}
-		else
-		{
-			x1 = GlobalMembersGadgets.color_box.bounds.xleft;
-			x2 = GlobalMembersGadgets.color_box.bounds.xleft - len;
-		}
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*GlobalMembersTerm.term.move)(x1, y1);
-//C++ TO JAVA CONVERTER TODO TASK: There are no simple equivalents to function pointers in Java:
-	//	(*GlobalMembersTerm.term.vector)(x2, y2);
+			if (GlobalMembersGadgets.color_box.rotation == 'h')
+			{
+				y1 = GlobalMembersGadgets.color_box.bounds.ytop;
+				y2 = GlobalMembersGadgets.color_box.bounds.ytop + len;
+			}
+			else
+			{
+				x1 = GlobalMembersGadgets.color_box.bounds.xleft;
+				x2 = GlobalMembersGadgets.color_box.bounds.xleft - len;
+			}
+			term.move(x1, y1);
+			term.vector(x2, y2);
 		}
 	}
 }

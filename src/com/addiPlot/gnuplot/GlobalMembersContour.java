@@ -168,10 +168,10 @@ public class GlobalMembersContour
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: contour.c,v 1.28 2008/03/30 18:08:07 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: contour.c,v 1.28 2008/03/30 18:08:07 sfeam Exp $");
+	//}
 	///#endif
 
 
@@ -179,26 +179,26 @@ public class GlobalMembersContour
 
 	/* Variables of contour.c needed by other modules: */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte contour_format[32];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern en_contour_kind contour_kind;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern en_contour_levels_kind contour_levels_kind;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int contour_levels;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int contour_order;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int contour_pts;
 
 	/* storage for z levels to draw contours at */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern dynarray dyn_contour_levels_list;
 
-/*
- * Entry routine to this whole set of contouring module.
- */
+	/*
+	 * Entry routine to this whole set of contouring module.
+	 */
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define contour_levels_list ((double *)dyn_contour_levels_list.v)
 
@@ -211,7 +211,7 @@ public class GlobalMembersContour
 		poly_struct p_polys;
 		poly_struct p_poly;
 		edge_struct p_edges;
-		edge_struct * edge GPHUGE * ;
+		edge_struct edge;
 		double z = 0;
 		double dz = 0;
 		gnuplot_contours save_contour_list;
@@ -222,7 +222,7 @@ public class GlobalMembersContour
 		num_of_z_levels = contour_levels;
 		interp_kind = contour_kind;
 
-		contour_list = DefineConstants.NULL;
+		contour_list = null;
 
 		/*
 		 * Calculate min/max values :
@@ -237,66 +237,66 @@ public class GlobalMembersContour
 
 		if (contour_levels_kind == en_contour_levels_kind.LEVELS_AUTO)
 		{
-		dz = Math.abs(z_max - z_min);
-		if (dz == 0)
-			return DefineConstants.NULL; // empty z range ?
-		/* Find a tic step that will generate approximately the
-		 * desired number of contour levels. The "* 2" is historical.
-		 * */
-		dz = GlobalMembersAxis.quantize_normal_tics(dz, ((int) contour_levels + 1) * 2);
-		z = Math.floor(z_min / dz) * dz;
-		num_of_z_levels = (int) Math.floor((z_max - z) / dz);
+			dz = Math.abs(z_max - z_min);
+			if (dz == 0)
+				return null; // empty z range ?
+			/* Find a tic step that will generate approximately the
+			 * desired number of contour levels. The "* 2" is historical.
+			 * */
+			dz = GlobalMembersAxis.quantize_normal_tics(dz, ((int) contour_levels + 1) * 2);
+			z = Math.floor(z_min / dz) * dz;
+			num_of_z_levels = (int) Math.floor((z_max - z) / dz);
 		}
 		for (i = 0; i < num_of_z_levels; i++)
 		{
-		switch (contour_levels_kind)
-		{
-		case LEVELS_AUTO:
-			z += dz;
-			break;
-		case LEVELS_INCREMENTAL:
-			z = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? (Math.log((double)dyn_contour_levels_list.v[0]) / GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base) : ((double)dyn_contour_levels_list.v[0])) + i * (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? (Math.log((double)dyn_contour_levels_list.v[1]) / GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base) : ((double)dyn_contour_levels_list.v[1]));
-			break;
-		case LEVELS_DISCRETE:
-			z = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? (Math.log((double)dyn_contour_levels_list.v[i]) / GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base) : ((double)dyn_contour_levels_list.v[i]));
-			break;
-		}
-		contour_level = z;
-		save_contour_list = contour_list;
-		GlobalMembersContour.gen_contours(p_edges, z, x_min, x_max, y_min, y_max);
-		if (contour_list != save_contour_list)
-		{
-			contour_list.isNewLevel = 1;
-			String.format(contour_list.label, contour_format, (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? Math.exp((z) * GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base): (z)));
-			contour_list.z = z;
-		}
+			switch (contour_levels_kind)
+			{
+			case LEVELS_AUTO:
+				z += dz;
+				break;
+			case LEVELS_INCREMENTAL:
+				z = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? (Math.log((double)dyn_contour_levels_list.v[0]) / GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base) : ((double)dyn_contour_levels_list.v[0])) + i * (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? (Math.log((double)dyn_contour_levels_list.v[1]) / GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base) : ((double)dyn_contour_levels_list.v[1]));
+				break;
+			case LEVELS_DISCRETE:
+				z = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? (Math.log((double)dyn_contour_levels_list.v[i]) / GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base) : ((double)dyn_contour_levels_list.v[i]));
+				break;
+			}
+			contour_level = z;
+			save_contour_list = contour_list;
+			GlobalMembersContour.gen_contours(p_edges, z, x_min, x_max, y_min, y_max);
+			if (contour_list != save_contour_list)
+			{
+				contour_list.isNewLevel = 1;
+				String.format(contour_list.label, contour_format, (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log ? Math.exp((z) * GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].log_base): (z)));
+				contour_list.z = z;
+			}
 		}
 
 		/* Free all contouring related temporary data. */
 		while (p_polys != null)
 		{
-		p_poly = p_polys.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(p_polys);
-		p_polys = p_poly;
+			p_poly = p_polys.next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(p_polys);
+			p_polys = p_poly;
 		}
 		while (p_edges != null)
 		{
-		edge GPHUGE * = p_edges.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(p_edges);
-		p_edges = edge GPHUGE * ;
+			edge GPHUGE * = p_edges.next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(p_edges);
+			p_edges = edge GPHUGE * ;
 		}
 
 		return contour_list;
 	}
 
-/*
- * Solve tri diagonal linear system equation. The tri diagonal matrix is
- * defined via matrix M, right side is r, and solution X i.e. M * X = R.
- * Size of system given in n. Return TRUE if solution exist.
- */
-/* not used any more in "contour.c", but in "spline.c" (21. Dec. 1995) ! */
+	/*
+	 * Solve tri diagonal linear system equation. The tri diagonal matrix is
+	 * defined via matrix M, right side is r, and solution X i.e. M * X = R.
+	 * Size of system given in n. Return TRUE if solution exist.
+	 */
+	/* not used any more in "contour.c", but in "spline.c" (21. Dec. 1995) ! */
 
 	public static int solve_tri_diag(double[][] m, double[] r, double[] x, int n)
 	{
@@ -305,25 +305,25 @@ public class GlobalMembersContour
 
 		for (i = 1; i < n; i++) // Eliminate element m[i][i-1] (lower diagonal).
 		{
-		if (m[i - 1][1] == 0)
-			return false;
-		t = m[i][0] / m[i - 1][1]; // Find ratio between the two lines.
-	/*      m[i][0] = m[i][0] - m[i-1][1] * t; */
-	/* m[i][0] is not used any more (and set to 0 in the above line) */
-		m[i][1] = m[i][1] - m[i - 1][2] * t;
-		r[i] = r[i] - r[i - 1] * t;
+			if (m[i - 1][1] == 0)
+				return 0;
+			t = m[i][0] / m[i - 1][1]; // Find ratio between the two lines.
+			/*      m[i][0] = m[i][0] - m[i-1][1] * t; */
+			/* m[i][0] is not used any more (and set to 0 in the above line) */
+			m[i][1] = m[i][1] - m[i - 1][2] * t;
+			r[i] = r[i] - r[i - 1] * t;
 		}
 		/* Now do back subtitution - update the solution vector X: */
 		if (m[n - 1][1] == 0)
-		return false;
+			return 0;
 		x[n - 1] = r[n - 1] / m[n - 1][1]; // Find last element.
 		for (i = n - 2; i >= 0; i--)
 		{
-		if (m[i][1] == 0)
-			return false;
-		x[i] = (r[i] - x[i + 1] * m[i][2]) / m[i][1];
+			if (m[i][1] == 0)
+				return 0;
+			x[i] = (r[i] - x[i + 1] * m[i][2]) / m[i][1];
 		}
-		return true;
+		return 1;
 	}
 
 
@@ -457,7 +457,7 @@ public class GlobalMembersContour
 	/* storage for z levels to draw contours at */
 	public static dynarray dyn_contour_levels_list = new dynarray();
 
-	public static gnuplot_contours contour_list = DefineConstants.NULL;
+	public static gnuplot_contours contour_list = null;
 	public static double[] crnt_cntr = new double[DefineConstants.MAX_POINTS_PER_CNTR * 2];
 	public static int crnt_cntr_pt_index = 0;
 	public static double contour_level = 0.0;
@@ -472,9 +472,9 @@ public class GlobalMembersContour
 	public static double y_max;
 	public static double z_max;
 
-/*
- * Adds another point to the currently build contour.
- */
+	/*
+	 * Adds another point to the currently build contour.
+	 */
 
 	public static void add_cntr_point(double x, double y)
 	{
@@ -482,33 +482,33 @@ public class GlobalMembersContour
 
 		if (crnt_cntr_pt_index >= DefineConstants.MAX_POINTS_PER_CNTR - 1)
 		{
-		index = crnt_cntr_pt_index - 1;
-		GlobalMembersContour.end_crnt_cntr();
-		crnt_cntr[0] = crnt_cntr[index * 2];
-		crnt_cntr[1] = crnt_cntr[index * 2 + 1];
-		crnt_cntr_pt_index = 1; // Keep the last point as first of this one.
+			index = crnt_cntr_pt_index - 1;
+			GlobalMembersContour.end_crnt_cntr();
+			crnt_cntr[0] = crnt_cntr[index * 2];
+			crnt_cntr[1] = crnt_cntr[index * 2 + 1];
+			crnt_cntr_pt_index = 1; // Keep the last point as first of this one.
 		}
 		crnt_cntr[crnt_cntr_pt_index * 2] = x;
 		crnt_cntr[crnt_cntr_pt_index * 2 + 1] = y;
 		crnt_cntr_pt_index++;
 	}
 
-/*
- * Done with current contour - create gnuplot data structure for it.
- */
+	/*
+	 * Done with current contour - create gnuplot data structure for it.
+	 */
 	public static void end_crnt_cntr()
 	{
 		int i;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		gnuplot_contours cntr = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct gnuplot_contours), "gnuplot_contour");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		cntr.coords = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct coordinate) * crnt_cntr_pt_index, "contour coords");
 
 		for (i = 0; i < crnt_cntr_pt_index; i++)
 		{
-		cntr.coords[i].x = crnt_cntr[i * 2];
-		cntr.coords[i].y = crnt_cntr[i * 2 + 1];
-		cntr.coords[i].z = contour_level;
+			cntr.coords[i].x = crnt_cntr[i * 2];
+			cntr.coords[i].y = crnt_cntr[i * 2 + 1];
+			cntr.coords[i].z = contour_level;
 		}
 		cntr.num_pts = crnt_cntr_pt_index;
 
@@ -519,9 +519,9 @@ public class GlobalMembersContour
 		crnt_cntr_pt_index = 0;
 	}
 
-/*
- * Generates all contours by tracing the intersecting triangles.
- */
+	/*
+	 * Generates all contours by tracing the intersecting triangles.
+	 */
 	public static void gen_contours(edge_struct p_edges, double z_level, double xx_min, double xx_max, double yy_min, double yy_max)
 	{
 		int num_active; // Number of edges marked ACTIVE.
@@ -534,104 +534,104 @@ public class GlobalMembersContour
 
 		while (num_active > 0) // Do Pass 2.
 		{
-		/* Generate One contour (and update NumActive as needed): */
-		p_cntr = GlobalMembersContour.gen_one_contour(p_edges, z_level, contr_isclosed, num_active);
-		/* Emit it in requested format: */
-		GlobalMembersContour.put_contour(p_cntr, xx_min, xx_max, yy_min, yy_max, contr_isclosed);
+			/* Generate One contour (and update NumActive as needed): */
+			p_cntr = GlobalMembersContour.gen_one_contour(p_edges, z_level, contr_isclosed, num_active);
+			/* Emit it in requested format: */
+			GlobalMembersContour.put_contour(p_cntr, xx_min, xx_max, yy_min, yy_max, contr_isclosed);
 		}
 	}
 
-/*
- * Does pass 1, or marks the edges which are active (crosses this z_level)
- * Returns number of active edges (marked ACTIVE).
- */
+	/*
+	 * Does pass 1, or marks the edges which are active (crosses this z_level)
+	 * Returns number of active edges (marked ACTIVE).
+	 */
 	public static int update_all_edges(edge_struct p_edges, double z_level)
 	{
 		int count = 0;
 
 		while (p_edges != null)
 		{
-		/* use the same test at both vertices to avoid roundoff errors */
-		if ((p_edges.vertex[0].z >= z_level) != (p_edges.vertex[1].z >= z_level))
-		{
-			p_edges.is_active = true;
-			count++;
-		}
-		else
-			p_edges.is_active = false;
-		p_edges = p_edges.next;
+			/* use the same test at both vertices to avoid roundoff errors */
+			if ((p_edges.vertex[0].z >= z_level) != (p_edges.vertex[1].z >= z_level))
+			{
+				p_edges.is_active = true;
+				count++;
+			}
+			else
+				p_edges.is_active = false;
+			p_edges = p_edges.next;
 		}
 
 		return count;
 	}
 
-/*
- * Does pass 2, or find one complete contour out of the triangulation
- * data base:
- *
- * Returns a pointer to the contour (as linked list), contr_isclosed
- * tells if the contour is a closed line or not, and num_active is
- * updated.
- */
+	/*
+	 * Does pass 2, or find one complete contour out of the triangulation
+	 * data base:
+	 *
+	 * Returns a pointer to the contour (as linked list), contr_isclosed
+	 * tells if the contour is a closed line or not, and num_active is
+	 * updated.
+	 */
 	public static cntr_struct gen_one_contour(edge_struct p_edges, double z_level, boolean contr_isclosed, int num_active)
 	{
 		edge_struct pe_temp;
 
 		if (!contr_isclosed)
 		{
-		/* Look for something to start with on boundary: */
-		pe_temp = p_edges;
-		while (pe_temp != null)
-		{
-			if (pe_temp.is_active && (pe_temp.position == en_edge_position.BOUNDARY))
-			break;
-			pe_temp = pe_temp.next;
-		}
-		if (pe_temp == null)
-			contr_isclosed = true; // No more contours on boundary.
-		else
-		{
-			return GlobalMembersContour.trace_contour(pe_temp, z_level, num_active, contr_isclosed);
-		}
+			/* Look for something to start with on boundary: */
+			pe_temp = p_edges;
+			while (pe_temp != null)
+			{
+				if (pe_temp.is_active && (pe_temp.position == en_edge_position.BOUNDARY))
+					break;
+				pe_temp = pe_temp.next;
+			}
+			if (pe_temp == null)
+				contr_isclosed = true; // No more contours on boundary.
+			else
+			{
+				return GlobalMembersContour.trace_contour(pe_temp, z_level, num_active, contr_isclosed);
+			}
 		}
 		if (contr_isclosed)
 		{
-		/* Look for something to start with inside: */
-		pe_temp = p_edges;
-		while (pe_temp != null)
-		{
-			if (pe_temp.is_active && (pe_temp.position != en_edge_position.BOUNDARY))
-			break;
-			pe_temp = pe_temp.next;
+			/* Look for something to start with inside: */
+			pe_temp = p_edges;
+			while (pe_temp != null)
+			{
+				if (pe_temp.is_active && (pe_temp.position != en_edge_position.BOUNDARY))
+					break;
+				pe_temp = pe_temp.next;
+			}
+			if (pe_temp == null)
+			{
+				num_active = 0;
+				fprintf(stderr, "gen_one_contour: no contour found\n");
+				return null;
+			}
+			else
+			{
+				contr_isclosed = true;
+				return GlobalMembersContour.trace_contour(pe_temp, z_level, num_active, contr_isclosed);
+			}
 		}
-		if (pe_temp == null)
-		{
-			num_active = 0;
-			fprintf(stderr, "gen_one_contour: no contour found\n");
-			return DefineConstants.NULL;
-		}
-		else
-		{
-			contr_isclosed = true;
-			return GlobalMembersContour.trace_contour(pe_temp, z_level, num_active, contr_isclosed);
-		}
-		}
-		return DefineConstants.NULL; // We should never be here, but lint...
+		return null; // We should never be here, but lint...
 	}
 
-/*
- * Search the data base along a contour starts at the edge pe_start until
- * a boundary edge is detected or until we close the loop back to pe_start.
- * Returns a linked list of all the points on the contour
- * Also decreases num_active by the number of points on contour.
- */
+	/*
+	 * Search the data base along a contour starts at the edge pe_start until
+	 * a boundary edge is detected or until we close the loop back to pe_start.
+	 * Returns a linked list of all the points on the contour
+	 * Also decreases num_active by the number of points on contour.
+	 */
 	public static cntr_struct trace_contour(edge_struct pe_start, double z_level, int num_active, boolean contr_isclosed)
 	{
 		cntr_struct p_cntr;
 		cntr_struct pc_tail;
-		edge_struct * edge GPHUGE *, *p_next_edge;
+		edge_struct edge, p_next_edge;
 		poly_struct p_poly;
-		poly_struct PLastpoly = DefineConstants.NULL;
+		poly_struct PLastpoly = null;
 		int i;
 
 		edge GPHUGE * = pe_start; // first edge to start contour
@@ -639,77 +639,77 @@ public class GlobalMembersContour
 		/* Generate the header of the contour - the point on pe_start. */
 		if (!contr_isclosed)
 		{
-		pe_start.is_active = false;
-		num_active--;
+			pe_start.is_active = false;
+			num_active--;
 		}
 		if (edge GPHUGE * .poly[0] || edge GPHUGE * .poly[1]) // more than one point
 		{
 
-		p_cntr = pc_tail = GlobalMembersContour.update_cntr_pt(pe_start, z_level); // first point
+			p_cntr = pc_tail = GlobalMembersContour.update_cntr_pt(pe_start, z_level); // first point
 
-		do
-		{
-			/* Find polygon to continue (Not where we came from - PLastpoly): */
-			if (edge GPHUGE * .poly[0] == PLastpoly)
-			p_poly = edge GPHUGE * .poly[1];
-			else
-			p_poly = edge GPHUGE * .poly[0];
-			p_next_edge = DefineConstants.NULL; // In case of error, remains NULL.
-			for (i = 0; i < 3; i++) // Test the 3 edges of the polygon:
-			if (p_poly.edge[i] != edge GPHUGE *)
-				if (p_poly.edge[i].is_active)
-				p_next_edge = p_poly.edge[i];
-			if (!p_next_edge) // Error exit
+			do
 			{
+				/* Find polygon to continue (Not where we came from - PLastpoly): */
+				if (edge GPHUGE * .poly[0] == PLastpoly)
+					p_poly = edge GPHUGE * .poly[1];
+				else
+					p_poly = edge GPHUGE * .poly[0];
+				p_next_edge = DefineConstants.NULL; // In case of error, remains NULL.
+				for (i = 0; i < 3; i++) // Test the 3 edges of the polygon:
+					if (p_poly.edge[i] != edge GPHUGE *)
+						if (p_poly.edge[i].is_active)
+							p_next_edge = p_poly.edge[i];
+				if (!p_next_edge) // Error exit
+				{
+					pc_tail.next = DefineConstants.NULL;
+					GlobalMembersContour.free_contour(p_cntr);
+					fprintf(stderr, "trace_contour: unexpected end of contour\n");
+					return DefineConstants.NULL;
+				}
+				edge GPHUGE * = p_next_edge;
+				PLastpoly = p_poly;
+				edge GPHUGE * .is_active = false;
+				num_active--;
+
+				/* Do not allocate contour points on diagonal edges */
+				if (edge GPHUGE * .position != en_edge_position.DIAGONAL)
+				{
+
+					pc_tail.next = GlobalMembersContour.update_cntr_pt(edge GPHUGE *, z_level);
+
+					/* Remove nearby points */
+					if (GlobalMembersContour.fuzzy_equal(pc_tail, pc_tail.next) != 0)
+					{
+
+						//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+						free(pc_tail.next);
+					}
+					else
+						pc_tail = pc_tail.next;
+				}
+			} while ((edge GPHUGE * != pe_start) && (edge GPHUGE * .position != en_edge_position.BOUNDARY));
+
 			pc_tail.next = DefineConstants.NULL;
-			GlobalMembersContour.free_contour(p_cntr);
-			fprintf(stderr, "trace_contour: unexpected end of contour\n");
-			return DefineConstants.NULL;
-			}
-			edge GPHUGE * = p_next_edge;
-			PLastpoly = p_poly;
-			edge GPHUGE * .is_active = false;
-			num_active--;
 
-			/* Do not allocate contour points on diagonal edges */
-			if (edge GPHUGE * .position != en_edge_position.DIAGONAL)
+			/* For closed contour the first and last point should be equal */
+			if (pe_start == edge GPHUGE *)
 			{
-
-			pc_tail.next = GlobalMembersContour.update_cntr_pt(edge GPHUGE *, z_level);
-
-			/* Remove nearby points */
-			if (GlobalMembersContour.fuzzy_equal(pc_tail, pc_tail.next) != 0)
-			{
-
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(pc_tail.next);
+				(p_cntr.X) = (pc_tail.X);
+				(p_cntr.Y) = (pc_tail.Y);
 			}
-			else
-				pc_tail = pc_tail.next;
-			}
-		} while ((edge GPHUGE * != pe_start) && (edge GPHUGE * .position != en_edge_position.BOUNDARY));
-
-		pc_tail.next = DefineConstants.NULL;
-
-		/* For closed contour the first and last point should be equal */
-		if (pe_start == edge GPHUGE *)
-		{
-			(p_cntr.X) = (pc_tail.X);
-			(p_cntr.Y) = (pc_tail.Y);
-		}
 		} // only one point, forget it
 		else
 		{
-		p_cntr = DefineConstants.NULL;
+			p_cntr = DefineConstants.NULL;
 		}
 
 		return p_cntr;
 	}
 
-/*
- * Allocates one contour location and update it to to correct position
- * according to z_level and edge p_edge.
- */
+	/*
+	 * Allocates one contour location and update it to to correct position
+	 * according to z_level and edge p_edge.
+	 */
 	public static cntr_struct update_cntr_pt(edge_struct * edge GPHUGE UnnamedParameter1, double z_level)
 	{
 		double t;
@@ -721,7 +721,7 @@ public class GlobalMembersContour
 		t = (t < 0.0 ? 0.0 : t);
 		t = (t > 1.0 ? 1.0 : t);
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		p_cntr = GlobalMembersAlloc.gp_alloc(sizeof(cntr_struct), "contour cntr_struct");
 
 		p_cntr.X = edge GPHUGE * .vertex[1].x * t + edge GPHUGE * .vertex[0].x * (1 - t);
@@ -729,23 +729,23 @@ public class GlobalMembersContour
 		return p_cntr;
 	}
 
-/* Simple routine to decide if two contour points are equal by
- * calculating the relative error (< EPSILON).  */
-/* HBB 20010121: don't use absolute value 'zero' to compare to data
- * values. */
+	/* Simple routine to decide if two contour points are equal by
+	 * calculating the relative error (< EPSILON).  */
+	/* HBB 20010121: don't use absolute value 'zero' to compare to data
+	 * values. */
 	public static int fuzzy_equal(cntr_struct p_cntr1, cntr_struct p_cntr2)
 	{
 		double unit_x;
 		double unit_y;
 		unit_x = Math.abs(x_max - x_min); // reference
 		unit_y = Math.abs(y_max - y_min);
-		return ((Math.abs(p_cntr1.X - p_cntr2.X) < unit_x * DefineConstants.EPSILON) && (Math.abs(p_cntr1.Y - p_cntr2.Y) < unit_y * DefineConstants.EPSILON));
+		return (((Math.abs(p_cntr1.X - p_cntr2.X) < unit_x * DefineConstants.EPSILON) && (Math.abs(p_cntr1.Y - p_cntr2.Y) < unit_y * DefineConstants.EPSILON)) ? 1 : 0);
 	}
 
-/*
- * Generate the triangles.
- * Returns the lists (edges & polys) via pointers to their heads.
- */
+	/*
+	 * Generate the triangles.
+	 * Returns the lists (edges & polys) via pointers to their heads.
+	 */
 
 
 	public static void gen_triangle(int num_isolines, iso_curve iso_lines, poly_struct[] p_polys, edge_struct[] p_edges)
@@ -768,15 +768,15 @@ public class GlobalMembersContour
 		coordinate p_vrtx1;
 		coordinate p_vrtx2;
 
-		p_polys = pp_tail = DefineConstants.NULL; // clear lists
-		p_edges = pe_tail = DefineConstants.NULL;
+		p_polys = null; pp_tail = null; // clear lists
+		p_edges = null; pe_tail = null;
 
 		p_vrtx1 = iso_lines.points; // first row of vertices
-		p_edge1 = pe_tail = DefineConstants.NULL; // clear list of edges
+		p_edge1 = pe_tail = null; // clear list of edges
 
 		/* Generate edges of first row */
 		for (j = 0; j < grid_x_max - 1; j++)
-		GlobalMembersContour.add_edge(p_vrtx1 + j, p_vrtx1 + j + 1, p_edge1, pe_tail);
+			GlobalMembersContour.add_edge(p_vrtx1 + j, p_vrtx1 + j + 1, p_edge1, pe_tail);
 
 		p_edges = p_edge1; // update main list
 
@@ -818,79 +818,79 @@ public class GlobalMembersContour
 
 		for (i = 1; i < num_isolines; i++)
 		{
-		/* Read next column and gen. polys. */
-		iso_lines = iso_lines.next;
+			/* Read next column and gen. polys. */
+			iso_lines = iso_lines.next;
 
-		p_vrtx2 = iso_lines.points; // next row of vertices
-		p_edge2 = pe_tail2 = DefineConstants.NULL; // clear top horizontal list
-		pe_temp = p_edge1; // pointer in bottom list
+			p_vrtx2 = iso_lines.points; // next row of vertices
+			p_edge2 = null; pe_tail2 = null; // clear top horizontal list
+			pe_temp = p_edge1; // pointer in bottom list
 
-		/*
-		 * Generate edges and triagles for next row:
-		 */
+			/*
+			 * Generate edges and triagles for next row:
+			 */
 
-		/* generate first vertical edge */
-		edge2 = GlobalMembersContour.add_edge(p_vrtx1, p_vrtx2, p_edges, pe_tail);
+			/* generate first vertical edge */
+			edge2 = GlobalMembersContour.add_edge(p_vrtx1, p_vrtx2, p_edges, pe_tail);
 
-		for (j = 0; j < grid_x_max - 1; j++)
-		{
-
-			/* copy vertical edge for lower triangle */
-			edge0 = edge2;
-
-			if (pe_temp != null && pe_temp.vertex[0] == p_vrtx1 + j)
+			for (j = 0; j < grid_x_max - 1; j++)
 			{
-			/* test lower edge */
-			edge2 = pe_temp;
-			pe_temp = pe_temp.next;
+
+				/* copy vertical edge for lower triangle */
+				edge0 = edge2;
+
+				if (pe_temp != null && pe_temp.vertex[0] == p_vrtx1 + j)
+				{
+					/* test lower edge */
+					edge2 = pe_temp;
+					pe_temp = pe_temp.next;
+				}
+				else
+				{
+					edge2 = null; // edge is undefined
+				}
+
+				/* generate diagonal edge */
+				edge1 = GlobalMembersContour.add_edge(p_vrtx1 + j + 1, p_vrtx2 + j, p_edges, pe_tail);
+				if (edge1 != null)
+					edge1.position = en_edge_position.DIAGONAL;
+
+				/* generate lower triangle */
+				lower_tri = GlobalMembersContour.add_poly(edge0, edge1, edge2, p_polys, pp_tail);
+
+				/* copy diagonal edge for upper triangle */
+				edge0 = edge1;
+
+				/* generate upper edge */
+				edge1 = GlobalMembersContour.add_edge(p_vrtx2 + j, p_vrtx2 + j + 1, p_edge2, pe_tail2);
+
+				/* generate vertical edge */
+				edge2 = GlobalMembersContour.add_edge(p_vrtx1 + j + 1, p_vrtx2 + j + 1, p_edges, pe_tail);
+
+				/* generate upper triangle */
+				upper_tri = GlobalMembersContour.add_poly(edge0, edge1, edge2, p_polys, pp_tail);
 			}
-			else
+
+			if (p_edge2 != null)
 			{
-			edge2 = DefineConstants.NULL; // edge is undefined
+				/* HBB 19991130 bugfix: if p_edge2 list is empty,
+				 * don't change p_edges list! Crashes by access
+				 * to NULL pointer pe_tail, the second time through,
+				 * otherwise */
+				if ((p_edges)) // Chain new edges to main list.
+				{
+					pe_tail.next = p_edge2;
+					pe_tail = pe_tail2;
+				}
+				else
+				{
+					p_edges = p_edge2;
+					pe_tail = pe_tail2;
+				}
 			}
 
-			/* generate diagonal edge */
-			edge1 = GlobalMembersContour.add_edge(p_vrtx1 + j + 1, p_vrtx2 + j, p_edges, pe_tail);
-			if (edge1 != null)
-			edge1.position = en_edge_position.DIAGONAL;
-
-			/* generate lower triangle */
-			lower_tri = GlobalMembersContour.add_poly(edge0, edge1, edge2, p_polys, pp_tail);
-
-			/* copy diagonal edge for upper triangle */
-			edge0 = edge1;
-
-			/* generate upper edge */
-			edge1 = GlobalMembersContour.add_edge(p_vrtx2 + j, p_vrtx2 + j + 1, p_edge2, pe_tail2);
-
-			/* generate vertical edge */
-			edge2 = GlobalMembersContour.add_edge(p_vrtx1 + j + 1, p_vrtx2 + j + 1, p_edges, pe_tail);
-
-			/* generate upper triangle */
-			upper_tri = GlobalMembersContour.add_poly(edge0, edge1, edge2, p_polys, pp_tail);
-		}
-
-		if (p_edge2 != null)
-		{
-			/* HBB 19991130 bugfix: if p_edge2 list is empty,
-			 * don't change p_edges list! Crashes by access
-			 * to NULL pointer pe_tail, the second time through,
-			 * otherwise */
-			if ((p_edges)) // Chain new edges to main list.
-			{
-			pe_tail.next = p_edge2;
-			pe_tail = pe_tail2;
-			}
-			else
-			{
-			p_edges = p_edge2;
-			pe_tail = pe_tail2;
-			}
-		}
-
-		/* this row finished, move list heads up one row: */
-		p_edge1 = p_edge2;
-		p_vrtx1 = p_vrtx2;
+			/* this row finished, move list heads up one row: */
+			p_edge1 = p_edge2;
+			p_vrtx1 = p_vrtx2;
 		}
 
 		/* Update the boundary flag, saved in each edge, and update indexes: */
@@ -899,15 +899,15 @@ public class GlobalMembersContour
 
 		while (pe_temp != null)
 		{
-		if ((!(pe_temp.poly[0])) || (!(pe_temp.poly[1])))
-			(pe_temp.position) = en_edge_position.BOUNDARY;
-		pe_temp = pe_temp.next;
+			if ((!(pe_temp.poly[0])) || (!(pe_temp.poly[1])))
+				(pe_temp.position) = en_edge_position.BOUNDARY;
+			pe_temp = pe_temp.next;
 		}
 	}
 
-/*
- * Calculate minimum and maximum values
- */
+	/*
+	 * Calculate minimum and maximum values
+	 */
 	public static void calc_min_max(int num_isolines, iso_curve iso_lines, double xx_min, double yy_min, double zz_min, double xx_max, double yy_max, double zz_max)
 	{
 		int i;
@@ -923,29 +923,29 @@ public class GlobalMembersContour
 		for (j = 0; j < num_isolines; j++)
 		{
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: vertex = iso_lines->points;
-		vertex.copyFrom(iso_lines.points);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: vertex = iso_lines->points;
+			vertex.copyFrom(iso_lines.points);
 
-		for (i = 0; i < grid_x_max; i++)
-		{
-			if (vertex[i].type != coord_type.UNDEFINED)
+			for (i = 0; i < grid_x_max; i++)
 			{
-			if (vertex[i].x > (xx_max))
-				xx_max = vertex[i].x;
-			if (vertex[i].y > (yy_max))
-				yy_max = vertex[i].y;
-			if (vertex[i].z > (zz_max))
-				zz_max = vertex[i].z;
-			if (vertex[i].x < (xx_min))
-				xx_min = vertex[i].x;
-			if (vertex[i].y < (yy_min))
-				yy_min = vertex[i].y;
-			if (vertex[i].z < (zz_min))
-				zz_min = vertex[i].z;
+				if (vertex[i].type != coord_type.UNDEFINED)
+				{
+					if (vertex[i].x > (xx_max))
+						xx_max = vertex[i].x;
+					if (vertex[i].y > (yy_max))
+						yy_max = vertex[i].y;
+					if (vertex[i].z > (zz_max))
+						zz_max = vertex[i].z;
+					if (vertex[i].x < (xx_min))
+						xx_min = vertex[i].x;
+					if (vertex[i].y < (yy_min))
+						yy_min = vertex[i].y;
+					if (vertex[i].z < (zz_min))
+						zz_min = vertex[i].z;
+				}
 			}
-		}
-		iso_lines = iso_lines.next;
+			iso_lines = iso_lines.next;
 		}
 
 		/*
@@ -955,164 +955,164 @@ public class GlobalMembersContour
 		 */
 	}
 
-/*
- * Generate new edge and append it to list, but only if both vertices are
- * defined. The list is referenced by p_edge and pe_tail (p_edge points on
- * first edge and pe_tail on last one).
- * Note, the list may be empty (pe_edge==pe_tail==NULL) on entry and exit.
- */
+	/*
+	 * Generate new edge and append it to list, but only if both vertices are
+	 * defined. The list is referenced by p_edge and pe_tail (p_edge points on
+	 * first edge and pe_tail on last one).
+	 * Note, the list may be empty (pe_edge==pe_tail==NULL) on entry and exit.
+	 */
 	public static edge_struct add_edge(coordinate point0, coordinate point1, edge_struct * edge[] GPHUGE UnnamedParameter1, edge_struct[] pe_tail)
 	{
 		edge_struct pe_temp = DefineConstants.NULL;
 
-	///#if 1
+		///#if 1
 		if (point0.type == coord_type.INRANGE && point1.type == coord_type.INRANGE)
-	///#else
-	//    if (point0->type != UNDEFINED && point1->type != UNDEFINED)
-	///#endif
+			///#else
+			//    if (point0->type != UNDEFINED && point1->type != UNDEFINED)
+			///#endif
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		pe_temp = GlobalMembersAlloc.gp_alloc(sizeof(edge_struct), "contour edge");
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			pe_temp = GlobalMembersAlloc.gp_alloc(sizeof(edge_struct), "contour edge");
 
-		pe_temp.poly[0] = DefineConstants.NULL; // clear links
-		pe_temp.poly[1] = DefineConstants.NULL;
-		pe_temp.vertex[0] = point0; // First vertex of edge.
-		pe_temp.vertex[1] = point1; // Second vertex of edge.
-		pe_temp.next = DefineConstants.NULL;
-		pe_temp.position = en_edge_position.INNER_MESH; // default position in mesh
+			pe_temp.poly[0] = DefineConstants.NULL; // clear links
+			pe_temp.poly[1] = DefineConstants.NULL;
+			pe_temp.vertex[0] = point0; // First vertex of edge.
+			pe_temp.vertex[1] = point1; // Second vertex of edge.
+			pe_temp.next = DefineConstants.NULL;
+			pe_temp.position = en_edge_position.INNER_MESH; // default position in mesh
 
-		if ((pe_tail))
-		{
-			pe_tail.next = pe_temp; // Stick new record as last one.
-		}
-		else
-		{
-			(*edge GPHUGE *) = pe_temp; // start new list if empty
-		}
-		pe_tail = pe_temp; // continue to last record.
+			if ((pe_tail))
+			{
+				pe_tail.next = pe_temp; // Stick new record as last one.
+			}
+			else
+			{
+				(*edge GPHUGE *) = pe_temp; // start new list if empty
+			}
+			pe_tail = pe_temp; // continue to last record.
 
 		}
 		return pe_temp; // returns NULL, if no edge allocated
 	}
 
-/*
- * Generate new triangle and append it to list, but only if all edges are defined.
- * The list is referenced by p_poly and pp_tail (p_poly points on first ploygon
- * and pp_tail on last one).
- * Note, the list may be empty (pe_ploy==pp_tail==NULL) on entry and exit.
- */
+	/*
+	 * Generate new triangle and append it to list, but only if all edges are defined.
+	 * The list is referenced by p_poly and pp_tail (p_poly points on first ploygon
+	 * and pp_tail on last one).
+	 * Note, the list may be empty (pe_ploy==pp_tail==NULL) on entry and exit.
+	 */
 	public static poly_struct add_poly(edge_struct edge0, edge_struct edge1, edge_struct edge2, poly_struct[] p_poly, poly_struct[] pp_tail)
 	{
-		poly_struct pp_temp = DefineConstants.NULL;
+		poly_struct pp_temp = null;
 
 		if (edge0 != null && edge1 != null && edge2 != null)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		pp_temp = GlobalMembersAlloc.gp_alloc(sizeof(poly_struct), "contour polygon");
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			pp_temp = GlobalMembersAlloc.gp_alloc(sizeof(poly_struct), "contour polygon");
 
-		pp_temp.edge[0] = edge0; // First edge of triangle
-		pp_temp.edge[1] = edge1; // Second one
-		pp_temp.edge[2] = edge2; // Third one
-		pp_temp.next = DefineConstants.NULL;
+			pp_temp.edge[0] = edge0; // First edge of triangle
+			pp_temp.edge[1] = edge1; // Second one
+			pp_temp.edge[2] = edge2; // Third one
+			pp_temp.next = DefineConstants.NULL;
 
-		if (edge0.poly[0] != null) // update edge0
-			edge0.poly[1] = pp_temp;
-		else
-			edge0.poly[0] = pp_temp;
+			if (edge0.poly[0] != null) // update edge0
+				edge0.poly[1] = pp_temp;
+			else
+				edge0.poly[0] = pp_temp;
 
-		if (edge1.poly[0] != null) // update edge1
-			edge1.poly[1] = pp_temp;
-		else
-			edge1.poly[0] = pp_temp;
+			if (edge1.poly[0] != null) // update edge1
+				edge1.poly[1] = pp_temp;
+			else
+				edge1.poly[0] = pp_temp;
 
-		if (edge2.poly[0] != null) // update edge2
-			edge2.poly[1] = pp_temp;
-		else
-			edge2.poly[0] = pp_temp;
+			if (edge2.poly[0] != null) // update edge2
+				edge2.poly[1] = pp_temp;
+			else
+				edge2.poly[0] = pp_temp;
 
-		if ((pp_tail)) // Stick new record as last one.
-			pp_tail.next = pp_temp;
-		else
-			p_poly = pp_temp; // start new list if empty
+			if ((pp_tail)) // Stick new record as last one.
+				pp_tail.next = pp_temp;
+			else
+				p_poly = pp_temp; // start new list if empty
 
-		pp_tail = pp_temp; // continue to last record.
+			pp_tail = pp_temp; // continue to last record.
 
 		}
 		return pp_temp; // returns NULL, if no edge allocated
 	}
 
-/*
- * Calls the (hopefully) desired interpolation/approximation routine.
- */
+	/*
+	 * Calls the (hopefully) desired interpolation/approximation routine.
+	 */
 
 	public static void put_contour(cntr_struct p_cntr, double xx_min, double xx_max, double yy_min, double yy_max, boolean contr_isclosed)
 	{
 
 		if (p_cntr == null)
-		return; // Nothing to do if it is empty contour.
+			return; // Nothing to do if it is empty contour.
 
 		switch (interp_kind)
 		{
 		case CONTOUR_KIND_LINEAR: // No interpolation/approximation.
-		GlobalMembersContour.put_contour_nothing(p_cntr);
-		break;
+			GlobalMembersContour.put_contour_nothing(p_cntr);
+			break;
 		case CONTOUR_KIND_CUBIC_SPL: // Cubic spline interpolation.
-		GlobalMembersContour.put_contour_cubic(p_cntr, xx_min, xx_max, yy_min, yy_max, GlobalMembersContour.chk_contour_kind(p_cntr, contr_isclosed));
+			GlobalMembersContour.put_contour_cubic(p_cntr, xx_min, xx_max, yy_min, yy_max, GlobalMembersContour.chk_contour_kind(p_cntr, contr_isclosed));
 
-		break;
+			break;
 		case CONTOUR_KIND_BSPLINE: // Bspline approximation.
-		GlobalMembersContour.put_contour_bspline(p_cntr, GlobalMembersContour.chk_contour_kind(p_cntr, contr_isclosed));
-		break;
+			GlobalMembersContour.put_contour_bspline(p_cntr, GlobalMembersContour.chk_contour_kind(p_cntr, contr_isclosed));
+			break;
 		}
 		GlobalMembersContour.free_contour(p_cntr);
 	}
 
-/*
- * Simply puts contour coordinates in order with no interpolation or
- * approximation.
- */
+	/*
+	 * Simply puts contour coordinates in order with no interpolation or
+	 * approximation.
+	 */
 	public static void put_contour_nothing(cntr_struct p_cntr)
 	{
 		while (p_cntr != null)
 		{
-		GlobalMembersContour.add_cntr_point(p_cntr.X, p_cntr.Y);
-		p_cntr = p_cntr.next;
+			GlobalMembersContour.add_cntr_point(p_cntr.X, p_cntr.Y);
+			p_cntr = p_cntr.next;
 		}
 		GlobalMembersContour.end_crnt_cntr();
 	}
 
-/*
- * for some reason contours are never flagged as 'isclosed'
- * if first point == last point, set flag accordingly
- *
- */
+	/*
+	 * for some reason contours are never flagged as 'isclosed'
+	 * if first point == last point, set flag accordingly
+	 *
+	 */
 
 	public static int chk_contour_kind(cntr_struct p_cntr, boolean contr_isclosed)
 	{
-		cntr_struct pc_tail = DefineConstants.NULL;
+		cntr_struct pc_tail = null;
 		boolean current_contr_isclosed;
 
 		current_contr_isclosed = contr_isclosed;
 
 		if (!contr_isclosed)
 		{
-		pc_tail = p_cntr;
-		while (pc_tail.next != null)
-			pc_tail = pc_tail.next; // Find last point.
+			pc_tail = p_cntr;
+			while (pc_tail.next != null)
+				pc_tail = pc_tail.next; // Find last point.
 
-		/* test if first and last point are equal */
-		if (GlobalMembersContour.fuzzy_equal(pc_tail, p_cntr) != 0)
-			current_contr_isclosed = true;
+			/* test if first and last point are equal */
+			if (GlobalMembersContour.fuzzy_equal(pc_tail, p_cntr) != 0)
+				current_contr_isclosed = true;
 		}
 		return (current_contr_isclosed);
 	}
 
-/*
- * Generate a cubic spline curve through the points (x_i,y_i) which are
- * stored in the linked list p_cntr.
- * The spline is defined as a 2d-function s(t) = (x(t),y(t)), where the
- * parameter t is the length of the linear stroke.
- */
+	/*
+	 * Generate a cubic spline curve through the points (x_i,y_i) which are
+	 * stored in the linked list p_cntr.
+	 * The spline is defined as a 2d-function s(t) = (x(t),y(t)), where the
+	 * parameter t is the length of the linear stroke.
+	 */
 	public static void put_contour_cubic(cntr_struct p_cntr, double xx_min, double xx_max, double yy_min, double yy_max, boolean contr_isclosed)
 	{
 		int num_pts;
@@ -1128,22 +1128,22 @@ public class GlobalMembersContour
 
 		pc_tail = p_cntr; // Find last point.
 		while (pc_tail.next != null)
-		pc_tail = pc_tail.next;
+			pc_tail = pc_tail.next;
 
 		if (contr_isclosed)
 		{
-		/* Test if first and last point are equal (should be) */
-		if (GlobalMembersContour.fuzzy_equal(pc_tail, p_cntr) == 0)
-		{
-			pc_tail.next = p_cntr; // Close contour list - make it circular.
-			num_pts++;
+			/* Test if first and last point are equal (should be) */
+			if (GlobalMembersContour.fuzzy_equal(pc_tail, p_cntr) == 0)
+			{
+				pc_tail.next = p_cntr; // Close contour list - make it circular.
+				num_pts++;
+			}
 		}
-		}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		delta_t = GlobalMembersAlloc.gp_alloc(num_pts * sizeof(double), "contour delta_t");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		d2x = GlobalMembersAlloc.gp_alloc(num_pts * sizeof(double), "contour d2x");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		d2y = GlobalMembersAlloc.gp_alloc(num_pts * sizeof(double), "contour d2y");
 
 		/* Width and height of the grid is used as a unit length (2d-norm) */
@@ -1156,68 +1156,68 @@ public class GlobalMembersContour
 
 		if (num_pts > 2)
 		{
-		/*
-		 * Calculate second derivatives d2x[], d2y[] and interval lengths delta_t[]:
-		 */
-		if (GlobalMembersContour.gen_cubic_spline(num_pts, p_cntr, d2x, d2y, delta_t, contr_isclosed, unit_x, unit_y) == 0)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(delta_t);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(d2x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(d2y);
-			if (contr_isclosed)
-			pc_tail.next = DefineConstants.NULL; // Un-circular list
-			return;
-		}
+			/*
+			 * Calculate second derivatives d2x[], d2y[] and interval lengths delta_t[]:
+			 */
+			if (GlobalMembersContour.gen_cubic_spline(num_pts, p_cntr, d2x, d2y, delta_t, contr_isclosed, unit_x, unit_y) == 0)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(delta_t);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(d2x);
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(d2y);
+				if (contr_isclosed)
+					pc_tail.next = DefineConstants.NULL; // Un-circular list
+				return;
+			}
 		}
 		/* If following (num_pts > 1) is TRUE then exactly 2 points in contour.  */
 		else if (num_pts > 1)
 		{
-		/* set all second derivatives to zero, interval length to 1 */
-		d2x[0] = 0.;
-		d2y[0] = 0.;
-		d2x[1] = 0.;
-		d2y[1] = 0.;
-		delta_t[0] = 1.;
+			/* set all second derivatives to zero, interval length to 1 */
+			d2x[0] = 0.;
+			d2y[0] = 0.;
+			d2x[1] = 0.;
+			d2y[1] = 0.;
+			delta_t[0] = 1.;
 		} // Only one point ( ?? ) - ignore it.
 		else
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(delta_t);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(d2x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(d2y);
-		if (contr_isclosed)
-			pc_tail.next = DefineConstants.NULL; // Un-circular list
-		return;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(delta_t);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(d2x);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(d2y);
+			if (contr_isclosed)
+				pc_tail.next = DefineConstants.NULL; // Un-circular list
+			return;
 		}
 
 		/* Calculate "num_intpol" interpolated values */
 		num_intpol = 1 + (num_pts - 1) * contour_pts; // global: contour_pts
 		GlobalMembersContour.intp_cubic_spline(num_pts, p_cntr, d2x, d2y, delta_t, num_intpol);
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(delta_t);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(d2x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(d2y);
 
 		if (contr_isclosed)
-		pc_tail.next = DefineConstants.NULL; // Un-circular list
+			pc_tail.next = DefineConstants.NULL; // Un-circular list
 
 		GlobalMembersContour.end_crnt_cntr();
 	}
 
-/*
- * Find Bspline approximation for this data set.
- * Uses global variable contour_pts to determine number of samples per
- * interval, where the knot vector intervals are assumed to be uniform, and
- * global variable contour_order for the order of Bspline to use.
- */
+	/*
+	 * Find Bspline approximation for this data set.
+	 * Uses global variable contour_pts to determine number of samples per
+	 * interval, where the knot vector intervals are assumed to be uniform, and
+	 * global variable contour_order for the order of Bspline to use.
+	 */
 	public static void put_contour_bspline(cntr_struct p_cntr, boolean contr_isclosed)
 	{
 		int num_pts;
@@ -1225,52 +1225,52 @@ public class GlobalMembersContour
 
 		num_pts = GlobalMembersContour.count_contour(p_cntr); // Number of points in contour.
 		if (num_pts < 2)
-		return; // Can't do nothing if empty or one points!
+			return; // Can't do nothing if empty or one points!
 		/* Order must be less than number of points in curve - fix it if needed. */
 		if (order > num_pts - 1)
-		order = num_pts - 1;
+			order = num_pts - 1;
 
 		GlobalMembersContour.gen_bspline_approx(p_cntr, num_pts, order, contr_isclosed);
 		GlobalMembersContour.end_crnt_cntr();
 	}
 
-/*
- * Free all elements in the contour list.
- */
+	/*
+	 * Free all elements in the contour list.
+	 */
 	public static void free_contour(cntr_struct p_cntr)
 	{
 		cntr_struct pc_temp;
 
 		while (p_cntr != null)
 		{
-		pc_temp = p_cntr;
-		p_cntr = p_cntr.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(pc_temp);
+			pc_temp = p_cntr;
+			p_cntr = p_cntr.next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(pc_temp);
 		}
 	}
 
-/*
- * Counts number of points in contour.
- */
+	/*
+	 * Counts number of points in contour.
+	 */
 	public static int count_contour(cntr_struct p_cntr)
 	{
 		int count = 0;
 
 		while (p_cntr != null)
 		{
-		count++;
-		p_cntr = p_cntr.next;
+			count++;
+			p_cntr = p_cntr.next;
 		}
 		return count;
 	}
 
-/*
- * Find second derivatives (x''(t_i),y''(t_i)) of cubic spline interpolation
- * through list of points (x_i,y_i). The parameter t is calculated as the
- * length of the linear stroke. The number of points must be at least 3.
- * Note: For closed contours the first and last point must be equal.
- */
+	/*
+	 * Find second derivatives (x''(t_i),y''(t_i)) of cubic spline interpolation
+	 * through list of points (x_i,y_i). The parameter t is calculated as the
+	 * length of the linear stroke. The number of points must be at least 3.
+	 * Note: For closed contours the first and last point must be equal.
+	 */
 	public static int gen_cubic_spline(int num_pts, cntr_struct p_cntr, double[] d2x, double[] d2y, double[] delta_t, boolean contr_isclosed, double unit_x, double unit_y)
 	{
 		int n;
@@ -1279,7 +1279,7 @@ public class GlobalMembersContour
 		double[] m = new double[3]; // The tri-diagonal matrix is saved here.
 		cntr_struct pc_temp;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		m = GlobalMembersAlloc.gp_alloc(num_pts * sizeof(double[3]), "contour tridiag m");
 
 		/*
@@ -1289,18 +1289,18 @@ public class GlobalMembersContour
 		pc_temp = p_cntr;
 		for (i = 0; i < num_pts - 1; i++)
 		{
-		d2x[i] = pc_temp.next.X - pc_temp.X;
-		d2y[i] = pc_temp.next.Y - pc_temp.Y;
-		/*
-		 * The norm of a linear stroke is calculated in "normal coordinates"
-		 * and used as interval length:
-		 */
-		delta_t[i] = Math.sqrt(((d2x[i] / unit_x) * (d2x[i] / unit_x)) + ((d2y[i] / unit_y) * (d2y[i] / unit_y)));
+			d2x[i] = pc_temp.next.X - pc_temp.X;
+			d2y[i] = pc_temp.next.Y - pc_temp.Y;
+			/*
+			 * The norm of a linear stroke is calculated in "normal coordinates"
+			 * and used as interval length:
+			 */
+			delta_t[i] = Math.sqrt(((d2x[i] / unit_x) * (d2x[i] / unit_x)) + ((d2y[i] / unit_y) * (d2y[i] / unit_y)));
 
-		d2x[i] /= delta_t[i]; // first difference, with unit norm:
-		d2y[i] /= delta_t[i]; //   || (d2x[i], d2y[i]) || = 1
+			d2x[i] /= delta_t[i]; // first difference, with unit norm:
+			d2y[i] /= delta_t[i]; //   || (d2x[i], d2y[i]) || = 1
 
-		pc_temp = pc_temp.next;
+			pc_temp = pc_temp.next;
 		}
 
 		/*
@@ -1309,90 +1309,90 @@ public class GlobalMembersContour
 		n = num_pts - 2; // Without first and last point
 		if (contr_isclosed)
 		{
-		/* First and last points must be equal for closed contours */
-		delta_t[num_pts - 1] = delta_t[0];
-		d2x[num_pts - 1] = d2x[0];
-		d2y[num_pts - 1] = d2y[0];
-		n++; // Add last point (= first point)
+			/* First and last points must be equal for closed contours */
+			delta_t[num_pts - 1] = delta_t[0];
+			d2x[num_pts - 1] = d2x[0];
+			d2y[num_pts - 1] = d2y[0];
+			n++; // Add last point (= first point)
 		}
 		for (i = 0; i < n; i++)
 		{
-		/* Matrix M, mainly tridiagonal with cyclic second index ("j = j+n mod n") */
-		m[i][0] = delta_t[i]; // Off-diagonal element M_{i,i-1}
-		m[i][1] = 2.* (delta_t[i] + delta_t[i + 1]); // M_{i,i}
-		m[i][2] = delta_t[i + 1]; // Off-diagonal element M_{i,i+1}
+			/* Matrix M, mainly tridiagonal with cyclic second index ("j = j+n mod n") */
+			m[i][0] = delta_t[i]; // Off-diagonal element M_{i,i-1}
+			m[i][1] = 2.* (delta_t[i] + delta_t[i + 1]); // M_{i,i}
+			m[i][2] = delta_t[i + 1]; // Off-diagonal element M_{i,i+1}
 
-		/* Right side b_x and b_y */
-		d2x[i] = (d2x[i + 1] - d2x[i]) * 6.;
-		d2y[i] = (d2y[i + 1] - d2y[i]) * 6.;
+			/* Right side b_x and b_y */
+			d2x[i] = (d2x[i + 1] - d2x[i]) * 6.;
+			d2y[i] = (d2y[i + 1] - d2y[i]) * 6.;
 
-		/*
-		 * If the linear stroke shows a cusps of more than 90 degree, the right
-		 * side is reduced to avoid oscillations in the spline:
-		 */
-		norm = Math.sqrt(((d2x[i] / unit_x) * (d2x[i] / unit_x)) + ((d2y[i] / unit_y) * (d2y[i] / unit_y))) / 8.5;
+			/*
+			 * If the linear stroke shows a cusps of more than 90 degree, the right
+			 * side is reduced to avoid oscillations in the spline:
+			 */
+			norm = Math.sqrt(((d2x[i] / unit_x) * (d2x[i] / unit_x)) + ((d2y[i] / unit_y) * (d2y[i] / unit_y))) / 8.5;
 
-		if (norm > 1.)
-		{
-			d2x[i] /= norm;
-			d2y[i] /= norm;
-			/* The first derivative will not be continuous */
-		}
+			if (norm > 1.)
+			{
+				d2x[i] /= norm;
+				d2y[i] /= norm;
+				/* The first derivative will not be continuous */
+			}
 		}
 
 		if (!contr_isclosed)
 		{
-		/* Third derivative is set to zero at both ends */
-		m[0][1] += m[0][0]; // M_{0,0}
-		m[0][0] = 0.; // M_{0,n-1}
-		m[n - 1][1] += m[n - 1][2]; // M_{n-1,n-1}
-		m[n - 1][2] = 0.; // M_{n-1,0}
+			/* Third derivative is set to zero at both ends */
+			m[0][1] += m[0][0]; // M_{0,0}
+			m[0][0] = 0.; // M_{0,n-1}
+			m[n - 1][1] += m[n - 1][2]; // M_{n-1,n-1}
+			m[n - 1][2] = 0.; // M_{n-1,0}
 		}
 		/* Solve linear systems for d2x[] and d2y[] */
 
 
 		if (GlobalMembersContour.solve_cubic_1(m, n) != 0) // Calculate Cholesky decomposition
 		{
-		GlobalMembersContour.solve_cubic_2(m, d2x, n); // solve M * d2x = b_x
-		GlobalMembersContour.solve_cubic_2(m, d2y, n); // solve M * d2y = b_y
+			GlobalMembersContour.solve_cubic_2(m, d2x, n); // solve M * d2x = b_x
+			GlobalMembersContour.solve_cubic_2(m, d2y, n); // solve M * d2y = b_y
 
 		} // Should not happen, but who knows ...
 		else
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(m);
-		return false;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(m);
+			return false;
 		}
 
 		/* Shift all second derivatives one place right and abdate end points */
 		for (i = n; i > 0; i--)
 		{
-		d2x[i] = d2x[i - 1];
-		d2y[i] = d2y[i - 1];
+			d2x[i] = d2x[i - 1];
+			d2y[i] = d2y[i - 1];
 		}
 		if (contr_isclosed)
 		{
-		d2x[0] = d2x[n];
-		d2y[0] = d2y[n];
+			d2x[0] = d2x[n];
+			d2y[0] = d2y[n];
 		}
 		else
 		{
-		d2x[0] = d2x[1]; // Third derivative is zero in
-		d2y[0] = d2y[1]; //     first and last interval
-		d2x[n + 1] = d2x[n];
-		d2y[n + 1] = d2y[n];
+			d2x[0] = d2x[1]; // Third derivative is zero in
+			d2y[0] = d2y[1]; //     first and last interval
+			d2x[n + 1] = d2x[n];
+			d2y[n + 1] = d2y[n];
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(m);
 		return true;
 	}
 
-/*
- * Calculate interpolated values of the spline function (defined via p_cntr
- * and the second derivatives d2x[] and d2y[]). The number of tabulated
- * values is n. On an equidistant grid n_intpol values are calculated.
- */
+	/*
+	 * Calculate interpolated values of the spline function (defined via p_cntr
+	 * and the second derivatives d2x[] and d2y[]). The number of tabulated
+	 * values is n. On an equidistant grid n_intpol values are calculated.
+	 */
 	public static void intp_cubic_spline(int n, cntr_struct p_cntr, double[] d2x, double[] d2y, double[] delta_t, int n_intpol)
 	{
 		double t;
@@ -1416,7 +1416,7 @@ public class GlobalMembersContour
 		/* The length of the total interval */
 		t_max = 0.;
 		for (i = 0; i < n - 1; i++)
-		t_max += delta_t[i];
+			t_max += delta_t[i];
 
 		/* The distance between interpolated points */
 		t_skip = (1.- 1e-7) * t_max / (n_intpol - 1);
@@ -1429,47 +1429,47 @@ public class GlobalMembersContour
 
 		for (i = 0; i < n - 1; i++)
 		{
-		p_cntr = p_cntr.next;
+			p_cntr = p_cntr.next;
 
-		d = delta_t[i]; // Interval length
-		x0 = x1;
-		y0 = y1;
-		x1 = p_cntr.X;
-		y1 = p_cntr.Y;
-		hx = (x1 - x0) / d;
-		hy = (y1 - y0) / d;
-		dx0 = (d2x[i + 1] + 2 * d2x[i]) / 6.;
-		dy0 = (d2y[i + 1] + 2 * d2y[i]) / 6.;
-		dx01 = (d2x[i + 1] - d2x[i]) / (6.* d);
-		dy01 = (d2y[i + 1] - d2y[i]) / (6.* d);
-		while (t <= delta_t[i]) // t in current interval ?
-		{
-			x = x0 + t * (hx + (t - d) * (dx0 + t * dx01));
-			y = y0 + t * (hy + (t - d) * (dy0 + t * dy01));
-			GlobalMembersContour.add_cntr_point(x, y); // next point.
-			t += t_skip;
-		}
-		t -= delta_t[i]; // Parameter t relative to start of next interval
+			d = delta_t[i]; // Interval length
+			x0 = x1;
+			y0 = y1;
+			x1 = p_cntr.X;
+			y1 = p_cntr.Y;
+			hx = (x1 - x0) / d;
+			hy = (y1 - y0) / d;
+			dx0 = (d2x[i + 1] + 2 * d2x[i]) / 6.;
+			dy0 = (d2y[i + 1] + 2 * d2y[i]) / 6.;
+			dx01 = (d2x[i + 1] - d2x[i]) / (6.* d);
+			dy01 = (d2y[i + 1] - d2y[i]) / (6.* d);
+			while (t <= delta_t[i]) // t in current interval ?
+			{
+				x = x0 + t * (hx + (t - d) * (dx0 + t * dx01));
+				y = y0 + t * (hy + (t - d) * (dy0 + t * dy01));
+				GlobalMembersContour.add_cntr_point(x, y); // next point.
+				t += t_skip;
+			}
+			t -= delta_t[i]; // Parameter t relative to start of next interval
 		}
 	}
 
-/*
- * The following two procedures solve the special linear system which arise
- * in cubic spline interpolation. If x is assumed cyclic ( x[i]=x[n+i] ) the
- * equations can be written as (i=0,1,...,n-1):
- *     m[i][0] * x[i-1] + m[i][1] * x[i] + m[i][2] * x[i+1] = b[i] .
- * In matrix notation one gets M * x = b, where the matrix M is tridiagonal
- * with additional elements in the upper right and lower left position:
- *   m[i][0] = M_{i,i-1}  for i=1,2,...,n-1    and    m[0][0] = M_{0,n-1} ,
- *   m[i][1] = M_{i, i }  for i=0,1,...,n-1
- *   m[i][2] = M_{i,i+1}  for i=0,1,...,n-2    and    m[n-1][2] = M_{n-1,0}.
- * M should be symmetric (m[i+1][0]=m[i][2]) and positiv definite.
- * The size of the system is given in n (n>=1).
- *
- * In the first procedure the Cholesky decomposition M = C^T * D * C
- * (C is upper triangle with unit diagonal, D is diagonal) is calculated.
- * Return TRUE if decomposition exist.
- */
+	/*
+	 * The following two procedures solve the special linear system which arise
+	 * in cubic spline interpolation. If x is assumed cyclic ( x[i]=x[n+i] ) the
+	 * equations can be written as (i=0,1,...,n-1):
+	 *     m[i][0] * x[i-1] + m[i][1] * x[i] + m[i][2] * x[i+1] = b[i] .
+	 * In matrix notation one gets M * x = b, where the matrix M is tridiagonal
+	 * with additional elements in the upper right and lower left position:
+	 *   m[i][0] = M_{i,i-1}  for i=1,2,...,n-1    and    m[0][0] = M_{0,n-1} ,
+	 *   m[i][1] = M_{i, i }  for i=0,1,...,n-1
+	 *   m[i][2] = M_{i,i+1}  for i=0,1,...,n-2    and    m[n-1][2] = M_{n-1,0}.
+	 * M should be symmetric (m[i+1][0]=m[i][2]) and positiv definite.
+	 * The size of the system is given in n (n>=1).
+	 *
+	 * In the first procedure the Cholesky decomposition M = C^T * D * C
+	 * (C is upper triangle with unit diagonal, D is diagonal) is calculated.
+	 * Return TRUE if decomposition exist.
+	 */
 	public static int solve_cubic_1(double[][] m, int n)
 	{
 		int i;
@@ -1479,41 +1479,41 @@ public class GlobalMembersContour
 		double d;
 
 		if (n < 1)
-		return false; // Dimension should be at least 1
+			return false; // Dimension should be at least 1
 
 		d = m[0][1]; // D_{0,0} = M_{0,0}
 		if (d <= 0.)
-		return false; // M (or D) should be positiv definite
+			return false; // M (or D) should be positiv definite
 		m_n = m[0][0]; //  M_{0,n-1}
 		m_nn = m[n - 1][1]; // M_{n-1,n-1}
 		for (i = 0; i < n - 2; i++)
 		{
-		m_ij = m[i][2]; //  M_{i,1}
-		m[i][2] = m_ij / d; // C_{i,i+1}
-		m[i][0] = m_n / d; // C_{i,n-1}
-		m_nn -= m[i][0] * m_n; // to get C_{n-1,n-1}
-		m_n = -m[i][2] * m_n; // to get C_{i+1,n-1}
-		d = m[i + 1][1] - m[i][2] * m_ij; // D_{i+1,i+1}
-		if (d <= 0.)
-			return false; // Elements of D should be positiv
-		m[i + 1][1] = d;
+			m_ij = m[i][2]; //  M_{i,1}
+			m[i][2] = m_ij / d; // C_{i,i+1}
+			m[i][0] = m_n / d; // C_{i,n-1}
+			m_nn -= m[i][0] * m_n; // to get C_{n-1,n-1}
+			m_n = -m[i][2] * m_n; // to get C_{i+1,n-1}
+			d = m[i + 1][1] - m[i][2] * m_ij; // D_{i+1,i+1}
+			if (d <= 0.)
+				return false; // Elements of D should be positiv
+			m[i + 1][1] = d;
 		}
 		if (n >= 2) // Complete last column
 		{
-		m_n += m[n - 2][2]; // add M_{n-2,n-1}
-		m[n - 2][0] = m_n / d; // C_{n-2,n-1}
-		m[n - 1][1] = d = m_nn - m[n - 2][0] * m_n; // D_{n-1,n-1}
-		if (d <= 0.)
-			return false;
+			m_n += m[n - 2][2]; // add M_{n-2,n-1}
+			m[n - 2][0] = m_n / d; // C_{n-2,n-1}
+			m[n - 1][1] = d = m_nn - m[n - 2][0] * m_n; // D_{n-1,n-1}
+			if (d <= 0.)
+				return false;
 		}
 		return true;
 	}
 
-/*
- * The second procedure solves the linear system, with the Choleky
- * decomposition calculated above (in m[][]) and the right side b given
- * in x[]. The solution x overwrites the right side in x[].
- */
+	/*
+	 * The second procedure solves the linear system, with the Choleky
+	 * decomposition calculated above (in m[][]) and the right side b given
+	 * in x[]. The solution x overwrites the right side in x[].
+	 */
 	public static void solve_cubic_2(double[][] m, double[] x, int n)
 	{
 		int i;
@@ -1523,36 +1523,36 @@ public class GlobalMembersContour
 		x_n = x[n - 1];
 		for (i = 0; i < n - 2; i++)
 		{
-		x[i + 1] -= m[i][2] * x[i]; // C_{i,i+1} * x_{i}
-		x_n -= m[i][0] * x[i]; // C_{i,n-1} * x_{i}
+			x[i + 1] -= m[i][2] * x[i]; // C_{i,i+1} * x_{i}
+			x_n -= m[i][0] * x[i]; // C_{i,n-1} * x_{i}
 		}
 		if (n >= 2)
-		x[n - 1] = x_n - m[n - 2][0] * x[n - 2]; // C_{n-2,n-1} * x_{n-1}
+			x[n - 1] = x_n - m[n - 2][0] * x[n - 2]; // C_{n-2,n-1} * x_{n-1}
 
 		/* Division by D: b = D^{-1} * b */
 		for (i = 0; i < n; i++)
-		x[i] /= m[i][1];
+			x[i] /= m[i][1];
 
 		/* Division by C: b = C^{-1} * b */
 		x_n = x[n - 1];
 		if (n >= 2)
-		x[n - 2] -= m[n - 2][0] * x_n; // C_{n-2,n-1} * x_{n-1}
+			x[n - 2] -= m[n - 2][0] * x_n; // C_{n-2,n-1} * x_{n-1}
 		for (i = n - 3; i >= 0; i--)
 		{
-		/*      C_{i,i+1} * x_{i+1} + C_{i,n-1} * x_{n-1} */
-		x[i] -= m[i][2] * x[i + 1] + m[i][0] * x_n;
+			/*      C_{i,i+1} * x_{i+1} + C_{i,n-1} * x_{n-1} */
+			x[i] -= m[i][2] * x[i + 1] + m[i][0] * x_n;
 		}
 		return;
 	}
 
-/*
- * Generate a Bspline curve defined by all the points given in linked list p:
- * Algorithm: using deBoor algorithm
- * Note: if Curvekind is open contour than Open end knot vector is assumed,
- *       else (closed contour) Float end knot vector is assumed.
- * It is assumed that num_of_points is at least 2, and order of Bspline is less
- * than num_of_points!
- */
+	/*
+	 * Generate a Bspline curve defined by all the points given in linked list p:
+	 * Algorithm: using deBoor algorithm
+	 * Note: if Curvekind is open contour than Open end knot vector is assumed,
+	 *       else (closed contour) Float end knot vector is assumed.
+	 * It is assumed that num_of_points is at least 2, and order of Bspline is less
+	 * than num_of_points!
+	 */
 	public static void gen_bspline_approx(cntr_struct p_cntr, int num_of_points, int order, boolean contr_isclosed)
 	{
 		int knot_index = 0;
@@ -1574,22 +1574,22 @@ public class GlobalMembersContour
 		 */
 		if (contr_isclosed)
 		{
-		pc_tail = p_cntr;
-		while (pc_tail.next != null)
-			pc_tail = pc_tail.next; // Find last point.
+			pc_tail = p_cntr;
+			while (pc_tail.next != null)
+				pc_tail = pc_tail.next; // Find last point.
 
-		/* test if first and last point are equal */
-		if (GlobalMembersContour.fuzzy_equal(pc_tail, p_cntr) != 0)
-		{
-			/* Close contour list - make it circular. */
-			pc_tail.next = p_cntr.next;
-			num_of_points += order - 1;
-		}
-		else
-		{
-			pc_tail.next = p_cntr;
-			num_of_points += order;
-		}
+			/* test if first and last point are equal */
+			if (GlobalMembersContour.fuzzy_equal(pc_tail, p_cntr) != 0)
+			{
+				/* Close contour list - make it circular. */
+				pc_tail.next = p_cntr.next;
+				num_of_points += order - 1;
+			}
+			else
+			{
+				pc_tail.next = p_cntr;
+				num_of_points += order;
+			}
 		}
 		/* Find first (t_min) and last (t_max) t value to eval: */
 		t = t_min = GlobalMembersContour.fetch_knot(contr_isclosed, num_of_points, order, order);
@@ -1601,20 +1601,20 @@ public class GlobalMembersContour
 
 		while (t < t_max)
 		{
-		if (t > next_t)
-		{
-			pc_temp = pc_temp.next; // Next order ctrl. pt. to blend.
-			knot_index++;
-			next_t += 1.0;
-		}
-		GlobalMembersContour.eval_bspline(t, pc_temp, num_of_points, order, knot_index, contr_isclosed, x, y); // Next pt.
-		GlobalMembersContour.add_cntr_point(x, y);
-		pts_count++;
-		/* As we might have some real number round off problems we do      */
-		/* the last point outside the loop                                 */
-		if (pts_count == contour_pts * (num_of_points - order) + 1)
-			break;
-		t += dt;
+			if (t > next_t)
+			{
+				pc_temp = pc_temp.next; // Next order ctrl. pt. to blend.
+				knot_index++;
+				next_t += 1.0;
+			}
+			GlobalMembersContour.eval_bspline(t, pc_temp, num_of_points, order, knot_index, contr_isclosed, x, y); // Next pt.
+			GlobalMembersContour.add_cntr_point(x, y);
+			pts_count++;
+			/* As we might have some real number round off problems we do      */
+			/* the last point outside the loop                                 */
+			if (pts_count == contour_pts * (num_of_points - order) + 1)
+				break;
+			t += dt;
 		}
 
 		/* Now do the last point */
@@ -1622,15 +1622,15 @@ public class GlobalMembersContour
 		GlobalMembersContour.add_cntr_point(x, y); // Complete the contour.
 
 		if (contr_isclosed) // Update list - un-circular it.
-		pc_tail.next = DefineConstants.NULL;
+			pc_tail.next = DefineConstants.NULL;
 	}
 
-/*
- * The routine to evaluate the B-spline value at point t using knot vector
- * from function fetch_knot(), and the control points p_cntr.
- * Returns (x, y) of approximated B-spline. Note that p_cntr points on the
- * first control point to blend with. The B-spline is of order order.
- */
+	/*
+	 * The routine to evaluate the B-spline value at point t using knot vector
+	 * from function fetch_knot(), and the control points p_cntr.
+	 * Returns (x, y) of approximated B-spline. Note that p_cntr points on the
+	 * first control point to blend with. The B-spline is of order order.
+	 */
 	public static void eval_bspline(double t, cntr_struct p_cntr, int num_of_points, int order, int j, boolean contr_isclosed, double x, double y)
 	{
 		int i;
@@ -1640,65 +1640,65 @@ public class GlobalMembersContour
 		double[] dx;
 		double[] dy;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		dx = GlobalMembersAlloc.gp_alloc((order + j) * sizeof(double), "contour b_spline");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		dy = GlobalMembersAlloc.gp_alloc((order + j) * sizeof(double), "contour b_spline");
 
 		/* Set the dx/dy - [0] iteration step, control points (p==0 iterat.): */
 		for (i = j - order; i <= j; i++)
 		{
-		dx[i] = p_cntr.X;
-		dy[i] = p_cntr.Y;
-		p_cntr = p_cntr.next;
+			dx[i] = p_cntr.X;
+			dy[i] = p_cntr.Y;
+			p_cntr = p_cntr.next;
 		}
 
 		for (p = 1; p <= order; p++) // Iteration (b-spline level) counter.
 		{
-		for (i = j; i >= j - order + p; i--) // Control points indexing.
-		{
-			ti = GlobalMembersContour.fetch_knot(contr_isclosed, num_of_points, order, i);
-			tikp = GlobalMembersContour.fetch_knot(contr_isclosed, num_of_points, order, i + order + 1 - p);
-			if (ti == tikp) // Should not be a problems but how knows...
+			for (i = j; i >= j - order + p; i--) // Control points indexing.
 			{
+				ti = GlobalMembersContour.fetch_knot(contr_isclosed, num_of_points, order, i);
+				tikp = GlobalMembersContour.fetch_knot(contr_isclosed, num_of_points, order, i + order + 1 - p);
+				if (ti == tikp) // Should not be a problems but how knows...
+				{
+				}
+				else
+				{
+					dx[i] = dx[i] * (t - ti) / (tikp - ti) + dx[i - 1] * (tikp - t) / (tikp - ti); // Calculate x.
+					dy[i] = dy[i] * (t - ti) / (tikp - ti) + dy[i - 1] * (tikp - t) / (tikp - ti); // Calculate y.
+				}
 			}
-			else
-			{
-			dx[i] = dx[i] * (t - ti) / (tikp - ti) + dx[i - 1] * (tikp - t) / (tikp - ti); // Calculate x.
-			dy[i] = dy[i] * (t - ti) / (tikp - ti) + dy[i - 1] * (tikp - t) / (tikp - ti); // Calculate y.
-			}
-		}
 		}
 		x = dx[j];
 		y = dy[j];
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(dx);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(dy);
 	}
 
-/*
- * Routine to get the i knot from uniform knot vector. The knot vector
- * might be float (Knot(i) = i) or open (where the first and last "order"
- * knots are equal). contr_isclosed determines knot kind - open contour means
- * open knot vector, and closed contour selects float knot vector.
- * Note the knot vector is not exist and this routine simulates it existance
- * Also note the indexes for the knot vector starts from 0.
- */
+	/*
+	 * Routine to get the i knot from uniform knot vector. The knot vector
+	 * might be float (Knot(i) = i) or open (where the first and last "order"
+	 * knots are equal). contr_isclosed determines knot kind - open contour means
+	 * open knot vector, and closed contour selects float knot vector.
+	 * Note the knot vector is not exist and this routine simulates it existance
+	 * Also note the indexes for the knot vector starts from 0.
+	 */
 	public static double fetch_knot(boolean contr_isclosed, int num_of_points, int order, int i)
 	{
 		if (!contr_isclosed)
 		{
-		if (i <= order)
-			return 0.0;
-		else if (i <= num_of_points)
-			return (double)(i - order);
-		else
-			return (double)(num_of_points - order);
+			if (i <= order)
+				return 0.0;
+			else if (i <= num_of_points)
+				return (double)(i - order);
+			else
+				return (double)(num_of_points - order);
 		}
 		else
 		{
-		return (double) i;
+			return (double) i;
 		}
 	}
 }

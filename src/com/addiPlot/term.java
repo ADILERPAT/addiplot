@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.addiPlot.gnuplot.gpiPoint;
 import com.addiPlot.gnuplot.t_colorspec;
+import com.addiPlot.gnuplot.t_sm_palette;
 import com.addiPlot.gnuplot.termlayer;
 import com.addiPlot.gp_types.coordinate;
 import com.addiPlot.graphics.curve_points;
@@ -122,9 +124,9 @@ public class term {
 	public static void set_clipboard(String string) { /* write text into cut&paste buffer (clipboard) */
 	}
 	//CCX
-	//public static int make_palette(t_sm_palette palette) {
-	//	return 0;
-	//}
+	public static int make_palette(t_sm_palette palette) {
+		return 0;
+	}
 	    /* 1. if palette==NULL, then return nice/suitable
 	       maximal number of colours supported by this terminal.
 	       Returns 0 if it can make colours without palette (like
@@ -149,7 +151,7 @@ public class term {
 	   so that a palette gray value is not the only option for
 	   specifying color.
 	 */
-	public static void filled_polygon(int points, color.gpiPoint corners) {
+	public static void filled_polygon(int points, gpiPoint[] corners) {
 	}
 	
 	public static void image(int a, int b, syscfg.coordval coordval, color.gpiPoint gpiPoint, term_api.t_imagecolor imagecolor) {
