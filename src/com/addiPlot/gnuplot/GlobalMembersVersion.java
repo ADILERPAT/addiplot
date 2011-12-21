@@ -168,10 +168,10 @@ public class GlobalMembersVersion
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: version.c,v 1.89.2.8 2010/03/05 06:52:24 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: version.c,v 1.89.2.8 2010/03/05 06:52:24 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - version.c */
@@ -647,29 +647,29 @@ public class GlobalMembersVersion
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define TBOOLEAN bool
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte gnuplot_version[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte gnuplot_patchlevel[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte gnuplot_date[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte gnuplot_copyright[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte faq_location[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte bug_report[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte bug_email[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern const sbyte help_email[];
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte os_name[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte os_rel[];
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte *compile_options;
 
 
@@ -681,7 +681,7 @@ public class GlobalMembersVersion
 	public static final String gnuplot_date = "March 2010";
 	public static final String gnuplot_copyright = "Copyright (C) 1986-1993, 1998, 2004, 2007-2010";
 
-	public static String compile_options = (Object*)0; // Will be loaded at runtime
+	public static String compile_options = null; // Will be loaded at runtime
 
 	///#ifndef FAQ_LOCATION
 	///#define FAQ_LOCATION "http://www.gnuplot.info/faq/"
