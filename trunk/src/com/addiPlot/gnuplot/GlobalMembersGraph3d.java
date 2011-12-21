@@ -1,6 +1,7 @@
 package com.addiPlot.gnuplot;
 
 import com.addiPlot.term;
+import com.addiPlot.gnuplot.tangible.StringFunctions;
 
 public class GlobalMembersGraph3d
 {
@@ -514,7 +515,7 @@ public class GlobalMembersGraph3d
 		GlobalMembersGraph3d.place_arrows3d(0);
 
 		/* Sync point for epslatex text positioning */
-		GlobalMembersTerm.term.layer(termlayer.TERM_LAYER_FRONTTEXT);
+		term.layer(termlayer.TERM_LAYER_FRONTTEXT);
 
 		///#ifndef LITE
 		if (hidden3d && draw_surface && quick == 0)
@@ -633,7 +634,7 @@ public class GlobalMembersGraph3d
 				GlobalMembersGadgets.apply_pm3dcolor(key.textcolor);
 			if ((t.flags & DefineConstants.TERM_ENHANCED_TEXT) && StringFunctions.strChr(key.title,'^'))
 				extra_height += 0.51;
-			GlobalMembersTerm.write_multiline(center, key.bounds.ytop - (0.5 + extra_height / 2.0) * t.v_char, key.title, JUSTIFY.CENTRE, VERT_JUSTIFY.JUST_TOP, 0, key.font);
+			GlobalMembersTerm.write_multiline(center, (int) (key.bounds.ytop - (0.5 + extra_height / 2.0) * t.v_char), key.title, JUSTIFY.CENTRE, VERT_JUSTIFY.JUST_TOP, 0, key.font);
 			if ((t.flags & DefineConstants.TERM_ENHANCED_TEXT) && StringFunctions.strChr(key.title,'_'))
 				extra_height += 0.3;
 			ktitle_lines += extra_height;
@@ -695,7 +696,7 @@ public class GlobalMembersGraph3d
 			fprintf(stderr, "  Warning: Single isoline (scan) is not enough for a pm3d plot.\n\t   Hint: Missing blank lines in the data file? See 'help pm3d' and FAQ.\n");
 
 
-		pm3d_order_depth = (can_pm3d && ((int)draw_contour) == 0 && GlobalMembersPm3d.pm3d.direction == DefineConstants.PM3D_DEPTH);
+		pm3d_order_depth = (can_pm3d && draw_contour.getValue() == 0 && GlobalMembersPm3d.pm3d.direction == DefineConstants.PM3D_DEPTH);
 
 		if (pm3d_order_depth)
 		{
@@ -718,7 +719,7 @@ public class GlobalMembersGraph3d
 					GlobalMembersPm3d.pm3d_draw_one(this_plot);
 
 				/* Sync point for start of new curve (used by svg, post, ...) */
-				GlobalMembersTerm.term.layer(termlayer.TERM_LAYER_BEFORE_PLOT);
+				term.layer(termlayer.TERM_LAYER_BEFORE_PLOT);
 
 				if (pm3d_order_depth && this_plot.plot_style != PLOT_STYLE.PM3DSURFACE)
 					GlobalMembersPm3d.pm3d_depth_queue_flush(); // draw pending plots
@@ -1240,9 +1241,9 @@ public class GlobalMembersGraph3d
 			else
 				xpos = 0;
 			if (pos.scaley == position_type.graph)
-				ypos = (splot_map) ? GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max : GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min;
+				ypos = (splot_map != 0) ? GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max : GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].min;
 				else
-					ypos = (splot_map) ? GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max : 0;
+					ypos = (splot_map != 0) ? GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].max : 0;
 					if (pos.scalez == position_type.graph)
 						zpos = GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min;
 					else
@@ -1254,8 +1255,8 @@ public class GlobalMembersGraph3d
 		else
 		{
 			/* endpoint `screen' or 'character' coordinates */
-			x = xpos;
-			y = ypos;
+			x = (int) xpos;
+			y = (int) ypos;
 		}
 		return;
 	}
@@ -1626,7 +1627,7 @@ public class GlobalMembersGraph3d
 				else if (can_pm3d && plot.lp_properties.pm3d_color.type == DefineConstants.TC_LINESTYLE)
 				{
 					plot.lp_properties.pm3d_color.lt = (int)(points[i].ylow);
-					GlobalMembersGadgets.apply_pm3dcolor((plot.lp_properties.pm3d_color), GlobalMembersTerm.term);
+					GlobalMembersGadgets.apply_pm3dcolor(plot.lp_properties.pm3d_color);
 				}
 
 				switch (points[i].type)

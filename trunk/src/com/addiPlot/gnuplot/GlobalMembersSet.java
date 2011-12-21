@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersSet
 {
 	///#define __STDC__ 1
@@ -1598,7 +1600,7 @@ public class GlobalMembersSet
 		else
 			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'radians' or 'degrees'");
 
-		if (GlobalMembersGadgets.polar && ((int)GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale) != 0)
+		if (GlobalMembersGadgets.polar && GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale.getValue() != 0)
 		{
 			/* set trange if in polar mode and no explicit range */
 			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = 0;
@@ -1611,9 +1613,9 @@ public class GlobalMembersSet
 	/* allow any order of options - pm 25.11.2001 */
 	public static void set_arrow()
 	{
-		arrow_def this_arrow = DefineConstants.NULL;
-		arrow_def new_arrow = DefineConstants.NULL;
-		arrow_def prev_arrow = DefineConstants.NULL;
+		arrow_def this_arrow = null;
+		arrow_def new_arrow = null;
+		arrow_def prev_arrow = null;
 		boolean duplication = false;
 		boolean set_start = false;
 		boolean set_end = false;
@@ -1750,7 +1752,7 @@ public class GlobalMembersSet
 				int tmp;
 				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
 					GlobalMembersAxis.axis_array[tmp].field = (e_autoscale.AUTOSCALE_BOTH);
-			} while (0);
+			} while (false);
 			return;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "yx") != 0)
@@ -1827,7 +1829,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.T_AXIS;
@@ -1872,7 +1874,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.U_AXIS;
@@ -1917,7 +1919,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.V_AXIS;
@@ -1962,7 +1964,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_X_AXIS;
@@ -2007,7 +2009,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Y_AXIS;
@@ -2052,7 +2054,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Z_AXIS;
@@ -2097,7 +2099,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.SECOND_X_AXIS;
@@ -2142,7 +2144,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.SECOND_Y_AXIS;
@@ -2187,7 +2189,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.COLOR_AXIS;
@@ -2232,7 +2234,7 @@ public class GlobalMembersSet
 				++GlobalMembersCommand.c_token;
 				return;
 			}
-		} while (0);
+		} while (false);
 		/* came here only if nothing found: */
 		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Invalid range");
 	}
@@ -2641,7 +2643,7 @@ public class GlobalMembersSet
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-			() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+			do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
 			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 			free(GlobalMembersUtil.numeric_locale);
 			GlobalMembersUtil.numeric_locale = DefineConstants.NULL;
@@ -2793,32 +2795,32 @@ public class GlobalMembersSet
 		{
 			if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
 			{
-				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
 				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = true;
 			};
 			if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
 			{
-				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
 				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = true;
 			};
 			if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
 			{
-				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
 				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = true;
 			};
 			if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
 			{
-				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
 				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = true;
 			};
 			if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
 			{
-				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
 				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = true;
 			};
 			if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
 			{
-				() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
 				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = true;
 			};
 		}
@@ -3561,7 +3563,7 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // set to default
 		{
-			key.title = tangible.StringFunctions.changeCharacter(key.title, 0, DefineConstants.NUL);
+			key.title = StringFunctions.changeCharacter(key.title, 0, DefineConstants.NUL);
 		}
 		else
 		{
@@ -3581,9 +3583,9 @@ public class GlobalMembersSet
 	/* EAM Mar 2003 - option parsing broken out into separate routine */
 	public static void set_label()
 	{
-		text_label this_label = DefineConstants.NULL;
-		text_label new_label = DefineConstants.NULL;
-		text_label prev_label = DefineConstants.NULL;
+		text_label this_label = null;
+		text_label new_label = null;
+		text_label prev_label = null;
 		value a = new value();
 		int tag;
 
@@ -3738,7 +3740,7 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-			() GlobalMembersVariable.fontpath_handler(1 << 5, DefineConstants.NULL)();
+			GlobalMembersVariable.fontpath_handler(1 << 5, null);
 		}
 		else
 			while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
@@ -3782,7 +3784,7 @@ public class GlobalMembersSet
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-			() GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
+			GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
 		}
 		else if ((s = GlobalMembersUtil.try_to_get_string()))
 		{
@@ -3805,13 +3807,13 @@ public class GlobalMembersSet
 				int tmp;
 				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
 					GlobalMembersAxis.axis_array[tmp].field = (true);
-			} while (0);
+			} while (false);
 			do
 			{
 				int tmp;
 				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
 					GlobalMembersAxis.axis_array[tmp].field = (10.0);
-			} while (0);
+			} while (false);
 		}
 		else
 		{
@@ -4254,11 +4256,11 @@ public class GlobalMembersSet
 		}
 		else
 		{
-			GlobalMembersGadgets.xoffset = GlobalMembersParse.real_expression();
+			GlobalMembersGadgets.xoffset = (float) GlobalMembersParse.real_expression();
 			if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
 				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "',' expected");
 			GlobalMembersCommand.c_token++;
-			GlobalMembersGadgets.yoffset = GlobalMembersParse.real_expression();
+			GlobalMembersGadgets.yoffset = (float) GlobalMembersParse.real_expression();
 		}
 	}
 
@@ -4273,7 +4275,7 @@ public class GlobalMembersSet
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // no file specified
 		{
-			GlobalMembersTerm.term_set_output(DefineConstants.NULL);
+			GlobalMembersTerm.term_set_output(null);
 			if (GlobalMembersTerm.outstr != null)
 			{
 				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
@@ -4317,7 +4319,7 @@ public class GlobalMembersSet
 				GlobalMembersParse.set_dummy_var[0] = "t";
 				GlobalMembersParse.set_dummy_var[1] = "y";
 				if (GlobalMembersPlot.interactive)
-					() fprintf(stderr,"\n\tdummy variable is t for curves, u/v for surfaces\n");
+					fprintf(stderr,"\n\tdummy variable is t for curves, u/v for surfaces\n");
 			}
 		}
 	}
@@ -4545,7 +4547,7 @@ public class GlobalMembersSet
 						if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
 							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
 						GlobalMembersColor.sm_palette.formulaR = i;
-					} while (0);
+					} while (false);
 					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
 					{
 						GlobalMembersCommand.c_token--;
@@ -4558,7 +4560,7 @@ public class GlobalMembersSet
 						if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
 							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
 						GlobalMembersColor.sm_palette.formulaG = i;
-					} while (0);
+					} while (false);
 					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ",") == 0)
 					{
 						GlobalMembersCommand.c_token--;
@@ -4571,7 +4573,7 @@ public class GlobalMembersSet
 						if (Math.abs(i) >= GlobalMembersColor.sm_palette.colorFormulae)
 							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "color formula out of range (use `show palette rgbformulae' to display the range)");
 						GlobalMembersColor.sm_palette.formulaB = i;
-					} while (0);
+					} while (false);
 					GlobalMembersCommand.c_token--;
 					GlobalMembersColor.sm_palette.colorMode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
 					pm3d_last_set_palette_mode = palette_color_mode.SMPAL_COLOR_MODE_RGB;
@@ -4790,7 +4792,7 @@ public class GlobalMembersSet
 	public static void set_print()
 	{
 		boolean append_p = false;
-		String testfile = DefineConstants.NULL;
+		String testfile = null;
 
 		GlobalMembersCommand.c_token++;
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0) // no file specified
@@ -4871,7 +4873,7 @@ public class GlobalMembersSet
 		{
 			/* Look for existing object with this tag */
 			object this_object = GlobalMembersGadgets.first_object;
-			for (; this_object != DefineConstants.NULL; this_object = this_object.next)
+			for (; this_object != null; this_object = this_object.next)
 				if (tag == this_object.tag)
 					break;
 			if (this_object != null && tag == this_object.tag)

@@ -1525,9 +1525,9 @@ public class GlobalMembersMisc
  * next to into 'graph3d'. Actually, the existence of a module like this
  * 'misc' is almost always a sign of bad design, IMHO */
 /* may return NULL */
-	public static FILE loadpath_fopen(String filename, String mode)
+	public static File loadpath_fopen(String filename, String mode)
 	{
-		FILE fp;
+		File fp;
 
 	///#if defined(PIPES)
 		if (filename.equals('<'))

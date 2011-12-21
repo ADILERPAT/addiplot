@@ -1,5 +1,9 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersFit
 {
 	///#define __STDC__ 1
@@ -168,10 +172,10 @@ public class GlobalMembersFit
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: fit.c,v 1.69 2009/03/13 01:28:57 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: fit.c,v 1.69 2009/03/13 01:28:57 sfeam Exp $");
+	//}
 	///#endif
 
 	/*  NOTICE: Change of Copyright Status
@@ -977,7 +981,7 @@ public class GlobalMembersFit
 	/*****************************************************************
 	    Useful macros
 	    We avoid any use of varargs/stdargs (not good style but portable)
-	*****************************************************************/
+	 *****************************************************************/
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define Eex(a) {sprintf (fitbuf+9, (a)); error_ex ();}
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
@@ -989,40 +993,40 @@ public class GlobalMembersFit
 
 	/* Exported Variables of fit.c */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte fitbuf[];
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte *fitlogfile;
 
 	///#ifdef GP_FIT_ERRVARS
 	/* NEW 20030131: should we place parameter errors into user-defined
 	 * variables?  */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean fit_errorvariables;
 
-/*****************************************************************
+	/*****************************************************************
     getch that handles also function keys etc.
-*****************************************************************/
-///#if defined(MSDOS) || defined(DOS386)
-//
-// /* HBB 980317: added a prototype... */
-//int getchx __PROTO((void));
-//
-//int
-//getchx()
-//{
-//    int c = getch();
-//    if (!c || c == 0xE0) {
-//	c <<= 8;
-//	c |= getch();
-//    }
-//    return c;
-//}
-///#endif
+	 *****************************************************************/
+	///#if defined(MSDOS) || defined(DOS386)
+	//
+	// /* HBB 980317: added a prototype... */
+	//int getchx __PROTO((void));
+	//
+	//int
+	//getchx()
+	//{
+	//    int c = getch();
+	//    if (!c || c == 0xE0) {
+	//	c <<= 8;
+	//	c |= getch();
+	//    }
+	//    return c;
+	//}
+	///#endif
 
-/*****************************************************************
+	/*****************************************************************
     in case of fatal errors
-*****************************************************************/
+	 *****************************************************************/
 	///#endif // GP_FIT_ERRVARS 
 
 
@@ -1030,25 +1034,25 @@ public class GlobalMembersFit
 
 	public static void error_ex()
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * sp;
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
 		memcpy(fitbuf, "         ", 9); // start after GNUPLOT>
-		sp = tangible.StringFunctions.strChr(fitbuf, DefineConstants.NUL);
+		sp = StringFunctions.strChr(fitbuf, DefineConstants.NUL);
 		while (*--sp == '\n');
 		sp + 1 = "\n\n"; // terminate with exactly 2 newlines
 		fputs(fitbuf, stderr);
 		if (log_f != null)
 		{
-		fprintf(log_f, "BREAK: %s", fitbuf);
-		() fclose(log_f);
-		log_f = DefineConstants.NULL;
+			fprintf(log_f, "BREAK: %s", fitbuf);
+			fclose(log_f);
+			log_f = DefineConstants.NULL;
 		}
 		if (func.at != null)
 		{
-		GlobalMembersEval.free_at(func.at); // release perm. action table
-		func.at = (GlobalMembersMouse.struct at_type *) DefineConstants.NULL;
+			GlobalMembersEval.free_at(func.at); // release perm. action table
+			func.at = null;
 		}
 		/* restore original SIGINT function */
 		GlobalMembersPlot.interrupt_setup();
@@ -1056,17 +1060,17 @@ public class GlobalMembersFit
 		GlobalMembersPlot.bail_to_command_line();
 	}
 
-/*****************************************************************
+	/*****************************************************************
     first time settings
-*****************************************************************/
+	 *****************************************************************/
 	public static void init_fit()
 	{
-		func.at = (GlobalMembersMouse.struct at_type *) DefineConstants.NULL; // need to parse 1 time
+		func.at = null; // need to parse 1 time
 	}
 
-/*****************************************************************
+	/*****************************************************************
     write the actual parameters to start parameter file
-*****************************************************************/
+	 *****************************************************************/
 	public static void update(String pfile, String npfile)
 	{
 		String fnam = new String(new char[256]);
@@ -1079,8 +1083,8 @@ public class GlobalMembersFit
 		byte c;
 		String ifilename = new String(new char[256]);
 		String ofilename;
-		FILE of;
-		FILE nf;
+		File of;
+		File nf;
 		double pval;
 
 
@@ -1089,21 +1093,21 @@ public class GlobalMembersFit
 		   take pfile as input file and
 		   npfile as output file
 		 */
-		if (((npfile) != DefineConstants.NULL && (npfile) != '\0'))
+		if (npfile != null && (!npfile.equals("")))
 		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		GlobalMembersStdfn.safe_strncpy(ifilename, pfile, sizeof(ifilename));
-		ofilename = npfile;
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			GlobalMembersStdfn.safe_strncpy(ifilename, pfile, sizeof(ifilename));
+			ofilename = npfile;
 		}
 		else
 		{
-	///#ifdef BACKUP_FILESYSTEM
-	// /* filesystem will keep original as previous version */
-	//	safe_strncpy(ifilename, pfile, sizeof(ifilename));
-	///#else
-		GlobalMembersFit.backup_file(ifilename, pfile); // will Eex if it fails
-	///#endif
-		ofilename = pfile;
+			///#ifdef BACKUP_FILESYSTEM
+			// /* filesystem will keep original as previous version */
+			//	safe_strncpy(ifilename, pfile, sizeof(ifilename));
+			///#else
+			GlobalMembersFit.backup_file(ifilename, pfile); // will Eex if it fails
+			///#endif
+			ofilename = pfile;
 		}
 
 		/* split into path and filename */
@@ -1120,87 +1124,87 @@ public class GlobalMembersFit
 			GlobalMembersFit.error_ex();
 		};
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		while (fgets(s = sstr, sizeof(sstr), of) != DefineConstants.NULL)
 		{
 
-		if (GlobalMembersFit.is_empty(s))
-		{
-			fputs(s, nf); // preserve comments
-			continue;
-		}
-		if ((tmp = tangible.StringFunctions.strChr(s, '#')) != DefineConstants.NULL)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			GlobalMembersStdfn.safe_strncpy(tail, tmp, sizeof(tail));
-			tmp = DefineConstants.NUL;
-		}
-		else
-			tail = "\n";
-
-	tangible.RefObject<String[]> tempRef_s = new tangible.RefObject<String[]>(s);
-		tmp = GlobalMembersFit.get_next_word(tempRef_s, c);
-		s = tempRef_s.argvalue;
-		if (!GlobalMembersFit.is_variable(tmp) || tmp.length() > DefineConstants.MAX_ID_LEN)
-		{
-			() fclose(nf);
-			() fclose(of);
+			if (GlobalMembersFit.is_empty(s))
 			{
-				String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
-				GlobalMembersFit.error_ex();
-			};
-		}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		GlobalMembersStdfn.safe_strncpy(pname, tmp, sizeof(pname));
-		/* next must be '=' */
-		if (c != '=')
-		{
-			tmp = tangible.StringFunctions.strChr(s, '=');
-			if (tmp.equals(DefineConstants.NULL))
-			{
-			() fclose(nf);
-			() fclose(of);
-			{
-				String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
-				GlobalMembersFit.error_ex();
-			};
+				fputs(s, nf); // preserve comments
+				continue;
 			}
-			s = tmp + 1;
-		}
-	tangible.RefObject<String[]> tempRef_s2 = new tangible.RefObject<String[]>(s);
-		tmp = GlobalMembersFit.get_next_word(tempRef_s2, c);
-		s = tempRef_s2.argvalue;
-		if (!sscanf(tmp, "%lf", pval))
-		{
-			() fclose(nf);
-			() fclose(of);
+			if ((tmp = tangible.StringFunctions.strChr(s, '#')) != DefineConstants.NULL)
 			{
-				String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
-				GlobalMembersFit.error_ex();
-			};
-		}
-	tangible.RefObject<String[]> tempRef_s3 = new tangible.RefObject<String[]>(s);
-		boolean tempVar = (tmp = GlobalMembersFit.get_next_word(tempRef_s3, c)) != DefineConstants.NULL;
-	s = tempRef_s3.argvalue;
-	if (tempVar)
-	{
-			() fclose(nf);
-			() fclose(of);
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				GlobalMembersStdfn.safe_strncpy(tail, tmp, sizeof(tail));
+				tmp = DefineConstants.NUL;
+			}
+			else
+				tail = "\n";
+
+			tangible.RefObject<String[]> tempRef_s = new tangible.RefObject<String[]>(s);
+			tmp = GlobalMembersFit.get_next_word(tempRef_s, c);
+			s = tempRef_s.argvalue;
+			if (!GlobalMembersFit.is_variable(tmp) || tmp.length() > DefineConstants.MAX_ID_LEN)
 			{
-				String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
-				GlobalMembersFit.error_ex();
-			};
-	}
-		/* now modify */
+				fclose(nf);
+				fclose(of);
+				{
+					String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
+					GlobalMembersFit.error_ex();
+				};
+			}
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			GlobalMembersStdfn.safe_strncpy(pname, tmp, sizeof(pname));
+			/* next must be '=' */
+			if (c != '=')
+			{
+				tmp = tangible.StringFunctions.strChr(s, '=');
+				if (tmp.equals(DefineConstants.NULL))
+				{
+					fclose(nf);
+					fclose(of);
+					{
+						String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
+						GlobalMembersFit.error_ex();
+					};
+				}
+				s = tmp + 1;
+			}
+			tangible.RefObject<String[]> tempRef_s2 = new tangible.RefObject<String[]>(s);
+			tmp = GlobalMembersFit.get_next_word(tempRef_s2, c);
+			s = tempRef_s2.argvalue;
+			if (!sscanf(tmp, "%lf", pval))
+			{
+				fclose(nf);
+				fclose(of);
+				{
+					String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
+					GlobalMembersFit.error_ex();
+				};
+			}
+			tangible.RefObject<String[]> tempRef_s3 = new tangible.RefObject<String[]>(s);
+			boolean tempVar = (tmp = GlobalMembersFit.get_next_word(tempRef_s3, c)) != DefineConstants.NULL;
+			s = tempRef_s3.argvalue;
+			if (tempVar)
+			{
+				fclose(nf);
+				fclose(of);
+				{
+					String.format(fitbuf + 9, ("syntax error in parameter file %s"),(fnam));
+					GlobalMembersFit.error_ex();
+				};
+			}
+			/* now modify */
 
-		if ((pval = GlobalMembersFit.getdvar(pname)) == 0)
-			pval = (double) GlobalMembersFit.getivar(pname);
+			if ((pval = GlobalMembersFit.getdvar(pname)) == 0)
+				pval = (double) GlobalMembersFit.getivar(pname);
 
-		String.format(sstr, "%g", pval);
-		if (!tangible.StringFunctions.strChr(sstr, '.') && !tangible.StringFunctions.strChr(sstr, 'e'))
-			sstr += ".0"; // assure CMPLX-type
+			String.format(sstr, "%g", pval);
+			if (!tangible.StringFunctions.strChr(sstr, '.') && !tangible.StringFunctions.strChr(sstr, 'e'))
+				sstr += ".0"; // assure CMPLX-type
 
-		fprintf(nf, "%-15.15s = %-15.15s   %s", pname, sstr, tail);
+			fprintf(nf, "%-15.15s = %-15.15s   %s", pname, sstr, tail);
 		}
 
 		if (fclose(nf) || fclose(of))
@@ -1211,26 +1215,26 @@ public class GlobalMembersFit
 
 	}
 
-/*****************************************************************
+	/*****************************************************************
     Interface to the classic gnuplot-software
-*****************************************************************/
+	 *****************************************************************/
 
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static int[] fit_command_var_order = {AXIS_INDEX.FIRST_X_AXIS, AXIS_INDEX.FIRST_Y_AXIS, AXIS_INDEX.T_AXIS, AXIS_INDEX.U_AXIS, AXIS_INDEX.V_AXIS, AXIS_INDEX.FIRST_Z_AXIS};
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static String[] fit_command_dummy_default = {"x","y","t","u","v","z"};
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static String fit_command_viafile = DefineConstants.NULL;
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static int[] fit_command_var_order = {AXIS_INDEX.FIRST_X_AXIS, AXIS_INDEX.FIRST_Y_AXIS, AXIS_INDEX.T_AXIS, AXIS_INDEX.U_AXIS, AXIS_INDEX.V_AXIS, AXIS_INDEX.FIRST_Z_AXIS};
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static String[] fit_command_dummy_default = {"x","y","t","u","v","z"};
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static String fit_command_viafile = DefineConstants.NULL;
 	public static void fit_command()
 	{
-	/* HBB 20000430: revised this completely, to make it more similar to
-	 * what plot3drequest() does */
+		/* HBB 20000430: revised this completely, to make it more similar to
+		 * what plot3drequest() does */
 
 		int num_ranges = 0; // # range specs
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static int var_order[]={FIRST_X_AXIS, FIRST_Y_AXIS, T_AXIS, U_AXIS, V_AXIS, FIRST_Z_AXIS};
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static sbyte dummy_default[DefineConstants.MAX_NUM_VAR][DefineConstants.MAX_ID_LEN+1]={"x","y","t","u","v","z"};
+		//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+		//	static int var_order[]={FIRST_X_AXIS, FIRST_Y_AXIS, T_AXIS, U_AXIS, V_AXIS, FIRST_Z_AXIS};
+		//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+		//	static sbyte dummy_default[DefineConstants.MAX_NUM_VAR][DefineConstants.MAX_ID_LEN+1]={"x","y","t","u","v","z"};
 
 		int[] dummy_token = {-1,-1,-1,-1,-1,-1,-1};
 		int num_points = 0; // number of data points read from file
@@ -1255,7 +1259,115 @@ private static String fit_command_viafile = DefineConstants.NULL;
 		/* put stuff into arrays to simplify access */
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_X_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()];
+			this_Renamed.autoscale = this_Renamed.set_autoscale;
+			if ((this_Renamed.autoscale.getValue() & e_autoscale.AUTOSCALE_BOTH.getValue()) == e_autoscale.AUTOSCALE_NONE.getValue() && this_Renamed.set_max < this_Renamed.set_min)
+			{
+				this_Renamed.min = this_Renamed.set_max;
+				this_Renamed.max = this_Renamed.set_min;
+			}
+			else
+			{
+				this_Renamed.min = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) != 0)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && ((this_Renamed.set_autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) != 0)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			}
+			if (false)
+			{
+				this_Renamed.log = false;
+				this_Renamed.base = 1;
+				this_Renamed.log_base = 0;
+			}
+			else
+			{
+				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
+			}
+			this_Renamed.data_min = DefineConstants.VERYLARGE;
+			this_Renamed.data_max = -DefineConstants.VERYLARGE;
+		} while (false);
+		do
+		{
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()];
+			this_Renamed.autoscale = this_Renamed.set_autoscale;
+			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			{
+				this_Renamed.min = this_Renamed.set_max;
+				this_Renamed.max = this_Renamed.set_min;
+			}
+			else
+			{
+				this_Renamed.min = (false && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			}
+			if (false)
+			{
+				this_Renamed.log = false;
+				this_Renamed.base = 1;
+				this_Renamed.log_base = 0;
+			}
+			else
+			{
+				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
+			}
+			this_Renamed.data_min = DefineConstants.VERYLARGE;
+			this_Renamed.data_max = -DefineConstants.VERYLARGE;
+		} while (false);
+		do
+		{
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()];
+			this_Renamed.autoscale = this_Renamed.set_autoscale;
+			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			{
+				this_Renamed.min = this_Renamed.set_max;
+				this_Renamed.max = this_Renamed.set_min;
+			}
+			else
+			{
+				this_Renamed.min = (false && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			}
+			if (false)
+			{
+				this_Renamed.log = false;
+				this_Renamed.base = 1;
+				this_Renamed.log_base = 0;
+			}
+			else
+			{
+				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
+			}
+			this_Renamed.data_min = DefineConstants.VERYLARGE;
+			this_Renamed.data_max = -DefineConstants.VERYLARGE;
+		} while (false);
+		do
+		{
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.U_AXIS.getValue()];
+			this_Renamed.autoscale = this_Renamed.set_autoscale;
+			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
+			{
+				this_Renamed.min = this_Renamed.set_max;
+				this_Renamed.max = this_Renamed.set_min;
+			}
+			else
+			{
+				this_Renamed.min = (false && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (false && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+			}
+			if (false)
+			{
+				this_Renamed.log = false;
+				this_Renamed.base = 1;
+				this_Renamed.log_base = 0;
+			}
+			else
+			{
+				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
+			}
+			this_Renamed.data_min = DefineConstants.VERYLARGE;
+			this_Renamed.data_max = -DefineConstants.VERYLARGE;
+		} while (false);
+		do
+		{
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.V_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
 			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
 			{
@@ -1279,10 +1391,10 @@ private static String fit_command_viafile = DefineConstants.NULL;
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 		do
 		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Y_AXIS;
+			axis this_Renamed = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()];
 			this_Renamed.autoscale = this_Renamed.set_autoscale;
 			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
 			{
@@ -1291,8 +1403,8 @@ private static String fit_command_viafile = DefineConstants.NULL;
 			}
 			else
 			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
+				this_Renamed.min = (true && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
+				this_Renamed.max = (true && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
 			}
 			if (false)
 			{
@@ -1306,115 +1418,7 @@ private static String fit_command_viafile = DefineConstants.NULL;
 			}
 			this_Renamed.data_min = DefineConstants.VERYLARGE;
 			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
-		do
-		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.T_AXIS;
-			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
-			{
-				this_Renamed.min = this_Renamed.set_max;
-				this_Renamed.max = this_Renamed.set_min;
-			}
-			else
-			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
-			}
-			if (false)
-			{
-				this_Renamed.log = false;
-				this_Renamed.base = 1;
-				this_Renamed.log_base = 0;
-			}
-			else
-			{
-				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
-			}
-			this_Renamed.data_min = DefineConstants.VERYLARGE;
-			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
-		do
-		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.U_AXIS;
-			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
-			{
-				this_Renamed.min = this_Renamed.set_max;
-				this_Renamed.max = this_Renamed.set_min;
-			}
-			else
-			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
-			}
-			if (false)
-			{
-				this_Renamed.log = false;
-				this_Renamed.base = 1;
-				this_Renamed.log_base = 0;
-			}
-			else
-			{
-				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
-			}
-			this_Renamed.data_min = DefineConstants.VERYLARGE;
-			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
-		do
-		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.V_AXIS;
-			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
-			{
-				this_Renamed.min = this_Renamed.set_max;
-				this_Renamed.max = this_Renamed.set_min;
-			}
-			else
-			{
-				this_Renamed.min = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (0 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
-			}
-			if (false)
-			{
-				this_Renamed.log = false;
-				this_Renamed.base = 1;
-				this_Renamed.log_base = 0;
-			}
-			else
-			{
-				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
-			}
-			this_Renamed.data_min = DefineConstants.VERYLARGE;
-			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
-		do
-		{
-			axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Z_AXIS;
-			this_Renamed.autoscale = this_Renamed.set_autoscale;
-			if ((this_Renamed.autoscale & e_autoscale.AUTOSCALE_BOTH) == e_autoscale.AUTOSCALE_NONE && this_Renamed.set_max < this_Renamed.set_min)
-			{
-				this_Renamed.min = this_Renamed.set_max;
-				this_Renamed.max = this_Renamed.set_min;
-			}
-			else
-			{
-				this_Renamed.min = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MIN)) ? DefineConstants.VERYLARGE : this_Renamed.set_min;
-				this_Renamed.max = (1 && (this_Renamed.set_autoscale & e_autoscale.AUTOSCALE_MAX)) ? - DefineConstants.VERYLARGE : this_Renamed.set_max;
-			}
-			if (false)
-			{
-				this_Renamed.log = false;
-				this_Renamed.base = 1;
-				this_Renamed.log_base = 0;
-			}
-			else
-			{
-				this_Renamed.log_base = this_Renamed.log ? Math.log(this_Renamed.base) : 0;
-			}
-			this_Renamed.data_min = DefineConstants.VERYLARGE;
-			this_Renamed.data_max = -DefineConstants.VERYLARGE;
-		} while (0);
+		} while (false);
 
 		/* use global default indices in axis.c to simplify access to
 		 * per-axis variables */
@@ -1430,39 +1434,39 @@ private static String fit_command_viafile = DefineConstants.NULL;
 
 		while (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
 		{
-		  int i;
-		  if (num_ranges > 5)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "only 6 range specs are permitted");
-		  i = fit_command_var_order[num_ranges];
-		  /* Store the Z axis dummy variable and range (if any) in the
-		   * axis for the next independent variable.  Save the current
-		   * values in an otherwise unused axis, so they can be restored
-		   * later if there are fewer than 5 independent variables. */
-		  GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Z_AXIS.getValue()] = GlobalMembersAxis.axis_array[i]; // copy entire structure
-		  dummy_token[6] = dummy_token[i];
+			int i;
+			if (num_ranges > 5)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "only 6 range specs are permitted");
+			i = fit_command_var_order[num_ranges];
+			/* Store the Z axis dummy variable and range (if any) in the
+			 * axis for the next independent variable.  Save the current
+			 * values in an otherwise unused axis, so they can be restored
+			 * later if there are fewer than 5 independent variables. */
+			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Z_AXIS.getValue()] = GlobalMembersAxis.axis_array[i]; // copy entire structure
+			dummy_token[6] = dummy_token[i];
 
-		  dummy_token[num_ranges] = -1;
-		  do
-		  {
-			  if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
-			  {
-				  GlobalMembersCommand.c_token++;
-				  if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) != 0)
-				  {
-					  if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token + 1, "=") != 0)
-					  {
-						  dummy_token[num_ranges] = GlobalMembersCommand.c_token;
-						  GlobalMembersCommand.c_token += 2;
-					  }
-				  }
-				  GlobalMembersAxis.axis_array[i].autoscale = GlobalMembersAxis.load_range(i, GlobalMembersAxis.axis_array[i].min, GlobalMembersAxis.axis_array[i].max, GlobalMembersAxis.axis_array[i].autoscale);
-				  if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
-					  GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
-					  GlobalMembersCommand.c_token++;
-			  }
-		  } while (0);
-		  zrange_token = GlobalMembersCommand.c_token;
-		  num_ranges++;
+			dummy_token[num_ranges] = -1;
+			do
+			{
+				if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "[") != 0)
+				{
+					GlobalMembersCommand.c_token++;
+					if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) != 0)
+					{
+						if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token + 1, "=") != 0)
+						{
+							dummy_token[num_ranges] = GlobalMembersCommand.c_token;
+							GlobalMembersCommand.c_token += 2;
+						}
+					}
+					GlobalMembersAxis.axis_array[i].autoscale = GlobalMembersAxis.load_range(i, GlobalMembersAxis.axis_array[i].min, GlobalMembersAxis.axis_array[i].max, GlobalMembersAxis.axis_array[i].autoscale);
+					if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "]") == 0)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "']' expected");
+					GlobalMembersCommand.c_token++;
+				}
+			} while (false);
+			zrange_token = GlobalMembersCommand.c_token;
+			num_ranges++;
 		}
 
 		/* now compile the function */
@@ -1471,8 +1475,8 @@ private static String fit_command_viafile = DefineConstants.NULL;
 
 		if (func.at != null)
 		{
-		GlobalMembersEval.free_at(func.at);
-		func.at = DefineConstants.NULL; // in case perm_at() does int_error
+			GlobalMembersEval.free_at(func.at);
+			func.at = null; // in case perm_at() does int_error
 		}
 		GlobalMembersCommand.dummy_func = func;
 
@@ -1482,31 +1486,31 @@ private static String fit_command_viafile = DefineConstants.NULL;
 		fit_command_dummy_default[1] = GlobalMembersParse.set_dummy_var[1];
 		for (i = 0; i < 5; i++)
 		{
-		  if (dummy_token[i] >= 0)
-		GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[i], dummy_token[i], DefineConstants.MAX_ID_LEN);
-		  else
-		GlobalMembersParse.c_dummy_var[i] = fit_command_dummy_default[i];
+			if (dummy_token[i] >= 0)
+				GlobalMembersUtil.copy_str(GlobalMembersParse.c_dummy_var[i], dummy_token[i], DefineConstants.MAX_ID_LEN);
+			else
+				GlobalMembersParse.c_dummy_var[i] = fit_command_dummy_default[i];
 		}
 
 		func.at = GlobalMembersParse.perm_at(); // parse expression and save action table
-		GlobalMembersCommand.dummy_func = DefineConstants.NULL;
+		GlobalMembersCommand.dummy_func = null;
 
 		token2 = GlobalMembersCommand.c_token;
 
 		/* get filename */
 		file_name = GlobalMembersUtil.try_to_get_string();
 		if (file_name == null)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "missing filename");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "missing filename");
 
 		/* use datafile module to parse the datafile and qualifiers */
 		GlobalMembersDatafile.df_set_plot_mode(MODE_PLOT_TYPE.MODE_QUERY); // Does nothing except for binary datafiles
 		columns = GlobalMembersDatafile.df_open(file_name, 7, DefineConstants.NULL); // up to 7 using specs allowed
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(file_name);
 		if (columns < 0)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Can't read data file");
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Can't read data file");
 		if (columns == 1)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need 2 to 7 using specs");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need 2 to 7 using specs");
 
 		num_indep = (columns < 3)?1:columns - 2;
 
@@ -1516,20 +1520,20 @@ private static String fit_command_viafile = DefineConstants.NULL;
 
 		if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].is_timedata)
 		{
-		if (columns < 2)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for x time data");
+			if (columns < 2)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need full using spec for x time data");
 		}
 		if (GlobalMembersAxis.axis_array[GlobalMembersAxis.y_axis.getValue()].is_timedata)
 		{
-		if (columns < 1)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need using spec for y time data");
+			if (columns < 1)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need using spec for y time data");
 		}
 		/* No need for a time data check for the remaining axes.  Those
 		 * axes are only used iff columns>3, i.e. there are using specs
 		 * for all the columns, already. */
 
 		for (i = 0; i < num_indep; i++)
-		  GlobalMembersDatafile.df_axis[i] = fit_command_var_order[i];
+			GlobalMembersDatafile.df_axis[i] = fit_command_var_order[i];
 		GlobalMembersDatafile.df_axis[i++] = AXIS_INDEX.FIRST_Z_AXIS;
 		/* don't parse sigma_z as times */
 		GlobalMembersDatafile.df_axis[i] = DefineConstants.NO_AXIS;
@@ -1538,26 +1542,26 @@ private static String fit_command_viafile = DefineConstants.NULL;
 		/* HBB 980401: if this is a single-variable fit, we shouldn't have
 		 * allowed a variable name specifier for 'y': */
 		if ((dummy_token[1] >= 0) && (num_indep == 1))
-		GlobalMembersBf_test.int_error(dummy_token[1], "Can't re-name 'y' in a one-variable fit");
+			GlobalMembersBf_test.int_error(dummy_token[1], "Can't re-name 'y' in a one-variable fit");
 
 		/* depending on number of independent variables, the last range
 		 * spec may be for the Z axis */
 		if (num_ranges > num_indep + 1)
-		  GlobalMembersBf_test.int_error(zrange_token, "Too many range-specs for a %d-variable fit", num_indep);
+			GlobalMembersBf_test.int_error(zrange_token, "Too many range-specs for a %d-variable fit", num_indep);
 		else if (num_ranges == num_indep + 1 && num_indep < 5)
 		{
-		  /* last range spec is for the Z axis */
-		  int i = fit_command_var_order[num_ranges - 1]; // index for the last range spec
+			/* last range spec is for the Z axis */
+			int i = fit_command_var_order[num_ranges - 1]; // index for the last range spec
 
-		  GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale = GlobalMembersAxis.axis_array[i].autoscale;
-		  if (!(GlobalMembersAxis.axis_array[i].autoscale & e_autoscale.AUTOSCALE_MIN))
-		GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = GlobalMembersAxis.axis_array[i].min;
-		  if (!(GlobalMembersAxis.axis_array[i].autoscale & e_autoscale.AUTOSCALE_MAX))
-		GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = GlobalMembersAxis.axis_array[i].max;
+			GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].autoscale = GlobalMembersAxis.axis_array[i].autoscale;
+			if (!(GlobalMembersAxis.axis_array[i].autoscale & e_autoscale.AUTOSCALE_MIN))
+				GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].min = GlobalMembersAxis.axis_array[i].min;
+			if (!(GlobalMembersAxis.axis_array[i].autoscale & e_autoscale.AUTOSCALE_MAX))
+				GlobalMembersAxis.axis_array[GlobalMembersAxis.z_axis.getValue()].max = GlobalMembersAxis.axis_array[i].max;
 
-		  /* restore former values */
-		  GlobalMembersAxis.axis_array[i] = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Z_AXIS.getValue()]; // copy entire structure
-		  dummy_token[num_ranges - 1] = dummy_token[6];
+			/* restore former values */
+			GlobalMembersAxis.axis_array[i] = GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Z_AXIS.getValue()]; // copy entire structure
+			dummy_token[num_ranges - 1] = dummy_token[6];
 		}
 
 		/* defer actually reading the data until we have parsed the rest
@@ -1567,7 +1571,7 @@ private static String fit_command_viafile = DefineConstants.NULL;
 
 		tmpd = GlobalMembersFit.getdvar(FITLIMIT); // get epsilon if given explicitly
 		if (tmpd < 1.0 && tmpd > 0.0)
-		epsilon = tmpd;
+			epsilon = tmpd;
 
 		/* HBB 970304: maxiter patch */
 		maxiter = GlobalMembersFit.getivar(FITMAXITER);
@@ -1577,64 +1581,64 @@ private static String fit_command_viafile = DefineConstants.NULL;
 
 		if (tmpd > 0.0)
 		{
-		startup_lambda = tmpd;
-		System.out.printf("Lambda Start value set: %g\n", startup_lambda);
+			startup_lambda = tmpd;
+			System.out.printf("Lambda Start value set: %g\n", startup_lambda);
 		}
 		/* get lambda up/down factor, if given */
 		tmpd = GlobalMembersFit.getdvar(FITLAMBDAFACTOR);
 
 		if (tmpd > 0.0)
 		{
-		lambda_up_factor = lambda_down_factor = tmpd;
-		System.out.printf("Lambda scaling factors reset:  %g\n", lambda_up_factor);
+			lambda_up_factor = lambda_down_factor = tmpd;
+			System.out.printf("Lambda scaling factors reset:  %g\n", lambda_up_factor);
 		}
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(fit_script);
 		fit_script = DefineConstants.NULL;
 		if ((tmp = getenv(FITSCRIPT)) != DefineConstants.NULL)
 		{
-		fit_script = GlobalMembersUtil.gp_strdup(tmp);
+			fit_script = GlobalMembersUtil.gp_strdup(tmp);
 		}
 
 		{
-		byte logfile = GlobalMembersFit.getfitlogfile();
+			byte logfile = GlobalMembersFit.getfitlogfile();
 
-		if (log_f == null && !(log_f = fopen(logfile, "a")))
-		{
+			if (log_f == null && !(log_f = fopen(logfile, "a")))
+			{
 				String.format(fitbuf + 9, ("could not open log-file %s"),(logfile));
 				GlobalMembersFit.error_ex();
-		};
+			};
 
-		if (logfile != 0)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(logfile);
+			if (logfile != 0)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(logfile);
 		}
 
 		fputs("\n\n*******************************************************************************\n", log_f);
-		() time(timer);
+		time(timer);
 		fprintf(log_f, "%s\n\n", ctime(timer));
 		{
-		String line = DefineConstants.NULL;
+			String line = DefineConstants.NULL;
 
-	tangible.RefObject<String[]> tempRef_line = new tangible.RefObject<String[]>(line);
-		GlobalMembersUtil.m_capture(tempRef_line, token2, token3 - 1);
-		line = tempRef_line.argvalue;
-		fprintf(log_f, "FIT:    data read from %s\n", line);
-		fprintf(log_f, "        format = ");
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(line);
-		for (i = 0; i < num_indep && i < columns - 1; i++)
-		  fprintf(log_f, "%s:", GlobalMembersParse.c_dummy_var[i]);
-		fprintf(log_f, (columns <= 2) ? "z\n" : "z:s\n");
+			tangible.RefObject<String[]> tempRef_line = new tangible.RefObject<String[]>(line);
+			GlobalMembersUtil.m_capture(tempRef_line, token2, token3 - 1);
+			line = tempRef_line.argvalue;
+			fprintf(log_f, "FIT:    data read from %s\n", line);
+			fprintf(log_f, "        format = ");
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(line);
+			for (i = 0; i < num_indep && i < columns - 1; i++)
+				fprintf(log_f, "%s:", GlobalMembersParse.c_dummy_var[i]);
+			fprintf(log_f, (columns <= 2) ? "z\n" : "z:s\n");
 		}
 
 		/* report all range specs */
 		j = AXIS_INDEX.FIRST_Z_AXIS.getValue(); // check Z axis first
 		for (i = 0; i <= num_indep; i++)
 		{
-		  if ((GlobalMembersAxis.axis_array[j].autoscale & e_autoscale.AUTOSCALE_BOTH) != e_autoscale.AUTOSCALE_BOTH)
-		GlobalMembersFit.log_axis_restriction(log_f, j, i != 0 ? GlobalMembersParse.c_dummy_var[i] : "z");
-		  j = fit_command_var_order[i];
+			if ((GlobalMembersAxis.axis_array[j].autoscale & e_autoscale.AUTOSCALE_BOTH) != e_autoscale.AUTOSCALE_BOTH)
+				GlobalMembersFit.log_axis_restriction(log_f, j, i != 0 ? GlobalMembersParse.c_dummy_var[i] : "z");
+			j = fit_command_var_order[i];
 		}
 
 		max_data = DefineConstants.MAX_DATA;
@@ -1643,145 +1647,145 @@ private static String fit_command_viafile = DefineConstants.NULL;
 		err_data = GlobalMembersMatrix.vec(max_data);
 		num_data = 0;
 
-//C++ TO JAVA CONVERTER WARNING: This 'sizeof' ratio was replaced with a direct reference to the array length:
-//ORIGINAL LINE: for (i=0; i<sizeof(skipped)/sizeof(int); i++)
+		//C++ TO JAVA CONVERTER WARNING: This 'sizeof' ratio was replaced with a direct reference to the array length:
+		//ORIGINAL LINE: for (i=0; i<sizeof(skipped)/sizeof(int); i++)
 		for (i = 0; i < skipped.length; i++)
-		  skipped[i] = 0;
+			skipped[i] = 0;
 
 		/* first read in experimental data */
 
 		/* If the user has set an explicit locale for numeric input, apply it */
 		/* here so that it affects data fields read from the input file.      */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (0)();
+		do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (false);
 
 		while ((i = GlobalMembersDatafile.df_readline(v, 7)) != DefineConstants.DF_EOF)
 		{
 			if (num_data >= max_data)
 			{
-			/* increase max_data by factor of 1.5 */
-			max_data = (max_data * 3) / 2;
-			if (0 || GlobalMembersMatrix.redim_vec(fit_x, max_data * num_indep) == 0 || GlobalMembersMatrix.redim_vec(fit_z, max_data) == 0 || GlobalMembersMatrix.redim_vec(err_data, max_data) == 0)
-			{
-			/* Some of the reallocations went bad: */
-			GlobalMembersDatafile.df_close();
-			{
-				String.format(fitbuf + 9, ("Out of memory in fit: too many datapoints (%d)?"),(max_data));
-				GlobalMembersFit.error_ex();
-			};
-			}
-			else
-			{
-			/* Just so we know that the routine is at work: */
-			fprintf(stderr, "Max. number of data points scaled up to: %d\n", max_data);
-			}
+				/* increase max_data by factor of 1.5 */
+				max_data = (max_data * 3) / 2;
+				if (0 || GlobalMembersMatrix.redim_vec(fit_x, max_data * num_indep) == 0 || GlobalMembersMatrix.redim_vec(fit_z, max_data) == 0 || GlobalMembersMatrix.redim_vec(err_data, max_data) == 0)
+				{
+					/* Some of the reallocations went bad: */
+					GlobalMembersDatafile.df_close();
+					{
+						String.format(fitbuf + 9, ("Out of memory in fit: too many datapoints (%d)?"),(max_data));
+						GlobalMembersFit.error_ex();
+					};
+				}
+				else
+				{
+					/* Just so we know that the routine is at work: */
+					fprintf(stderr, "Max. number of data points scaled up to: %d\n", max_data);
+				}
 			} // if (need to extend storage space)
 
-		switch (i)
-		{
-		case DefineConstants.DF_MISSING:
-		case DefineConstants.DF_UNDEFINED:
-		case DefineConstants.DF_FIRST_BLANK:
-		case DefineConstants.DF_SECOND_BLANK:
-			continue;
-		case 0:
-		{
+			switch (i)
+			{
+			case DefineConstants.DF_MISSING:
+			case DefineConstants.DF_UNDEFINED:
+			case DefineConstants.DF_FIRST_BLANK:
+			case DefineConstants.DF_SECOND_BLANK:
+				continue;
+			case 0:
+			{
 				String.format(fitbuf + 9, ("bad data on line %d of datafile"),(GlobalMembersDatafile.df_line_number));
 				GlobalMembersFit.error_ex();
-		};
+			};
 			break;
-		case 1: // only z provided
-			v[1] = v[0];
-			v[0] = (double) GlobalMembersDatafile.df_datum;
-			break;
-		case 2: // x, z
-		case 3: // x, z, error
-		case 4: // x, y, z, error
-		case 5: // x, y, t, z, error
-		case 6: // x, y, t, u, z, error
-		case 7: // x, y, t, u, v, z, error
-		  break;
+			case 1: // only z provided
+				v[1] = v[0];
+				v[0] = (double) GlobalMembersDatafile.df_datum;
+				break;
+			case 2: // x, z
+			case 3: // x, z, error
+			case 4: // x, y, z, error
+			case 5: // x, y, t, z, error
+			case 6: // x, y, t, u, z, error
+			case 7: // x, y, t, u, v, z, error
+				break;
 
-		}
-		num_points++;
+			}
+			num_points++;
 
-		/* skip this point if it is out of range */
-		for (i = 0; i < num_indep; i++)
-		{
-		  int j = fit_command_var_order[i];
-		  axis this_Renamed = GlobalMembersAxis.axis_array + j;
+			/* skip this point if it is out of range */
+			for (i = 0; i < num_indep; i++)
+			{
+				int j = fit_command_var_order[i];
+				axis this_Renamed = GlobalMembersAxis.axis_array + j;
 
-		  if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN) && (v[i] < this_Renamed.min))
-		  {
-			skipped[j]++;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto out_of_range;
-		  }
-		  if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX) && (v[i] > this_Renamed.max))
-		  {
-			skipped[j]++;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto out_of_range;
-		  }
-		  fit_x[num_data * num_indep + i] = v[i]; // save independent variable data
-		}
-		/* check Z value too */
-		{
-		  axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Z_AXIS;
+				if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN) && (v[i] < this_Renamed.min))
+				{
+					skipped[j]++;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto out_of_range;
+				}
+				if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX) && (v[i] > this_Renamed.max))
+				{
+					skipped[j]++;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto out_of_range;
+				}
+				fit_x[num_data * num_indep + i] = v[i]; // save independent variable data
+			}
+			/* check Z value too */
+			{
+				axis this_Renamed = GlobalMembersAxis.axis_array + AXIS_INDEX.FIRST_Z_AXIS;
 
-		  if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN) && (v[i] < this_Renamed.min))
-		  {
-			skipped[AXIS_INDEX.FIRST_Z_AXIS.getValue()]++;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto out_of_range;
-		  }
-		  if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX) && (v[i] > this_Renamed.max))
-		  {
-			skipped[AXIS_INDEX.FIRST_Z_AXIS.getValue()]++;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-			goto out_of_range;
-		  }
-		  fit_z[num_data] = v[i++]; // save dependent variable data
-		}
+				if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN) && (v[i] < this_Renamed.min))
+				{
+					skipped[AXIS_INDEX.FIRST_Z_AXIS.getValue()]++;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto out_of_range;
+				}
+				if (!(this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX) && (v[i] > this_Renamed.max))
+				{
+					skipped[AXIS_INDEX.FIRST_Z_AXIS.getValue()]++;
+					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+					goto out_of_range;
+				}
+				fit_z[num_data] = v[i++]; // save dependent variable data
+			}
 
-		/* only use error from data file if _explicitly_ asked for by
-		 * a using spec
-		 */
-		err_data[num_data++] = (columns > 2) ? v[i] : 1;
+			/* only use error from data file if _explicitly_ asked for by
+			 * a using spec
+			 */
+			err_data[num_data++] = (columns > 2) ? v[i] : 1;
 
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-		out_of_range:
-		;
+			//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+			out_of_range:
+				;
 		}
 		GlobalMembersDatafile.df_close();
 
 		/* We are finished reading user input; return to C locale for internal use */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+		do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (false);
 
 		if (num_data <= 1)
 		{
-		  /* no data! Try to explain why. */
-		  System.out.printf("         Read %d points\n", num_points);
-		  for (i = 0; i < 6; i++)
-		  {
-		int j = fit_command_var_order[i];
-		axis this_Renamed = GlobalMembersAxis.axis_array + j;
-		if (skipped[j] != 0)
-		{
-		  System.out.printf("         Skipped %d points outside range [%s=", skipped[j], i < 5 ? GlobalMembersParse.c_dummy_var[i] : "z");
-		  if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN != 0)
-			System.out.print("*:");
-		  else
-			System.out.printf("%g:",this_Renamed.min);
-		  if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX != 0)
-			System.out.print("*]\n");
-		  else
-			System.out.printf("%g]\n",this_Renamed.max);
-		}
-		  }
-		  {
-			  String.format(fitbuf + 9, ("No data to fit "));
-			  GlobalMembersFit.error_ex();
-		  };
+			/* no data! Try to explain why. */
+			System.out.printf("         Read %d points\n", num_points);
+			for (i = 0; i < 6; i++)
+			{
+				int j = fit_command_var_order[i];
+				axis this_Renamed = GlobalMembersAxis.axis_array + j;
+				if (skipped[j] != 0)
+				{
+					System.out.printf("         Skipped %d points outside range [%s=", skipped[j], i < 5 ? GlobalMembersParse.c_dummy_var[i] : "z");
+					if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+						System.out.print("*:");
+					else
+						System.out.printf("%g:",this_Renamed.min);
+					if (this_Renamed.autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+						System.out.print("*]\n");
+					else
+						System.out.printf("%g]\n",this_Renamed.max);
+				}
+			}
+			{
+				String.format(fitbuf + 9, ("No data to fit "));
+				GlobalMembersFit.error_ex();
+			};
 		}
 
 		/* now resize fields to actual length: */
@@ -1792,17 +1796,17 @@ private static String fit_command_viafile = DefineConstants.NULL;
 		fprintf(log_f, "        #datapoints = %d\n", num_data);
 
 		if (columns < 3)
-		fputs("        residuals are weighted equally (unit weight)\n\n", log_f);
+			fputs("        residuals are weighted equally (unit weight)\n\n", log_f);
 
 		{
-		String line = DefineConstants.NULL;
+			String line = DefineConstants.NULL;
 
-	tangible.RefObject<String[]> tempRef_line2 = new tangible.RefObject<String[]>(line);
-		GlobalMembersUtil.m_capture(tempRef_line2, token1, token2 - 1);
-		line = tempRef_line2.argvalue;
-		fprintf(log_f, "function used for fitting: %s\n", line);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(line);
+			tangible.RefObject<String[]> tempRef_line2 = new tangible.RefObject<String[]>(line);
+			GlobalMembersUtil.m_capture(tempRef_line2, token1, token2 - 1);
+			line = tempRef_line2.argvalue;
+			fprintf(log_f, "function used for fitting: %s\n", line);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(line);
 		}
 
 		/* read in parameters */
@@ -1810,168 +1814,168 @@ private static String fit_command_viafile = DefineConstants.NULL;
 		max_params = DefineConstants.MAX_PARAMS; // HBB 971023: make this resizeable
 
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token++, "via") == 0)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need via and either parameter list or file");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Need via and either parameter list or file");
 
 		a = GlobalMembersMatrix.vec(max_params);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		par_name = (byte[MAX_ID_LEN + 1] *) GlobalMembersAlloc.gp_alloc((max_params + 1) * sizeof(byte[MAX_ID_LEN + 1]), "fit param");
 		num_params = 0;
 
 		if ((GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
 		{
-		boolean fixed;
-		double tmp_par;
-		byte c;
-		String s;
-		String sstr = new String(new char[DefineConstants.MAX_LINE_LEN + 1]);
-		FILE f;
+			boolean fixed;
+			double tmp_par;
+			byte c;
+			String s;
+			String sstr = new String(new char[DefineConstants.MAX_LINE_LEN + 1]);
+			FILE f;
 
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static sbyte *viafile = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(fit_command_viafile); // Free previous name, if any
-		fit_command_viafile = GlobalMembersUtil.try_to_get_string(); // Cannot fail since isstringvalue succeeded
-		fprintf(log_f, "fitted parameters and initial values from file: %s\n\n", fit_command_viafile);
-		if (!(f = GlobalMembersMisc.loadpath_fopen(fit_command_viafile, "r")))
-		{
+			//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+			//	static sbyte *viafile = DefineConstants.NULL;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(fit_command_viafile); // Free previous name, if any
+			fit_command_viafile = GlobalMembersUtil.try_to_get_string(); // Cannot fail since isstringvalue succeeded
+			fprintf(log_f, "fitted parameters and initial values from file: %s\n\n", fit_command_viafile);
+			if (!(f = GlobalMembersMisc.loadpath_fopen(fit_command_viafile, "r")))
+			{
 				String.format(fitbuf + 9, ("could not read parameter-file \"%s\""),(fit_command_viafile));
 				GlobalMembersFit.error_ex();
-		};
-
-		/* get parameters and values out of file and ignore fixed ones */
-
-		while (true)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			if (!fgets(s = sstr, sizeof(sstr), f)) // EOF found
-			break;
-			if ((tmp = tangible.StringFunctions.strStr(s, GP_FIXED)) != DefineConstants.NULL) // ignore fixed params
-			{
-			tmp = DefineConstants.NUL;
-			fprintf(log_f, "FIXED:  %s\n", s);
-			fixed = true;
-			}
-			else
-			fixed = false;
-			if ((tmp = tangible.StringFunctions.strChr(s, '#')) != DefineConstants.NULL)
-			tmp = DefineConstants.NUL;
-			if (GlobalMembersFit.is_empty(s))
-			continue;
-		tangible.RefObject<String[]> tempRef_s = new tangible.RefObject<String[]>(s);
-			tmp = GlobalMembersFit.get_next_word(tempRef_s, c);
-			s = tempRef_s.argvalue;
-			if (!GlobalMembersFit.is_variable(tmp) || tmp.length() > DefineConstants.MAX_ID_LEN)
-			{
-			() fclose(f);
-			{
-				String.format(fitbuf + 9, ("syntax error in parameter file"));
-				GlobalMembersFit.error_ex();
 			};
-			}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			GlobalMembersStdfn.safe_strncpy(par_name[num_params], tmp, sizeof(byte[MAX_ID_LEN + 1]));
-			/* next must be '=' */
-			if (c != '=')
+
+			/* get parameters and values out of file and ignore fixed ones */
+
+			while (true)
 			{
-			tmp = tangible.StringFunctions.strChr(s, '=');
-			if (tmp.equals(DefineConstants.NULL))
-			{
-				() fclose(f);
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				if (!fgets(s = sstr, sizeof(sstr), f)) // EOF found
+					break;
+				if ((tmp = tangible.StringFunctions.strStr(s, GP_FIXED)) != DefineConstants.NULL) // ignore fixed params
 				{
-					String.format(fitbuf + 9, ("syntax error in parameter file"));
-					GlobalMembersFit.error_ex();
-				};
-			}
-			s = tmp + 1;
-			}
-		tangible.RefObject<String[]> tempRef_s2 = new tangible.RefObject<String[]>(s);
-			tmp = GlobalMembersFit.get_next_word(tempRef_s2, c);
-			s = tempRef_s2.argvalue;
-			if (sscanf(tmp, "%lf", tmp_par) != 1)
-			{
-			() fclose(f);
-			{
-				String.format(fitbuf + 9, ("syntax error in parameter file"));
-				GlobalMembersFit.error_ex();
-			};
-			}
-			/* make fixed params visible to GNUPLOT */
-			if (fixed)
-			{
-			value tempval = new value();
-			() GlobalMembersEval.Gcomplex(tempval, tmp_par, 0.0);
-			/* use parname as temp */
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: setvar(par_name[num_params], tempval);
-			GlobalMembersFit.setvar(par_name[num_params], new value(tempval));
-			}
-			else
-			{
-			if (num_params >= max_params)
-			{
-				max_params = (max_params * 3) / 2;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				if (0 || GlobalMembersMatrix.redim_vec(a, max_params) == 0 || !(par_name = GlobalMembersAlloc.gp_realloc(par_name, (max_params + 1) * sizeof(byte[MAX_ID_LEN + 1]), "fit param resize")))
+					tmp = DefineConstants.NUL;
+					fprintf(log_f, "FIXED:  %s\n", s);
+					fixed = true;
+				}
+				else
+					fixed = false;
+				if ((tmp = tangible.StringFunctions.strChr(s, '#')) != DefineConstants.NULL)
+					tmp = DefineConstants.NUL;
+				if (GlobalMembersFit.is_empty(s))
+					continue;
+				tangible.RefObject<String[]> tempRef_s = new tangible.RefObject<String[]>(s);
+				tmp = GlobalMembersFit.get_next_word(tempRef_s, c);
+				s = tempRef_s.argvalue;
+				if (!GlobalMembersFit.is_variable(tmp) || tmp.length() > DefineConstants.MAX_ID_LEN)
 				{
-				() fclose(f);
+					() fclose(f);
+					{
+						String.format(fitbuf + 9, ("syntax error in parameter file"));
+						GlobalMembersFit.error_ex();
+					};
+				}
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				GlobalMembersStdfn.safe_strncpy(par_name[num_params], tmp, sizeof(byte[MAX_ID_LEN + 1]));
+				/* next must be '=' */
+				if (c != '=')
 				{
-					String.format(fitbuf + 9, ("Out of memory in fit: too many parameters?"));
-					GlobalMembersFit.error_ex();
-				};
+					tmp = tangible.StringFunctions.strChr(s, '=');
+					if (tmp.equals(DefineConstants.NULL))
+					{
+						() fclose(f);
+						{
+							String.format(fitbuf + 9, ("syntax error in parameter file"));
+							GlobalMembersFit.error_ex();
+						};
+					}
+					s = tmp + 1;
+				}
+				tangible.RefObject<String[]> tempRef_s2 = new tangible.RefObject<String[]>(s);
+				tmp = GlobalMembersFit.get_next_word(tempRef_s2, c);
+				s = tempRef_s2.argvalue;
+				if (sscanf(tmp, "%lf", tmp_par) != 1)
+				{
+					() fclose(f);
+					{
+						String.format(fitbuf + 9, ("syntax error in parameter file"));
+						GlobalMembersFit.error_ex();
+					};
+				}
+				/* make fixed params visible to GNUPLOT */
+				if (fixed)
+				{
+					value tempval = new value();
+					() GlobalMembersEval.Gcomplex(tempval, tmp_par, 0.0);
+					/* use parname as temp */
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: setvar(par_name[num_params], tempval);
+					GlobalMembersFit.setvar(par_name[num_params], new value(tempval));
+				}
+				else
+				{
+					if (num_params >= max_params)
+					{
+						max_params = (max_params * 3) / 2;
+						//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+						if (0 || GlobalMembersMatrix.redim_vec(a, max_params) == 0 || !(par_name = GlobalMembersAlloc.gp_realloc(par_name, (max_params + 1) * sizeof(byte[MAX_ID_LEN + 1]), "fit param resize")))
+						{
+							() fclose(f);
+							{
+								String.format(fitbuf + 9, ("Out of memory in fit: too many parameters?"));
+								GlobalMembersFit.error_ex();
+							};
+						}
+					}
+					a[num_params++] = tmp_par;
+				}
+
+				tangible.RefObject<String[]> tempRef_s3 = new tangible.RefObject<String[]>(s);
+				boolean tempVar = (tmp = GlobalMembersFit.get_next_word(tempRef_s3, c)) != DefineConstants.NULL;
+				s = tempRef_s3.argvalue;
+				if (tempVar)
+				{
+					() fclose(f);
+					{
+						String.format(fitbuf + 9, ("syntax error in parameter file"));
+						GlobalMembersFit.error_ex();
+					};
 				}
 			}
-			a[num_params++] = tmp_par;
-			}
-
-		tangible.RefObject<String[]> tempRef_s3 = new tangible.RefObject<String[]>(s);
-			boolean tempVar = (tmp = GlobalMembersFit.get_next_word(tempRef_s3, c)) != DefineConstants.NULL;
-		s = tempRef_s3.argvalue;
-		if (tempVar)
-		{
 			() fclose(f);
-			{
-				String.format(fitbuf + 9, ("syntax error in parameter file"));
-				GlobalMembersFit.error_ex();
-			};
-		}
-		}
-		() fclose(f);
 
 		}
 		else
 		{
-		/* not a string after via: it's a variable listing */
+			/* not a string after via: it's a variable listing */
 
-		fputs("fitted parameters initialized with current variable values\n\n", log_f);
-		do
-		{
-			if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) == 0)
+			fputs("fitted parameters initialized with current variable values\n\n", log_f);
+			do
 			{
-				String.format(fitbuf + 9, ("no parameter specified"));
-				GlobalMembersFit.error_ex();
-			};
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			GlobalMembersUtil.capture(par_name[num_params], GlobalMembersCommand.c_token, GlobalMembersCommand.c_token, (int) sizeof(par_name[0]));
-			if (num_params >= max_params)
-			{
-			max_params = (max_params * 3) / 2;
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			if (0 || GlobalMembersMatrix.redim_vec(a, max_params) == 0 || !(par_name = GlobalMembersAlloc.gp_realloc(par_name, (max_params + 1) * sizeof(byte[MAX_ID_LEN + 1]), "fit param resize")))
-			{
-			{
-					String.format(fitbuf + 9, ("Out of memory in fit: too many parameters?"));
+				if (GlobalMembersUtil.isletter(GlobalMembersCommand.c_token) == 0)
+				{
+					String.format(fitbuf + 9, ("no parameter specified"));
 					GlobalMembersFit.error_ex();
 				};
-			}
-			}
-			/* create variable if it doesn't exist */
-			a[num_params] = GlobalMembersFit.createdvar(par_name[num_params], DefineConstants.INITIAL_VALUE);
-			++num_params;
-		} while (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, ",") != 0 && ++GlobalMembersCommand.c_token);
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				GlobalMembersUtil.capture(par_name[num_params], GlobalMembersCommand.c_token, GlobalMembersCommand.c_token, (int) sizeof(par_name[0]));
+				if (num_params >= max_params)
+				{
+					max_params = (max_params * 3) / 2;
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					if (0 || GlobalMembersMatrix.redim_vec(a, max_params) == 0 || !(par_name = GlobalMembersAlloc.gp_realloc(par_name, (max_params + 1) * sizeof(byte[MAX_ID_LEN + 1]), "fit param resize")))
+					{
+						{
+							String.format(fitbuf + 9, ("Out of memory in fit: too many parameters?"));
+							GlobalMembersFit.error_ex();
+						};
+					}
+				}
+				/* create variable if it doesn't exist */
+				a[num_params] = GlobalMembersFit.createdvar(par_name[num_params], DefineConstants.INITIAL_VALUE);
+				++num_params;
+			} while (GlobalMembersUtil.equals(++GlobalMembersCommand.c_token, ",") != 0 && ++GlobalMembersCommand.c_token);
 		}
 
 		GlobalMembersMatrix.redim_vec(a, num_params);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		par_name = (byte[MAX_ID_LEN + 1] *) GlobalMembersAlloc.gp_realloc(par_name, (num_params + 1) * sizeof(byte[MAX_ID_LEN + 1]), "fit param");
 
 		if (num_data < num_params)
@@ -1982,95 +1986,95 @@ private static String fit_command_viafile = DefineConstants.NULL;
 
 		/* avoid parameters being equal to zero */
 		for (i = 0; i < num_params; i++)
-		if (a[i] == 0)
-			a[i] = DefineConstants.NEARLY_ZERO;
+			if (a[i] == 0)
+				a[i] = DefineConstants.NEARLY_ZERO;
 
 
 		if (num_params == 0)
-		GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "No fittable parameters!\n");
+			GlobalMembersUtil.int_warn(DefineConstants.NO_CARET, "No fittable parameters!\n");
 		else
-		() GlobalMembersFit.regress(a); // fit
+			() GlobalMembersFit.regress(a); // fit
 
 		() fclose(log_f);
 		log_f = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(fit_x);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(fit_z);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(err_data);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(a);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(par_name);
 		if (func.at != null)
 		{
-		GlobalMembersEval.free_at(func.at); // release perm. action table
-		func.at = (GlobalMembersMouse.struct at_type *) DefineConstants.NULL;
+			GlobalMembersEval.free_at(func.at); // release perm. action table
+			func.at = (GlobalMembersMouse.struct at_type *) DefineConstants.NULL;
 		}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersStdfn.safe_strncpy(last_fit_command, GlobalMembersCommand.gp_input_line, sizeof(last_fit_command));
 	}
-///#endif
+	///#endif
 
-/*****************************************************************
+	/*****************************************************************
     Small function to write the last fit command into a file
     Arg: Pointer to the file; if NULL, nothing is written,
          but only the size of the string is returned.
-*****************************************************************/
+	 *****************************************************************/
 
-	public static int wri_to_fil_last_fit_cmd(FILE fp)
+	public static int wri_to_fil_last_fit_cmd(File fp)
 	{
-		if (fp == DefineConstants.NULL)
-		return last_fit_command.length();
+		if (fp == null)
+			return last_fit_command.length();
 		else
-		return (int) fputs(last_fit_command, fp);
+			return (int) fputs(last_fit_command, fp);
 	}
 
-/* HBB/H.Harders NEW 20020927: make fit log filename exchangeable at
- * run-time, not only by setting an environment variable. */
+	/* HBB/H.Harders NEW 20020927: make fit log filename exchangeable at
+	 * run-time, not only by setting an environment variable. */
 	/* HBB/H.Harders NEW 20020927 */
 	public static String getfitlogfile()
 	{
-		String logfile = DefineConstants.NULL;
+		String logfile = null;
 
 		if (fitlogfile.equals(DefineConstants.NULL))
 		{
-		byte tmp = getenv(GNUFITLOG); // open logfile
+			byte tmp = getenv(GNUFITLOG); // open logfile
 
-		if (tmp != DefineConstants.NULL && tmp != '\0')
-		{
-			byte tmp2 = tmp + (tmp.length() - 1);
-
-			/* if given log file name ends in path separator, treat it
-			 * as a directory to store the default "fit.log" in */
-			if (tmp2 == '/' || tmp2 == '\\')
+			if (tmp != DefineConstants.NULL && tmp != '\0')
 			{
-			logfile = GlobalMembersAlloc.gp_alloc(tmp.length() + fitlogfile_default.length() + 1, "logfile");
-			logfile = tmp;
-			logfile += fitlogfile_default;
+				byte tmp2 = tmp + (tmp.length() - 1);
+
+				/* if given log file name ends in path separator, treat it
+				 * as a directory to store the default "fit.log" in */
+				if (tmp2 == '/' || tmp2 == '\\')
+				{
+					logfile = GlobalMembersAlloc.gp_alloc(tmp.length() + fitlogfile_default.length() + 1, "logfile");
+					logfile = tmp;
+					logfile += fitlogfile_default;
+				}
+				else
+				{
+					logfile = GlobalMembersUtil.gp_strdup(tmp);
+				}
 			}
 			else
 			{
-			logfile = GlobalMembersUtil.gp_strdup(tmp);
+				logfile = GlobalMembersUtil.gp_strdup(fitlogfile_default);
 			}
 		}
 		else
 		{
-			logfile = GlobalMembersUtil.gp_strdup(fitlogfile_default);
-		}
-		}
-		else
-		{
-		logfile = GlobalMembersUtil.gp_strdup(fitlogfile);
+			logfile = GlobalMembersUtil.gp_strdup(fitlogfile);
 		}
 		return logfile;
 	}
 
-/*
- * Print message to stderr and log file
- */
-///#if defined(VA_START) && defined(STDC_HEADERS)
+	/*
+	 * Print message to stderr and log file
+	 */
+	///#if defined(VA_START) && defined(STDC_HEADERS)
 
 
 
@@ -2676,25 +2680,25 @@ private static String fit_command_viafile = DefineConstants.NULL;
 	//Dblfn(const char *fmt, va_dcl)
 	///#endif
 	{
-	///#ifdef VA_START
-	//	va_list args;
+		///#ifdef VA_START
+		//	va_list args;
 
-	int ParamCount = -1;
-	//	va_start(args, fmt);
-	///#if defined(HAVE_VFPRINTF) || _LIBC
-	//    vfprintf(STANDARD, fmt, args);
-	//    va_end(args);
-	//    VA_START(args, fmt);
-	//    vfprintf(log_f, fmt, args);
-	///#else
+		int ParamCount = -1;
+		//	va_start(args, fmt);
+		///#if defined(HAVE_VFPRINTF) || _LIBC
+		//    vfprintf(STANDARD, fmt, args);
+		//    va_end(args);
+		//    VA_START(args, fmt);
+		//    vfprintf(log_f, fmt, args);
+		///#else
 		_doprnt(fmt, args, stderr);
 		_doprnt(fmt, args, log_f);
-	///#endif
-	//	va_end(args);
-	///#else
-	//    fprintf(STANDARD, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
-	//    fprintf(log_f, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
-	///#endif // VA_START
+		///#endif
+		//	va_end(args);
+		///#else
+		//    fprintf(STANDARD, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
+		//    fprintf(log_f, fmt, a1, a2, a3, a4, a5, a6, a7, a8);
+		///#endif // VA_START
 	}
 	///#endif
 
@@ -2732,7 +2736,7 @@ private static String fit_command_viafile = DefineConstants.NULL;
 	public static String fitbuf = new String(new char[256]);
 
 	/* log-file for fit command */
-	public static String fitlogfile = DefineConstants.NULL;
+	public static String fitlogfile = null;
 
 	///#ifdef GP_FIT_ERRVARS
 	public static boolean fit_errorvariables = false;
@@ -2746,7 +2750,7 @@ private static String fit_command_viafile = DefineConstants.NULL;
 	public static double epsilon = 1e-5; // convergence limit
 	public static int maxiter = 0;
 
-	public static String fit_script = DefineConstants.NULL;
+	public static String fit_script = null;
 
 	/* HBB/H.Harders 20020927: log file name now changeable from inside
 	 * gnuplot */
@@ -2762,7 +2766,7 @@ private static String fit_command_viafile = DefineConstants.NULL;
 	public static String DEFAULT_CMD = "replot"; // if no fitscript spec.
 	public static String last_fit_command = "";
 
-	public static FILE log_f = DefineConstants.NULL;
+	public static File log_f = null;
 
 	public static int num_data;
 	public static int num_params;
@@ -2787,131 +2791,132 @@ private static String fit_command_viafile = DefineConstants.NULL;
 	public static double lambda_down_factor = DefineConstants.LAMBDA_DOWN_FACTOR;
 	public static double lambda_up_factor = DefineConstants.LAMBDA_UP_FACTOR;
 
-/*****************************************************************
+	/*****************************************************************
     This is called when a SIGINT occurs during fit
-*****************************************************************/
+	 *****************************************************************/
 
 
 	/*****************************************************************
 				 internal Prototypes
-	*****************************************************************/
+	 *****************************************************************/
 
 	public static void ctrlc_handle(int an_int)
 	{
-		() an_int; // avoid -Wunused warning
 		/* reinstall signal handler (necessary on SysV) */
-		() signal(SIGINT, (sigfunc) GlobalMembersFit.ctrlc_handle);
+		signal(SIGINT, (sigfunc) GlobalMembersFit.ctrlc_handle);
 		ctrlc_flag = true;
 	}
 
-/*****************************************************************
+	/*****************************************************************
     setup the ctrl_c signal handler
-*****************************************************************/
+	 *****************************************************************/
 	public static void ctrlc_setup()
 	{
-	/*
-	 *  MSDOS defines signal(SIGINT) but doesn't handle it through
-	 *  real interrupts. So there remain cases in which a ctrl-c may
-	 *  be uncaught by signal. We must use kbhit() instead that really
-	 *  serves the keyboard interrupt (or write an own interrupt func
-	 *  which also generates #ifdefs)
-	 *
-	 *  I hope that other OSes do it better, if not... add #ifdefs :-(
-	 */
-	///#if (defined(__EMX__) || !defined(MSDOS) && !defined(DOS386))
-		() signal(SIGINT, (sigfunc) GlobalMembersFit.ctrlc_handle);
-	///#endif
+		/*
+		 *  MSDOS defines signal(SIGINT) but doesn't handle it through
+		 *  real interrupts. So there remain cases in which a ctrl-c may
+		 *  be uncaught by signal. We must use kbhit() instead that really
+		 *  serves the keyboard interrupt (or write an own interrupt func
+		 *  which also generates #ifdefs)
+		 *
+		 *  I hope that other OSes do it better, if not... add #ifdefs :-(
+		 */
+		///#if (defined(__EMX__) || !defined(MSDOS) && !defined(DOS386))
+		signal(SIGINT, (sigfunc) GlobalMembersFit.ctrlc_handle);
+		///#endif
 	}
 
-/* HBB 990829: removed the debug print routines */
-/*****************************************************************
+	/* HBB 990829: removed the debug print routines */
+	/*****************************************************************
     Marquardt's nonlinear least squares fit
-*****************************************************************/
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static double marquardt_da = 0;
-double temp_a = 0;
-double d = 0;
-double tmp_d = 0;
-double[] tmp_C = 0;
-double residues = 0;
+	 *****************************************************************/
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static double marquardt_da = 0;
+	double temp_a = 0;
+	double d = 0;
+	double tmp_d = 0;
+	double[] tmp_C = 0;
+	double residues = 0;
 	public static marq_res marquardt(double[] a, double[] C, double chisq, double lambda)
 	{
 		int i;
 		int j;
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static double *da = 0, *temp_a = 0, *d = 0, *tmp_d = 0, **tmp_C = 0, *residues = 0; // temptative new params set -  delta-step of the parameter
+		//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+		//	static double *da = 0, *temp_a = 0, *d = 0, *tmp_d = 0, **tmp_C = 0, *residues = 0; // temptative new params set -  delta-step of the parameter
 		double tmp_chisq;
 
 		/* Initialization when lambda == -1 */
 
 		if (lambda == -1) // Get first chi-square check
 		{
-		boolean analyze_ret;
+			boolean analyze_ret;
 
-		temp_a = GlobalMembersMatrix.vec(num_params);
-		d = GlobalMembersMatrix.vec(num_data + num_params);
-		tmp_d = GlobalMembersMatrix.vec(num_data + num_params);
-		marquardt_da = GlobalMembersMatrix.vec(num_params);
-		residues = GlobalMembersMatrix.vec(num_data + num_params);
-		tmp_C = GlobalMembersMatrix.matr(num_data + num_params, num_params);
+			temp_a = GlobalMembersMatrix.vec(num_params);
+			d = GlobalMembersMatrix.vec(num_data + num_params);
+			tmp_d = GlobalMembersMatrix.vec(num_data + num_params);
+			marquardt_da = GlobalMembersMatrix.vec(num_params);
+			residues = GlobalMembersMatrix.vec(num_data + num_params);
+			tmp_C = GlobalMembersMatrix.matr(num_data + num_params, num_params);
 
-		analyze_ret = GlobalMembersFit.analyze(a, C, d, chisq);
+			analyze_ret = GlobalMembersFit.analyze(a, C, d, chisq);
 
-		/* Calculate a useful startup value for lambda, as given by Schwarz */
-		/* FIXME: this is doesn't turn out to be much better, really... */
-		if (startup_lambda != 0)
-			lambda = startup_lambda;
-		else
-		{
-			lambda = 0;
-			for (i = 0; i < num_data; i++)
-			for (j = 0; j < num_params; j++)
-				lambda += C[i][j] * C[i][j];
-			lambda = Math.sqrt(lambda / num_data / num_params);
-		}
+			/* Calculate a useful startup value for lambda, as given by Schwarz */
+			/* FIXME: this is doesn't turn out to be much better, really... */
+			if (startup_lambda != 0)
+				lambda = startup_lambda;
+			else
+			{
+				lambda = 0;
+				for (i = 0; i < num_data; i++)
+					for (j = 0; j < num_params; j++)
+						lambda += C[i][j] * C[i][j];
+				lambda = Math.sqrt(lambda / num_data / num_params);
+			}
 
-		/* Fill in the lower square part of C (the diagonal is filled in on
+			/* Fill in the lower square part of C (the diagonal is filled in on
 		   each iteration, see below) */
-		for (i = 0; i < num_params; i++)
-			for (j = 0; j < i; j++)
-			C[num_data + i][j] = 0, C[num_data + j][i] = 0;
-		return analyze_ret ? marq_res.OK : marq_res.ML_ERROR;
+			for (i = 0; i < num_params; i++)
+				for (j = 0; j < i; j++) {
+					C[num_data + i][j] = 0; 
+					C[num_data + j][i] = 0;
+				}
+			return analyze_ret ? marq_res.OK : marq_res.ML_ERROR;
 		}
 		/* once converged, free dynamic allocated vars */
 
 		if (lambda == -2)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(d);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(tmp_d);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(marquardt_da);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(temp_a);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(residues);
-		GlobalMembersMatrix.free_matr(tmp_C);
-		return marq_res.OK;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(d);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(tmp_d);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(marquardt_da);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(temp_a);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(residues);
+			GlobalMembersMatrix.free_matr(tmp_C);
+			return marq_res.OK;
 		}
 		/* Givens calculates in-place, so make working copies of C and d */
 
 		for (j = 0; j < num_data + num_params; j++)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		memcpy(tmp_C[j], C[j], num_params * sizeof(double));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			memcpy(tmp_C[j], C[j], num_params * sizeof(double));
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memcpy(tmp_d, d, num_data * sizeof(double));
 
 		/* fill in additional parts of tmp_C, tmp_d */
 
 		for (i = 0; i < num_params; i++)
 		{
-		/* fill in low diag. of tmp_C ... */
-		tmp_C[num_data + i][i] = lambda;
-		/* ... and low part of tmp_d */
-		tmp_d[num_data + i] = 0;
+			/* fill in low diag. of tmp_C ... */
+			tmp_C[num_data + i][i] = lambda;
+			/* ... and low part of tmp_d */
+			tmp_d[num_data + i] = 0;
 		}
 
 		/* FIXME: residues[] isn't used at all. Why? Should it be used? */
@@ -2921,49 +2926,49 @@ double residues = 0;
 		/* check if trial did ameliorate sum of squares */
 
 		for (j = 0; j < num_params; j++)
-		temp_a[j] = a[j] + marquardt_da[j];
+			temp_a[j] = a[j] + marquardt_da[j];
 
 		if (!GlobalMembersFit.analyze(temp_a, tmp_C, tmp_d, tmp_chisq))
 		{
-		/* FIXME: will never be reached: always returns TRUE */
-		return marq_res.ML_ERROR;
+			/* FIXME: will never be reached: always returns TRUE */
+			return marq_res.ML_ERROR;
 		}
 		if (tmp_chisq < chisq) // Success, accept new solution
 		{
-		if (lambda > DefineConstants.MIN_LAMBDA)
-		{
-			() putc('/', stderr);
-			lambda /= lambda_down_factor;
-		}
-		chisq = tmp_chisq;
-		for (j = 0; j < num_data; j++)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-			memcpy(C[j], tmp_C[j], num_params * sizeof(double));
-			d[j] = tmp_d[j];
-		}
-		for (j = 0; j < num_params; j++)
-			a[j] = temp_a[j];
-		return marq_res.BETTER;
+			if (lambda > DefineConstants.MIN_LAMBDA)
+			{
+				() putc('/', stderr);
+				lambda /= lambda_down_factor;
+			}
+			chisq = tmp_chisq;
+			for (j = 0; j < num_data; j++)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+				memcpy(C[j], tmp_C[j], num_params * sizeof(double));
+				d[j] = tmp_d[j];
+			}
+			for (j = 0; j < num_params; j++)
+				a[j] = temp_a[j];
+			return marq_res.BETTER;
 		} // failure, increase lambda and return
 		else
 		{
-		() putc('*', stderr);
-		lambda *= lambda_up_factor;
-		return marq_res.WORSE;
+			() putc('*', stderr);
+			lambda *= lambda_up_factor;
+			return marq_res.WORSE;
 		}
 	}
 
-/*****************************************************************
+	/*****************************************************************
     compute chi-square and numeric derivations
-*****************************************************************/
-/* used by marquardt to evaluate the linearized fitting matrix C and
- * vector d, fills in only the top part of C and d I don't use a
- * temporary array zfunc[] any more. Just use d[] instead.  */
-/* FIXME: in the new code, this function doesn't really do enough to
- * be useful. Maybe it ought to be deleted, i.e. integrated with
- * calculate() ? */
+	 *****************************************************************/
+	/* used by marquardt to evaluate the linearized fitting matrix C and
+	 * vector d, fills in only the top part of C and d I don't use a
+	 * temporary array zfunc[] any more. Just use d[] instead.  */
+	/* FIXME: in the new code, this function doesn't really do enough to
+	 * be useful. Maybe it ought to be deleted, i.e. integrated with
+	 * calculate() ? */
 	public static boolean analyze(double[] a, double[] C, double[] d, double chisq)
 	{
 		int i;
@@ -2974,22 +2979,22 @@ double residues = 0;
 
 		for (i = 0; i < num_data; i++)
 		{
-		/* note: order reversed, as used by Schwarz */
-		d[i] = (d[i] - fit_z[i]) / err_data[i];
-		chisq += d[i] * d[i];
-		for (j = 0; j < num_params; j++)
-			C[i][j] /= err_data[i];
+			/* note: order reversed, as used by Schwarz */
+			d[i] = (d[i] - fit_z[i]) / err_data[i];
+			chisq += d[i] * d[i];
+			for (j = 0; j < num_params; j++)
+				C[i][j] /= err_data[i];
 		}
 		/* FIXME: why return a value that is always TRUE ? */
 		return true;
 	}
 
-/* To use the more exact, but slower two-side formula, activate the
+	/* To use the more exact, but slower two-side formula, activate the
    following line: */
-/*#define TWO_SIDE_DIFFERENTIATION */
-/*****************************************************************
+	/*#define TWO_SIDE_DIFFERENTIATION */
+	/*****************************************************************
     compute function values and partial derivatives of chi-square
-*****************************************************************/
+	 *****************************************************************/
 	public static void calculate(double[] zfunc, double[] dzda, double[] a)
 	{
 		int k;
@@ -2997,14 +3002,14 @@ double residues = 0;
 		double tmp_a;
 		double[] tmp_high;
 		double[] tmp_pars;
-	///#ifdef TWO_SIDE_DIFFERENTIATION
-	//    double *tmp_low;
-	///#endif
+		///#ifdef TWO_SIDE_DIFFERENTIATION
+		//    double *tmp_low;
+		///#endif
 
 		tmp_high = GlobalMembersMatrix.vec(num_data); // numeric derivations
-	///#ifdef TWO_SIDE_DIFFERENTIATION
-	//    tmp_low = vec(num_data);
-	///#endif
+		///#ifdef TWO_SIDE_DIFFERENTIATION
+		//    tmp_low = vec(num_data);
+		///#endif
 		tmp_pars = GlobalMembersMatrix.vec(num_params);
 
 		/* first function values */
@@ -3014,37 +3019,37 @@ double residues = 0;
 		/* then derivatives */
 
 		for (p = 0; p < num_params; p++)
-		tmp_pars[p] = a[p];
+			tmp_pars[p] = a[p];
 		for (p = 0; p < num_params; p++)
 		{
-		tmp_a = Math.abs(a[p]) < DefineConstants.NEARLY_ZERO ? DefineConstants.NEARLY_ZERO : a[p];
-		tmp_pars[p] = tmp_a * (1 + DefineConstants.DELTA);
-		GlobalMembersFit.call_gnuplot(tmp_pars, tmp_high);
-	///#ifdef TWO_SIDE_DIFFERENTIATION
-	//	tmp_pars[p] = tmp_a * (1 - DELTA);
-	//	call_gnuplot(tmp_pars, tmp_low);
-	///#endif
-		for (k = 0; k < num_data; k++)
-	///#ifdef TWO_SIDE_DIFFERENTIATION
-	//	    dzda[k][p] = (tmp_high[k] - tmp_low[k]) / (2 * tmp_a * DELTA);
-	///#else
-			dzda[k][p] = (tmp_high[k] - zfunc[k]) / (tmp_a * DefineConstants.DELTA);
-	///#endif
-		tmp_pars[p] = a[p];
+			tmp_a = Math.abs(a[p]) < DefineConstants.NEARLY_ZERO ? DefineConstants.NEARLY_ZERO : a[p];
+			tmp_pars[p] = tmp_a * (1 + DefineConstants.DELTA);
+			GlobalMembersFit.call_gnuplot(tmp_pars, tmp_high);
+			///#ifdef TWO_SIDE_DIFFERENTIATION
+			//	tmp_pars[p] = tmp_a * (1 - DELTA);
+			//	call_gnuplot(tmp_pars, tmp_low);
+			///#endif
+			for (k = 0; k < num_data; k++)
+				///#ifdef TWO_SIDE_DIFFERENTIATION
+				//	    dzda[k][p] = (tmp_high[k] - tmp_low[k]) / (2 * tmp_a * DELTA);
+				///#else
+				dzda[k][p] = (tmp_high[k] - zfunc[k]) / (tmp_a * DefineConstants.DELTA);
+			///#endif
+			tmp_pars[p] = a[p];
 		}
 
-	///#ifdef TWO_SIDE_DIFFERENTIATION
-	//    free(tmp_low);
-	///#endif
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		///#ifdef TWO_SIDE_DIFFERENTIATION
+		//    free(tmp_low);
+		///#endif
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(tmp_high);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(tmp_pars);
 	}
 
-/*****************************************************************
+	/*****************************************************************
     call internal gnuplot functions
-*****************************************************************/
+	 *****************************************************************/
 	public static void call_gnuplot(double[] par, double[] data)
 	{
 		int i;
@@ -3054,86 +3059,86 @@ double residues = 0;
 		/* set parameters first */
 		for (i = 0; i < num_params; i++)
 		{
-		() GlobalMembersEval.Gcomplex(v, par[i], 0.0);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: setvar(par_name[i], v);
-		GlobalMembersFit.setvar(par_name[i], new value(v));
+			GlobalMembersEval.Gcomplex(v, par[i], 0.0);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: setvar(par_name[i], v);
+			GlobalMembersFit.setvar(par_name[i], new value(v));
 		}
 
 		for (i = 0; i < num_data; i++)
 		{
-		  /* calculate fit-function value */
-		  /* initialize extra dummy variables from the corresponding
+			/* calculate fit-function value */
+			/* initialize extra dummy variables from the corresponding
 		 actual variables, if any. */
-		  for (j = 0; j < 5; j++)
-		  {
-		udvt_entry udv = GlobalMembersEval.add_udv_by_name(GlobalMembersParse.c_dummy_var[j]);
-		() GlobalMembersEval.Gcomplex(func.dummy_values[j], udv.udv_undef ? 0 : GlobalMembersFit.getdvar(GlobalMembersParse.c_dummy_var[j]), 0.0);
-		  }
-		  /* set actual dummy variables from file data */
-		  for (j = 0; j < num_indep; j++)
-		() GlobalMembersEval.Gcomplex(func.dummy_values[j], fit_x[i * num_indep + j], 0.0);
-		  GlobalMembersEval.evaluate_at(func.at, v);
-		  if (GlobalMembersEval.undefined)
-		  {
-			String.format(fitbuf + 9, ("Undefined value during function evaluation"));
-			GlobalMembersFit.error_ex();
-		  };
-		  data[i] = GlobalMembersEval.real(v);
+			for (j = 0; j < 5; j++)
+			{
+				udvt_entry udv = GlobalMembersEval.add_udv_by_name(GlobalMembersParse.c_dummy_var[j]);
+				GlobalMembersEval.Gcomplex(func.dummy_values[j], udv.udv_undef ? 0 : GlobalMembersFit.getdvar(GlobalMembersParse.c_dummy_var[j]), 0.0);
+			}
+			/* set actual dummy variables from file data */
+			for (j = 0; j < num_indep; j++)
+				GlobalMembersEval.Gcomplex(func.dummy_values[j], fit_x[i * num_indep + j], 0.0);
+			GlobalMembersEval.evaluate_at(func.at, v);
+			if (GlobalMembersEval.undefined)
+			{
+				String.format(fitbuf + 9, ("Undefined value during function evaluation"));
+				GlobalMembersFit.error_ex();
+			};
+			data[i] = GlobalMembersEval.real(v);
 		}
 	}
 
-/*****************************************************************
+	/*****************************************************************
     handle user interrupts during fit
-*****************************************************************/
+	 *****************************************************************/
 	public static boolean fit_interrupt()
 	{
 		while (true)
 		{
-		fputs("\n\n(S)top fit, (C)ontinue, (E)xecute FIT_SCRIPT:  ", stderr);
-		switch (getc(stdin))
-		{
-
-		case EOF:
-		case 's':
-		case 'S':
-			fputs("Stop.", stderr);
-			user_stop = true;
-			return false;
-
-		case 'c':
-		case 'C':
-			fputs("Continue.", stderr);
-			return true;
-
-		case 'e':
-		case 'E':
-		{
-			int i;
-			value v = new value();
-			String tmp;
-
-			tmp = fit_script != null ? fit_script : DEFAULT_CMD;
-			fprintf(stderr, "executing: %s", tmp);
-			/* set parameters visible to gnuplot */
-			for (i = 0; i < num_params; i++)
+			fputs("\n\n(S)top fit, (C)ontinue, (E)xecute FIT_SCRIPT:  ", stderr);
+			switch (getc(stdin))
 			{
-				() GlobalMembersEval.Gcomplex(v, a[i], 0.0);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: setvar(par_name[i], v);
-				GlobalMembersFit.setvar(par_name[i], new value(v));
+
+			case EOF:
+			case 's':
+			case 'S':
+				fputs("Stop.", stderr);
+				user_stop = true;
+				return false;
+
+			case 'c':
+			case 'C':
+				fputs("Continue.", stderr);
+				return true;
+
+			case 'e':
+			case 'E':
+			{
+				int i;
+				value v = new value();
+				String tmp;
+
+				tmp = fit_script != null ? fit_script : DEFAULT_CMD;
+				fprintf(stderr, "executing: %s", tmp);
+				/* set parameters visible to gnuplot */
+				for (i = 0; i < num_params; i++)
+				{
+					GlobalMembersEval.Gcomplex(v, a[i], 0.0);
+					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+					//ORIGINAL LINE: setvar(par_name[i], v);
+					GlobalMembersFit.setvar(par_name[i], new value(v));
+				}
+				GlobalMembersStdfn.safe_strncpy(GlobalMembersCommand.gp_input_line, tmp, GlobalMembersCommand.gp_input_line_len);
+				GlobalMembersCommand.do_line();
 			}
-			GlobalMembersStdfn.safe_strncpy(GlobalMembersCommand.gp_input_line, tmp, GlobalMembersCommand.gp_input_line_len);
-			() GlobalMembersCommand.do_line();
-		}
-		}
+			}
 		}
 		return true;
 	}
 
-/*****************************************************************
+	/*****************************************************************
     frame routine for the marquardt-fit
-*****************************************************************/
+	 *****************************************************************/
 	public static boolean regress(double[] a)
 	{
 		double[] covar;
@@ -3179,42 +3184,42 @@ double residues = 0;
 
 		do
 		{
-	/*
-	 *  MSDOS defines signal(SIGINT) but doesn't handle it through
-	 *  real interrupts. So there remain cases in which a ctrl-c may
-	 *  be uncaught by signal. We must use kbhit() instead that really
-	 *  serves the keyboard interrupt (or write an own interrupt func
-	 *  which also generates #ifdefs)
-	 *
-	 *  I hope that other OSes do it better, if not... add #ifdefs :-(
-	 *  EMX does not have kbhit.
-	 *
-	 *  HBB: I think this can be enabled for DJGPP V2. SIGINT is actually
-	 *  handled there, AFAIK.
-	 */
-	///#if ((defined(MSDOS) || defined(DOS386)) && !defined(__EMX__))
-	//	if (kbhit()) {
-	//	    do {
-	//		getchx();
-	//	    } while (kbhit());
-	//	    ctrlc_flag = TRUE;
-	//	}
-	///#endif
+			/*
+			 *  MSDOS defines signal(SIGINT) but doesn't handle it through
+			 *  real interrupts. So there remain cases in which a ctrl-c may
+			 *  be uncaught by signal. We must use kbhit() instead that really
+			 *  serves the keyboard interrupt (or write an own interrupt func
+			 *  which also generates #ifdefs)
+			 *
+			 *  I hope that other OSes do it better, if not... add #ifdefs :-(
+			 *  EMX does not have kbhit.
+			 *
+			 *  HBB: I think this can be enabled for DJGPP V2. SIGINT is actually
+			 *  handled there, AFAIK.
+			 */
+			///#if ((defined(MSDOS) || defined(DOS386)) && !defined(__EMX__))
+			//	if (kbhit()) {
+			//	    do {
+			//		getchx();
+			//	    } while (kbhit());
+			//	    ctrlc_flag = TRUE;
+			//	}
+			///#endif
 
-		if (ctrlc_flag)
-		{
-			GlobalMembersFit.show_fit(iter, chisq, last_chisq, a, lambda, stderr);
-			ctrlc_flag = false;
-			if (!GlobalMembersFit.fit_interrupt()) // handle keys
-			break;
-		}
-		if (res == marq_res.BETTER)
-		{
-			iter++;
-			last_chisq = chisq;
-		}
-		if ((res = GlobalMembersFit.marquardt(a, C, chisq, lambda)) == marq_res.BETTER)
-			GlobalMembersFit.show_fit(iter, chisq, last_chisq, a, lambda, stderr);
+			if (ctrlc_flag)
+			{
+				GlobalMembersFit.show_fit(iter, chisq, last_chisq, a, lambda, stderr);
+				ctrlc_flag = false;
+				if (!GlobalMembersFit.fit_interrupt()) // handle keys
+					break;
+			}
+			if (res == marq_res.BETTER)
+			{
+				iter++;
+				last_chisq = chisq;
+			}
+			if ((res = GlobalMembersFit.marquardt(a, C, chisq, lambda)) == marq_res.BETTER)
+				GlobalMembersFit.show_fit(iter, chisq, last_chisq, a, lambda, stderr);
 		} while ((res != marq_res.ML_ERROR) && (lambda < DefineConstants.MAX_LAMBDA) && ((maxiter == 0) || (iter <= maxiter)) && (res == marq_res.WORSE || ((chisq > DefineConstants.NEARLY_ZERO) ? ((last_chisq - chisq) / chisq) : (last_chisq - chisq)) > epsilon));
 
 		/* fit done */
@@ -3225,28 +3230,28 @@ double residues = 0;
 		/* HBB 970304: the maxiter patch: */
 		if ((maxiter > 0) && (iter > maxiter))
 		{
-		GlobalMembersFit.Dblfn("\nMaximum iteration count (%d) reached. Fit stopped.\n", maxiter);
+			GlobalMembersFit.Dblfn("\nMaximum iteration count (%d) reached. Fit stopped.\n", maxiter);
 		}
 		else if (user_stop)
 		{
-		GlobalMembersFit.Dblfn("\nThe fit was stopped by the user after %d iterations.\n", iter);
+			GlobalMembersFit.Dblfn("\nThe fit was stopped by the user after %d iterations.\n", iter);
 		}
 		else
 		{
-		GlobalMembersFit.Dblfn("\nAfter %d iterations the fit converged.\n", iter);
-		v = GlobalMembersEval.add_udv_by_name("FIT_CONVERGED");
-		v.udv_undef = false;
-		GlobalMembersEval.Ginteger(v.udv_value, 1);
+			GlobalMembersFit.Dblfn("\nAfter %d iterations the fit converged.\n", iter);
+			v = GlobalMembersEval.add_udv_by_name("FIT_CONVERGED");
+			v.udv_undef = false;
+			GlobalMembersEval.Ginteger(v.udv_value, 1);
 		}
 
 		GlobalMembersFit.Dblfn("final sum of squares of residuals : %g\n", chisq);
 		if (chisq > DefineConstants.NEARLY_ZERO)
 		{
-		GlobalMembersFit.Dblfn("rel. change during last iteration : %g\n\n", (chisq - last_chisq) / chisq);
+			GlobalMembersFit.Dblfn("rel. change during last iteration : %g\n\n", (chisq - last_chisq) / chisq);
 		}
 		else
 		{
-		GlobalMembersFit.Dblfn("abs. change during last iteration : %g\n\n", (chisq - last_chisq));
+			GlobalMembersFit.Dblfn("abs. change during last iteration : %g\n\n", (chisq - last_chisq));
 		}
 
 		if (res == marq_res.ML_ERROR)
@@ -3257,125 +3262,125 @@ double residues = 0;
 
 		/* compute errors in the parameters */
 
-	///#ifdef GP_FIT_ERRVARS
+		///#ifdef GP_FIT_ERRVARS
 		if (fit_errorvariables)
-		/* Set error variable to zero before doing this */
-		/* Thus making sure they are created */
-		for (i = 0; i < num_params; i++)
-			GlobalMembersFit.setvarerr(par_name[i], 0.0);
-	///#endif
+			/* Set error variable to zero before doing this */
+			/* Thus making sure they are created */
+			for (i = 0; i < num_params; i++)
+				GlobalMembersFit.setvarerr(par_name[i], 0.0);
+		///#endif
 
 		if (num_data == num_params)
 		{
-		int k;
+			int k;
 
-		GlobalMembersFit.Dblfn("\nExactly as many data points as there are parameters.\n");
-		GlobalMembersFit.Dblfn("In this degenerate case, all errors are zero by definition.\n\n");
-		GlobalMembersFit.Dblfn("Final set of parameters \n");
-		GlobalMembersFit.Dblfn("======================= \n\n");
-		for (k = 0; k < num_params; k++)
-			GlobalMembersFit.Dblfn("%-15.15s = %-15g\n", par_name[k], a[k]);
+			GlobalMembersFit.Dblfn("\nExactly as many data points as there are parameters.\n");
+			GlobalMembersFit.Dblfn("In this degenerate case, all errors are zero by definition.\n\n");
+			GlobalMembersFit.Dblfn("Final set of parameters \n");
+			GlobalMembersFit.Dblfn("======================= \n\n");
+			for (k = 0; k < num_params; k++)
+				GlobalMembersFit.Dblfn("%-15.15s = %-15g\n", par_name[k], a[k]);
 		}
 		else if (chisq < DefineConstants.NEARLY_ZERO)
 		{
-		int k;
+			int k;
 
-		GlobalMembersFit.Dblfn("\nHmmmm.... Sum of squared residuals is zero. Can't compute errors.\n\n");
-		GlobalMembersFit.Dblfn("Final set of parameters \n");
-		GlobalMembersFit.Dblfn("======================= \n\n");
-		for (k = 0; k < num_params; k++)
-			GlobalMembersFit.Dblfn("%-15.15s = %-15g\n", par_name[k], a[k]);
+			GlobalMembersFit.Dblfn("\nHmmmm.... Sum of squared residuals is zero. Can't compute errors.\n\n");
+			GlobalMembersFit.Dblfn("Final set of parameters \n");
+			GlobalMembersFit.Dblfn("======================= \n\n");
+			for (k = 0; k < num_params; k++)
+				GlobalMembersFit.Dblfn("%-15.15s = %-15g\n", par_name[k], a[k]);
 		}
 		else
 		{
-		int ndf = num_data - num_params;
-		double stdfit = Math.sqrt(chisq / ndf);
+			int ndf = num_data - num_params;
+			double stdfit = Math.sqrt(chisq / ndf);
 
-		GlobalMembersFit.Dblfn("degrees of freedom    (FIT_NDF)                        : %d\n", ndf);
-		GlobalMembersFit.Dblfn("rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : %g\n", stdfit);
-		GlobalMembersFit.Dblfn("variance of residuals (reduced chisquare) = WSSR/ndf   : %g\n\n", chisq / ndf);
+			GlobalMembersFit.Dblfn("degrees of freedom    (FIT_NDF)                        : %d\n", ndf);
+			GlobalMembersFit.Dblfn("rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : %g\n", stdfit);
+			GlobalMembersFit.Dblfn("variance of residuals (reduced chisquare) = WSSR/ndf   : %g\n\n", chisq / ndf);
 
-		/* Export these to user-accessible variables */
-		v = GlobalMembersEval.add_udv_by_name("FIT_NDF");
-		v.udv_undef = false;
-		GlobalMembersEval.Ginteger(v.udv_value, ndf);
-		v = GlobalMembersEval.add_udv_by_name("FIT_STDFIT");
-		v.udv_undef = false;
-		GlobalMembersEval.Gcomplex(v.udv_value, stdfit, 0);
-		v = GlobalMembersEval.add_udv_by_name("FIT_WSSR");
-		v.udv_undef = false;
-		GlobalMembersEval.Gcomplex(v.udv_value, chisq, 0);
+			/* Export these to user-accessible variables */
+			v = GlobalMembersEval.add_udv_by_name("FIT_NDF");
+			v.udv_undef = false;
+			GlobalMembersEval.Ginteger(v.udv_value, ndf);
+			v = GlobalMembersEval.add_udv_by_name("FIT_STDFIT");
+			v.udv_undef = false;
+			GlobalMembersEval.Gcomplex(v.udv_value, stdfit, 0);
+			v = GlobalMembersEval.add_udv_by_name("FIT_WSSR");
+			v.udv_undef = false;
+			GlobalMembersEval.Gcomplex(v.udv_value, chisq, 0);
 
-		/* get covariance-, Correlations- and Kurvature-Matrix */
-		/* and errors in the parameters                     */
+			/* get covariance-, Correlations- and Kurvature-Matrix */
+			/* and errors in the parameters                     */
 
-		/* compute covar[][] directly from C */
-		GlobalMembersMatrix.Givens(C, 0, 0, 0, num_data, num_params, 0);
+			/* compute covar[][] directly from C */
+			GlobalMembersMatrix.Givens(C, 0, 0, 0, num_data, num_params, 0);
 
-		/* Use lower square of C for covar */
-		covar = C + num_data;
-		GlobalMembersMatrix.Invert_RtR(C, covar, num_params);
+			/* Use lower square of C for covar */
+			covar = C + num_data;
+			GlobalMembersMatrix.Invert_RtR(C, covar, num_params);
 
-		/* calculate unscaled parameter errors in dpar[]: */
-		dpar = GlobalMembersMatrix.vec(num_params);
-		for (i = 0; i < num_params; i++)
-		{
-			/* FIXME: can this still happen ? */
-			if (covar[i][i] <= 0.0) // HBB: prevent floating point exception later on
+			/* calculate unscaled parameter errors in dpar[]: */
+			dpar = GlobalMembersMatrix.vec(num_params);
+			for (i = 0; i < num_params; i++)
 			{
-				String.format(fitbuf + 9, ("Calculation error: non-positive diagonal element in covar. matrix"));
-				GlobalMembersFit.error_ex();
-			};
-			dpar[i] = Math.sqrt(covar[i][i]);
-		}
-
-		/* transform covariances into correlations */
-		for (i = 0; i < num_params; i++)
-		{
-			/* only lower triangle needs to be handled */
-			for (j = 0; j <= i; j++)
-			covar[i][j] /= dpar[i] * dpar[j];
-		}
-
-		/* scale parameter errors based on chisq */
-		chisq = Math.sqrt(chisq / (num_data - num_params));
-		for (i = 0; i < num_params; i++)
-			dpar[i] *= chisq;
-
-		GlobalMembersFit.Dblfn("Final set of parameters            Asymptotic Standard Error\n");
-		GlobalMembersFit.Dblfn("=======================            ==========================\n\n");
-
-		for (i = 0; i < num_params; i++)
-		{
-			double temp = (Math.abs(a[i]) < DefineConstants.NEARLY_ZERO) ? 0.0 : Math.abs(100.0 * dpar[i] / a[i]);
-
-			GlobalMembersFit.Dblfn("%-15.15s = %-15g  %-3.3s %-12.4g (%.4g%%)\n", par_name[i], a[i], DefineConstants.PLUSMINUS, dpar[i], temp);
-	///#ifdef GP_FIT_ERRVARS
-			if (fit_errorvariables)
-			GlobalMembersFit.setvarerr(par_name[i], dpar[i]);
-	///#endif
-		}
-
-		GlobalMembersFit.Dblfn("\n\ncorrelation matrix of the fit parameters:\n\n");
-		GlobalMembersFit.Dblfn("               ");
-
-		for (j = 0; j < num_params; j++)
-			GlobalMembersFit.Dblfn("%-6.6s ", par_name[j]);
-
-		GlobalMembersFit.Dblfn("\n");
-		for (i = 0; i < num_params; i++)
-		{
-			GlobalMembersFit.Dblfn("%-15.15s", par_name[i]);
-			for (j = 0; j <= i; j++)
-			{
-			/* Only print lower triangle of symmetric matrix */
-			GlobalMembersFit.Dblfn("%6.3f ", covar[i][j]);
+				/* FIXME: can this still happen ? */
+				if (covar[i][i] <= 0.0) // HBB: prevent floating point exception later on
+				{
+					String.format(fitbuf + 9, ("Calculation error: non-positive diagonal element in covar. matrix"));
+					GlobalMembersFit.error_ex();
+				};
+				dpar[i] = Math.sqrt(covar[i][i]);
 			}
-			GlobalMembersFit.Dblfn("\n");
-		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(dpar);
+			/* transform covariances into correlations */
+			for (i = 0; i < num_params; i++)
+			{
+				/* only lower triangle needs to be handled */
+				for (j = 0; j <= i; j++)
+					covar[i][j] /= dpar[i] * dpar[j];
+			}
+
+			/* scale parameter errors based on chisq */
+			chisq = Math.sqrt(chisq / (num_data - num_params));
+			for (i = 0; i < num_params; i++)
+				dpar[i] *= chisq;
+
+			GlobalMembersFit.Dblfn("Final set of parameters            Asymptotic Standard Error\n");
+			GlobalMembersFit.Dblfn("=======================            ==========================\n\n");
+
+			for (i = 0; i < num_params; i++)
+			{
+				double temp = (Math.abs(a[i]) < DefineConstants.NEARLY_ZERO) ? 0.0 : Math.abs(100.0 * dpar[i] / a[i]);
+
+				GlobalMembersFit.Dblfn("%-15.15s = %-15g  %-3.3s %-12.4g (%.4g%%)\n", par_name[i], a[i], DefineConstants.PLUSMINUS, dpar[i], temp);
+				///#ifdef GP_FIT_ERRVARS
+				if (fit_errorvariables)
+					GlobalMembersFit.setvarerr(par_name[i], dpar[i]);
+				///#endif
+			}
+
+			GlobalMembersFit.Dblfn("\n\ncorrelation matrix of the fit parameters:\n\n");
+			GlobalMembersFit.Dblfn("               ");
+
+			for (j = 0; j < num_params; j++)
+				GlobalMembersFit.Dblfn("%-6.6s ", par_name[j]);
+
+			GlobalMembersFit.Dblfn("\n");
+			for (i = 0; i < num_params; i++)
+			{
+				GlobalMembersFit.Dblfn("%-15.15s", par_name[i]);
+				for (j = 0; j <= i; j++)
+				{
+					/* Only print lower triangle of symmetric matrix */
+					GlobalMembersFit.Dblfn("%6.3f ", covar[i][j]);
+				}
+				GlobalMembersFit.Dblfn("\n");
+			}
+
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(dpar);
 		}
 
 		/* HBB 990220: re-imported this snippet from older versions. Finally,
@@ -3386,274 +3391,274 @@ double residues = 0;
 		 */
 		/* restore last parameter's value (not done by calculate) */
 		{
-		value val = new value();
-		GlobalMembersEval.Gcomplex(val, a[num_params - 1], 0.0);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: setvar(par_name[num_params - 1], val);
-		GlobalMembersFit.setvar(par_name[num_params - 1], new value(val));
+			value val = new value();
+			GlobalMembersEval.Gcomplex(val, a[num_params - 1], 0.0);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: setvar(par_name[num_params - 1], val);
+			GlobalMembersFit.setvar(par_name[num_params - 1], new value(val));
 		}
 
 		/* call destructor for allocated vars */
 		lambda = -2; // flag value, meaning 'destruct!'
-		() GlobalMembersFit.marquardt(a, C, chisq, lambda);
+		GlobalMembersFit.marquardt(a, C, chisq, lambda);
 
 		GlobalMembersMatrix.free_matr(C);
 		return true;
 	}
 
-/*****************************************************************
+	/*****************************************************************
     display actual state of the fit
-*****************************************************************/
+	 *****************************************************************/
 	public static void show_fit(int i, double chisq, double last_chisq, double[] a, double lambda, FILE device)
 	{
 		int k;
 
 		fprintf(device, "\n\n Iteration %d\n WSSR        : %-15g   delta(WSSR)/WSSR   : %g\n delta(WSSR) : %-15g   limit for stopping : %g\n lambda	  : %g\n\n%s parameter values\n\n", i, chisq, chisq > DefineConstants.NEARLY_ZERO ? (chisq - last_chisq) / chisq : 0.0, chisq - last_chisq, epsilon, lambda, (i > 0 ? "resultant" : "initial set of free"));
 		for (k = 0; k < num_params; k++)
-		fprintf(device, "%-15.15s = %g\n", par_name[k], a[k]);
+			fprintf(device, "%-15.15s = %g\n", par_name[k], a[k]);
 	}
 
-/* A modified copy of save.c:save_range(), but this one reports
- * _current_ values, not the 'set' ones, by default */
-	public static void log_axis_restriction(FILE log_f, AXIS_INDEX axis, String name)
+	/* A modified copy of save.c:save_range(), but this one reports
+	 * _current_ values, not the 'set' ones, by default */
+	public static void log_axis_restriction(File log_f, AXIS_INDEX axis, String name)
 	{
 		String s = new String(new char[80]);
-		axis this_axis = GlobalMembersAxis.axis_array + axis;
+		axis this_axis = GlobalMembersAxis.axis_array[axis.getValue()];
 
 		fprintf(log_f, "\t%s range restricted to [", name);
 		if (this_axis.autoscale & e_autoscale.AUTOSCALE_MIN != 0)
 		{
-		putc('*', log_f);
+			putc('*', log_f);
 		}
 		else if (this_axis.is_timedata)
 		{
-		putc('"', log_f);
-		GlobalMembersTime.gstrftime(s, 80, this_axis.timefmt, this_axis.min);
-		fputs(s, log_f);
-		putc('"', log_f);
+			putc('"', log_f);
+			GlobalMembersTime.gstrftime(s, 80, this_axis.timefmt, this_axis.min);
+			fputs(s, log_f);
+			putc('"', log_f);
 		}
 		else
 		{
-		fprintf(log_f, "%#g", this_axis.min);
+			fprintf(log_f, "%#g", this_axis.min);
 		}
 
 		fputs(" : ", log_f);
 		if (this_axis.autoscale & e_autoscale.AUTOSCALE_MAX != 0)
 		{
-		putc('*', log_f);
+			putc('*', log_f);
 		}
 		else if (this_axis.is_timedata)
 		{
-		putc('"', log_f);
-		GlobalMembersTime.gstrftime(s, 80, this_axis.timefmt, this_axis.max);
-		fputs(s, log_f);
-		putc('"', log_f);
+			putc('"', log_f);
+			GlobalMembersTime.gstrftime(s, 80, this_axis.timefmt, this_axis.max);
+			fputs(s, log_f);
+			putc('"', log_f);
 		}
 		else
 		{
-		fprintf(log_f, "%#g", this_axis.max);
+			fprintf(log_f, "%#g", this_axis.max);
 		}
 		fputs("]\n", log_f);
 	}
 
-/*****************************************************************
+	/*****************************************************************
     is_empty: check for valid string entries
-*****************************************************************/
+	 *****************************************************************/
 	public static boolean is_empty(String s)
 	{
 		while (s.equals(' ') || s.equals('\t') || s.equals('\n'))
-		s++;
+			s++;
 		return (boolean)(s.equals('#') || s.equals('\0'));
 	}
 
-/*****************************************************************
+	/*****************************************************************
     check for variable identifiers
-*****************************************************************/
+	 *****************************************************************/
 	public static boolean is_variable(String s)
 	{
 		while (!s.equals('\0'))
 		{
-		if (!Character.isLetterOrDigit((byte) s) && !s.equals('_'))
-			return false;
-		s++;
+			if (!Character.isLetterOrDigit((byte) s) && !s.equals('_'))
+				return false;
+			s++;
 		}
 		return true;
 	}
 
-/*****************************************************************
+	/*****************************************************************
     Read DOUBLE Variable value, return 0 if undefined or wrong type
    I don't think it's a problem that it's an integer - div
-*****************************************************************/
+	 *****************************************************************/
 	public static double getdvar(String varname)
 	{
 		udvt_entry udv_ptr = GlobalMembersEval.first_udv;
 
 		for (; udv_ptr; udv_ptr = udv_ptr.next_udv)
-		if (strcmp(varname, udv_ptr.udv_name) == 0)
-			return GlobalMembersEval.real((udv_ptr.udv_value));
+			if (strcmp(varname, udv_ptr.udv_name) == 0)
+				return GlobalMembersEval.real((udv_ptr.udv_value));
 
 		/* get here => not found */
 		return 0;
 	}
-///#endif // GP_FIT_ERRVARS 
+	///#endif // GP_FIT_ERRVARS 
 
-/*****************************************************************
+	/*****************************************************************
     Read INTGR Variable value, return 0 if undefined or wrong type
-*****************************************************************/
+	 *****************************************************************/
 	public static int getivar(String varname)
 	{
 		udvt_entry udv_ptr = GlobalMembersEval.first_udv;
 
 		while (udv_ptr != null)
 		{
-		if (!strcmp(varname, udv_ptr.udv_name))
-			return udv_ptr.udv_value.type == (DATA_TYPES.INTGR.getValue()) != 0 ? udv_ptr.udv_value.v.int_val : 0; // wrong type -  valid
-		udv_ptr = udv_ptr.next_udv;
+			if (StringFunctions.strcmp(varname, udv_ptr.udv_name) == 0)
+				return udv_ptr.udv_value.type == (DATA_TYPES.INTGR.getValue()) != 0 ? udv_ptr.udv_value.v.int_val : 0; // wrong type -  valid
+			udv_ptr = udv_ptr.next_udv;
 		}
 		return 0; // not in table
 	}
 
-/*****************************************************************
+	/*****************************************************************
 	    Set a GNUPLOT user-defined variable
-******************************************************************/
+	 ******************************************************************/
 
 	public static void setvar(String varname, value data)
 	{
 		udvt_entry udv_ptr = GlobalMembersEval.add_udv_by_name(varname);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: udv_ptr->udv_value = data;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: udv_ptr->udv_value = data;
 		udv_ptr.udv_value.copyFrom(data);
 		udv_ptr.udv_undef = false;
 	}
 
-/*****************************************************************
+	/*****************************************************************
     get next word of a multi-word string, advance pointer
-*****************************************************************/
+	 *****************************************************************/
 	public static String get_next_word(tangible.RefObject<String[]> s, String subst)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * tmp = s.argvalue;
 
 		while (*tmp == ' ' || *tmp == '\t' || *tmp == '=')
-		tmp++;
+			tmp++;
 		if (*tmp == '\n' || *tmp == '\0') // not found
-		return DefineConstants.NULL;
+			return DefineConstants.NULL;
 		if ((s.argvalue = strpbrk(tmp, " =\t\n")) == DefineConstants.NULL)
-		s.argvalue = tmp + tmp.length();
+			s.argvalue = tmp + tmp.length();
 		subst = * s.argvalue;
 		*(s.argvalue)++= '\0';
 		return tmp;
 	}
 
-/*****************************************************************
+	/*****************************************************************
    like getdvar, but
    - convert it from integer to real if necessary
    - create it with value INITIAL_VALUE if not found or undefined
-*****************************************************************/
+	 *****************************************************************/
 	public static double createdvar(String varname, double value)
 	{
 		udvt_entry udv_ptr = GlobalMembersEval.first_udv;
 
 		for (; udv_ptr; udv_ptr = udv_ptr.next_udv)
-		if (strcmp(varname, udv_ptr.udv_name) == 0)
-		{
-			if (udv_ptr.udv_undef)
+			if (strcmp(varname, udv_ptr.udv_name) == 0)
 			{
-			udv_ptr.udv_undef = false;
-			() GlobalMembersEval.Gcomplex(udv_ptr.udv_value, value, 0.0);
+				if (udv_ptr.udv_undef)
+				{
+					udv_ptr.udv_undef = false;
+					GlobalMembersEval.Gcomplex(udv_ptr.udv_value, value, 0.0);
+				}
+				else if (udv_ptr.udv_value.type == DATA_TYPES.INTGR)
+				{
+					GlobalMembersEval.Gcomplex(udv_ptr.udv_value, (double) udv_ptr.udv_value.v.int_val, 0.0);
+				}
+				return GlobalMembersEval.real((udv_ptr.udv_value));
 			}
-			else if (udv_ptr.udv_value.type == DATA_TYPES.INTGR)
-			{
-			() GlobalMembersEval.Gcomplex(udv_ptr.udv_value, (double) udv_ptr.udv_value.v.int_val, 0.0);
-			}
-			return GlobalMembersEval.real((udv_ptr.udv_value));
-		}
 		/* get here => not found */
 
 		{
-		value tempval = new value();
-		() GlobalMembersEval.Gcomplex(tempval, value, 0.0);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: setvar(varname, tempval);
-		GlobalMembersFit.setvar(varname, new value(tempval));
+			value tempval = new value();
+			GlobalMembersEval.Gcomplex(tempval, value, 0.0);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: setvar(varname, tempval);
+			GlobalMembersFit.setvar(varname, new value(tempval));
 		}
 
 		return value;
 	}
 
-/*****************************************************************
+	/*****************************************************************
     Split Identifier into path and filename
-*****************************************************************/
+	 *****************************************************************/
 	public static void splitpath(String s, String p, String f)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * tmp = s + s.length() - 1;
 
 		while (tmp >= s && *tmp != '\\' && *tmp != '/' && *tmp != ':')
-		tmp--;
+			tmp--;
 		/* FIXME HBB 20010121: unsafe! Sizes of 'f' and 'p' are not known.
 		 * May write past buffer end. */
 		f = tmp + 1;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
 		memcpy(p, s, (int)(tmp - s + 1));
 		p = tangible.StringFunctions.changeCharacter(p, tmp - s + 1, DefineConstants.NUL);
 	}
 
-/*****************************************************************
+	/*****************************************************************
     Backup a file by renaming it to something useful. Return
     the new name in tofile
-*****************************************************************/
+	 *****************************************************************/
 
-/* tofile must point to a char array[] or allocated data. See update() */
+	/* tofile must point to a char array[] or allocated data. See update() */
 
 	public static void backup_file(String tofile, String fromfile)
 	{
-	///#if defined (WIN32) || defined(MSDOS) || defined(VMS)
-	//    char *tmpn;
-	///#endif
+		///#if defined (WIN32) || defined(MSDOS) || defined(VMS)
+		//    char *tmpn;
+		///#endif
 
 		/* win32 needs to have two attempts at the rename, since it may
 		 * be running on win32s with msdos 8.3 names
 		 */
 
-	/* first attempt, for all o/s other than MSDOS */
+		/* first attempt, for all o/s other than MSDOS */
 
-	///#ifndef MSDOS
+		///#ifndef MSDOS
 
 		tofile = fromfile;
 
-	///#ifdef VMS
-	// /* replace all dots with _, since we will be adding the only
-	//  * dot allowed in VMS names
-	//  */
-	//    while ((tmpn = strchr(tofile, '.')) != NULL)
-	//	*tmpn = '_';
-	///#endif //VMS
+		///#ifdef VMS
+		// /* replace all dots with _, since we will be adding the only
+		//  * dot allowed in VMS names
+		//  */
+		//    while ((tmpn = strchr(tofile, '.')) != NULL)
+		//	*tmpn = '_';
+		///#endif //VMS
 
 		tofile += DefineConstants.BACKUP_SUFFIX;
 
 		if (rename(fromfile, tofile) == 0)
-		return; // hurrah
-	///#endif
+			return; // hurrah
+		///#endif
 
 
-	///#if defined (WIN32) || defined(MSDOS)
-	//
-	// /* first attempt for msdos. Second attempt for win32s */
-	//
-	// /* Copy only the first 8 characters of the filename, to comply
-	//  * with the restrictions of FAT filesystems. */
-	//    safe_strncpy(tofile, fromfile, 8 + 1);
-	//
-	//    while ((tmpn = strchr(tofile, '.')) != NULL)
-	//	*tmpn = '_';
-	//
-	//    strcat(tofile, BACKUP_SUFFIX);
-	//
-	//    if (rename(fromfile, tofile) == 0)
-	//	return;			// success
-	//
-	///#endif // win32 || msdos
+		///#if defined (WIN32) || defined(MSDOS)
+		//
+		// /* first attempt for msdos. Second attempt for win32s */
+		//
+		// /* Copy only the first 8 characters of the filename, to comply
+		//  * with the restrictions of FAT filesystems. */
+		//    safe_strncpy(tofile, fromfile, 8 + 1);
+		//
+		//    while ((tmpn = strchr(tofile, '.')) != NULL)
+		//	*tmpn = '_';
+		//
+		//    strcat(tofile, BACKUP_SUFFIX);
+		//
+		//    if (rename(fromfile, tofile) == 0)
+		//	return;			// success
+		//
+		///#endif // win32 || msdos
 
 		/* get here => rename failed. */
 		{
@@ -3662,13 +3667,13 @@ double residues = 0;
 		};
 	}
 
-///#ifdef GP_FIT_ERRVARS
-/*****************************************************************
+	///#ifdef GP_FIT_ERRVARS
+	/*****************************************************************
             Set a GNUPLOT user-defined variable for an error
             variable: so take the parameter name, turn it
             into an error parameter name (e.g. a to a_err)
             and then set it.
-******************************************************************/
+	 ******************************************************************/
 
 	///#ifdef GP_FIT_ERRVARS
 	public static void setvarerr(String varname, double value)
@@ -3677,15 +3682,15 @@ double residues = 0;
 		String pErrValName; // The name of the (new) error variable
 
 		/* Create the variable name by appending _err */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		pErrValName = GlobalMembersAlloc.gp_alloc(varname.length() + sizeof(byte) + 4, "");
 
 		String.format(pErrValName,"%s_err",varname);
 		GlobalMembersEval.Gcomplex(errval, value, 0.0);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: setvar(pErrValName, errval);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: setvar(pErrValName, errval);
 		GlobalMembersFit.setvar(pErrValName, new value(errval));
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(pErrValName);
 	}
 }

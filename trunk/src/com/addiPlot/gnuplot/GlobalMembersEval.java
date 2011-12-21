@@ -1458,7 +1458,7 @@ public class GlobalMembersEval
 	public static udvt_entry udv_NaN;
 	/* first in linked list */
 	public static udvt_entry first_udv = udv_pi;
-	public static udft_entry first_udf = DefineConstants.NULL;
+	public static udft_entry first_udf = null;
 
 	public static boolean undefined;
 

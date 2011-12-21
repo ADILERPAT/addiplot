@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.term;
+
 public class GlobalMembersUtil3d
 {
 	///#define __STDC__ 1
@@ -174,11 +176,11 @@ public class GlobalMembersUtil3d
 	//}
 	///#endif
 
-/* single edge intersection algorithm */
-/* Given two points, one inside and one outside the plot, return
- * the point where an edge of the plot intersects the line segment defined
- * by the two points.
- */
+	/* single edge intersection algorithm */
+	/* Given two points, one inside and one outside the plot, return
+	 * the point where an edge of the plot intersects the line segment defined
+	 * by the two points.
+	 */
 
 
 	/* Utility macros for vertices: */
@@ -211,61 +213,61 @@ public class GlobalMembersUtil3d
 
 		if (points[i].type == coord_type.INRANGE)
 		{
-		/* swap points around so that ix/ix/iz are INRANGE and ox/oy/oz are OUTRANGE */
-		x = ix;
-		ix = ox;
-		ox = x;
-		y = iy;
-		iy = oy;
-		oy = y;
-		z = iz;
-		iz = oz;
-		oz = z;
+			/* swap points around so that ix/ix/iz are INRANGE and ox/oy/oz are OUTRANGE */
+			x = ix;
+			ix = ox;
+			ox = x;
+			y = iy;
+			iy = oy;
+			oy = y;
+			z = iz;
+			iz = oz;
+			oz = z;
 		}
 
 		/* nasty degenerate cases, effectively drawing to an infinity point (?)
 		   cope with them here, so don't process them as a "real" OUTRANGE point
-	
+
 		   If more than one coord is -VERYLARGE, then can't ratio the "infinities"
 		   so drop out by returning FALSE */
 
 		count = 0;
 		if (ox == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (oy == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (oz == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 
 		/* either doesn't pass through 3D volume *or*
 		   can't ratio infinities to get a direction to draw line, so return the INRANGE point */
 		if (count > 1)
 		{
-		ex = ix;
-		ey = iy;
-		ez = iz;
+			ex = ix;
+			ey = iy;
+			ez = iz;
 
-		return;
+			return;
 		}
 		if (count == 1)
 		{
-		ex = ix;
-		ey = iy;
-		ez = iz;
+			ex = ix;
+			ey = iy;
+			ez = iz;
 
-		if (ox == -DefineConstants.VERYLARGE)
-		{
-			ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
+			if (ox == -DefineConstants.VERYLARGE)
+			{
+				ex = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
+				return;
+			}
+			if (oy == -DefineConstants.VERYLARGE)
+			{
+				ey = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
+				return;
+			}
+			/* obviously oz is -VERYLARGE and (ox != -VERYLARGE && oy != -VERYLARGE) */
+			ez = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
 			return;
-		}
-		if (oy == -DefineConstants.VERYLARGE)
-		{
-			ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
-			return;
-		}
-		/* obviously oz is -VERYLARGE and (ox != -VERYLARGE && oy != -VERYLARGE) */
-		ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
-		return;
 		}
 		/*
 		 * Can't have case (ix == ox && iy == oy && iz == oz) as one point
@@ -273,264 +275,264 @@ public class GlobalMembersUtil3d
 		 */
 		if (ix == ox)
 		{
-		if (iy == oy)
-		{
-			/* line parallel to z axis */
-
-			/* assume iy in yrange, && ix in xrange */
-			ex = ix; // == ox
-			ey = iy; // == oy
-
-			if ((((iz)<(oz)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (iz)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (oz))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (oz)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (iz)))))
-			ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max);
-			else if ((((iz)<(oz)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (iz)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (oz))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (oz)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (iz)))))
-			ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
-			else
+			if (iy == oy)
 			{
-			GlobalMembersUtil.graph_error("error in edge3d_intersect");
-			}
+				/* line parallel to z axis */
 
-			return;
-		}
-		if (iz == oz)
-		{
-			/* line parallel to y axis */
+				/* assume iy in yrange, && ix in xrange */
+				ex = ix; // == ox
+				ey = iy; // == oy
 
-			/* assume iz in zrange && ix in xrange */
-			ex = ix; // == ox
-			ez = iz; // == oz
-
-			if ((((iy)<(oy)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (iy)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (oy))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (oy)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (iy)))))
-			ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max);
-			else if ((((iy)<(oy)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (iy)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (oy))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (oy)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (iy)))))
-			ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
-			else
-			{
-			GlobalMembersUtil.graph_error("error in edge3d_intersect");
-			}
-
-			return;
-		}
-
-		/* nasty 2D slanted line in a yz plane */
-
-
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define INTERSECT_PLANE(cut, axis, eff, eff_axis, res_x, res_y, res_z) do { if ((((i##axis)<(o##axis)) ? (((cut)>=(i##axis)) && ((cut)<=(o##axis))) : (((cut)>=(o##axis)) && ((cut)<=(i##axis)))) && cut != i##axis && cut != o##axis) { eff = (cut - i##axis) * ((o##eff - i##eff) / (o##axis - i##axis)) + i##eff; if ((((axis_array[eff_axis].min)<(axis_array[eff_axis].max)) ? ((((eff))>=(axis_array[eff_axis].min)) && (((eff))<=(axis_array[eff_axis].max))) : ((((eff))>=(axis_array[eff_axis].max)) && (((eff))<=(axis_array[eff_axis].min))))) { *ex = res_x; *ey = res_y; *ez = res_z; return; } } } while (0)
-
-		do
-		{
-			if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != oy)
-			{
-				z = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) - iy) * ((oz - iz) / (oy - iy)) + iz;
-				if ((((y_array[z_y].min)<(y_array[z_y].max)) ? ((((z)) >= (y_array[z_y].min)) && (((z)) <= (y_array[z_y].max))) : ((((z)) >= (y_array[z_y].max)) && (((z)) <= (y_array[z_y].min)))))
+				if ((((iz)<(oz)) ? ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (iz)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (oz))) : ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (oz)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (iz)))))
+					ez = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max);
+				else if ((((iz)<(oz)) ? ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (iz)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (oz))) : ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (oz)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (iz)))))
+					ez = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
+				else
 				{
-					ex = ix;
-					ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
-					ez = z;
-					return;
+					GlobalMembersUtil.graph_error("error in edge3d_intersect");
 				}
+
+				return;
 			}
-		} while (0);
-		do
-		{
-			if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != oy)
+			if (iz == oz)
 			{
-				z = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) - iy) * ((oz - iz) / (oy - iy)) + iz;
-				if ((((y_array[z_y].min)<(y_array[z_y].max)) ? ((((z)) >= (y_array[z_y].min)) && (((z)) <= (y_array[z_y].max))) : ((((z)) >= (y_array[z_y].max)) && (((z)) <= (y_array[z_y].min)))))
+				/* line parallel to y axis */
+
+				/* assume iz in zrange && ix in xrange */
+				ex = ix; // == ox
+				ez = iz; // == oz
+
+				if ((((iy)<(oy)) ? ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (iy)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (oy))) : ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (oy)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (iy)))))
+					ey = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max);
+				else if ((((iy)<(oy)) ? ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (iy)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (oy))) : ((((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (oy)) && (((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (iy)))))
+					ey = (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE) != 0) ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
+				else
 				{
-					ex = ix;
-					ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max);
-					ez = z;
-					return;
+					GlobalMembersUtil.graph_error("error in edge3d_intersect");
 				}
+
+				return;
 			}
-		} while (0);
-		do
-		{
-			if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != oz)
+
+			/* nasty 2D slanted line in a yz plane */
+
+
+			//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+			///#define INTERSECT_PLANE(cut, axis, eff, eff_axis, res_x, res_y, res_z) do { if ((((i##axis)<(o##axis)) ? (((cut)>=(i##axis)) && ((cut)<=(o##axis))) : (((cut)>=(o##axis)) && ((cut)<=(i##axis)))) && cut != i##axis && cut != o##axis) { eff = (cut - i##axis) * ((o##eff - i##eff) / (o##axis - i##axis)) + i##eff; if ((((axis_array[eff_axis].min)<(axis_array[eff_axis].max)) ? ((((eff))>=(axis_array[eff_axis].min)) && (((eff))<=(axis_array[eff_axis].max))) : ((((eff))>=(axis_array[eff_axis].max)) && (((eff))<=(axis_array[eff_axis].min))))) { *ex = res_x; *ey = res_y; *ez = res_z; return; } } } while (0)
+
+			do
 			{
-				y = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) - iz) * ((oy - iy) / (oz - iz)) + iy;
-				if ((((z_array[y_z].min)<(z_array[y_z].max)) ? ((((y)) >= (z_array[y_z].min)) && (((y)) <= (z_array[y_z].max))) : ((((y)) >= (z_array[y_z].max)) && (((y)) <= (z_array[y_z].min)))))
+				if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != oy)
 				{
-					ex = ix;
-					ey = y;
-					ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
-					return;
+					z = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) - iy) * ((oz - iz) / (oy - iy)) + iz;
+					if ((((y_array[z_y].min)<(y_array[z_y].max)) ? ((((z)) >= (y_array[z_y].min)) && (((z)) <= (y_array[z_y].max))) : ((((z)) >= (y_array[z_y].max)) && (((z)) <= (y_array[z_y].min)))))
+					{
+						ex = ix;
+						ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
+						ez = z;
+						return;
+					}
 				}
-			}
-		} while (0);
-		do
-		{
-			if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != oz)
+			} while (false);
+			do
 			{
-				y = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) - iz) * ((oy - iy) / (oz - iz)) + iy;
-				if ((((z_array[y_z].min)<(z_array[y_z].max)) ? ((((y)) >= (z_array[y_z].min)) && (((y)) <= (z_array[y_z].max))) : ((((y)) >= (z_array[y_z].max)) && (((y)) <= (z_array[y_z].min)))))
+				if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != oy)
 				{
-					ex = ix;
-					ey = y;
-					ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max);
-					return;
+					z = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) - iy) * ((oz - iz) / (oy - iy)) + iz;
+					if ((((y_array[z_y].min)<(y_array[z_y].max)) ? ((((z)) >= (y_array[z_y].min)) && (((z)) <= (y_array[z_y].max))) : ((((z)) >= (y_array[z_y].max)) && (((z)) <= (y_array[z_y].min)))))
+					{
+						ex = ix;
+						ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max);
+						ez = z;
+						return;
+					}
 				}
-			}
-		} while (0);
+			} while (false);
+			do
+			{
+				if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != oz)
+				{
+					y = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) - iz) * ((oy - iy) / (oz - iz)) + iy;
+					if ((((z_array[y_z].min)<(z_array[y_z].max)) ? ((((y)) >= (z_array[y_z].min)) && (((y)) <= (z_array[y_z].max))) : ((((y)) >= (z_array[y_z].max)) && (((y)) <= (z_array[y_z].min)))))
+					{
+						ex = ix;
+						ey = y;
+						ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
+						return;
+					}
+				}
+			} while (false);
+			do
+			{
+				if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != oz)
+				{
+					y = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) - iz) * ((oy - iy) / (oz - iz)) + iy;
+					if ((((z_array[y_z].min)<(z_array[y_z].max)) ? ((((y)) >= (z_array[y_z].min)) && (((y)) <= (z_array[y_z].max))) : ((((y)) >= (z_array[y_z].max)) && (((y)) <= (z_array[y_z].min)))))
+					{
+						ex = ix;
+						ey = y;
+						ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max);
+						return;
+					}
+				}
+			} while (false);
 		} // if (ix == ox)
 
 		if (iy == oy)
 		{
-		/* already checked case (ix == ox && iy == oy) */
-		if (oz == iz)
-		{
-			/* line parallel to x axis */
-
-			/* assume inrange(iz) && inrange(iy) */
-			ey = iy; // == oy
-			ez = iz; // == oz
-
-			if ((((ix)<(ox)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ix)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ox))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ox)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ix)))))
-			ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max);
-			else if ((((ix)<(ox)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ix)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ox))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ox)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ix)))))
-			ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
-			else
+			/* already checked case (ix == ox && iy == oy) */
+			if (oz == iz)
 			{
-			GlobalMembersUtil.graph_error("error in edge3d_intersect");
-			}
+				/* line parallel to x axis */
 
-			return;
-		}
-		/* nasty 2D slanted line in an xz plane */
+				/* assume inrange(iz) && inrange(iy) */
+				ey = iy; // == oy
+				ez = iz; // == oz
 
-		do
-		{
-			if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ox)
-			{
-				z = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) - ix) * ((oz - iz) / (ox - ix)) + iz;
-				if ((((x_array[z_x].min)<(x_array[z_x].max)) ? ((((z)) >= (x_array[z_x].min)) && (((z)) <= (x_array[z_x].max))) : ((((z)) >= (x_array[z_x].max)) && (((z)) <= (x_array[z_x].min)))))
-				{
-					ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
-					ey = iy;
-					ez = z;
-					return;
-				}
-			}
-		} while (0);
-		do
-		{
-			if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ox)
-			{
-				z = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) - ix) * ((oz - iz) / (ox - ix)) + iz;
-				if ((((x_array[z_x].min)<(x_array[z_x].max)) ? ((((z)) >= (x_array[z_x].min)) && (((z)) <= (x_array[z_x].max))) : ((((z)) >= (x_array[z_x].max)) && (((z)) <= (x_array[z_x].min)))))
-				{
+				if ((((ix)<(ox)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ix)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ox))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ox)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ix)))))
 					ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max);
-					ey = iy;
-					ez = z;
-					return;
-				}
-			}
-		} while (0);
-		do
-		{
-			if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != oz)
-			{
-				x = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) - iz) * ((ox - ix) / (oz - iz)) + ix;
-				if ((((z_array[x_z].min)<(z_array[x_z].max)) ? ((((x)) >= (z_array[x_z].min)) && (((x)) <= (z_array[x_z].max))) : ((((x)) >= (z_array[x_z].max)) && (((x)) <= (z_array[x_z].min)))))
+				else if ((((ix)<(ox)) ? ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ix)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ox))) : ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ox)) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ix)))))
+					ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
+				else
 				{
-					ex = x;
-					ey = iy;
-					ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
-					return;
+					GlobalMembersUtil.graph_error("error in edge3d_intersect");
 				}
+
+				return;
 			}
-		} while (0);
-		do
-		{
-			if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != oz)
+			/* nasty 2D slanted line in an xz plane */
+
+			do
 			{
-				x = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) - iz) * ((ox - ix) / (oz - iz)) + ix;
-				if ((((z_array[x_z].min)<(z_array[x_z].max)) ? ((((x)) >= (z_array[x_z].min)) && (((x)) <= (z_array[x_z].max))) : ((((x)) >= (z_array[x_z].max)) && (((x)) <= (z_array[x_z].min)))))
+				if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ox)
 				{
-					ex = x;
-					ey = iy;
-					ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max);
-					return;
+					z = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) - ix) * ((oz - iz) / (ox - ix)) + iz;
+					if ((((x_array[z_x].min)<(x_array[z_x].max)) ? ((((z)) >= (x_array[z_x].min)) && (((z)) <= (x_array[z_x].max))) : ((((z)) >= (x_array[z_x].max)) && (((z)) <= (x_array[z_x].min)))))
+					{
+						ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
+						ey = iy;
+						ez = z;
+						return;
+					}
 				}
-			}
-		} while (0);
+			} while (0);
+			do
+			{
+				if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ox)
+				{
+					z = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) - ix) * ((oz - iz) / (ox - ix)) + iz;
+					if ((((x_array[z_x].min)<(x_array[z_x].max)) ? ((((z)) >= (x_array[z_x].min)) && (((z)) <= (x_array[z_x].max))) : ((((z)) >= (x_array[z_x].max)) && (((z)) <= (x_array[z_x].min)))))
+					{
+						ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max);
+						ey = iy;
+						ez = z;
+						return;
+					}
+				}
+			} while (0);
+			do
+			{
+				if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) != oz)
+				{
+					x = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) - iz) * ((ox - ix) / (oz - iz)) + ix;
+					if ((((z_array[x_z].min)<(z_array[x_z].max)) ? ((((x)) >= (z_array[x_z].min)) && (((x)) <= (z_array[x_z].max))) : ((((x)) >= (z_array[x_z].max)) && (((x)) <= (z_array[x_z].min)))))
+					{
+						ex = x;
+						ey = iy;
+						ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min);
+						return;
+					}
+				}
+			} while (0);
+			do
+			{
+				if ((((iz)<(oz)) ? ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (iz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (oz))) : ((((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) >= (oz)) && (((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) <= (iz)))) && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != iz && (z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) != oz)
+				{
+					x = ((z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : z_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max) - iz) * ((ox - ix) / (oz - iz)) + ix;
+					if ((((z_array[x_z].min)<(z_array[x_z].max)) ? ((((x)) >= (z_array[x_z].min)) && (((x)) <= (z_array[x_z].max))) : ((((x)) >= (z_array[x_z].max)) && (((x)) <= (z_array[x_z].min)))))
+					{
+						ex = x;
+						ey = iy;
+						ez = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max);
+						return;
+					}
+				}
+			} while (0);
 		} // if(iy==oy)
 
 		if (iz == oz)
 		{
-		/* already checked cases (ix == ox && iz == oz) and (iy == oy
+			/* already checked cases (ix == ox && iz == oz) and (iy == oy
 		   && iz == oz) */
 
-		/* 2D slanted line in an xy plane */
+			/* 2D slanted line in an xy plane */
 
-		/* assume inrange(oz) */
+			/* assume inrange(oz) */
 
-		do
-		{
-			if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ox)
+			do
 			{
-				y = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) - ix) * ((oy - iy) / (ox - ix)) + iy;
-				if ((((x_array[y_x].min)<(x_array[y_x].max)) ? ((((y)) >= (x_array[y_x].min)) && (((y)) <= (x_array[y_x].max))) : ((((y)) >= (x_array[y_x].max)) && (((y)) <= (x_array[y_x].min)))))
+				if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) != ox)
 				{
-					ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
-					ey = y;
-					ez = iz;
-					return;
+					y = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) - ix) * ((oy - iy) / (ox - ix)) + iy;
+					if ((((x_array[y_x].min)<(x_array[y_x].max)) ? ((((y)) >= (x_array[y_x].min)) && (((y)) <= (x_array[y_x].max))) : ((((y)) >= (x_array[y_x].max)) && (((y)) <= (x_array[y_x].min)))))
+					{
+						ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min);
+						ey = y;
+						ez = iz;
+						return;
+					}
 				}
-			}
-		} while (0);
-		do
-		{
-			if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ox)
+			} while (0);
+			do
 			{
-				y = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) - ix) * ((oy - iy) / (ox - ix)) + iy;
-				if ((((x_array[y_x].min)<(x_array[y_x].max)) ? ((((y)) >= (x_array[y_x].min)) && (((y)) <= (x_array[y_x].max))) : ((((y)) >= (x_array[y_x].max)) && (((y)) <= (x_array[y_x].min)))))
+				if ((((ix)<(ox)) ? ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ix)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ox))) : ((((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) >= (ox)) && (((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) <= (ix)))) && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ix && (x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) != ox)
 				{
-					ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max);
-					ey = y;
-					ez = iz;
-					return;
+					y = ((x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : x_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max) - ix) * ((oy - iy) / (ox - ix)) + iy;
+					if ((((x_array[y_x].min)<(x_array[y_x].max)) ? ((((y)) >= (x_array[y_x].min)) && (((y)) <= (x_array[y_x].max))) : ((((y)) >= (x_array[y_x].max)) && (((y)) <= (x_array[y_x].min)))))
+					{
+						ex = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max);
+						ey = y;
+						ez = iz;
+						return;
+					}
 				}
-			}
-		} while (0);
-		do
-		{
-			if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != oy)
+			} while (0);
+			do
 			{
-				x = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) - iy) * ((ox - ix) / (oy - iy)) + ix;
-				if ((((y_array[x_y].min)<(y_array[x_y].max)) ? ((((x)) >= (y_array[x_y].min)) && (((x)) <= (y_array[x_y].max))) : ((((x)) >= (y_array[x_y].max)) && (((x)) <= (y_array[x_y].min)))))
+				if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) != oy)
 				{
-					ex = x;
-					ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
-					ez = iz;
-					return;
+					x = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) - iy) * ((ox - ix) / (oy - iy)) + ix;
+					if ((((y_array[x_y].min)<(y_array[x_y].max)) ? ((((x)) >= (y_array[x_y].min)) && (((x)) <= (y_array[x_y].max))) : ((((x)) >= (y_array[x_y].max)) && (((x)) <= (y_array[x_y].min)))))
+					{
+						ex = x;
+						ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min);
+						ez = iz;
+						return;
+					}
 				}
-			}
-		} while (0);
-		do
-		{
-			if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != oy)
+			} while (0);
+			do
 			{
-				x = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) - iy) * ((ox - ix) / (oy - iy)) + ix;
-				if ((((y_array[x_y].min)<(y_array[x_y].max)) ? ((((x)) >= (y_array[x_y].min)) && (((x)) <= (y_array[x_y].max))) : ((((x)) >= (y_array[x_y].max)) && (((x)) <= (y_array[x_y].min)))))
+				if ((((iy)<(oy)) ? ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (iy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (oy))) : ((((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) >= (oy)) && (((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) <= (iy)))) && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != iy && (y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) != oy)
 				{
-					ex = x;
-					ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max);
-					ez = iz;
-					return;
+					x = ((y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : y_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max) - iy) * ((ox - ix) / (oy - iy)) + ix;
+					if ((((y_array[x_y].min)<(y_array[x_y].max)) ? ((((x)) >= (y_array[x_y].min)) && (((x)) <= (y_array[x_y].max))) : ((((x)) >= (y_array[x_y].max)) && (((x)) <= (y_array[x_y].min)))))
+					{
+						ex = x;
+						ey = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].range_flags & DefineConstants.RANGE_REVERSE ? GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min : GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max);
+						ez = iz;
+						return;
+					}
 				}
-			}
-		} while (0);
+			} while (0);
 		} // if(iz==oz)
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef INTERSECT_PLANE
+		//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+		///#undef INTERSECT_PLANE
 
 		/* really nasty general slanted 3D case */
 
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define INTERSECT_DIAG(cut, axis, eff, eff_axis, eff2, eff2_axis, res_x, res_y, res_z) do { if ((((i##axis)<(o##axis)) ? (((cut)>=(i##axis)) && ((cut)<=(o##axis))) : (((cut)>=(o##axis)) && ((cut)<=(i##axis)))) && cut != i##axis && cut != o##axis) { eff = (cut - i##axis) * ((o##eff - i##eff) / (o##axis - i##axis)) + i##eff; eff2 = (cut - i##axis) * ((o##eff2 - i##eff2) / (o##axis - i##axis)) + i##eff2; if ((((axis_array[eff_axis].min)<(axis_array[eff_axis].max)) ? ((((eff))>=(axis_array[eff_axis].min)) && (((eff))<=(axis_array[eff_axis].max))) : ((((eff))>=(axis_array[eff_axis].max)) && (((eff))<=(axis_array[eff_axis].min)))) && (((axis_array[eff2_axis].min)<(axis_array[eff2_axis].max)) ? ((((eff2))>=(axis_array[eff2_axis].min)) && (((eff2))<=(axis_array[eff2_axis].max))) : ((((eff2))>=(axis_array[eff2_axis].max)) && (((eff2))<=(axis_array[eff2_axis].min))))) { *ex = res_x; *ey = res_y; *ez = res_z; return; } } } while (0)
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define INTERSECT_DIAG(cut, axis, eff, eff_axis, eff2, eff2_axis, res_x, res_y, res_z) do { if ((((i##axis)<(o##axis)) ? (((cut)>=(i##axis)) && ((cut)<=(o##axis))) : (((cut)>=(o##axis)) && ((cut)<=(i##axis)))) && cut != i##axis && cut != o##axis) { eff = (cut - i##axis) * ((o##eff - i##eff) / (o##axis - i##axis)) + i##eff; eff2 = (cut - i##axis) * ((o##eff2 - i##eff2) / (o##axis - i##axis)) + i##eff2; if ((((axis_array[eff_axis].min)<(axis_array[eff_axis].max)) ? ((((eff))>=(axis_array[eff_axis].min)) && (((eff))<=(axis_array[eff_axis].max))) : ((((eff))>=(axis_array[eff_axis].max)) && (((eff))<=(axis_array[eff_axis].min)))) && (((axis_array[eff2_axis].min)<(axis_array[eff2_axis].max)) ? ((((eff2))>=(axis_array[eff2_axis].min)) && (((eff2))<=(axis_array[eff2_axis].max))) : ((((eff2))>=(axis_array[eff2_axis].max)) && (((eff2))<=(axis_array[eff2_axis].min))))) { *ex = res_x; *ey = res_y; *ez = res_z; return; } } } while (0)
 
 		do
 		{
@@ -625,8 +627,8 @@ public class GlobalMembersUtil3d
 			}
 		} while (0);
 
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef INTERSECT_DIAG
+		//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+		///#undef INTERSECT_DIAG
 
 		/* If we reach here, the inrange point is on the edge, and
 		 * the line segment from the outrange point does not cross any
@@ -640,16 +642,16 @@ public class GlobalMembersUtil3d
 		return;
 	}
 
-/* double edge intersection algorithm */
-/* Given two points, both outside the plot, return
- * the points where an edge of the plot intersects the line segment defined
- * by the two points. There may be zero, one, two, or an infinite number
- * of intersection points. (One means an intersection at a corner, infinite
- * means overlaying the edge itself). We return FALSE when there is nothing
- * to draw (zero intersections), and TRUE when there is something to
- * draw (the one-point case is a degenerate of the two-point case and we do
- * not distinguish it - we draw it anyway).
- */
+	/* double edge intersection algorithm */
+	/* Given two points, both outside the plot, return
+	 * the points where an edge of the plot intersects the line segment defined
+	 * by the two points. There may be zero, one, two, or an infinite number
+	 * of intersection points. (One means an intersection at a corner, infinite
+	 * means overlaying the edge itself). We return FALSE when there is nothing
+	 * to draw (zero intersections), and TRUE when there is something to
+	 * draw (the one-point case is a degenerate of the two-point case and we do
+	 * not distinguish it - we draw it anyway).
+	 */
 	public static boolean two_edge3d_intersect(coordinate[] points, int i, double[] lx, double[] ly, double[] lz)
 	{
 		int count;
@@ -670,130 +672,130 @@ public class GlobalMembersUtil3d
 
 		/* nasty degenerate cases, effectively drawing to an infinity point (?)
 		   cope with them here, so don't process them as a "real" OUTRANGE point
-	
+
 		   If more than one coord is -VERYLARGE, then can't ratio the "infinities"
 		   so drop out by returning FALSE */
 
 		count = 0;
 		if (ix == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (ox == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (iy == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (oy == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (iz == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 		if (oz == -DefineConstants.VERYLARGE)
-		count++;
+			count++;
 
 		/* either doesn't pass through 3D volume *or*
 		   can't ratio infinities to get a direction to draw line, so simply return(FALSE) */
 		if (count > 1)
 		{
-		return (false);
+			return (false);
 		}
 
 		if (ox == -DefineConstants.VERYLARGE || ix == -DefineConstants.VERYLARGE)
 		{
-		if (ix == -DefineConstants.VERYLARGE)
-		{
-			/* swap points so ix/iy/iz don't have a -VERYLARGE component */
-			x = ix;
-			ix = ox;
-			ox = x;
-			y = iy;
-			iy = oy;
-			oy = y;
-			z = iz;
-			iz = oz;
-			oz = z;
-		}
-		/* check actually passes through the 3D graph volume */
+			if (ix == -DefineConstants.VERYLARGE)
+			{
+				/* swap points so ix/iy/iz don't have a -VERYLARGE component */
+				x = ix;
+				ix = ox;
+				ox = x;
+				y = iy;
+				iy = oy;
+				oy = y;
+				z = iz;
+				iz = oz;
+				oz = z;
+			}
+			/* check actually passes through the 3D graph volume */
 
-		if (ix > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
-		{
-			lx[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
-			ly[0] = iy;
-			lz[0] = iz;
+			if (ix > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+			{
+				lx[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
+				ly[0] = iy;
+				lz[0] = iz;
 
-			lx[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
-			ly[1] = iy;
-			lz[1] = iz;
+				lx[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
+				ly[1] = iy;
+				lz[1] = iz;
 
-			return (true);
-		}
-		else
-		{
-			return (false);
-		}
+				return (true);
+			}
+			else
+			{
+				return (false);
+			}
 		}
 		if (oy == -DefineConstants.VERYLARGE || iy == -DefineConstants.VERYLARGE)
 		{
-		if (iy == -DefineConstants.VERYLARGE)
-		{
-			/* swap points so ix/iy/iz don't have a -VERYLARGE component */
-			x = ix;
-			ix = ox;
-			ox = x;
-			y = iy;
-			iy = oy;
-			oy = y;
-			z = iz;
-			iz = oz;
-			oz = z;
-		}
-		/* check actually passes through the 3D graph volume */
-		if (iy > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
-		{
-			lx[0] = ix;
-			ly[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min;
-			lz[0] = iz;
+			if (iy == -DefineConstants.VERYLARGE)
+			{
+				/* swap points so ix/iy/iz don't have a -VERYLARGE component */
+				x = ix;
+				ix = ox;
+				ox = x;
+				y = iy;
+				iy = oy;
+				oy = y;
+				z = iz;
+				iz = oz;
+				oz = z;
+			}
+			/* check actually passes through the 3D graph volume */
+			if (iy > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+			{
+				lx[0] = ix;
+				ly[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min;
+				lz[0] = iz;
 
-			lx[1] = ix;
-			ly[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max;
-			lz[1] = iz;
+				lx[1] = ix;
+				ly[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max;
+				lz[1] = iz;
 
-			return (true);
-		}
-		else
-		{
-			return (false);
-		}
+				return (true);
+			}
+			else
+			{
+				return (false);
+			}
 		}
 		if (oz == -DefineConstants.VERYLARGE || iz == -DefineConstants.VERYLARGE)
 		{
-		if (iz == -DefineConstants.VERYLARGE)
-		{
-			/* swap points so ix/iy/iz don't have a -VERYLARGE component */
-			x = ix;
-			ix = ox;
-			ox = x;
-			y = iy;
-			iy = oy;
-			oy = y;
-			z = iz;
-			iz = oz;
-			oz = z;
-		}
-		/* check actually passes through the 3D graph volume */
-		if (iz > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
-		{
-			lx[0] = ix;
-			ly[0] = iy;
-			lz[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
+			if (iz == -DefineConstants.VERYLARGE)
+			{
+				/* swap points so ix/iy/iz don't have a -VERYLARGE component */
+				x = ix;
+				ix = ox;
+				ox = x;
+				y = iy;
+				iy = oy;
+				oy = y;
+				z = iz;
+				iz = oz;
+				oz = z;
+			}
+			/* check actually passes through the 3D graph volume */
+			if (iz > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
+			{
+				lx[0] = ix;
+				ly[0] = iy;
+				lz[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
 
-			lx[1] = ix;
-			ly[1] = iy;
-			lz[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max;
+				lx[1] = ix;
+				ly[1] = iy;
+				lz[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max;
 
-			return (true);
-		}
-		else
-		{
-			return (false);
-		}
+				return (true);
+			}
+			else
+			{
+				return (false);
+			}
 		}
 		/*
 		 * Quick outcode tests on the 3d graph volume
@@ -804,13 +806,13 @@ public class GlobalMembersUtil3d
 		 * ticslevel is non-zero)
 		 */
 		if (((iz) > (oz) ? (iz) : (oz)) < GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min || ((iz) < (oz) ? (iz) : (oz)) > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)
-		return (false);
+			return (false);
 
 		if (((ix) > (ox) ? (ix) : (ox)) < GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min || ((ix) < (ox) ? (ix) : (ox)) > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)
-		return (false);
+			return (false);
 
 		if (((iy) > (oy) ? (iy) : (oy)) < GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min || ((iy) < (oy) ? (iy) : (oy)) > GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)
-		return (false);
+			return (false);
 
 		/* Special horizontal/vertical, etc. cases are checked and
 		 * remaining slant lines are checked separately.
@@ -826,242 +828,242 @@ public class GlobalMembersUtil3d
 		 * OUTRANGE */
 		if (ix == ox && iy == oy && iz == oz)
 		{
-		/* but as only define single outrange point, can't intersect
-		 * 3D graph volume */
-		return (false);
+			/* but as only define single outrange point, can't intersect
+			 * 3D graph volume */
+			return (false);
 		}
 
 		if (ix == ox)
 		{
-		if (iy == oy)
-		{
-			/* line parallel to z axis */
-
-			/* x and y coords must be in range, and line must span
-			 * both FIRST_Z_AXIS->min and ->max.
-			 *
-			 * note that spanning FIRST_Z_AXIS->min implies spanning
-			 * ->max as both points OUTRANGE */
-
-			if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) || !(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
+			if (iy == oy)
 			{
-			return (false);
+				/* line parallel to z axis */
+
+				/* x and y coords must be in range, and line must span
+				 * both FIRST_Z_AXIS->min and ->max.
+				 *
+				 * note that spanning FIRST_Z_AXIS->min implies spanning
+				 * ->max as both points OUTRANGE */
+
+				if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) || !(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
+				{
+					return (false);
+				}
+				if ((((iz)<(oz)) ? (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) >= (iz)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) <= (oz))) : (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) >= (oz)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) <= (iz)))))
+				{
+					lx[0] = ix;
+					ly[0] = iy;
+					lz[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
+
+					lx[1] = ix;
+					ly[1] = iy;
+					lz[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max;
+
+					return (true);
+				}
+				else
+					return (false);
 			}
-			if ((((iz)<(oz)) ? (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) >= (iz)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) <= (oz))) : (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) >= (oz)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min) <= (iz)))))
+			if (iz == oz)
 			{
+				/* line parallel to y axis */
+				if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) || !(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+				{
+					return (false);
+				}
+				if ((((iy)<(oy)) ? (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) >= (iy)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) <= (oy))) : (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) >= (oy)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) <= (iy)))))
+				{
+					lx[0] = ix;
+					ly[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min;
+					lz[0] = iz;
+
+					lx[1] = ix;
+					ly[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max;
+					lz[1] = iz;
+
+					return (true);
+				}
+				else
+					return (false);
+			}
+
+
+			/* nasty 2D slanted line in a yz plane */
+			if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ox)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ox)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ox)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ox)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))))
+				return (false);
+
+			t[0] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min - iy) / (oy - iy);
+			t[1] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max - iy) / (oy - iy);
+
+			if (t[0] > t[1])
+			{
+				swap = t[0];
+				t[0] = t[1];
+				t[1] = swap;
+			}
+			t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min - iz) / (oz - iz);
+			t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max - iz) / (oz - iz);
+
+			if (t[2] > t[3])
+			{
+				swap = t[2];
+				t[2] = t[3];
+				t[3] = swap;
+			}
+			t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (0.0) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (0.0));
+			t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (1.0) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (1.0));
+
+			if (t_min > t_max)
+				return (false);
+
 			lx[0] = ix;
-			ly[0] = iy;
-			lz[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
+			ly[0] = iy + t_min * (oy - iy);
+			lz[0] = iz + t_min * (oz - iz);
 
 			lx[1] = ix;
-			ly[1] = iy;
-			lz[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max;
+			ly[1] = iy + t_max * (oy - iy);
+			lz[1] = iz + t_max * (oz - iz);
 
-			return (true);
+			/* Can only have 0 or 2 intersection points -- only need test
+			 * one coord */
+			if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+			{
+				return (true);
 			}
-			else
+			return (false);
+		}
+
+		if (iy == oy)
+		{
+			/* already checked case (ix == ox && iy == oy) */
+			if (oz == iz)
+			{
+				/* line parallel to x axis */
+				if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) || !(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+				{
+					return (false);
+				}
+				if ((((ix)<(ox)) ? (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) >= (ix)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) <= (ox))) : (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) >= (ox)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) <= (ix)))))
+				{
+					lx[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
+					ly[0] = iy;
+					lz[0] = iz;
+
+					lx[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
+					ly[1] = iy;
+					lz[1] = iz;
+
+					return (true);
+				}
+				else
+					return (false);
+			}
+			/* nasty 2D slanted line in an xz plane */
+
+			if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((oy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((oy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((oy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((oy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
+				return (false);
+
+			t[0] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min - ix) / (ox - ix);
+			t[1] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max - ix) / (ox - ix);
+
+			if (t[0] > t[1])
+			{
+				swap = t[0];
+				t[0] = t[1];
+				t[1] = swap;
+			}
+			t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min - iz) / (oz - iz);
+			t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max - iz) / (oz - iz);
+
+			if (t[2] > t[3])
+			{
+				swap = t[2];
+				t[2] = t[3];
+				t[3] = swap;
+			}
+			t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (0.0) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (0.0));
+			t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (1.0) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (1.0));
+
+			if (t_min > t_max)
+				return (false);
+
+			lx[0] = ix + t_min * (ox - ix);
+			ly[0] = iy;
+			lz[0] = iz + t_min * (oz - iz);
+
+			lx[1] = ix + t_max * (ox - ix);
+			ly[1] = iy;
+			lz[1] = iz + t_max * (oz - iz);
+
+			/*
+			 * Can only have 0 or 2 intersection points -- only need test one coord
+			 */
+			if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+			{
+				return (true);
+			}
 			return (false);
 		}
 		if (iz == oz)
 		{
-			/* line parallel to y axis */
-			if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ix)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ix)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) || !(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
-			{
-			return (false);
-			}
-			if ((((iy)<(oy)) ? (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) >= (iy)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) <= (oy))) : (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) >= (oy)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min) <= (iy)))))
-			{
-			lx[0] = ix;
-			ly[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min;
-			lz[0] = iz;
-
-			lx[1] = ix;
-			ly[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max;
-			lz[1] = iz;
-
-			return (true);
-			}
-			else
-			return (false);
-		}
-
-
-		/* nasty 2D slanted line in a yz plane */
-		if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((ox)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((ox)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((ox)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((ox)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))))
-			return (false);
-
-		t[0] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min - iy) / (oy - iy);
-		t[1] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max - iy) / (oy - iy);
-
-		if (t[0] > t[1])
-		{
-			swap = t[0];
-			t[0] = t[1];
-			t[1] = swap;
-		}
-		t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min - iz) / (oz - iz);
-		t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max - iz) / (oz - iz);
-
-		if (t[2] > t[3])
-		{
-			swap = t[2];
-			t[2] = t[3];
-			t[3] = swap;
-		}
-		t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (0.0) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (0.0));
-		t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (1.0) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (1.0));
-
-		if (t_min > t_max)
-			return (false);
-
-		lx[0] = ix;
-		ly[0] = iy + t_min * (oy - iy);
-		lz[0] = iz + t_min * (oz - iz);
-
-		lx[1] = ix;
-		ly[1] = iy + t_max * (oy - iy);
-		lz[1] = iz + t_max * (oz - iz);
-
-		/* Can only have 0 or 2 intersection points -- only need test
-		 * one coord */
-		if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
-		{
-			return (true);
-		}
-		return (false);
-		}
-
-		if (iy == oy)
-		{
-		/* already checked case (ix == ox && iy == oy) */
-		if (oz == iz)
-		{
-			/* line parallel to x axis */
-			if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((iy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((iy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) || !(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((iz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((iz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
-			{
-			return (false);
-			}
-			if ((((ix)<(ox)) ? (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) >= (ix)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) <= (ox))) : (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) >= (ox)) && ((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min) <= (ix)))))
-			{
-			lx[0] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min;
-			ly[0] = iy;
-			lz[0] = iz;
-
-			lx[1] = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max;
-			ly[1] = iy;
-			lz[1] = iz;
-
-			return (true);
-			}
-			else
-			return (false);
-		}
-		/* nasty 2D slanted line in an xz plane */
-
-		if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((oy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((oy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((oy)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((oy)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
-			return (false);
-
-		t[0] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min - ix) / (ox - ix);
-		t[1] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max - ix) / (ox - ix);
-
-		if (t[0] > t[1])
-		{
-			swap = t[0];
-			t[0] = t[1];
-			t[1] = swap;
-		}
-		t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min - iz) / (oz - iz);
-		t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max - iz) / (oz - iz);
-
-		if (t[2] > t[3])
-		{
-			swap = t[2];
-			t[2] = t[3];
-			t[3] = swap;
-		}
-		t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (0.0) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (0.0));
-		t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (1.0) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (1.0));
-
-		if (t_min > t_max)
-			return (false);
-
-		lx[0] = ix + t_min * (ox - ix);
-		ly[0] = iy;
-		lz[0] = iz + t_min * (oz - iz);
-
-		lx[1] = ix + t_max * (ox - ix);
-		ly[1] = iy;
-		lz[1] = iz + t_max * (oz - iz);
-
-		/*
-		 * Can only have 0 or 2 intersection points -- only need test one coord
-		 */
-		if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
-		{
-			return (true);
-		}
-		return (false);
-		}
-		if (iz == oz)
-		{
-		/* already checked cases (ix == ox && iz == oz) and (iy == oy
+			/* already checked cases (ix == ox && iz == oz) and (iy == oy
 		   && iz == oz) */
 
-		/* nasty 2D slanted line in an xy plane */
+			/* nasty 2D slanted line in an xy plane */
 
-		if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((oz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((oz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((oz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((oz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+			if (!(((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((oz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((oz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((oz)) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((oz)) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
+				return (false);
+
+			t[0] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min - ix) / (ox - ix);
+			t[1] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max - ix) / (ox - ix);
+
+			if (t[0] > t[1])
+			{
+				swap = t[0];
+				t[0] = t[1];
+				t[1] = swap;
+			}
+			t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min - iy) / (oy - iy);
+			t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max - iy) / (oy - iy);
+
+			if (t[2] > t[3])
+			{
+				swap = t[2];
+				t[2] = t[3];
+				t[3] = swap;
+			}
+			t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (0.0) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (0.0));
+			t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (1.0) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (1.0));
+
+			if (t_min > t_max)
+				return (false);
+
+			lx[0] = ix + t_min * (ox - ix);
+			ly[0] = iy + t_min * (oy - iy);
+			lz[0] = iz;
+
+			lx[1] = ix + t_max * (ox - ix);
+			ly[1] = iy + t_max * (oy - iy);
+			lz[1] = iz;
+
+			/*
+			 * Can only have 0 or 2 intersection points -- only need test one coord
+			 */
+			if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
+			{
+				return (true);
+			}
 			return (false);
-
-		t[0] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min - ix) / (ox - ix);
-		t[1] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max - ix) / (ox - ix);
-
-		if (t[0] > t[1])
-		{
-			swap = t[0];
-			t[0] = t[1];
-			t[1] = swap;
-		}
-		t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min - iy) / (oy - iy);
-		t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max - iy) / (oy - iy);
-
-		if (t[2] > t[3])
-		{
-			swap = t[2];
-			t[2] = t[3];
-			t[3] = swap;
-		}
-		t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (0.0) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (0.0));
-		t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (1.0) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (1.0));
-
-		if (t_min > t_max)
-			return (false);
-
-		lx[0] = ix + t_min * (ox - ix);
-		ly[0] = iy + t_min * (oy - iy);
-		lz[0] = iz;
-
-		lx[1] = ix + t_max * (ox - ix);
-		ly[1] = iy + t_max * (oy - iy);
-		lz[1] = iz;
-
-		/*
-		 * Can only have 0 or 2 intersection points -- only need test one coord
-		 */
-		if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))))
-		{
-			return (true);
-		}
-		return (false);
 		}
 		/* really nasty general slanted 3D case */
 
 		/*
 		   Solve parametric equation
-	
+
 		   (ix, iy, iz) + t (diff_x, diff_y, diff_z)
-	
+
 		   where 0.0 <= t <= 1.0 and
-	
+
 		   diff_x = (ox - ix);
 		   diff_y = (oy - iy);
 		   diff_z = (oz - iz);
@@ -1072,33 +1074,33 @@ public class GlobalMembersUtil3d
 
 		if (t[0] > t[1])
 		{
-		swap = t[0];
-		t[0] = t[1];
-		t[1] = swap;
+			swap = t[0];
+			t[0] = t[1];
+			t[1] = swap;
 		}
 		t[2] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min - iy) / (oy - iy);
 		t[3] = (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max - iy) / (oy - iy);
 
 		if (t[2] > t[3])
 		{
-		swap = t[2];
-		t[2] = t[3];
-		t[3] = swap;
+			swap = t[2];
+			t[2] = t[3];
+			t[3] = swap;
 		}
 		t[4] = (iz == oz) ? 0.0 : (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min - iz) / (oz - iz);
 		t[5] = (iz == oz) ? 1.0 : (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max - iz) / (oz - iz);
 
 		if (t[4] > t[5])
 		{
-		swap = t[4];
-		t[4] = t[5];
-		t[5] = swap;
+			swap = t[4];
+			t[4] = t[5];
+			t[5] = swap;
 		}
 		t_min = ((((t[0]) > (t[2]) ? (t[0]) : (t[2]))) > (((t[4]) > (0.0) ? (t[4]) : (0.0))) ? (((t[0]) > (t[2]) ? (t[0]) : (t[2]))) : (((t[4]) > (0.0) ? (t[4]) : (0.0))));
 		t_max = ((((t[1]) < (t[3]) ? (t[1]) : (t[3]))) < (((t[5]) < (1.0) ? (t[5]) : (1.0))) ? (((t[1]) < (t[3]) ? (t[1]) : (t[3]))) : (((t[5]) < (1.0) ? (t[5]) : (1.0))));
 
 		if (t_min > t_max)
-		return (false);
+			return (false);
 
 		lx[0] = ix + t_min * (ox - ix);
 		ly[0] = iy + t_min * (oy - iy);
@@ -1113,21 +1115,21 @@ public class GlobalMembersUtil3d
 		 */
 		if ((((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) ? ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max))) : ((((lx[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].max)) && (((lx[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) ? ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max))) : ((((ly[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].max)) && (((ly[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].min)))) && (((GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)<(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) ? ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max))) : ((((lz[0])) >= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].max)) && (((lz[0])) <= (GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min)))))
 		{
-		return (true);
+			return (true);
 		}
 		return (false);
 	}
 
-///#if 0 // HBB 990829: unused --> commented out
-////void
-////mat_trans(double tx, double ty, double tz, transform_matrix mat)
-////{
-////    mat_unit(mat);		// Make it unit matrix. 
-////    mat[3][0] = tx;
-////    mat[3][1] = ty;
-////    mat[3][2] = tz;
-////}
-///#endif // commented out 
+	///#if 0 // HBB 990829: unused --> commented out
+	////void
+	////mat_trans(double tx, double ty, double tz, transform_matrix mat)
+	////{
+	////    mat_unit(mat);		// Make it unit matrix. 
+	////    mat[3][0] = tx;
+	////    mat[3][1] = ty;
+	////    mat[3][2] = tz;
+	////}
+	///#endif // commented out 
 
 	public static void mat_scale(double sx, double sy, double sz, double[][] mat)
 	{
@@ -1152,23 +1154,23 @@ public class GlobalMembersUtil3d
 		mat[2][2] = cos_teta;
 	}
 
-///#if 0 // HBB 990829: unused --> commented out
-////void
-////mat_rot_y(double teta, transform_matrix mat)
-////{
-////    double cos_teta, sin_teta;
-////
-////    teta *= DEG2RAD;
-////    cos_teta = cos(teta);
-////    sin_teta = sin(teta);
-////
-////    mat_unit(mat);		// Make it unit matrix. 
-////    mat[0][0] = cos_teta;
-////    mat[0][2] = -sin_teta;
-////    mat[2][0] = sin_teta;
-////    mat[2][2] = cos_teta;
-////}
-///#endif // commented out 
+	///#if 0 // HBB 990829: unused --> commented out
+	////void
+	////mat_rot_y(double teta, transform_matrix mat)
+	////{
+	////    double cos_teta, sin_teta;
+	////
+	////    teta *= DEG2RAD;
+	////    cos_teta = cos(teta);
+	////    sin_teta = sin(teta);
+	////
+	////    mat_unit(mat);		// Make it unit matrix. 
+	////    mat[0][0] = cos_teta;
+	////    mat[0][2] = -sin_teta;
+	////    mat[2][0] = sin_teta;
+	////    mat[2][2] = cos_teta;
+	////}
+	///#endif // commented out 
 
 	public static void mat_rot_z(double teta, double[][] mat)
 	{
@@ -1186,7 +1188,7 @@ public class GlobalMembersUtil3d
 		mat[1][1] = cos_teta;
 	}
 
-/* Multiply two transform_matrix. Result can be one of two operands. */
+	/* Multiply two transform_matrix. Result can be one of two operands. */
 	public static void mat_mult(double[][] mat_res, double[][] mat1, double[][] mat2)
 	{
 		int i;
@@ -1195,20 +1197,20 @@ public class GlobalMembersUtil3d
 		double[][] mat_res_temp = new double[4][4];
 
 		for (i = 0; i < 4; i++)
-		for (j = 0; j < 4; j++)
-		{
-			mat_res_temp[i][j] = 0;
-			for (k = 0; k < 4; k++)
-			mat_res_temp[i][j] += mat1[i][k] * mat2[k][j];
-		}
+			for (j = 0; j < 4; j++)
+			{
+				mat_res_temp[i][j] = 0;
+				for (k = 0; k < 4; k++)
+					mat_res_temp[i][j] += mat1[i][k] * mat2[k][j];
+			}
 		for (i = 0; i < 4; i++)
-		for (j = 0; j < 4; j++)
-			mat_res[i][j] = mat_res_temp[i][j];
+			for (j = 0; j < 4; j++)
+				mat_res[i][j] = mat_res_temp[i][j];
 	}
 
-/* Performs transformation from 'user coordinates' to a normalized
- * vector in 'graph coordinates' (-1..1 in all three directions).  */
-	public static void map3d_xyz(double x, double y, double z, vertex GPHUGE out)
+	/* Performs transformation from 'user coordinates' to a normalized
+	 * vector in 'graph coordinates' (-1..1 in all three directions).  */
+	public static void map3d_xyz(double x, double y, double z, vertex out)
 	{
 		int i;
 		int j;
@@ -1224,33 +1226,33 @@ public class GlobalMembersUtil3d
 		/* Res[] = V[] * trans_mat[][] (uses row-vectors) */
 		for (i = 0; i < 4; i++)
 		{
-		Res[i] = GlobalMembersGraph3d.trans_mat[3][i]; // V[3] is 1. anyway
-		for (j = 0; j < 3; j++)
-			Res[i] += V[j] * GlobalMembersGraph3d.trans_mat[j][i];
+			Res[i] = GlobalMembersGraph3d.trans_mat[3][i]; // V[3] is 1. anyway
+			for (j = 0; j < 3; j++)
+				Res[i] += V[j] * GlobalMembersGraph3d.trans_mat[j][i];
 		}
 
 		if (Res[3] == 0)
-		Res[3] = 1.0e-5;
+			Res[3] = 1.0e-5;
 
 		out.x = Res[0] / Res[3];
 		out.y = Res[1] / Res[3];
 		out.z = Res[2] / Res[3];
 		/* store z for later color calculation */
 		out.real_z = z;
-		out.label = DefineConstants.NULL;
+		out.label = null;
 	}
 
-/* Function to map from user 3D space to normalized 'camera' view
- * space, and from there directly to terminal coordinates */
-	public static void map3d_xy(double x, double y, double z, int xt, int yt)
+	/* Function to map from user 3D space to normalized 'camera' view
+	 * space, and from there directly to terminal coordinates */
+	public static void map3d_xy(double x, double y, double z, int xt[], int yt[])
 	{
-		double xtd;
-		double ytd;
+		double xtd[] = new double[0];
+		double ytd[] = new double[0];
 		GlobalMembersUtil3d.map3d_xy_double(x, y, z, xtd, ytd);
-		xt = xtd;
-		yt = ytd;
+		xt[0] = (int) xtd[0];
+		yt[0] = (int) ytd[0];
 	}
-	public static void map3d_xy_double(double x, double y, double z, double xt, double yt)
+	public static void map3d_xy_double(double x, double y, double z, double[] xtd, double[] ytd)
 	{
 		int i;
 		int j;
@@ -1265,39 +1267,39 @@ public class GlobalMembersUtil3d
 
 		for (i = 0; i < 2; i++) // Dont use the third axes (z).
 		{
-		res[i] = GlobalMembersGraph3d.trans_mat[3][i]; // Initiate it with the weight factor
-		for (j = 0; j < 3; j++)
-			res[i] += v[j] * GlobalMembersGraph3d.trans_mat[j][i];
+			res[i] = GlobalMembersGraph3d.trans_mat[3][i]; // Initiate it with the weight factor
+			for (j = 0; j < 3; j++)
+				res[i] += v[j] * GlobalMembersGraph3d.trans_mat[j][i];
 		}
 
 		for (i = 0; i < 3; i++)
-		w += v[i] * GlobalMembersGraph3d.trans_mat[i][3];
+			w += v[i] * GlobalMembersGraph3d.trans_mat[i][3];
 		if (w == 0)
-		w = 1e-5;
+			w = 1e-5;
 
-		xt = ((res[0] * GlobalMembersGraph3d.xscaler / w) + GlobalMembersGraph3d.xmiddle);
-		yt = ((res[1] * GlobalMembersGraph3d.yscaler / w) + GlobalMembersGraph3d.ymiddle);
+		xtd[0] = ((res[0] * GlobalMembersGraph3d.xscaler / w) + GlobalMembersGraph3d.xmiddle);
+		ytd[0] = ((res[1] * GlobalMembersGraph3d.yscaler / w) + GlobalMembersGraph3d.ymiddle);
 	}
-	
+
 	public static void draw3d_line(vertex v1, vertex v2, lp_style_type lp)
 	{
-	///#ifndef LITE
+		///#ifndef LITE
 		/* hidden3d routine can't work if no surface was drawn at all */
 		if (GlobalMembersGraph3d.hidden3d && GlobalMembersGraph3d.draw_surface)
 		{
-		GlobalMembersHidden3d.draw_line_hidden(v1, v2, lp);
-		return;
+			GlobalMembersHidden3d.draw_line_hidden(v1, v2, lp);
+			return;
 		}
-	///#endif
+		///#endif
 
 		GlobalMembersUtil3d.draw3d_line_unconditional(v1, v2, lp, lp.l_type);
 
 	}
 
-/* Moved this upward, to make optional inlining in draw3d_line easier
- * for compilers */
-/* HBB 20021128: removed GP_INLINE qualifier to avoid MSVC++ silliness */
-	public static void draw3d_line_unconditional(vertex GPHUGE v1, vertex GPHUGE v2, lp_style_type lp, int linetype)
+	/* Moved this upward, to make optional inlining in draw3d_line easier
+	 * for compilers */
+	/* HBB 20021128: removed GP_INLINE qualifier to avoid MSVC++ silliness */
+	public static void draw3d_line_unconditional(vertex v1, vertex v2, lp_style_type lp, int linetype)
 	{
 		int x1;
 		int y1;
@@ -1309,8 +1311,8 @@ public class GlobalMembersUtil3d
 		draw_line_hidden. --> redirect to point drawing routine */
 		if (v2 == null)
 		{
-		GlobalMembersUtil3d.draw3d_point_unconditional(v1, lp);
-		return;
+			GlobalMembersUtil3d.draw3d_point_unconditional(v1, lp);
+			return;
 		}
 
 		{
@@ -1324,11 +1326,11 @@ public class GlobalMembersUtil3d
 
 		/* User-specified line styles */
 		if (GlobalMembersGadgets.prefer_line_styles && linetype >= 0)
-		GlobalMembersTerm.lp_use_properties(ls, linetype + 1);
+			GlobalMembersTerm.lp_use_properties(ls, linetype + 1);
 
 		/* The usual case of auto-generated line types */
 		else
-		ls.l_type = linetype;
+			ls.l_type = linetype;
 
 		/* Color by Z value */
 		if (ls.pm3d_color.type == DefineConstants.TC_Z)
@@ -1338,34 +1340,34 @@ public class GlobalMembersUtil3d
 		GlobalMembersGadgets.draw_clip_line(x1, y1, x2, y2);
 	}
 
-/* HBB 20000621: new routine, to allow for hiding point symbols behind
- * the surface */
-	public static void draw3d_point(vertex GPHUGE v, lp_style_type lp)
+	/* HBB 20000621: new routine, to allow for hiding point symbols behind
+	 * the surface */
+	public static void draw3d_point(vertex v, lp_style_type lp)
 	{
-	///#ifndef LITE
+		///#ifndef LITE
 		/* hidden3d routine can't work if no surface was drawn at all */
 		if (GlobalMembersGraph3d.hidden3d && GlobalMembersGraph3d.draw_surface)
 		{
-		/* Draw vertex as a zero-length edge */
-		GlobalMembersHidden3d.draw_line_hidden(v, DefineConstants.NULL, lp);
-		return;
+			/* Draw vertex as a zero-length edge */
+			GlobalMembersHidden3d.draw_line_hidden(v, null, lp);
+			return;
 		}
-	///#endif
+		///#endif
 
 		GlobalMembersUtil3d.draw3d_point_unconditional(v, lp);
 	}
 
 	/* HBB NEW 20031218: 3D polyline support */
-	public static void polyline3d_start(vertex GPHUGE v1)
+	public static void polyline3d_start(vertex v1)
 	{
 		int x1;
 		int y1;
 
 		polyline3d_previous_vertex = v1;
-	///#ifndef LITE
+		///#ifndef LITE
 		if (GlobalMembersGraph3d.hidden3d && GlobalMembersGraph3d.draw_surface)
-		return;
-	///#endif // LITE
+			return;
+		///#endif // LITE
 
 		/* EAM - This may now be unneeded. But I'm not sure. */
 		/*       Perhaps the hidden3d code needs the move.   */
@@ -1373,9 +1375,9 @@ public class GlobalMembersUtil3d
 			x1 = ((int)((v1).x * GlobalMembersGraph3d.xscaler)) + GlobalMembersGraph3d.xmiddle;
 			y1 = ((int)((v1).y * GlobalMembersGraph3d.yscaler)) + GlobalMembersGraph3d.ymiddle;
 		};
-		GlobalMembersTerm.term.move(x1, y1);
+		term.move(x1, y1);
 	}
-	public static void polyline3d_next(vertex GPHUGE v2, lp_style_type lp)
+	public static void polyline3d_next(vertex v2, lp_style_type lp)
 	{
 		int x1;
 		int y1;
@@ -1383,25 +1385,25 @@ public class GlobalMembersUtil3d
 		int y2;
 
 		/* Copied from draw3d_line(): */
-	///#ifndef LITE
+		///#ifndef LITE
 		/* FIXME HBB 20031218: hidden3d mode will still create isolated
 		 * edges! */
 		if (GlobalMembersGraph3d.hidden3d && GlobalMembersGraph3d.draw_surface)
 		{
-		GlobalMembersHidden3d.draw_line_hidden(polyline3d_previous_vertex, v2, lp);
-		polyline3d_previous_vertex = v2;
-		return;
+			GlobalMembersHidden3d.draw_line_hidden(polyline3d_previous_vertex, v2, lp);
+			polyline3d_previous_vertex = v2;
+			return;
 		}
-	///#endif
+		///#endif
 
 		/* Copied from draw3d_line_unconditional: */
 		/* If use_palette is active, polylines can't be used -->
 		 * revert back to old method */
 		if (lp.use_palette)
 		{
-		GlobalMembersUtil3d.draw3d_line_unconditional(polyline3d_previous_vertex, v2, lp, lp.l_type);
-		polyline3d_previous_vertex = v2;
-		return;
+			GlobalMembersUtil3d.draw3d_line_unconditional(polyline3d_previous_vertex, v2, lp, lp.l_type);
+			polyline3d_previous_vertex = v2;
+			return;
 
 		}
 
@@ -1562,16 +1564,16 @@ public class GlobalMembersUtil3d
 		int j;
 
 		for (i = 0; i < 4; i++)
-		for (j = 0; j < 4; j++)
-			if (i == j)
-			mat[i][j] = 1.0;
-			else
-			mat[i][j] = 0.0;
+			for (j = 0; j < 4; j++)
+				if (i == j)
+					mat[i][j] = 1.0;
+				else
+					mat[i][j] = 0.0;
 	}
 
-/* HBB 20020313: New routine, broken out of draw3d_point, to be used
- * to output a single point without any checks for hidden3d */
-	public static __inline__ void draw3d_point_unconditional(vertex GPHUGE v, lp_style_type lp)
+	/* HBB 20020313: New routine, broken out of draw3d_point, to be used
+	 * to output a single point without any checks for hidden3d */
+	public static void draw3d_point_unconditional(vertex v, lp_style_type lp)
 	{
 		int x;
 		int y;
@@ -1584,10 +1586,10 @@ public class GlobalMembersUtil3d
 		/* HBB 20010822: implemented "linetype palette" for points, too */
 		if (lp.use_palette)
 		{
-		GlobalMembersColor.set_color(GlobalMembersPm3d.cb2gray(GlobalMembersPm3d.z2cb(v.real_z)));
+			GlobalMembersColor.set_color(GlobalMembersPm3d.cb2gray(GlobalMembersPm3d.z2cb(v.real_z)));
 		}
 		if (GlobalMembersGadgets.clip_point(x, y) == 0)
-		(GlobalMembersTerm.term.point)(x, y, lp.p_type);
+			term.point(x, y, lp.p_type);
 	}
 
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:

@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersUnset
 {
 	///#define __STDC__ 1
@@ -168,12 +170,12 @@ public class GlobalMembersUnset
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: unset.c,v 1.128.2.1 2009/12/09 05:56:16 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: unset.c,v 1.128.2.1 2009/12/09 05:56:16 sfeam Exp $");
+	//}
 
-/* process 'unset angles' command */
+	/* process 'unset angles' command */
 	///#endif
 
 	/* GNUPLOT - unset.c */
@@ -1566,7 +1568,7 @@ public class GlobalMembersUnset
 		GlobalMembersGadgets.ang2rad = 1.0;
 	}
 
-/* process 'unset arrow' command */
+	/* process 'unset arrow' command */
 	public static void unset_arrow()
 	{
 		arrow_def this_arrow;
@@ -1575,102 +1577,102 @@ public class GlobalMembersUnset
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* delete all arrows */
-		while (GlobalMembersGadgets.first_arrow != DefineConstants.NULL)
-			GlobalMembersUnset.delete_arrow((GlobalMembersMouse.struct arrow_def *) DefineConstants.NULL, GlobalMembersGadgets.first_arrow);
+			/* delete all arrows */
+			while (GlobalMembersGadgets.first_arrow != null)
+				GlobalMembersUnset.delete_arrow(null, GlobalMembersGadgets.first_arrow);
 		}
 		else
 		{
-		/* get tag */
-		tag = GlobalMembersParse.int_expression();
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments to unset arrow");
-		for (this_arrow = GlobalMembersGadgets.first_arrow, prev_arrow = DefineConstants.NULL; this_arrow != DefineConstants.NULL; prev_arrow = this_arrow, this_arrow = this_arrow.next)
-		{
-			if (this_arrow.tag == tag)
+			/* get tag */
+			tag = GlobalMembersParse.int_expression();
+			if (((GlobalMembersCommand.c_token == 0) ? 1 : 0) >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments to unset arrow");
+			for (this_arrow = GlobalMembersGadgets.first_arrow, prev_arrow = null; this_arrow != null; prev_arrow = this_arrow, this_arrow = this_arrow.next)
 			{
-			GlobalMembersUnset.delete_arrow(prev_arrow, this_arrow);
-			return; // exit, our job is done
+				if (this_arrow.tag == tag)
+				{
+					GlobalMembersUnset.delete_arrow(prev_arrow, this_arrow);
+					return; // exit, our job is done
+				}
 			}
-		}
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "arrow not found");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "arrow not found");
 		}
 	}
 
-/* delete the whole list of arrow styles */
+	/* delete the whole list of arrow styles */
 	public static void unset_arrowstyles()
 	{
 		GlobalMembersUnset.free_arrowstyle(GlobalMembersGadgets.first_arrowstyle);
-		GlobalMembersGadgets.first_arrowstyle = DefineConstants.NULL;
+		GlobalMembersGadgets.first_arrowstyle = null;
 	}
 	public static void free_arrowstyle(arrowstyle_def arrowstyle)
 	{
 		if (arrowstyle != null)
 		{
-		GlobalMembersUnset.free_arrowstyle(arrowstyle.next);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(arrowstyle);
+			GlobalMembersUnset.free_arrowstyle(arrowstyle.next);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(arrowstyle);
 		}
 	}
 
-/* delete arrow from linked list started by first_arrow.
- * called with pointers to the previous arrow (prev) and the
- * arrow to delete (this).
- * If there is no previous arrow (the arrow to delete is
- * first_arrow) then call with prev = NULL.
- */
+	/* delete arrow from linked list started by first_arrow.
+	 * called with pointers to the previous arrow (prev) and the
+	 * arrow to delete (this).
+	 * If there is no previous arrow (the arrow to delete is
+	 * first_arrow) then call with prev = NULL.
+	 */
 	public static void delete_arrow(arrow_def prev, arrow_def this_Renamed)
 	{
-		if (this_Renamed != DefineConstants.NULL) // there really is something to delete
+		if (this_Renamed != null) // there really is something to delete
 		{
-		if (prev != DefineConstants.NULL) // there is a previous arrow
-			prev.next = this_Renamed.next;
-		else // this = first_arrow so change first_arrow
-			GlobalMembersGadgets.first_arrow = this_Renamed.next;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(this_Renamed);
+			if (prev != null) // there is a previous arrow
+				prev.next = this_Renamed.next;
+			else // this = first_arrow so change first_arrow
+				GlobalMembersGadgets.first_arrow = this_Renamed.next;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(this_Renamed);
 		}
 	}
 
-/* process 'unset autoscale' command */
+	/* process 'unset autoscale' command */
 	public static void unset_autoscale()
 	{
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		do
-		{
-			int tmp;
-			for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
-				GlobalMembersAxis.axis_array[tmp].field = (false);
-		} while (0);
+			do
+			{
+				int tmp;
+				for (tmp = 0; tmp < DefineConstants.AXIS_ARRAY_SIZE; tmp++)
+					GlobalMembersAxis.axis_array[tmp].field = (false);
+			} while (false);
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "tyx") != 0)
 		{
-		GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].set_autoscale = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale = e_autoscale.AUTOSCALE_NONE;
-		GlobalMembersCommand.c_token++;
+			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].set_autoscale = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].set_autoscale = e_autoscale.AUTOSCALE_NONE;
+			GlobalMembersCommand.c_token++;
 		}
 		else
 		{
-		/* HBB 20000506: parse axis name, and unset the right element
-		 * of the array: */
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: int axis = lookup_table(axisname_tbl, c_token);
-		int axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token);
-		if (axis >= 0)
-		{
-			GlobalMembersAxis.axis_array[axis].set_autoscale = e_autoscale.AUTOSCALE_NONE;
-		GlobalMembersCommand.c_token++;
-		}
+			/* HBB 20000506: parse axis name, and unset the right element
+			 * of the array: */
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: int axis = lookup_table(axisname_tbl, c_token);
+			int axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token);
+			if (axis >= 0)
+			{
+				GlobalMembersAxis.axis_array[axis].set_autoscale = e_autoscale.AUTOSCALE_NONE;
+				GlobalMembersCommand.c_token++;
+			}
 		}
 	}
 
-/* process 'unset bars' command */
+	/* process 'unset bars' command */
 	public static void unset_bars()
 	{
 		GlobalMembersGraphics.bar_size = 0.0;
 	}
 
-/* process 'unset border' command */
+	/* process 'unset border' command */
 	public static void unset_border()
 	{
 		/* this is not the effect as with reset, as the border is enabled,
@@ -1678,7 +1680,7 @@ public class GlobalMembersUnset
 		GlobalMembersGadgets.draw_border = 0;
 	}
 
-/* process 'unset boxwidth' command */
+	/* process 'unset boxwidth' command */
 
 	public static void unset_boxwidth()
 	{
@@ -1686,7 +1688,7 @@ public class GlobalMembersUnset
 		GlobalMembersPlot2d.boxwidth_is_absolute = true;
 	}
 
-/* process 'unset fill' command */
+	/* process 'unset fill' command */
 	public static void unset_fillstyle()
 	{
 		GlobalMembersGadgets.default_fillstyle.fillstyle = t_fillstyle.FS_EMPTY.getValue();
@@ -1695,35 +1697,35 @@ public class GlobalMembersUnset
 		GlobalMembersGadgets.default_fillstyle.border_color.type = DefineConstants.TC_DEFAULT;
 	}
 
-/* process 'unset clabel' command */
+	/* process 'unset clabel' command */
 	public static void unset_clabel()
 	{
 		/* FIXME? reset_command() uses TRUE */
 		GlobalMembersGraph3d.label_contours = false;
 	}
 
-/* process 'unset clip' command */
+	/* process 'unset clip' command */
 	public static void unset_clip()
 	{
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* same as all three */
-		GlobalMembersGadgets.clip_points = false;
-		GlobalMembersGadgets.clip_lines1 = false;
-		GlobalMembersGadgets.clip_lines2 = false;
+			/* same as all three */
+			GlobalMembersGadgets.clip_points = false;
+			GlobalMembersGadgets.clip_lines1 = false;
+			GlobalMembersGadgets.clip_lines2 = false;
 		}
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "p$oints") != 0)
-		GlobalMembersGadgets.clip_points = false;
+			GlobalMembersGadgets.clip_points = false;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "o$ne") != 0)
-		GlobalMembersGadgets.clip_lines1 = false;
+			GlobalMembersGadgets.clip_lines1 = false;
 		else if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "t$wo") != 0)
-		GlobalMembersGadgets.clip_lines2 = false;
+			GlobalMembersGadgets.clip_lines2 = false;
 		else
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'points', 'one', or 'two'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'points', 'one', or 'two'");
 		GlobalMembersCommand.c_token++;
 	}
 
-/* process 'unset cntrparam' command */
+	/* process 'unset cntrparam' command */
 	public static void unset_cntrparam()
 	{
 		GlobalMembersContour.contour_pts = DefineConstants.DEFAULT_NUM_APPROX_PTS;
@@ -1733,13 +1735,13 @@ public class GlobalMembersUnset
 		GlobalMembersContour.contour_levels_kind = en_contour_levels_kind.LEVELS_AUTO;
 	}
 
-/* process 'unset contour' command */
+	/* process 'unset contour' command */
 	public static void unset_contour()
 	{
 		GlobalMembersGraph3d.draw_contour = en_contour_placement.CONTOUR_NONE;
 	}
 
-/* process 'unset dgrid3d' command */
+	/* process 'unset dgrid3d' command */
 	public static void unset_dgrid3d()
 	{
 		GlobalMembersPlot3d.dgrid3d_row_fineness = 10;
@@ -1751,127 +1753,127 @@ public class GlobalMembersUnset
 		GlobalMembersPlot3d.dgrid3d = false;
 	}
 
-/* process 'unset dummy' command */
+	/* process 'unset dummy' command */
 	public static void unset_dummy()
 	{
 		GlobalMembersParse.set_dummy_var[0] = "x";
 		GlobalMembersParse.set_dummy_var[1] = "y";
 	}
 
-/* process 'unset encoding' command */
+	/* process 'unset encoding' command */
 	public static void unset_encoding()
 	{
 		GlobalMembersGplt_x11.encoding = set_encoding_id.S_ENC_DEFAULT;
 	}
 
-/* process 'unset decimalsign' command */
+	/* process 'unset decimalsign' command */
 	public static void unset_decimalsign()
 	{
 		if (!GlobalMembersUtil.decimalsign.equals(DefineConstants.NULL))
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersUtil.decimalsign);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersUtil.decimalsign);
 		GlobalMembersUtil.decimalsign = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersUtil.numeric_locale);
 		GlobalMembersUtil.numeric_locale = DefineConstants.NULL;
 	}
 
-/* process 'unset fit' command */
+	/* process 'unset fit' command */
 	public static void unset_fit()
 	{
-		if (!GlobalMembersFit.fitlogfile.equals(DefineConstants.NULL))
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersFit.fitlogfile);
-		GlobalMembersFit.fitlogfile = DefineConstants.NULL;
-	///#if GP_FIT_ERRVARS
+		if (!GlobalMembersFit.fitlogfile.equals(null))
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersFit.fitlogfile);
+		GlobalMembersFit.fitlogfile = null;
+		///#if GP_FIT_ERRVARS
 		GlobalMembersFit.fit_errorvariables = false;
-	///#endif // GP_FIT_ERRVARS
+		///#endif // GP_FIT_ERRVARS
 	}
 
-/* process 'unset format' command */
-/* FIXME: compare and merge with set.c::set_format */
+	/* process 'unset format' command */
+	/* FIXME: compare and merge with set.c::set_format */
 	public static void unset_format()
 	{
 		boolean[] set_for_axis = {false, false, false, false, false, false, false, false, false, false, false};
 		int axis;
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: if ((axis = lookup_table(axisname_tbl, c_token)) >= 0)
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: if ((axis = lookup_table(axisname_tbl, c_token)) >= 0)
 		if ((axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token)) >= 0)
 		{
-		set_for_axis[axis] = true;
+			set_for_axis[axis] = true;
 		}
 		else if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "xy") != 0 || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "yx") != 0)
 		{
-		set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] = set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()] = true;
-		GlobalMembersCommand.c_token++;
+			set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] = set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()] = true;
+			GlobalMembersCommand.c_token++;
 		}
 		else if (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* Assume he wants all */
-		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			set_for_axis[axis] = true;
+			/* Assume he wants all */
+			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+				set_for_axis[axis] = true;
 		}
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = true;
-		};
-		if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = true;
-		};
+			if (set_for_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()])
+			{
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_X_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()])
+			{
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Y_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.FIRST_Z_AXIS.getValue()])
+			{
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()])
+			{
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_X_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()])
+			{
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.SECOND_Y_AXIS.getValue()].format_is_numeric = true;
+			};
+			if (set_for_axis[AXIS_INDEX.COLOR_AXIS.getValue()])
+			{
+				strcpy(GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].format_is_numeric = true;
+			};
 		}
 	}
 
-/* process 'unset grid' command */
+	/* process 'unset grid' command */
 	public static void unset_grid()
 	{
 		/* FIXME HBB 20000506: there is no command to explicitly reset the
 		 * linetypes for major and minor gridlines. This function should
 		 * do that, maybe... */
-		AXIS_INDEX i = 0;
+		int i = 0;
 
 		/* grid_selection = GRID_OFF; */
 		for (; i < DefineConstants.AXIS_ARRAY_SIZE; i++)
 		{
-		GlobalMembersAxis.axis_array[i.getValue()].gridmajor = false;
-		GlobalMembersAxis.axis_array[i.getValue()].gridminor = false;
+			GlobalMembersAxis.axis_array[i].gridmajor = false;
+			GlobalMembersAxis.axis_array[i].gridminor = false;
 		}
 	}
 
-/* process 'unset hidden3d' command */
+	/* process 'unset hidden3d' command */
 	public static void unset_hidden3d()
 	{
-	///#ifdef LITE
-	//    printf(" Hidden Line Removal Not Supported in LITE version\n");
-	///#else
+		///#ifdef LITE
+		//    printf(" Hidden Line Removal Not Supported in LITE version\n");
+		///#else
 		GlobalMembersGraph3d.hidden3d = false;
-	///#endif
+		///#endif
 	}
 	public static void unset_histogram()
 	{
@@ -1879,44 +1881,44 @@ public class GlobalMembersUnset
 		GlobalMembersGadgets.histogram_opts.gap = 2;
 	}
 
-/* process 'unset historysize' command */
+	/* process 'unset historysize' command */
 	public static void unset_historysize()
 	{
-	///#ifdef GNUPLOT_HISTORY
+		///#ifdef GNUPLOT_HISTORY
 		GlobalMembersHistory.gnuplot_history_size = -1; // don't ever truncate the history.
-	///#else
-	//    int_error(c_token, "Command 'unset historysize' requires history support.");
-	///#endif
+		///#else
+		//    int_error(c_token, "Command 'unset historysize' requires history support.");
+		///#endif
 	}
 
-/* process 'unset isosamples' command */
+	/* process 'unset isosamples' command */
 	public static void unset_isosamples()
 	{
 		/* HBB 20000506: was freeing 2D data structures although
 		 * isosamples are only used by 3D plots. */
 
 		GlobalMembersPlot3d.sp_free(GlobalMembersPlot3d.first_3dplot);
-		GlobalMembersPlot3d.first_3dplot = DefineConstants.NULL;
+		GlobalMembersPlot3d.first_3dplot = null;
 
 		GlobalMembersGraph3d.iso_samples_1 = DefineConstants.ISO_SAMPLES;
 		GlobalMembersGraph3d.iso_samples_2 = DefineConstants.ISO_SAMPLES;
 	}
 
-/* process 'unset key' command */
+	/* process 'unset key' command */
 	public static void unset_key()
 	{
 		legend_key key = GlobalMembersGadgets.keyT;
 		key.visible = false;
 	}
 
-/* process 'unset keytitle' command */
+	/* process 'unset keytitle' command */
 	public static void unset_keytitle()
 	{
 		legend_key key = GlobalMembersGadgets.keyT;
-		key.title = tangible.StringFunctions.changeCharacter(key.title, 0, '\0'); // empty string
+		key.title = StringFunctions.changeCharacter(key.title, 0, '\0'); // empty string
 	}
 
-/* process 'unset label' command */
+	/* process 'unset label' command */
 	public static void unset_label()
 	{
 		text_label this_label;
@@ -1925,55 +1927,55 @@ public class GlobalMembersUnset
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* delete all labels */
-		while (GlobalMembersGadgets.first_label != DefineConstants.NULL)
-			GlobalMembersUnset.delete_label((GlobalMembersMouse.struct text_label *) DefineConstants.NULL, GlobalMembersGadgets.first_label);
+			/* delete all labels */
+			while (GlobalMembersGadgets.first_label != null)
+				GlobalMembersUnset.delete_label((GlobalMembersMouse.struct text_label *) DefineConstants.NULL, GlobalMembersGadgets.first_label);
 		}
 		else
 		{
-		/* get tag */
-		tag = GlobalMembersParse.int_expression();
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments to unset label");
-		for (this_label = GlobalMembersGadgets.first_label, prev_label = DefineConstants.NULL; this_label != DefineConstants.NULL; prev_label = this_label, this_label = this_label.next)
-		{
-			if (this_label.tag == tag)
+			/* get tag */
+			tag = GlobalMembersParse.int_expression();
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments to unset label");
+			for (this_label = GlobalMembersGadgets.first_label, prev_label = DefineConstants.NULL; this_label != DefineConstants.NULL; prev_label = this_label, this_label = this_label.next)
 			{
-			GlobalMembersUnset.delete_label(prev_label, this_label);
-			return; // exit, our job is done
+				if (this_label.tag == tag)
+				{
+					GlobalMembersUnset.delete_label(prev_label, this_label);
+					return; // exit, our job is done
+				}
 			}
-		}
-		/* int_warn(c_token, "label not found"); */
+			/* int_warn(c_token, "label not found"); */
 		}
 	}
 
-/* delete label from linked list started by first_label.
- * called with pointers to the previous label (prev) and the
- * label to delete (this).
- * If there is no previous label (the label to delete is
- * first_label) then call with prev = NULL.
- */
+	/* delete label from linked list started by first_label.
+	 * called with pointers to the previous label (prev) and the
+	 * label to delete (this).
+	 * If there is no previous label (the label to delete is
+	 * first_label) then call with prev = NULL.
+	 */
 	public static void delete_label(text_label prev, text_label this_Renamed)
 	{
-		if (this_Renamed != DefineConstants.NULL) // there really is something to delete
+		if (this_Renamed != null) // there really is something to delete
 		{
-		if (prev != DefineConstants.NULL) // there is a previous label
-			prev.next = this_Renamed.next;
-		else // this = first_label so change first_label
-			GlobalMembersGadgets.first_label = this_Renamed.next;
-		if (this_Renamed.text != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(this_Renamed.text);
-		if (this_Renamed.font != null)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(this_Renamed.font);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(this_Renamed);
+			if (prev != null) // there is a previous label
+				prev.next = this_Renamed.next;
+			else // this = first_label so change first_label
+				GlobalMembersGadgets.first_label = this_Renamed.next;
+			if (this_Renamed.text != null)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(this_Renamed.text);
+			if (this_Renamed.font != null)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(this_Renamed.font);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(this_Renamed);
 		}
 	}
 
-///#ifdef EAM_OBJECTS
-/* process 'unset rectangle' command */
+	///#ifdef EAM_OBJECTS
+	/* process 'unset rectangle' command */
 	///#ifdef EAM_OBJECTS
 	public static void unset_object()
 	{
@@ -1983,74 +1985,74 @@ public class GlobalMembersUnset
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* delete all objects */
-		while (GlobalMembersGadgets.first_object != DefineConstants.NULL)
-			GlobalMembersUnset.delete_object((GlobalMembersMouse.struct object *) DefineConstants.NULL, GlobalMembersGadgets.first_object);
+			/* delete all objects */
+			while (GlobalMembersGadgets.first_object != null)
+				GlobalMembersUnset.delete_object((GlobalMembersMouse.struct object *) DefineConstants.NULL, GlobalMembersGadgets.first_object);
 		}
 		else
 		{
-		/* get tag */
-		tag = GlobalMembersParse.int_expression();
-		if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments to unset rectangle");
-		for (this_object = GlobalMembersGadgets.first_object, prev_object = DefineConstants.NULL; this_object != DefineConstants.NULL; prev_object = this_object, this_object = this_object.next)
-		{
-			if (this_object.tag == tag)
+			/* get tag */
+			tag = GlobalMembersParse.int_expression();
+			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "extraneous arguments to unset rectangle");
+			for (this_object = GlobalMembersGadgets.first_object, prev_object = DefineConstants.NULL; this_object != DefineConstants.NULL; prev_object = this_object, this_object = this_object.next)
 			{
-			GlobalMembersUnset.delete_object(prev_object, this_object);
-			return; // exit, our job is done
+				if (this_object.tag == tag)
+				{
+					GlobalMembersUnset.delete_object(prev_object, this_object);
+					return; // exit, our job is done
+				}
 			}
-		}
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "object not found");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "object not found");
 		}
 	}
 
-/* delete object from linked list started by first_object.
- * called with pointers to the previous object (prev) and the
- * object to delete (this).
- * If there is no previous object (the object to delete is
- * first_object) then call with prev = NULL.
- */
+	/* delete object from linked list started by first_object.
+	 * called with pointers to the previous object (prev) and the
+	 * object to delete (this).
+	 * If there is no previous object (the object to delete is
+	 * first_object) then call with prev = NULL.
+	 */
 	public static void delete_object(object prev, object this_Renamed)
 	{
-		if (this_Renamed != DefineConstants.NULL) // there really is something to delete
+		if (this_Renamed != null) // there really is something to delete
 		{
-		if (prev != DefineConstants.NULL) // there is a previous rectangle
-			prev.next = this_Renamed.next;
-		else // this = first_object so change first_object
-			GlobalMembersGadgets.first_object = this_Renamed.next;
-		/* NOTE:  Must free contents as well */
-		if (this_Renamed.object_type == DefineConstants.OBJ_POLYGON)
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(this_Renamed.o.polygon.vertex);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(this_Renamed);
+			if (prev != null) // there is a previous rectangle
+				prev.next = this_Renamed.next;
+			else // this = first_object so change first_object
+				GlobalMembersGadgets.first_object = this_Renamed.next;
+			/* NOTE:  Must free contents as well */
+			if (this_Renamed.object_type == DefineConstants.OBJ_POLYGON)
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(this_Renamed.o.polygon.vertex);
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(this_Renamed);
 		}
 	}
 
-///#ifdef EAM_OBJECTS
+	///#ifdef EAM_OBJECTS
 	public static void unset_style_rectangle()
 	{
 		object foo = new object(DefineConstants.NULL, -1, 0, DefineConstants.OBJ_RECTANGLE, {t_fillstyle.FS_SOLID, 100, 0, {DefineConstants.TC_LT, DefineConstants.LT_BLACK, 0.0}}, {1, DefineConstants.LT_BACKGROUND, 0, 0, 1.0, 0.0, false, {DefineConstants.TC_DEFAULT, 0, 0.0}}, {.rectangle = {0, {0,0.,0.,0.}, {0,0.,0.,0.}, {0,0.,0.,0.}, {0,0.,0.,0.}}});
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: default_rectangle = foo;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: default_rectangle = foo;
 		GlobalMembersGadgets.default_rectangle.copyFrom(foo);
 		return;
 	}
-///#endif
+	///#endif
 
 
-/* process 'unset loadpath' command */
+	/* process 'unset loadpath' command */
 	///#endif
 	public static void unset_loadpath()
 	{
-		() GlobalMembersVariable.loadpath_handler(1 << 5, DefineConstants.NULL)();
+		GlobalMembersVariable.loadpath_handler(1 << 5, DefineConstants.NULL)();
 	}
 
-/* process 'unset locale' command */
+	/* process 'unset locale' command */
 	public static void unset_locale()
 	{
-		() GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
+		GlobalMembersVariable.locale_handler(1 << 0, DefineConstants.NULL)();
 	}
 	public static void reset_logscale(AXIS_INDEX axis)
 	{
@@ -2058,57 +2060,57 @@ public class GlobalMembersUnset
 		GlobalMembersAxis.axis_array[axis.getValue()].base = 0.0;
 	}
 
-/* process 'unset logscale' command */
+	/* process 'unset logscale' command */
 	public static void unset_logscale()
 	{
 		int axis;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		/* clean all the islog flags. This will hit some currently
-		 * unused ones, too, but that's actually a good thing, IMHO */
-		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			GlobalMembersUnset.reset_logscale(axis);
+			/* clean all the islog flags. This will hit some currently
+			 * unused ones, too, but that's actually a good thing, IMHO */
+			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+				GlobalMembersUnset.reset_logscale(axis);
 		}
 		else
 		{
-		int i = 0;
+			int i = 0;
 
-		/* do reverse search because of "x", "x1", "x2" sequence in
-		 * axisname_tbl */
-		while (i < GlobalMembersCommand.token[GlobalMembersCommand.c_token].length)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: axis = lookup_table_nth_reverse(axisname_tbl, DefineConstants.AXIS_ARRAY_SIZE, gp_input_line + token[c_token].start_index + i);
-			axis = GlobalMembersTables.lookup_table_nth_reverse(new gen_table(GlobalMembersAxis.axisname_tbl), DefineConstants.AXIS_ARRAY_SIZE, GlobalMembersCommand.gp_input_line + GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + i);
-			if (axis < 0)
+			/* do reverse search because of "x", "x1", "x2" sequence in
+			 * axisname_tbl */
+			while (i < GlobalMembersCommand.token[GlobalMembersCommand.c_token].length)
 			{
-			GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index += i;
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown axis");
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: axis = lookup_table_nth_reverse(axisname_tbl, DefineConstants.AXIS_ARRAY_SIZE, gp_input_line + token[c_token].start_index + i);
+				axis = GlobalMembersTables.lookup_table_nth_reverse(new gen_table(GlobalMembersAxis.axisname_tbl), DefineConstants.AXIS_ARRAY_SIZE, GlobalMembersCommand.gp_input_line + GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index + i);
+				if (axis < 0)
+				{
+					GlobalMembersCommand.token[GlobalMembersCommand.c_token].start_index += i;
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "unknown axis");
+				}
+				GlobalMembersUnset.reset_logscale(GlobalMembersAxis.axisname_tbl[axis].value);
+				i += String.valueOf(GlobalMembersAxis.axisname_tbl[axis].key).length();
 			}
-			GlobalMembersUnset.reset_logscale(GlobalMembersAxis.axisname_tbl[axis].value);
-			i += String.valueOf(GlobalMembersAxis.axisname_tbl[axis].key).length();
-		}
-		++GlobalMembersCommand.c_token;
+			++GlobalMembersCommand.c_token;
 		}
 
-	///#ifdef VOLATILE_REFRESH
+		///#ifdef VOLATILE_REFRESH
 		/* Because the log scaling is applied during data input, a quick refresh */
 		/* using existing stored data will not work if the log setting changes.  */
 		GlobalMembersGadgets.refresh_ok = 0;
-	///#endif
+		///#endif
 	}
 
-///#ifdef GP_MACROS
-/* process 'unset macros' command */
+	///#ifdef GP_MACROS
+	/* process 'unset macros' command */
 	///#ifdef GP_MACROS
 	public static void unset_macros()
 	{
 		GlobalMembersCommand.expand_macros = false;
 	}
-///#endif
+	///#endif
 
-/* process 'unset mapping3d' command */
+	/* process 'unset mapping3d' command */
 	///#endif
 	public static void unset_mapping()
 	{
@@ -2116,30 +2118,30 @@ public class GlobalMembersUnset
 		GlobalMembersPlot3d.mapping3d = en_data_mapping.MAP3D_CARTESIAN;
 	}
 
-/* process 'unset {blrt}margin' command */
+	/* process 'unset {blrt}margin' command */
 	public static void unset_margin(position margin)
 	{
 		margin.scalex = position_type.character;
 		margin.x = -1;
 	}
 
-/* process 'unset datafile' command */
+	/* process 'unset datafile' command */
 	public static void unset_missing()
 	{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersDatafile.missing_val);
-		GlobalMembersDatafile.missing_val = DefineConstants.NULL;
+		GlobalMembersDatafile.missing_val = null;
 	}
 
-///#ifdef USE_MOUSE
-/* process 'unset mouse' command */
+	///#ifdef USE_MOUSE
+	/* process 'unset mouse' command */
 	///#ifdef USE_MOUSE
 	public static void unset_mouse()
 	{
 		mouse_setting.on = 0;
-	///#ifdef OS2
-	//    PM_update_menu_items();
-	///#endif
+		///#ifdef OS2
+		//    PM_update_menu_items();
+		///#endif
 		GlobalMembersMouse.UpdateStatusline(); // wipe status line
 	}
 	///#endif
@@ -2148,16 +2150,16 @@ public class GlobalMembersUnset
 	{
 		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.type = en_ticseries_type.TIC_COMPUTED;
 	}
-///#endif
+	///#endif
 
-/* process 'unset mxtics' command */
+	/* process 'unset mxtics' command */
 	public static void unset_minitics(AXIS_INDEX axis)
 	{
 		GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_OFF.getValue();
 		GlobalMembersAxis.axis_array[axis.getValue()].mtic_freq = 10.0;
 	}
 
-/* process 'unset offsets' command */
+	/* process 'unset offsets' command */
 
 	public static void unset_offsets()
 	{
@@ -2165,47 +2167,47 @@ public class GlobalMembersUnset
 		GlobalMembersGraphics.toff.y = GlobalMembersGraphics.boff.y = 0.0;
 	}
 
-/* process 'unset origin' command */
+	/* process 'unset origin' command */
 	public static void unset_origin()
 	{
 		GlobalMembersGadgets.xoffset = 0.0F;
 		GlobalMembersGadgets.yoffset = 0.0F;
 	}
 
-/* process 'unset output' command */
+	/* process 'unset output' command */
 	public static void unset_output()
 	{
 		if (GlobalMembersTerm.multiplot)
 		{
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "you can't change the output in multiplot mode");
-		return;
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "you can't change the output in multiplot mode");
+			return;
 		}
 
 		GlobalMembersTerm.term_set_output(DefineConstants.NULL);
 		if (GlobalMembersTerm.outstr != null)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersTerm.outstr);
-		GlobalMembersTerm.outstr = DefineConstants.NULL; // means STDOUT
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(GlobalMembersTerm.outstr);
+			GlobalMembersTerm.outstr = null; // means STDOUT
 		}
 	}
 
-/* process 'unset parametric' command */
+	/* process 'unset parametric' command */
 	public static void unset_parametric()
 	{
 		if (GlobalMembersGadgets.parametric)
 		{
-		GlobalMembersGadgets.parametric = false;
-		if (!GlobalMembersGadgets.polar) // keep t for polar
-		{
-			GlobalMembersUnset.unset_dummy();
-			if (GlobalMembersPlot.interactive)
-			() fprintf(stderr,"\n\tdummy variable is x for curves, x/y for surfaces\n");
-		}
+			GlobalMembersGadgets.parametric = false;
+			if (!GlobalMembersGadgets.polar) // keep t for polar
+			{
+				GlobalMembersUnset.unset_dummy();
+				if (GlobalMembersPlot.interactive)
+					fprintf(stderr,"\n\tdummy variable is x for curves, x/y for surfaces\n");
+			}
 		}
 	}
 
-/* process 'unset pm3d' command */
+	/* process 'unset pm3d' command */
 	public static void unset_pm3d()
 	{
 		GlobalMembersPm3d.pm3d.implicit = PM3D_IMPL_MODE.PM3D_EXPLICIT;
@@ -2216,78 +2218,78 @@ public class GlobalMembersUnset
 			GlobalMembersGadgets.func_style = PLOT_STYLE.LINES;
 	}
 
-/* process 'unset palette' command */
+	/* process 'unset palette' command */
 	public static void unset_palette()
 	{
 		GlobalMembersCommand.c_token++;
 		fprintf(stderr, "you can't unset the palette.\n");
 	}
 
-/* reset colorbox to default settings */
+	/* reset colorbox to default settings */
 	public static void reset_colorbox()
 	{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: color_box = default_color_box;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: color_box = default_color_box;
 		GlobalMembersGadgets.color_box.copyFrom(GlobalMembersGadgets.default_color_box);
 	}
 
-/* process 'unset colorbox' command: reset to default settings and then
- * switch it off */
+	/* process 'unset colorbox' command: reset to default settings and then
+	 * switch it off */
 	public static void unset_colorbox()
 	{
 		GlobalMembersUnset.reset_colorbox();
 		GlobalMembersGadgets.color_box.where = DefineConstants.SMCOLOR_BOX_NO;
 	}
 
-/* process 'unset pointsize' command */
+	/* process 'unset pointsize' command */
 	public static void unset_pointsize()
 	{
 		GlobalMembersGadgets.pointsize = 1.0;
 	}
 
-/* process 'unset polar' command */
+	/* process 'unset polar' command */
 	public static void unset_polar()
 	{
 		if (GlobalMembersGadgets.polar)
 		{
-		GlobalMembersGadgets.polar = false;
-		if (GlobalMembersGadgets.parametric && ((int)GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale) != 0)
-		{
-			/* only if user has not set an explicit range */
-			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = GlobalMembersAxis.axis_defaults[AXIS_INDEX.T_AXIS.getValue()].min;
-			GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_max = GlobalMembersAxis.axis_defaults[AXIS_INDEX.T_AXIS.getValue()].min;
-		}
-		if (!GlobalMembersGadgets.parametric)
-		{
-			GlobalMembersParse.set_dummy_var[0] = "x";
-			if (GlobalMembersPlot.interactive)
-			() fprintf(stderr,"\n\tdummy variable is x for curves\n");
-		}
+			GlobalMembersGadgets.polar = false;
+			if (GlobalMembersGadgets.parametric && ((int)GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_autoscale) != 0)
+			{
+				/* only if user has not set an explicit range */
+				GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_min = GlobalMembersAxis.axis_defaults[AXIS_INDEX.T_AXIS.getValue()].min;
+				GlobalMembersAxis.axis_array[AXIS_INDEX.T_AXIS.getValue()].set_max = GlobalMembersAxis.axis_defaults[AXIS_INDEX.T_AXIS.getValue()].min;
+			}
+			if (!GlobalMembersGadgets.parametric)
+			{
+				GlobalMembersParse.set_dummy_var[0] = "x";
+				if (GlobalMembersPlot.interactive)
+					fprintf(stderr,"\n\tdummy variable is x for curves\n");
+			}
 		}
 	}
 
-/* process 'unset print' command */
+	/* process 'unset print' command */
 	public static void unset_print()
 	{
 		GlobalMembersCommand.print_set_output(DefineConstants.NULL, false);
 	}
 
-/* process 'unset samples' command */
+	/* process 'unset samples' command */
 	public static void unset_samples()
 	{
 		/* HBB 20000506: unlike unset_isosamples(), this one *has* to
 		 * clear 2D data structues! */
 		GlobalMembersPlot2d.cp_free(GlobalMembersPlot2d.first_plot);
-		GlobalMembersPlot2d.first_plot = DefineConstants.NULL;
+		GlobalMembersPlot2d.first_plot = null;
 
 		GlobalMembersPlot3d.sp_free(GlobalMembersPlot3d.first_3dplot);
-		GlobalMembersPlot3d.first_3dplot = DefineConstants.NULL;
+		GlobalMembersPlot3d.first_3dplot = null;
 
 		GlobalMembersGadgets.samples_1 = DefineConstants.SAMPLES;
 		GlobalMembersGadgets.samples_2 = DefineConstants.SAMPLES;
 	}
 
-/* process 'unset size' command */
+	/* process 'unset size' command */
 	public static void unset_size()
 	{
 		GlobalMembersGadgets.xsize = 1.0F;
@@ -2295,109 +2297,109 @@ public class GlobalMembersUnset
 		GlobalMembersGadgets.zsize = 1.0F;
 	}
 
-/* process 'unset style' command */
+	/* process 'unset style' command */
 	public static void unset_style()
 	{
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-		GlobalMembersGadgets.data_style = PLOT_STYLE.POINTSTYLE;
-		GlobalMembersGadgets.func_style = PLOT_STYLE.LINES;
-		while (GlobalMembersGadgets.first_linestyle != DefineConstants.NULL)
-			GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, DefineConstants.NULL, GlobalMembersGadgets.first_linestyle);
-		GlobalMembersUnset.unset_fillstyle();
-	///#ifdef EAM_OBJECTS
-		GlobalMembersUnset.unset_style_rectangle();
-	///#endif
-		GlobalMembersUnset.unset_histogram();
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersGadgets.data_style = PLOT_STYLE.POINTSTYLE;
+			GlobalMembersGadgets.func_style = PLOT_STYLE.LINES;
+			while (GlobalMembersGadgets.first_linestyle != null)
+				GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, DefineConstants.NULL, GlobalMembersGadgets.first_linestyle);
+			GlobalMembersUnset.unset_fillstyle();
+			///#ifdef EAM_OBJECTS
+			GlobalMembersUnset.unset_style_rectangle();
+			///#endif
+			GlobalMembersUnset.unset_histogram();
+			GlobalMembersCommand.c_token++;
+			return;
 		}
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch(lookup_table(show_style_tbl, c_token))
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: switch(lookup_table(show_style_tbl, c_token))
 		switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.show_style_tbl), GlobalMembersCommand.c_token))
 		{
 		case SHOW_STYLE_DATA:
-		GlobalMembersGadgets.data_style = PLOT_STYLE.POINTSTYLE;
-		GlobalMembersCommand.c_token++;
-		break;
+			GlobalMembersGadgets.data_style = PLOT_STYLE.POINTSTYLE;
+			GlobalMembersCommand.c_token++;
+			break;
 		case SHOW_STYLE_FUNCTION:
-		GlobalMembersGadgets.func_style = PLOT_STYLE.LINES;
-		GlobalMembersCommand.c_token++;
-		break;
+			GlobalMembersGadgets.func_style = PLOT_STYLE.LINES;
+			GlobalMembersCommand.c_token++;
+			break;
 		case SHOW_STYLE_LINE:
-		GlobalMembersCommand.c_token++;
-		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		{
-			while (GlobalMembersGadgets.first_linestyle != DefineConstants.NULL)
-			GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, DefineConstants.NULL, GlobalMembersGadgets.first_linestyle);
-		}
-		else
-		{
-			int tag = GlobalMembersParse.int_expression();
-			linestyle_def this_Renamed;
-			linestyle_def prev;
-			for (this_Renamed = GlobalMembersGadgets.first_linestyle, prev = DefineConstants.NULL; this_Renamed != DefineConstants.NULL; prev = this_Renamed, this_Renamed = this_Renamed.next)
+			GlobalMembersCommand.c_token++;
+			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 			{
-			if (this_Renamed.tag == tag)
+				while (GlobalMembersGadgets.first_linestyle != DefineConstants.NULL)
+					GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, DefineConstants.NULL, GlobalMembersGadgets.first_linestyle);
+			}
+			else
 			{
-				GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, prev, this_Renamed);
-				break;
+				int tag = GlobalMembersParse.int_expression();
+				linestyle_def this_Renamed;
+				linestyle_def prev;
+				for (this_Renamed = GlobalMembersGadgets.first_linestyle, prev = DefineConstants.NULL; this_Renamed != DefineConstants.NULL; prev = this_Renamed, this_Renamed = this_Renamed.next)
+				{
+					if (this_Renamed.tag == tag)
+					{
+						GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, prev, this_Renamed);
+						break;
+					}
+				}
 			}
-			}
-		}
-		break;
+			break;
 		case SHOW_STYLE_FILLING:
-		GlobalMembersUnset.unset_fillstyle();
-		GlobalMembersCommand.c_token++;
-		break;
+			GlobalMembersUnset.unset_fillstyle();
+			GlobalMembersCommand.c_token++;
+			break;
 		case SHOW_STYLE_HISTOGRAM:
-		GlobalMembersUnset.unset_histogram();
-		GlobalMembersCommand.c_token++;
-		break;
+			GlobalMembersUnset.unset_histogram();
+			GlobalMembersCommand.c_token++;
+			break;
 		case SHOW_STYLE_ARROW:
-		GlobalMembersUnset.unset_arrowstyles();
-		GlobalMembersCommand.c_token++;
-		break;
-	///#ifdef EAM_OBJECTS
+			GlobalMembersUnset.unset_arrowstyles();
+			GlobalMembersCommand.c_token++;
+			break;
+			///#ifdef EAM_OBJECTS
 		case SHOW_STYLE_RECTANGLE:
-		GlobalMembersUnset.unset_style_rectangle();
-		GlobalMembersCommand.c_token++;
-		break;
-	///#endif
+			GlobalMembersUnset.unset_style_rectangle();
+			GlobalMembersCommand.c_token++;
+			break;
+			///#endif
 		default:
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'data', 'function', 'line', 'fill' or 'arrow'");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "expecting 'data', 'function', 'line', 'fill' or 'arrow'");
 		}
 	}
 
-/* process 'unset surface' command */
+	/* process 'unset surface' command */
 	public static void unset_surface()
 	{
 		GlobalMembersGraph3d.draw_surface = false;
 	}
 
-/* process 'unset table' command */
+	/* process 'unset table' command */
 	public static void unset_table()
 	{
 		if (GlobalMembersGadgets.table_outfile != null)
-		fclose(GlobalMembersGadgets.table_outfile);
-		GlobalMembersGadgets.table_outfile = DefineConstants.NULL;
+			fclose(GlobalMembersGadgets.table_outfile);
+		GlobalMembersGadgets.table_outfile = null;
 		GlobalMembersGadgets.table_mode = false;
 	}
 
-/* process 'unset terminal' comamnd */
+	/* process 'unset terminal' comamnd */
 	public static void unset_terminal()
 	{
 		/* This is a problematic case */
-	/* FIXME */
+		/* FIXME */
 		if (GlobalMembersTerm.multiplot)
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "You can't change the terminal in multiplot mode");
+			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "You can't change the terminal in multiplot mode");
 
 		GlobalMembersTerm.list_terms();
 		GlobalMembersUtil.screen_ok = false;
 	}
 
-/*process 'unset {x|y|x2|y2|z}tics' command */
+	/*process 'unset {x|y|x2|y2|z}tics' command */
 	public static void unset_tics(AXIS_INDEX axis)
 	{
 		position tics_nooffset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
@@ -2405,40 +2407,40 @@ public class GlobalMembersUnset
 		int iend = DefineConstants.AXIS_ARRAY_SIZE;
 		int i;
 
-		if (axis < DefineConstants.AXIS_ARRAY_SIZE)
+		if (axis.getValue() < DefineConstants.AXIS_ARRAY_SIZE)
 		{
-		istart = (int)axis;
-		iend = (int)axis + 1;
+			istart = axis.getValue();
+			iend = axis.getValue() + 1;
 		}
 
 		for (i = istart; i < iend; ++i)
 		{
-		GlobalMembersAxis.axis_array[i].ticmode = DefineConstants.NO_TICS;
+			GlobalMembersAxis.axis_array[i].ticmode = DefineConstants.NO_TICS;
 
-		if (GlobalMembersAxis.axis_array[i].ticdef.font != null)
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(GlobalMembersAxis.axis_array[i].ticdef.font);
-			GlobalMembersAxis.axis_array[i].ticdef.font = DefineConstants.NULL;
-		}
-		GlobalMembersAxis.axis_array[i].ticdef.textcolor.type = DefineConstants.TC_DEFAULT;
-		GlobalMembersAxis.axis_array[i].ticdef.textcolor.lt = 0;
-		GlobalMembersAxis.axis_array[i].ticdef.textcolor.value = 0;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[i].ticdef.offset = tics_nooffset;
-		GlobalMembersAxis.axis_array[i].ticdef.offset.copyFrom(tics_nooffset);
-		GlobalMembersAxis.axis_array[i].ticdef.rangelimited = false;
-		GlobalMembersAxis.axis_array[i].tic_rotate = 0;
-		GlobalMembersAxis.axis_array[i].ticscale = 1.0;
-		GlobalMembersAxis.axis_array[i].miniticscale = 0.5;
-		GlobalMembersAxis.axis_array[i].tic_in = true;
+			if (GlobalMembersAxis.axis_array[i].ticdef.font != null)
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(GlobalMembersAxis.axis_array[i].ticdef.font);
+				GlobalMembersAxis.axis_array[i].ticdef.font = null;
+			}
+			GlobalMembersAxis.axis_array[i].ticdef.textcolor.type = DefineConstants.TC_DEFAULT;
+			GlobalMembersAxis.axis_array[i].ticdef.textcolor.lt = 0;
+			GlobalMembersAxis.axis_array[i].ticdef.textcolor.value = 0;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: axis_array[i].ticdef.offset = tics_nooffset;
+			GlobalMembersAxis.axis_array[i].ticdef.offset.copyFrom(tics_nooffset);
+			GlobalMembersAxis.axis_array[i].ticdef.rangelimited = false;
+			GlobalMembersAxis.axis_array[i].tic_rotate = 0;
+			GlobalMembersAxis.axis_array[i].ticscale = 1.0;
+			GlobalMembersAxis.axis_array[i].miniticscale = 0.5;
+			GlobalMembersAxis.axis_array[i].tic_in = true;
 
-		GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[i].ticdef.def.user);
-		GlobalMembersAxis.axis_array[i].ticdef.def.user = DefineConstants.NULL;
+			GlobalMembersSet.free_marklist(GlobalMembersAxis.axis_array[i].ticdef.def.user);
+			GlobalMembersAxis.axis_array[i].ticdef.def.user = null;
 		}
 	}
 
-/* process 'unset ticscale' command */
+	/* process 'unset ticscale' command */
 	public static void unset_ticscale()
 	{
 		int i;
@@ -2447,54 +2449,54 @@ public class GlobalMembersUnset
 
 		for (i = 0; i < DefineConstants.AXIS_ARRAY_SIZE; ++i)
 		{
-		GlobalMembersAxis.axis_array[i].ticscale = 1.0;
-		GlobalMembersAxis.axis_array[i].miniticscale = 0.5;
+			GlobalMembersAxis.axis_array[i].ticscale = 1.0;
+			GlobalMembersAxis.axis_array[i].miniticscale = 0.5;
 		}
 	}
 
-/* process 'unset ticslevel' command */
+	/* process 'unset ticslevel' command */
 	public static void unset_ticslevel()
 	{
 		GlobalMembersGraph3d.xyplane.z = 0.5;
 		GlobalMembersGraph3d.xyplane.absolute = false;
 	}
 
-/* Process 'unset timefmt' command */
+	/* Process 'unset timefmt' command */
 	public static void unset_timefmt()
 	{
 		int axis;
 
 		if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-			GlobalMembersAxis.axis_array[axis].timefmt = DefineConstants.TIMEFMT;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: else if ((axis=lookup_table(axisname_tbl, c_token)) >= 0)
+			for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
+				GlobalMembersAxis.axis_array[axis].timefmt = DefineConstants.TIMEFMT;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: else if ((axis=lookup_table(axisname_tbl, c_token)) >= 0)
 		else if ((axis = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersAxis.axisname_tbl), GlobalMembersCommand.c_token)) >= 0)
 		{
-		GlobalMembersAxis.axis_array[axis].timefmt = DefineConstants.TIMEFMT;
-		GlobalMembersCommand.c_token++;
+			GlobalMembersAxis.axis_array[axis].timefmt = DefineConstants.TIMEFMT;
+			GlobalMembersCommand.c_token++;
 		}
 		else
-		/* int_error() from inside 'reset' would cause problems */
-		GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "expected optional axis name");
+			/* int_error() from inside 'reset' would cause problems */
+			GlobalMembersUtil.int_warn(GlobalMembersCommand.c_token, "expected optional axis name");
 
 	}
 
-/* process 'unset timestamp' command */
+	/* process 'unset timestamp' command */
 	public static void unset_timestamp()
 	{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_axislabel_or_title(&timelabel);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_axislabel_or_title(&timelabel);
 		GlobalMembersUnset.unset_axislabel_or_title(new text_label(GlobalMembersGadgets.timelabel));
 		GlobalMembersGadgets.timelabel_rotate = 0;
 		GlobalMembersGadgets.timelabel_bottom = true;
 	}
 
-/* process 'unset view' command */
+	/* process 'unset view' command */
 	public static void unset_view()
 	{
 		GlobalMembersCommand.splot_map_deactivate();
-		GlobalMembersGraph3d.splot_map = false;
+		GlobalMembersGraph3d.splot_map = 0;
 		GlobalMembersGadgets.aspect_ratio_3D = 0;
 		GlobalMembersGraph3d.surface_rot_z = 30.0F;
 		GlobalMembersGraph3d.surface_rot_x = 60.0F;
@@ -2502,19 +2504,19 @@ public class GlobalMembersUnset
 		GlobalMembersGraph3d.surface_zscale = 1.0F;
 	}
 
-/* process 'unset zero' command */
+	/* process 'unset zero' command */
 	public static void unset_zero()
 	{
 		GlobalMembersGadgets.zero = DefineConstants.ZERO;
 	}
 
-/* process 'unset {x|y|z|x2|y2}data' command */
+	/* process 'unset {x|y|z|x2|y2}data' command */
 	public static void unset_timedata(AXIS_INDEX axis)
 	{
 		GlobalMembersAxis.axis_array[axis.getValue()].is_timedata = false;
 	}
 
-/* process 'unset {x|y|z|x2|y2|t|u|v|r}range' command */
+	/* process 'unset {x|y|z|x2|y2|t|u|v|r}range' command */
 	public static void unset_range(AXIS_INDEX axis)
 	{
 		/* FIXME HBB 20000506: do we want to reset the axis autoscale and
@@ -2522,52 +2524,52 @@ public class GlobalMembersUnset
 		GlobalMembersAxis.axis_array[axis.getValue()].range_flags = 0;
 	}
 
-/* process 'unset {x|y|x2|y2|z}zeroaxis' command */
+	/* process 'unset {x|y|x2|y2|z}zeroaxis' command */
 	public static void unset_zeroaxis(AXIS_INDEX axis)
 	{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[axis].zeroaxis = default_axis_zeroaxis;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: axis_array[axis].zeroaxis = default_axis_zeroaxis;
 		GlobalMembersAxis.axis_array[axis.getValue()].zeroaxis.copyFrom(GlobalMembersAxis.default_axis_zeroaxis);
 	}
 
-/* process 'unset zeroaxis' command */
+	/* process 'unset zeroaxis' command */
 	public static void unset_all_zeroaxes()
 	{
 		AXIS_INDEX axis;
 
 		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
-		GlobalMembersUnset.unset_zeroaxis(axis);
+			GlobalMembersUnset.unset_zeroaxis(axis);
 	}
 
-/* process 'unset [xyz]{2}label command */
+	/* process 'unset [xyz]{2}label command */
 
 	public static void unset_axislabel_or_title(text_label label)
 	{
 		position default_offset = new position(position_type.character, position_type.character, position_type.character, 0., 0., 0.);
 		if (label != null)
 		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(label.text);
-		label.text = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(label.font);
-		label.font = DefineConstants.NULL;
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: label->offset = default_offset;
-		label.offset.copyFrom(default_offset);
-		label.textcolor.type = DefineConstants.TC_DEFAULT;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(label.text);
+			label.text = null;
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			free(label.font);
+			label.font = null;
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: label->offset = default_offset;
+			label.offset.copyFrom(default_offset);
+			label.textcolor.type = DefineConstants.TC_DEFAULT;
 		}
 	}
 	public static void unset_axislabel(AXIS_INDEX axis)
 	{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_axislabel_or_title(&axis_array[axis].label);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_axislabel_or_title(&axis_array[axis].label);
 		GlobalMembersUnset.unset_axislabel_or_title(new text_label(GlobalMembersAxis.axis_array[axis.getValue()].label));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[axis].label = default_axis_label;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: axis_array[axis].label = default_axis_label;
 		GlobalMembersAxis.axis_array[axis.getValue()].label.copyFrom(GlobalMembersAxis.default_axis_label);
 		if (axis == AXIS_INDEX.FIRST_Y_AXIS || axis == AXIS_INDEX.SECOND_Y_AXIS || axis == AXIS_INDEX.COLOR_AXIS)
-		GlobalMembersAxis.axis_array[axis.getValue()].label.rotate = DefineConstants.TEXT_VERTICAL;
+			GlobalMembersAxis.axis_array[axis.getValue()].label.rotate = DefineConstants.TEXT_VERTICAL;
 	}
 
 	/******** The 'unset' command ********/
@@ -2580,393 +2582,393 @@ public class GlobalMembersUnset
 
 		GlobalMembersParse.check_for_iteration();
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: found_token = lookup_table(&set_tbl[0],c_token);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: found_token = lookup_table(&set_tbl[0],c_token);
 		found_token = GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_tbl[0]), GlobalMembersCommand.c_token);
 
 		/* HBB 20000506: rationalize occurences of c_token++ ... */
 		if (found_token != set_id.S_INVALID.getValue())
-		GlobalMembersCommand.c_token++;
+			GlobalMembersCommand.c_token++;
 
 		save_token = GlobalMembersCommand.c_token;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
 		ITERATE:
 
-		switch (found_token)
-		{
-		case S_ANGLES:
-		GlobalMembersUnset.unset_angles();
-		break;
-		case S_ARROW:
-		GlobalMembersUnset.unset_arrow();
-		break;
-		case S_AUTOSCALE:
-		GlobalMembersUnset.unset_autoscale();
-		break;
-		case S_BARS:
-		GlobalMembersUnset.unset_bars();
-		break;
-		case S_BORDER:
-		GlobalMembersUnset.unset_border();
-		break;
-		case S_BOXWIDTH:
-		GlobalMembersUnset.unset_boxwidth();
-		break;
-		case S_CLABEL:
-		GlobalMembersUnset.unset_clabel();
-		break;
-		case S_CLIP:
-		GlobalMembersUnset.unset_clip();
-		break;
-		case S_CNTRPARAM:
-		GlobalMembersUnset.unset_cntrparam();
-		break;
-		case S_CONTOUR:
-		GlobalMembersUnset.unset_contour();
-		break;
-		case S_DGRID3D:
-		GlobalMembersUnset.unset_dgrid3d();
-		break;
-		case S_DUMMY:
-		GlobalMembersUnset.unset_dummy();
-		break;
-		case S_ENCODING:
-		GlobalMembersUnset.unset_encoding();
-		break;
-		case S_DECIMALSIGN:
-		GlobalMembersUnset.unset_decimalsign();
-		break;
-		case S_FIT:
-		GlobalMembersUnset.unset_fit();
-		break;
-		case S_FORMAT:
-		GlobalMembersUnset.unset_format();
-		break;
-		case S_GRID:
-		GlobalMembersUnset.unset_grid();
-		break;
-		case S_HIDDEN3D:
-		GlobalMembersUnset.unset_hidden3d();
-		break;
-		case S_HISTORYSIZE:
-		GlobalMembersUnset.unset_historysize();
-		break;
-		case S_ISOSAMPLES:
-		GlobalMembersUnset.unset_isosamples();
-		break;
-		case S_KEY:
-		GlobalMembersUnset.unset_key();
-		break;
-		case S_KEYTITLE:
-		GlobalMembersUnset.unset_keytitle();
-		break;
-		case S_LABEL:
-		GlobalMembersUnset.unset_label();
-		break;
-		case S_LOADPATH:
-		GlobalMembersUnset.unset_loadpath();
-		break;
-		case S_LOCALE:
-		GlobalMembersUnset.unset_locale();
-		break;
-		case S_LOGSCALE:
-		GlobalMembersUnset.unset_logscale();
-		break;
-	///#ifdef GP_MACROS
-		case S_MACROS:
-		GlobalMembersUnset.unset_macros();
-		break;
-	///#endif
-		case S_MAPPING:
-		GlobalMembersUnset.unset_mapping();
-		break;
-		case S_BMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&bmargin);
-		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.bmargin));
-		break;
-		case S_LMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&lmargin);
-		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.lmargin));
-		break;
-		case S_RMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&rmargin);
-		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.rmargin));
-		break;
-		case S_TMARGIN:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&tmargin);
-		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.tmargin));
-		break;
-		case S_DATAFILE:
-		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fort$ran") != 0)
-		{
-			GlobalMembersDatafile.df_fortran_constants = false;
-			GlobalMembersCommand.c_token++;
-			break;
-		}
-		GlobalMembersDatafile.df_fortran_constants = false;
-		GlobalMembersUnset.unset_missing();
-		GlobalMembersDatafile.df_separator = (byte)'\0';
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-		free(GlobalMembersDatafile.df_commentschars);
-		GlobalMembersDatafile.df_commentschars = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_COMMENTS_CHARS);
-		GlobalMembersDatafile.df_unset_datafile_binary();
-		break;
-	///#ifdef USE_MOUSE
-		case S_MOUSE:
-		GlobalMembersUnset.unset_mouse();
-		break;
-	///#endif
-		case S_MULTIPLOT:
-	/*	unset_multiplot(); */
-		GlobalMembersTerm.term_end_multiplot();
-		break;
-		case S_OFFSETS:
-		GlobalMembersUnset.unset_offsets();
-		break;
-		case S_ORIGIN:
-		GlobalMembersUnset.unset_origin();
-		break;
-		case SET_OUTPUT:
-		GlobalMembersUnset.unset_output();
-		break;
-		case S_PARAMETRIC:
-		GlobalMembersUnset.unset_parametric();
-		break;
-		case S_PM3D:
-		GlobalMembersUnset.unset_pm3d();
-		break;
-		case S_PALETTE:
-		GlobalMembersUnset.unset_palette();
-		break;
-		case S_COLORBOX:
-		GlobalMembersUnset.unset_colorbox();
-		break;
-		case S_POINTSIZE:
-		GlobalMembersUnset.unset_pointsize();
-		break;
-		case S_POLAR:
-		GlobalMembersUnset.unset_polar();
-		break;
-		case S_PRINT:
-		GlobalMembersUnset.unset_print();
-		break;
-	///#ifdef EAM_OBJECTS
-		case S_OBJECT:
-		GlobalMembersUnset.unset_object();
-		break;
-	///#endif
-		case S_SAMPLES:
-		GlobalMembersUnset.unset_samples();
-		break;
-		case S_SIZE:
-		GlobalMembersUnset.unset_size();
-		break;
-		case S_STYLE:
-		GlobalMembersUnset.unset_style();
-		break;
-		case S_SURFACE:
-		GlobalMembersUnset.unset_surface();
-		break;
-		case S_TABLE:
-		GlobalMembersUnset.unset_table();
-		break;
-		case S_TERMINAL:
-		GlobalMembersUnset.unset_terminal();
-		break;
-		case S_TICS:
-		GlobalMembersUnset.unset_tics(DefineConstants.AXIS_ARRAY_SIZE);
-		break;
-		case S_TICSCALE:
-		GlobalMembersUnset.unset_ticscale();
-		break;
-		case S_TICSLEVEL:
-		case S_XYPLANE:
-		GlobalMembersUnset.unset_ticslevel();
-		break;
-		case S_TIMEFMT:
-		GlobalMembersUnset.unset_timefmt();
-		break;
-		case S_TIMESTAMP:
-		GlobalMembersUnset.unset_timestamp();
-		break;
-		case S_TITLE:
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_axislabel_or_title(&title);
-		GlobalMembersUnset.unset_axislabel_or_title(new text_label(GlobalMembersGadgets.title));
-		break;
-		case S_VIEW:
-		GlobalMembersUnset.unset_view();
-		break;
-		case S_ZERO:
-		GlobalMembersUnset.unset_zero();
-		break;
-	/* FIXME - are the tics correct? */
-		case S_MXTICS:
-		GlobalMembersUnset.unset_minitics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_XTICS:
-		GlobalMembersUnset.unset_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_XDTICS:
-		case S_XMTICS:
-		GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_MYTICS:
-		GlobalMembersUnset.unset_minitics(AXIS_INDEX.FIRST_Y_AXIS);
-		break;
-		case S_YTICS:
-		GlobalMembersUnset.unset_tics(AXIS_INDEX.FIRST_Y_AXIS);
-		break;
-		case S_YDTICS:
-		case S_YMTICS:
-		GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_MX2TICS:
-		GlobalMembersUnset.unset_minitics(AXIS_INDEX.SECOND_X_AXIS);
-		break;
-		case S_X2TICS:
-		GlobalMembersUnset.unset_tics(AXIS_INDEX.SECOND_X_AXIS);
-		break;
-		case S_X2DTICS:
-		case S_X2MTICS:
-		GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_MY2TICS:
-		GlobalMembersUnset.unset_minitics(AXIS_INDEX.SECOND_Y_AXIS);
-		break;
-		case S_Y2TICS:
-		GlobalMembersUnset.unset_tics(AXIS_INDEX.SECOND_Y_AXIS);
-		break;
-		case S_Y2DTICS:
-		case S_Y2MTICS:
-		GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_MZTICS:
-		GlobalMembersUnset.unset_minitics(AXIS_INDEX.FIRST_Z_AXIS);
-		break;
-		case S_ZTICS:
-		GlobalMembersUnset.unset_tics(AXIS_INDEX.FIRST_Z_AXIS);
-		break;
-		case S_ZDTICS:
-		case S_ZMTICS:
-		GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_MCBTICS:
-		GlobalMembersUnset.unset_minitics(AXIS_INDEX.COLOR_AXIS);
-		break;
-		case S_CBTICS:
-		GlobalMembersUnset.unset_tics(AXIS_INDEX.COLOR_AXIS);
-		break;
-		case S_CBDTICS:
-		case S_CBMTICS:
-		GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_XDATA:
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.FIRST_X_AXIS);
-		/* FIXME HBB 20000506: does unsetting these axes make *any*
-		 * sense?  After all, their content is never displayed, so
-		 * what would they need a corrected format for? */
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.T_AXIS);
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.U_AXIS);
-		break;
-		case S_YDATA:
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.FIRST_Y_AXIS);
-		/* FIXME: see above */
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.V_AXIS);
-		break;
-		case S_ZDATA:
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.FIRST_Z_AXIS);
-		break;
-		case S_CBDATA:
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.COLOR_AXIS);
-		break;
-		case S_X2DATA:
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.SECOND_X_AXIS);
-		break;
-		case S_Y2DATA:
-		GlobalMembersUnset.unset_timedata(AXIS_INDEX.SECOND_Y_AXIS);
-		break;
-		case S_XLABEL:
-		GlobalMembersUnset.unset_axislabel(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_YLABEL:
-		GlobalMembersUnset.unset_axislabel(AXIS_INDEX.FIRST_Y_AXIS);
-		break;
-		case S_ZLABEL:
-		GlobalMembersUnset.unset_axislabel(AXIS_INDEX.FIRST_Z_AXIS);
-		break;
-		case S_CBLABEL:
-		GlobalMembersUnset.unset_axislabel(AXIS_INDEX.COLOR_AXIS);
-		break;
-		case S_X2LABEL:
-		GlobalMembersUnset.unset_axislabel(AXIS_INDEX.SECOND_X_AXIS);
-		break;
-		case S_Y2LABEL:
-		GlobalMembersUnset.unset_axislabel(AXIS_INDEX.SECOND_Y_AXIS);
-		break;
-		case S_XRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_X2RANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.SECOND_X_AXIS);
-		break;
-		case S_YRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.FIRST_Y_AXIS);
-		break;
-		case S_Y2RANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.SECOND_Y_AXIS);
-		break;
-		case S_ZRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.FIRST_Z_AXIS);
-		break;
-		case S_CBRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.COLOR_AXIS);
-		break;
-		case S_RRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.R_AXIS);
-		break;
-		case S_TRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.T_AXIS);
-		break;
-		case S_URANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.U_AXIS);
-		break;
-		case S_VRANGE:
-		GlobalMembersUnset.unset_range(AXIS_INDEX.V_AXIS);
-		break;
-		case S_XZEROAXIS:
-		GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.FIRST_X_AXIS);
-		break;
-		case S_YZEROAXIS:
-		GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.FIRST_Y_AXIS);
-		break;
-		case S_ZZEROAXIS:
-		GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.FIRST_Z_AXIS);
-		break;
-		case S_X2ZEROAXIS:
-		GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.SECOND_X_AXIS);
-		break;
-		case S_Y2ZEROAXIS:
-		GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.SECOND_Y_AXIS);
-		break;
-		case S_ZEROAXIS:
-		GlobalMembersUnset.unset_all_zeroaxes();
-		break;
-		case S_INVALID:
-		default:
-		GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized option.  See 'help unset'.");
-		break;
-		}
+			switch (found_token)
+			{
+			case S_ANGLES:
+				GlobalMembersUnset.unset_angles();
+				break;
+			case S_ARROW:
+				GlobalMembersUnset.unset_arrow();
+				break;
+			case S_AUTOSCALE:
+				GlobalMembersUnset.unset_autoscale();
+				break;
+			case S_BARS:
+				GlobalMembersUnset.unset_bars();
+				break;
+			case S_BORDER:
+				GlobalMembersUnset.unset_border();
+				break;
+			case S_BOXWIDTH:
+				GlobalMembersUnset.unset_boxwidth();
+				break;
+			case S_CLABEL:
+				GlobalMembersUnset.unset_clabel();
+				break;
+			case S_CLIP:
+				GlobalMembersUnset.unset_clip();
+				break;
+			case S_CNTRPARAM:
+				GlobalMembersUnset.unset_cntrparam();
+				break;
+			case S_CONTOUR:
+				GlobalMembersUnset.unset_contour();
+				break;
+			case S_DGRID3D:
+				GlobalMembersUnset.unset_dgrid3d();
+				break;
+			case S_DUMMY:
+				GlobalMembersUnset.unset_dummy();
+				break;
+			case S_ENCODING:
+				GlobalMembersUnset.unset_encoding();
+				break;
+			case S_DECIMALSIGN:
+				GlobalMembersUnset.unset_decimalsign();
+				break;
+			case S_FIT:
+				GlobalMembersUnset.unset_fit();
+				break;
+			case S_FORMAT:
+				GlobalMembersUnset.unset_format();
+				break;
+			case S_GRID:
+				GlobalMembersUnset.unset_grid();
+				break;
+			case S_HIDDEN3D:
+				GlobalMembersUnset.unset_hidden3d();
+				break;
+			case S_HISTORYSIZE:
+				GlobalMembersUnset.unset_historysize();
+				break;
+			case S_ISOSAMPLES:
+				GlobalMembersUnset.unset_isosamples();
+				break;
+			case S_KEY:
+				GlobalMembersUnset.unset_key();
+				break;
+			case S_KEYTITLE:
+				GlobalMembersUnset.unset_keytitle();
+				break;
+			case S_LABEL:
+				GlobalMembersUnset.unset_label();
+				break;
+			case S_LOADPATH:
+				GlobalMembersUnset.unset_loadpath();
+				break;
+			case S_LOCALE:
+				GlobalMembersUnset.unset_locale();
+				break;
+			case S_LOGSCALE:
+				GlobalMembersUnset.unset_logscale();
+				break;
+				///#ifdef GP_MACROS
+			case S_MACROS:
+				GlobalMembersUnset.unset_macros();
+				break;
+				///#endif
+			case S_MAPPING:
+				GlobalMembersUnset.unset_mapping();
+				break;
+			case S_BMARGIN:
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: unset_margin(&bmargin);
+				GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.bmargin));
+				break;
+			case S_LMARGIN:
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: unset_margin(&lmargin);
+				GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.lmargin));
+				break;
+			case S_RMARGIN:
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: unset_margin(&rmargin);
+				GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.rmargin));
+				break;
+			case S_TMARGIN:
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: unset_margin(&tmargin);
+				GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.tmargin));
+				break;
+			case S_DATAFILE:
+				if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "fort$ran") != 0)
+				{
+					GlobalMembersDatafile.df_fortran_constants = false;
+					GlobalMembersCommand.c_token++;
+					break;
+				}
+				GlobalMembersDatafile.df_fortran_constants = false;
+				GlobalMembersUnset.unset_missing();
+				GlobalMembersDatafile.df_separator = (byte)'\0';
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(GlobalMembersDatafile.df_commentschars);
+				GlobalMembersDatafile.df_commentschars = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_COMMENTS_CHARS);
+				GlobalMembersDatafile.df_unset_datafile_binary();
+				break;
+				///#ifdef USE_MOUSE
+			case S_MOUSE:
+				GlobalMembersUnset.unset_mouse();
+				break;
+				///#endif
+			case S_MULTIPLOT:
+				/*	unset_multiplot(); */
+				GlobalMembersTerm.term_end_multiplot();
+				break;
+			case S_OFFSETS:
+				GlobalMembersUnset.unset_offsets();
+				break;
+			case S_ORIGIN:
+				GlobalMembersUnset.unset_origin();
+				break;
+			case SET_OUTPUT:
+				GlobalMembersUnset.unset_output();
+				break;
+			case S_PARAMETRIC:
+				GlobalMembersUnset.unset_parametric();
+				break;
+			case S_PM3D:
+				GlobalMembersUnset.unset_pm3d();
+				break;
+			case S_PALETTE:
+				GlobalMembersUnset.unset_palette();
+				break;
+			case S_COLORBOX:
+				GlobalMembersUnset.unset_colorbox();
+				break;
+			case S_POINTSIZE:
+				GlobalMembersUnset.unset_pointsize();
+				break;
+			case S_POLAR:
+				GlobalMembersUnset.unset_polar();
+				break;
+			case S_PRINT:
+				GlobalMembersUnset.unset_print();
+				break;
+				///#ifdef EAM_OBJECTS
+			case S_OBJECT:
+				GlobalMembersUnset.unset_object();
+				break;
+				///#endif
+			case S_SAMPLES:
+				GlobalMembersUnset.unset_samples();
+				break;
+			case S_SIZE:
+				GlobalMembersUnset.unset_size();
+				break;
+			case S_STYLE:
+				GlobalMembersUnset.unset_style();
+				break;
+			case S_SURFACE:
+				GlobalMembersUnset.unset_surface();
+				break;
+			case S_TABLE:
+				GlobalMembersUnset.unset_table();
+				break;
+			case S_TERMINAL:
+				GlobalMembersUnset.unset_terminal();
+				break;
+			case S_TICS:
+				GlobalMembersUnset.unset_tics(DefineConstants.AXIS_ARRAY_SIZE);
+				break;
+			case S_TICSCALE:
+				GlobalMembersUnset.unset_ticscale();
+				break;
+			case S_TICSLEVEL:
+			case S_XYPLANE:
+				GlobalMembersUnset.unset_ticslevel();
+				break;
+			case S_TIMEFMT:
+				GlobalMembersUnset.unset_timefmt();
+				break;
+			case S_TIMESTAMP:
+				GlobalMembersUnset.unset_timestamp();
+				break;
+			case S_TITLE:
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: unset_axislabel_or_title(&title);
+				GlobalMembersUnset.unset_axislabel_or_title(new text_label(GlobalMembersGadgets.title));
+				break;
+			case S_VIEW:
+				GlobalMembersUnset.unset_view();
+				break;
+			case S_ZERO:
+				GlobalMembersUnset.unset_zero();
+				break;
+				/* FIXME - are the tics correct? */
+			case S_MXTICS:
+				GlobalMembersUnset.unset_minitics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_XTICS:
+				GlobalMembersUnset.unset_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_XDTICS:
+			case S_XMTICS:
+				GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_MYTICS:
+				GlobalMembersUnset.unset_minitics(AXIS_INDEX.FIRST_Y_AXIS);
+				break;
+			case S_YTICS:
+				GlobalMembersUnset.unset_tics(AXIS_INDEX.FIRST_Y_AXIS);
+				break;
+			case S_YDTICS:
+			case S_YMTICS:
+				GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_MX2TICS:
+				GlobalMembersUnset.unset_minitics(AXIS_INDEX.SECOND_X_AXIS);
+				break;
+			case S_X2TICS:
+				GlobalMembersUnset.unset_tics(AXIS_INDEX.SECOND_X_AXIS);
+				break;
+			case S_X2DTICS:
+			case S_X2MTICS:
+				GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_MY2TICS:
+				GlobalMembersUnset.unset_minitics(AXIS_INDEX.SECOND_Y_AXIS);
+				break;
+			case S_Y2TICS:
+				GlobalMembersUnset.unset_tics(AXIS_INDEX.SECOND_Y_AXIS);
+				break;
+			case S_Y2DTICS:
+			case S_Y2MTICS:
+				GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_MZTICS:
+				GlobalMembersUnset.unset_minitics(AXIS_INDEX.FIRST_Z_AXIS);
+				break;
+			case S_ZTICS:
+				GlobalMembersUnset.unset_tics(AXIS_INDEX.FIRST_Z_AXIS);
+				break;
+			case S_ZDTICS:
+			case S_ZMTICS:
+				GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_MCBTICS:
+				GlobalMembersUnset.unset_minitics(AXIS_INDEX.COLOR_AXIS);
+				break;
+			case S_CBTICS:
+				GlobalMembersUnset.unset_tics(AXIS_INDEX.COLOR_AXIS);
+				break;
+			case S_CBDTICS:
+			case S_CBMTICS:
+				GlobalMembersUnset.unset_month_day_tics(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_XDATA:
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.FIRST_X_AXIS);
+				/* FIXME HBB 20000506: does unsetting these axes make *any*
+				 * sense?  After all, their content is never displayed, so
+				 * what would they need a corrected format for? */
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.T_AXIS);
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.U_AXIS);
+				break;
+			case S_YDATA:
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.FIRST_Y_AXIS);
+				/* FIXME: see above */
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.V_AXIS);
+				break;
+			case S_ZDATA:
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.FIRST_Z_AXIS);
+				break;
+			case S_CBDATA:
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.COLOR_AXIS);
+				break;
+			case S_X2DATA:
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.SECOND_X_AXIS);
+				break;
+			case S_Y2DATA:
+				GlobalMembersUnset.unset_timedata(AXIS_INDEX.SECOND_Y_AXIS);
+				break;
+			case S_XLABEL:
+				GlobalMembersUnset.unset_axislabel(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_YLABEL:
+				GlobalMembersUnset.unset_axislabel(AXIS_INDEX.FIRST_Y_AXIS);
+				break;
+			case S_ZLABEL:
+				GlobalMembersUnset.unset_axislabel(AXIS_INDEX.FIRST_Z_AXIS);
+				break;
+			case S_CBLABEL:
+				GlobalMembersUnset.unset_axislabel(AXIS_INDEX.COLOR_AXIS);
+				break;
+			case S_X2LABEL:
+				GlobalMembersUnset.unset_axislabel(AXIS_INDEX.SECOND_X_AXIS);
+				break;
+			case S_Y2LABEL:
+				GlobalMembersUnset.unset_axislabel(AXIS_INDEX.SECOND_Y_AXIS);
+				break;
+			case S_XRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_X2RANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.SECOND_X_AXIS);
+				break;
+			case S_YRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.FIRST_Y_AXIS);
+				break;
+			case S_Y2RANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.SECOND_Y_AXIS);
+				break;
+			case S_ZRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.FIRST_Z_AXIS);
+				break;
+			case S_CBRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.COLOR_AXIS);
+				break;
+			case S_RRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.R_AXIS);
+				break;
+			case S_TRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.T_AXIS);
+				break;
+			case S_URANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.U_AXIS);
+				break;
+			case S_VRANGE:
+				GlobalMembersUnset.unset_range(AXIS_INDEX.V_AXIS);
+				break;
+			case S_XZEROAXIS:
+				GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.FIRST_X_AXIS);
+				break;
+			case S_YZEROAXIS:
+				GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.FIRST_Y_AXIS);
+				break;
+			case S_ZZEROAXIS:
+				GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.FIRST_Z_AXIS);
+				break;
+			case S_X2ZEROAXIS:
+				GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.SECOND_X_AXIS);
+				break;
+			case S_Y2ZEROAXIS:
+				GlobalMembersUnset.unset_zeroaxis(AXIS_INDEX.SECOND_Y_AXIS);
+				break;
+			case S_ZEROAXIS:
+				GlobalMembersUnset.unset_all_zeroaxes();
+				break;
+			case S_INVALID:
+			default:
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Unrecognized option.  See 'help unset'.");
+				break;
+			}
 
 		if (GlobalMembersParse.next_iteration())
 		{
-		GlobalMembersCommand.c_token = save_token;
-//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-		goto ITERATE;
+			GlobalMembersCommand.c_token = save_token;
+			//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
+			goto ITERATE;
 		}
 
 		/* FIXME - Should this be inside the iteration loop? */
@@ -2977,8 +2979,8 @@ public class GlobalMembersUnset
 	public static void reset_key()
 	{
 		legend_key temp_key = new legend_key(true, en_key_region.GPKEY_AUTO_INTERIOR_LRTBC, en_key_ext_region.GPKEY_RMARGIN, {position_type.graph, position_type.graph, position_type.graph, 0.9, 0.9, 0.}, VERT_JUSTIFY.JUST_TOP, JUSTIFY.RIGHT, en_key_sample_positioning.GPKEY_RIGHT, en_key_stack_direction.GPKEY_VERTICAL, 4.0, 1.0, 0.0, 0.0, keytitle_type.FILENAME_KEYTITLES, false, false, true, {0, DefineConstants.LT_NODRAW, 0, 1.0, 1.0, 0}, "", DefineConstants.NULL, {DefineConstants.TC_LT, DefineConstants.LT_BLACK, 0.0});
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memcpy(GlobalMembersGadgets.keyT, temp_key, sizeof(GlobalMembersGadgets.keyT));
 	}
 
@@ -3003,19 +3005,19 @@ public class GlobalMembersUnset
 		GlobalMembersEval.update_gpval_variables(4);
 		if (GlobalMembersUtil.almost_equals(GlobalMembersCommand.c_token, "err$orstate") != 0)
 		{
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersCommand.c_token++;
+			return;
 		}
 
-	///#ifdef USE_MOUSE
+		///#ifdef USE_MOUSE
 		/* Reset key bindings only */
 		if (GlobalMembersUtil.equals(GlobalMembersCommand.c_token, "bind") != 0)
 		{
-		GlobalMembersMouse.bind_remove_all();
-		GlobalMembersCommand.c_token++;
-		return;
+			GlobalMembersMouse.bind_remove_all();
+			GlobalMembersCommand.c_token++;
+			return;
 		}
-	///#endif
+		///#endif
 
 		/* Kludge alert, HBB 20000506: set to noninteractive mode, to
 		 * suppress some of the commentary output by the individual
@@ -3027,20 +3029,20 @@ public class GlobalMembersUnset
 
 		/* delete arrows */
 		while (GlobalMembersGadgets.first_arrow != DefineConstants.NULL)
-		GlobalMembersUnset.delete_arrow((GlobalMembersMouse.struct arrow_def *) DefineConstants.NULL, GlobalMembersGadgets.first_arrow);
+			GlobalMembersUnset.delete_arrow((GlobalMembersMouse.struct arrow_def *) DefineConstants.NULL, GlobalMembersGadgets.first_arrow);
 		GlobalMembersUnset.unset_arrowstyles();
 		/* delete labels */
 		while (GlobalMembersGadgets.first_label != DefineConstants.NULL)
-		GlobalMembersUnset.delete_label((GlobalMembersMouse.struct text_label *) DefineConstants.NULL, GlobalMembersGadgets.first_label);
+			GlobalMembersUnset.delete_label((GlobalMembersMouse.struct text_label *) DefineConstants.NULL, GlobalMembersGadgets.first_label);
 		/* delete linestyles */
 		while (GlobalMembersGadgets.first_linestyle != DefineConstants.NULL)
-		GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, DefineConstants.NULL, GlobalMembersGadgets.first_linestyle);
-	///#ifdef EAM_OBJECTS
+			GlobalMembersSet.delete_linestyle(GlobalMembersGadgets.first_linestyle, DefineConstants.NULL, GlobalMembersGadgets.first_linestyle);
+		///#ifdef EAM_OBJECTS
 		/* delete objects */
 		while (GlobalMembersGadgets.first_object != DefineConstants.NULL)
-		GlobalMembersUnset.delete_object((GlobalMembersMouse.struct object *) DefineConstants.NULL, GlobalMembersGadgets.first_object);
+			GlobalMembersUnset.delete_object((GlobalMembersMouse.struct object *) DefineConstants.NULL, GlobalMembersGadgets.first_object);
 		GlobalMembersUnset.unset_style_rectangle();
-	///#endif
+		///#endif
 
 		/* 'polar', 'parametric' and 'dummy' are interdependent, so be
 		 * sure to keep the order intact */
@@ -3048,8 +3050,8 @@ public class GlobalMembersUnset
 		GlobalMembersUnset.unset_parametric();
 		GlobalMembersUnset.unset_dummy();
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_axislabel_or_title(&title);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_axislabel_or_title(&title);
 		GlobalMembersUnset.unset_axislabel_or_title(new text_label(GlobalMembersGadgets.title));
 
 		GlobalMembersUnset.reset_key();
@@ -3060,30 +3062,30 @@ public class GlobalMembersUnset
 
 		for (axis = 0; axis < DefineConstants.AXIS_ARRAY_SIZE; axis++)
 		{
-		if (set_for_axis[axis.getValue()])
-		{
-			() strcpy(GlobalMembersAxis.axis_array[axis.getValue()].formatstring,DefineConstants.DEF_FORMAT);
-			GlobalMembersAxis.axis_array[axis.getValue()].format_is_numeric = true;
-		};
-		GlobalMembersUnset.unset_timedata(axis);
-		GlobalMembersUnset.unset_zeroaxis(axis);
-		GlobalMembersUnset.unset_range(axis);
-		GlobalMembersUnset.unset_axislabel(axis);
+			if (set_for_axis[axis.getValue()])
+			{
+				() strcpy(GlobalMembersAxis.axis_array[axis.getValue()].formatstring,DefineConstants.DEF_FORMAT);
+				GlobalMembersAxis.axis_array[axis.getValue()].format_is_numeric = true;
+			};
+			GlobalMembersUnset.unset_timedata(axis);
+			GlobalMembersUnset.unset_zeroaxis(axis);
+			GlobalMembersUnset.unset_range(axis);
+			GlobalMembersUnset.unset_axislabel(axis);
 
-		GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale = e_autoscale.AUTOSCALE_BOTH;
-		GlobalMembersAxis.axis_array[axis.getValue()].writeback_min = GlobalMembersAxis.axis_array[axis.getValue()].set_min = GlobalMembersAxis.axis_defaults[axis.getValue()].min;
-		GlobalMembersAxis.axis_array[axis.getValue()].writeback_max = GlobalMembersAxis.axis_array[axis.getValue()].set_max = GlobalMembersAxis.axis_defaults[axis.getValue()].max;
+			GlobalMembersAxis.axis_array[axis.getValue()].set_autoscale = e_autoscale.AUTOSCALE_BOTH;
+			GlobalMembersAxis.axis_array[axis.getValue()].writeback_min = GlobalMembersAxis.axis_array[axis.getValue()].set_min = GlobalMembersAxis.axis_defaults[axis.getValue()].min;
+			GlobalMembersAxis.axis_array[axis.getValue()].writeback_max = GlobalMembersAxis.axis_array[axis.getValue()].set_max = GlobalMembersAxis.axis_defaults[axis.getValue()].max;
 
-		/* 'tics' default is on for some, off for the other axes: */
-		GlobalMembersUnset.unset_tics(axis);
-		GlobalMembersAxis.axis_array[axis.getValue()].ticmode = GlobalMembersAxis.axis_defaults[axis.getValue()].ticmode;
-		GlobalMembersUnset.unset_minitics(axis);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: axis_array[axis].ticdef = default_axis_ticdef;
-		GlobalMembersAxis.axis_array[axis.getValue()].ticdef.copyFrom(GlobalMembersAxis.default_axis_ticdef);
-		GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_DEFAULT.getValue();
+			/* 'tics' default is on for some, off for the other axes: */
+			GlobalMembersUnset.unset_tics(axis);
+			GlobalMembersAxis.axis_array[axis.getValue()].ticmode = GlobalMembersAxis.axis_defaults[axis.getValue()].ticmode;
+			GlobalMembersUnset.unset_minitics(axis);
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+			//ORIGINAL LINE: axis_array[axis].ticdef = default_axis_ticdef;
+			GlobalMembersAxis.axis_array[axis.getValue()].ticdef.copyFrom(GlobalMembersAxis.default_axis_ticdef);
+			GlobalMembersAxis.axis_array[axis.getValue()].minitics = en_minitics_status.MINI_DEFAULT.getValue();
 
-		GlobalMembersUnset.reset_logscale(axis);
+			GlobalMembersUnset.reset_logscale(axis);
 		}
 
 		GlobalMembersUnset.unset_boxwidth();
@@ -3092,8 +3094,8 @@ public class GlobalMembersUnset
 		GlobalMembersGadgets.clip_lines1 = true;
 		GlobalMembersGadgets.clip_lines2 = false;
 
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: border_lp = default_border_lp;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: border_lp = default_border_lp;
 		GlobalMembersGadgets.border_lp.copyFrom(GlobalMembersGadgets.default_border_lp);
 		GlobalMembersGadgets.draw_border = 31;
 
@@ -3110,18 +3112,18 @@ public class GlobalMembersUnset
 		GlobalMembersGraphics.bar_layer = DefineConstants.LAYER_FRONT;
 
 		GlobalMembersUnset.unset_grid();
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: grid_lp = default_grid_lp;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: grid_lp = default_grid_lp;
 		GlobalMembersAxis.grid_lp.copyFrom(GlobalMembersAxis.default_grid_lp);
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
-//ORIGINAL LINE: mgrid_lp = default_grid_lp;
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy assignment (rather than a reference assignment) - this should be verified and a 'copyFrom' method should be created if it does not yet exist:
+		//ORIGINAL LINE: mgrid_lp = default_grid_lp;
 		GlobalMembersAxis.mgrid_lp.copyFrom(GlobalMembersAxis.default_grid_lp);
 		GlobalMembersAxis.polar_grid_angle = 0;
 		GlobalMembersAxis.grid_layer = -1;
 
-	///#ifdef VOLATILE_REFRESH
+		///#ifdef VOLATILE_REFRESH
 		GlobalMembersGadgets.refresh_ok = 0;
-	///#endif
+		///#endif
 
 		GlobalMembersHidden3d.reset_hidden3doptions();
 		GlobalMembersGraph3d.hidden3d = false;
@@ -3143,17 +3145,17 @@ public class GlobalMembersUnset
 		GlobalMembersUnset.unset_zero();
 		GlobalMembersUnset.unset_dgrid3d();
 		GlobalMembersUnset.unset_ticslevel();
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&bmargin);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_margin(&bmargin);
 		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.bmargin));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&lmargin);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_margin(&lmargin);
 		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.lmargin));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&rmargin);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_margin(&rmargin);
 		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.rmargin));
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: unset_margin(&tmargin);
+		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+		//ORIGINAL LINE: unset_margin(&tmargin);
 		GlobalMembersUnset.unset_margin(new position(GlobalMembersGadgets.tmargin));
 		GlobalMembersUnset.unset_pointsize();
 		GlobalMembersPm3d.pm3d_reset();
@@ -3165,7 +3167,7 @@ public class GlobalMembersUnset
 
 		GlobalMembersUnset.unset_missing();
 		GlobalMembersDatafile.df_separator = (byte)'\0';
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(GlobalMembersDatafile.df_commentschars);
 		GlobalMembersDatafile.df_commentschars = GlobalMembersUtil.gp_strdup(DefineConstants.DEFAULT_COMMENTS_CHARS);
 

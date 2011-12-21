@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
 public class GlobalMembersBreaders
 {
 	///#define __STDC__ 1
@@ -168,10 +170,10 @@ public class GlobalMembersBreaders
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: breaders.c,v 1.6.2.4 2009/12/09 01:03:09 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: breaders.c,v 1.6.2.4 2009/12/09 01:03:09 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - breaders.c */
@@ -668,51 +670,51 @@ public class GlobalMembersBreaders
 
 	public static void edf_filetype_function()
 	{
-		FILE fp;
-		String header = DefineConstants.NULL;
+		File fp;
+		String header = null;
 		int header_size = 0;
 		String p;
 		int k;
 		/* open (header) file */
-		fp = GlobalMembersMisc.loadpath_fopen(GlobalMembersDatafile.df_filename, "rb");
+		fp = GlobalMembersMisc.loadpath_fopen(GlobalMembersDatafile.df_filename, "rb"); 
 		if (fp == null)
-		GlobalMembersUtil.os_error(DefineConstants.NO_CARET, "Can't open data file \"%s\"", GlobalMembersDatafile.df_filename);
+			GlobalMembersUtil.os_error(DefineConstants.NO_CARET, "Can't open data file \"%s\"", GlobalMembersDatafile.df_filename);
 		/* read header: it is a multiple of 512 B ending by "}\n" */
-		while (header_size == 0 || strncmp(header.charAt(header_size-2), "}\n", 2))
+		while (header_size == 0 || StringFunctions.strncmp(header.charAt(header_size-2), "}\n", 2))
 		{
-		int header_size_prev = header_size;
-		header_size += 512;
-		if (header == null)
-			header = GlobalMembersAlloc.gp_alloc(header_size + 1, "EDF header");
-		else
-			header = GlobalMembersAlloc.gp_realloc(header, header_size + 1, "EDF header");
-		header = header.substring(0, header_size_prev); // protection against empty file
-		k = fread(header + header_size_prev, 512, 1, fp);
-		if (k == 0) // protection against indefinite loop
-		{
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(header);
-			GlobalMembersUtil.os_error(DefineConstants.NO_CARET, "Damaged EDF header of %s: not multiple of 512 B.\n", GlobalMembersDatafile.df_filename);
-		}
-		header = header.substring(0, header_size); // end of string: protection against strstr later on
+			int header_size_prev = header_size;
+			header_size += 512;
+			if (header == null)
+				header = GlobalMembersAlloc.gp_alloc(header_size + 1, "EDF header");
+			else
+				header = GlobalMembersAlloc.gp_realloc(header, header_size + 1, "EDF header");
+			header = header.substring(0, header_size_prev); // protection against empty file
+			k = fread(header + header_size_prev, 512, 1, fp);
+			if (k == 0) // protection against indefinite loop
+			{
+				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+				free(header);
+				GlobalMembersUtil.os_error(DefineConstants.NO_CARET, "Damaged EDF header of %s: not multiple of 512 B.\n", GlobalMembersDatafile.df_filename);
+			}
+			header = header.substring(0, header_size); // end of string: protection against strstr later on
 		}
 		fclose(fp);
 		/* make sure there is a binary record structure for each image */
 		if (GlobalMembersDatafile.df_num_bin_records < 1)
-		GlobalMembersDatafile.df_add_binary_records(1 - GlobalMembersDatafile.df_num_bin_records, df_records_type.DF_CURRENT_RECORDS); // otherwise put here: number of images (records) from this file
+			GlobalMembersDatafile.df_add_binary_records(1 - GlobalMembersDatafile.df_num_bin_records, df_records_type.DF_CURRENT_RECORDS); // otherwise put here: number of images (records) from this file
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "EDF_BinaryFileName")))
 		{
-		int plen = strcspn(p, " ;\n");
-		GlobalMembersDatafile.df_filename = GlobalMembersAlloc.gp_realloc(GlobalMembersDatafile.df_filename, plen + 1, "datafile name");
-		GlobalMembersDatafile.df_filename = p.substring(0, plen);
-		GlobalMembersDatafile.df_filename = tangible.StringFunctions.changeCharacter(GlobalMembersDatafile.df_filename, plen, '\0');
-		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "EDF_BinaryFilePosition")))
-			GlobalMembersDatafile.df_bin_record[0].scan_skip[0] = Integer.parseInt(p);
-		else
-			GlobalMembersDatafile.df_bin_record[0].scan_skip[0] = 0;
+			int plen = strcspn(p, " ;\n");
+			GlobalMembersDatafile.df_filename = GlobalMembersAlloc.gp_realloc(GlobalMembersDatafile.df_filename, plen + 1, "datafile name");
+			GlobalMembersDatafile.df_filename = p.substring(0, plen);
+			GlobalMembersDatafile.df_filename = tangible.StringFunctions.changeCharacter(GlobalMembersDatafile.df_filename, plen, '\0');
+			if ((p = GlobalMembersBreaders.edf_findInHeader(header, "EDF_BinaryFilePosition")))
+				GlobalMembersDatafile.df_bin_record[0].scan_skip[0] = Integer.parseInt(p);
+			else
+				GlobalMembersDatafile.df_bin_record[0].scan_skip[0] = 0;
 		}
 		else
-		GlobalMembersDatafile.df_bin_record[0].scan_skip[0] = header_size; // skip header
+			GlobalMembersDatafile.df_bin_record[0].scan_skip[0] = header_size; // skip header
 		/* set default values */
 		GlobalMembersDatafile.df_bin_record[0].scan_dir[0] = 1;
 		GlobalMembersDatafile.df_bin_record[0].scan_dir[1] = -1;
@@ -726,86 +728,86 @@ public class GlobalMembersBreaders
 		GlobalMembersDatafile.use_spec[0].column = 1;
 		/* now parse the header */
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "Dim_1")))
-		GlobalMembersDatafile.df_bin_record[0].scan_dim[0] = Integer.parseInt(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_dim[0] = Integer.parseInt(p);
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "Dim_2")))
-		GlobalMembersDatafile.df_bin_record[0].scan_dim[1] = Integer.parseInt(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_dim[1] = Integer.parseInt(p);
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "DataType")))
 		{
-		k = GlobalMembersBreaders.lookup_table4_nth(edf_datatype_table, p);
-		if (k >= 0) // known EDF DataType
-		{
-			int s = edf_datatype_table[k].sajzof;
-			switch (edf_datatype_table[k].signum)
+			k = GlobalMembersBreaders.lookup_table4_nth(edf_datatype_table, p);
+			if (k >= 0) // known EDF DataType
 			{
-			case 0:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				GlobalMembersDatafile.df_set_read_type(1, ((s) == sizeof(int) ? df_data_type.DF_LONG : ((s) == sizeof(long) ? df_data_type.DF_LONGLONG : ((s) == sizeof(int) ? df_data_type.DF_INT : ((s) == sizeof(short) ? df_data_type.DF_SHORT : ((s) == sizeof(byte) ? df_data_type.DF_CHAR : df_data_type.DF_BAD_TYPE))))));
-				break;
-			case 1:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				GlobalMembersDatafile.df_set_read_type(1, ((s) == sizeof(int) ? df_data_type.DF_ULONG : ((s) == sizeof(long) ? df_data_type.DF_ULONGLONG : ((s) == sizeof(int) ? df_data_type.DF_UINT : ((s) == sizeof(short) ? df_data_type.DF_USHORT : ((s) == sizeof(byte) ? df_data_type.DF_UCHAR : df_data_type.DF_BAD_TYPE))))));
-				break;
-			case 2:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				GlobalMembersDatafile.df_set_read_type(1, ((s) == sizeof(float) ? df_data_type.DF_FLOAT : ((s) == sizeof(double) ? df_data_type.DF_DOUBLE : df_data_type.DF_BAD_TYPE)));
-				break;
+				int s = edf_datatype_table[k].sajzof;
+				switch (edf_datatype_table[k].signum)
+				{
+				case 0:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					GlobalMembersDatafile.df_set_read_type(1, ((s) == sizeof(int) ? df_data_type.DF_LONG : ((s) == sizeof(long) ? df_data_type.DF_LONGLONG : ((s) == sizeof(int) ? df_data_type.DF_INT : ((s) == sizeof(short) ? df_data_type.DF_SHORT : ((s) == sizeof(byte) ? df_data_type.DF_CHAR : df_data_type.DF_BAD_TYPE))))));
+					break;
+				case 1:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					GlobalMembersDatafile.df_set_read_type(1, ((s) == sizeof(int) ? df_data_type.DF_ULONG : ((s) == sizeof(long) ? df_data_type.DF_ULONGLONG : ((s) == sizeof(int) ? df_data_type.DF_UINT : ((s) == sizeof(short) ? df_data_type.DF_USHORT : ((s) == sizeof(byte) ? df_data_type.DF_UCHAR : df_data_type.DF_BAD_TYPE))))));
+					break;
+				case 2:
+					//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+					GlobalMembersDatafile.df_set_read_type(1, ((s) == sizeof(float) ? df_data_type.DF_FLOAT : ((s) == sizeof(double) ? df_data_type.DF_DOUBLE : df_data_type.DF_BAD_TYPE)));
+					break;
+				}
 			}
-		}
 		}
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "ByteOrder")))
 		{
-		k = GlobalMembersTables.lookup_table_nth(edf_byteorder_table, p);
-		if (k >= 0)
-			GlobalMembersDatafile.df_bin_file_endianess = edf_byteorder_table[k].value;
+			k = GlobalMembersTables.lookup_table_nth(edf_byteorder_table, p);
+			if (k >= 0)
+				GlobalMembersDatafile.df_bin_file_endianess = edf_byteorder_table[k].value;
 		}
 		/* Origin vs center: EDF specs allows only Center, but it does not hurt if
 		   Origin is supported as well; however, Center rules if both specified.
-		*/
+		 */
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "Origin_1")))
 		{
-		GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[0] = Double.parseDouble(p);
-		GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_ORIGIN;
+			GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[0] = Double.parseDouble(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_ORIGIN;
 		}
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "Origin_2")))
 		{
-		GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[1] = Double.parseDouble(p);
-		GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_ORIGIN;
+			GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[1] = Double.parseDouble(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_ORIGIN;
 		}
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "Center_1")))
 		{
-		GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[0] = Double.parseDouble(p);
-		GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_CENTER;
+			GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[0] = Double.parseDouble(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_CENTER;
 		}
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "Center_2")))
 		{
-		GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[1] = Double.parseDouble(p);
-		GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_CENTER;
+			GlobalMembersDatafile.df_bin_record[0].scan_cen_or_ori[1] = Double.parseDouble(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_trans = df_translation_type.DF_TRANSLATE_VIA_CENTER;
 		}
 		/* now pixel sizes and raster orientation */
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "PSize_1")))
-		GlobalMembersDatafile.df_bin_record[0].scan_delta[0] = Double.parseDouble(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_delta[0] = Double.parseDouble(p);
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "PSize_2")))
-		GlobalMembersDatafile.df_bin_record[0].scan_delta[1] = Double.parseDouble(p);
+			GlobalMembersDatafile.df_bin_record[0].scan_delta[1] = Double.parseDouble(p);
 		if ((p = GlobalMembersBreaders.edf_findInHeader(header, "RasterAxes")))
 		{
-		k = GlobalMembersTables.lookup_table_nth(edf_rasteraxes_table, p);
-		switch (k)
-		{
+			k = GlobalMembersTables.lookup_table_nth(edf_rasteraxes_table, p);
+			switch (k)
+			{
 			case EDF_RASTER_AXES_XrightYup:
-			GlobalMembersDatafile.df_bin_record[0].scan_dir[0] = 1;
-			GlobalMembersDatafile.df_bin_record[0].scan_dir[1] = 1;
-			GlobalMembersDatafile.df_bin_record[0].cart_scan[0] = df_sample_scan_type.DF_SCAN_POINT;
-			GlobalMembersDatafile.df_bin_record[0].cart_scan[1] = df_sample_scan_type.DF_SCAN_LINE;
-			break;
+				GlobalMembersDatafile.df_bin_record[0].scan_dir[0] = 1;
+				GlobalMembersDatafile.df_bin_record[0].scan_dir[1] = 1;
+				GlobalMembersDatafile.df_bin_record[0].cart_scan[0] = df_sample_scan_type.DF_SCAN_POINT;
+				GlobalMembersDatafile.df_bin_record[0].cart_scan[1] = df_sample_scan_type.DF_SCAN_LINE;
+				break;
 			default: // also EDF_RASTER_AXES_XrightYdown
-			GlobalMembersDatafile.df_bin_record[0].scan_dir[0] = 1;
-			GlobalMembersDatafile.df_bin_record[0].scan_dir[1] = -1;
-			GlobalMembersDatafile.df_bin_record[0].cart_scan[0] = df_sample_scan_type.DF_SCAN_POINT;
-			GlobalMembersDatafile.df_bin_record[0].cart_scan[1] = df_sample_scan_type.DF_SCAN_LINE;
-		}
+				GlobalMembersDatafile.df_bin_record[0].scan_dir[0] = 1;
+				GlobalMembersDatafile.df_bin_record[0].scan_dir[1] = -1;
+				GlobalMembersDatafile.df_bin_record[0].cart_scan[0] = df_sample_scan_type.DF_SCAN_POINT;
+				GlobalMembersDatafile.df_bin_record[0].cart_scan[1] = df_sample_scan_type.DF_SCAN_LINE;
+			}
 		}
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(header);
 
 	}
@@ -821,19 +823,19 @@ public class GlobalMembersBreaders
 	{
 		GlobalMembersBreaders.gd_filetype_function(DefineConstants.GD_JPEG);
 	}
-//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
-private static int df_libgd_get_pixel_pixel;
+	//C++ TO JAVA CONVERTER NOTE: This was formerly a static local variable declaration (not allowed in Java):
+	private static int df_libgd_get_pixel_pixel;
 	public static int df_libgd_get_pixel(int i, int j, int component)
 	{
-	//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
-	//	static int pixel;
+		//C++ TO JAVA CONVERTER NOTE: This static local variable declaration (not allowed in Java) has been moved just prior to the method:
+		//	static int pixel;
 		int alpha;
 
 		switch (component)
 		{
 		case 0:
 			df_libgd_get_pixel_pixel = gdImageGetTrueColorPixel(im, i,j);
-				return gdTrueColorGetRed(df_libgd_get_pixel_pixel);
+			return gdTrueColorGetRed(df_libgd_get_pixel_pixel);
 		case 1:
 			return gdTrueColorGetGreen(df_libgd_get_pixel_pixel);
 		case 2:
@@ -1490,15 +1492,15 @@ private static int df_libgd_get_pixel_pixel;
 	 */
 
 	/* Inside datafile.c, but kept hidden. */
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern sbyte *df_filename; // name of data file
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern int df_no_bin_cols; // cols to read
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern df_endianess_type df_bin_file_endianess;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean df_matrix_file, df_binary_file;
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern Object* df_datablock;
 
 	/* Exactly like lookup_table_nth from tables.c, but for gen_table4 instead
@@ -1508,8 +1510,8 @@ private static int df_libgd_get_pixel_pixel;
 	{
 		int k = -1;
 		while (tbl[++k].key != null)
-		if (tbl[k].key != null && !strncmp(search_str, tbl[k].key, String.valueOf(tbl[k].key).length()))
-			return k;
+			if (tbl[k].key != null && !strncmp(search_str, tbl[k].key, String.valueOf(tbl[k].key).length()))
+				return k;
 		return -1; // not found
 	}
 
@@ -1525,7 +1527,7 @@ private static int df_libgd_get_pixel_pixel;
 	 */
 	public static String edf_findInHeader(String header, String key)
 	{
-//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
+		//C++ TO JAVA CONVERTER TODO TASK: Pointer arithmetic is detected on this variable, so pointers on this variable are left unchanged.
 		byte * value_ptr = tangible.StringFunctions.strStr(header, key);
 		if (value_ptr == 0)
 			return DefineConstants.NULL;
@@ -1553,14 +1555,14 @@ private static int df_libgd_get_pixel_pixel;
 		/* free previous image, if any */
 		if (im != null)
 		{
-		gdImageDestroy(im);
-		im = DefineConstants.NULL;
+			gdImageDestroy(im);
+			im = DefineConstants.NULL;
 		}
 
 		/* read image into memory */
 		fp = GlobalMembersMisc.loadpath_fopen(GlobalMembersDatafile.df_filename, "rb");
 		if (fp == null)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Can't open data file \"%s\"", GlobalMembersDatafile.df_filename);
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "Can't open data file \"%s\"", GlobalMembersDatafile.df_filename);
 
 		switch (filetype)
 		{
@@ -1568,21 +1570,21 @@ private static int df_libgd_get_pixel_pixel;
 			im = gdImageCreateFromPng(fp);
 			break;
 		case DefineConstants.GD_GIF:
-	///#ifdef HAVE_GD_GIF
-				im = gdImageCreateFromGif(fp);
-	///#endif
-				break;
+			///#ifdef HAVE_GD_GIF
+			im = gdImageCreateFromGif(fp);
+			///#endif
+			break;
 		case DefineConstants.GD_JPEG:
-	///#ifdef HAVE_GD_JPEG
-				im = gdImageCreateFromJpeg(fp);
-	///#endif
+			///#ifdef HAVE_GD_JPEG
+			im = gdImageCreateFromJpeg(fp);
+			///#endif
 		default:
 			break;
 		}
 		fclose(fp);
 
 		if (im == null)
-		GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "libgd doesn't recognize the format of \"%s\"", GlobalMembersDatafile.df_filename);
+			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "libgd doesn't recognize the format of \"%s\"", GlobalMembersDatafile.df_filename);
 
 		/* check on image properties and complain if we can't handle them */
 		M = im.sx;

@@ -73,6 +73,11 @@ public enum e_autoscale
 	{
 		return intValue;
 	}
+	
+	public void setValue(int value)
+	{
+		intValue = value;
+	}
 
 	public static e_autoscale forValue(int value)
 	{

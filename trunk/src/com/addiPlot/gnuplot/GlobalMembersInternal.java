@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.StringFunctions;
+
 public class GlobalMembersInternal
 {
 	///#define __STDC__ 1
@@ -793,7 +795,7 @@ public class GlobalMembersInternal
 		value a = new value();
 
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val == 0));
+		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.int_val == 0) ? 1 : 0));
 	}
 	public static void f_bnot(argument arg)
 	{
@@ -809,7 +811,7 @@ public class GlobalMembersInternal
 
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val || b.v.int_val != 0));
+		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.int_val != 0 || b.v.int_val != 0) ? 1 : 0));
 	}
 	public static void f_land(argument arg)
 	{
@@ -818,7 +820,7 @@ public class GlobalMembersInternal
 
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(b));
 		GlobalMembersEval.int_check(GlobalMembersEval.pop(a));
-		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, a.v.int_val && b.v.int_val != 0));
+		GlobalMembersEval.push(GlobalMembersEval.Ginteger(a, (a.v.int_val != 0 && b.v.int_val != 0) ? 1 : 0));
 	}
 	public static void f_bor(argument arg)
 	{
@@ -881,10 +883,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.int_val == b.v.int_val);
+				result = (a.v.int_val == b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.int_val == b.v.cmplx_val.real && b.v.cmplx_val.imag == 0.0);
+				result = (a.v.int_val == b.v.cmplx_val.real && b.v.cmplx_val.imag == 0.0) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -893,10 +895,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (b.v.int_val == a.v.cmplx_val.real && a.v.cmplx_val.imag == 0.0);
+				result = (b.v.int_val == a.v.cmplx_val.real && a.v.cmplx_val.imag == 0.0) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.cmplx_val.real == b.v.cmplx_val.real && a.v.cmplx_val.imag == b.v.cmplx_val.imag);
+				result = (a.v.cmplx_val.real == b.v.cmplx_val.real && a.v.cmplx_val.imag == b.v.cmplx_val.imag) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -919,10 +921,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.int_val != b.v.int_val);
+				result = (a.v.int_val != b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.int_val != b.v.cmplx_val.real || b.v.cmplx_val.imag != 0.0);
+				result = (a.v.int_val != b.v.cmplx_val.real || b.v.cmplx_val.imag != 0.0) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -931,10 +933,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (b.v.int_val != a.v.cmplx_val.real || a.v.cmplx_val.imag != 0.0);
+				result = (b.v.int_val != a.v.cmplx_val.real || a.v.cmplx_val.imag != 0.0) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.cmplx_val.real != b.v.cmplx_val.real || a.v.cmplx_val.imag != b.v.cmplx_val.imag);
+				result = (a.v.cmplx_val.real != b.v.cmplx_val.real || a.v.cmplx_val.imag != b.v.cmplx_val.imag) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -957,10 +959,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.int_val > b.v.int_val);
+				result = (a.v.int_val > b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.int_val > b.v.cmplx_val.real);
+				result = (a.v.int_val > b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -969,10 +971,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.cmplx_val.real > b.v.int_val);
+				result = (a.v.cmplx_val.real > b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.cmplx_val.real > b.v.cmplx_val.real);
+				result = (a.v.cmplx_val.real > b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -995,10 +997,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.int_val < b.v.int_val);
+				result = (a.v.int_val < b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.int_val < b.v.cmplx_val.real);
+				result = (a.v.int_val < b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -1007,10 +1009,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.cmplx_val.real < b.v.int_val);
+				result = (a.v.cmplx_val.real < b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.cmplx_val.real < b.v.cmplx_val.real);
+				result = (a.v.cmplx_val.real < b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -1033,10 +1035,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.int_val >= b.v.int_val);
+				result = (a.v.int_val >= b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.int_val >= b.v.cmplx_val.real);
+				result = (a.v.int_val >= b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -1045,10 +1047,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.cmplx_val.real >= b.v.int_val);
+				result = (a.v.cmplx_val.real >= b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.cmplx_val.real >= b.v.cmplx_val.real);
+				result = (a.v.cmplx_val.real >= b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -1071,10 +1073,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.int_val <= b.v.int_val);
+				result = (a.v.int_val <= b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.int_val <= b.v.cmplx_val.real);
+				result = (a.v.int_val <= b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -1083,10 +1085,10 @@ public class GlobalMembersInternal
 			switch (b.type)
 			{
 			case INTGR:
-				result = (a.v.cmplx_val.real <= b.v.int_val);
+				result = (a.v.cmplx_val.real <= b.v.int_val) ? 1 : 0;
 				break;
 			case CMPLX:
-				result = (a.v.cmplx_val.real <= b.v.cmplx_val.real);
+				result = (a.v.cmplx_val.real <= b.v.cmplx_val.real) ? 1 : 0;
 				break;
 			default: GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : type neither INT or CMPLX"); return;
 			}
@@ -1486,7 +1488,7 @@ public class GlobalMembersInternal
 		if (a.type != DATA_TYPES.STRING || b.type != DATA_TYPES.STRING)
 			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
 
-		GlobalMembersEval.Ginteger(result, !strcmp(a.v.string_val, b.v.string_val));
+		GlobalMembersEval.Ginteger(result, (StringFunctions.strcmp(a.v.string_val, b.v.string_val) == 0) ? 1 : 0);
 		GlobalMembersEval.gpfree_string(a);
 		GlobalMembersEval.gpfree_string(b);
 		GlobalMembersEval.push(result);
@@ -1503,7 +1505,7 @@ public class GlobalMembersInternal
 		if (a.type != DATA_TYPES.STRING || b.type != DATA_TYPES.STRING)
 			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : STRING operator applied to non-STRING type");
 
-		GlobalMembersEval.Ginteger(result, (int)(strcmp(a.v.string_val, b.v.string_val) != 0));
+		GlobalMembersEval.Ginteger(result, (StringFunctions.strcmp(a.v.string_val, b.v.string_val) != 0) ? 1 : 0);
 		GlobalMembersEval.gpfree_string(a);
 		GlobalMembersEval.gpfree_string(b);
 		GlobalMembersEval.push(result);
@@ -1548,7 +1550,7 @@ public class GlobalMembersInternal
 		/* Call the old internal routine */
 		GlobalMembersUtil.gprintf(buffer, length, fmt.v.string_val, base, GlobalMembersEval.real(val));
 
-		GlobalMembersFit.a((stderr," gprintf result = \"%s\"\n",buffer));
+		GlobalMembersFit.a(stderr," gprintf result = \"%s\"\n",buffer);
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(result, buffer));
 
 		GlobalMembersEval.gpfree_string(fmt);
@@ -1572,7 +1574,7 @@ public class GlobalMembersInternal
 		if (full.type != DATA_TYPES.STRING)
 			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error: substring range operator applied to non-STRING type");
 
-		GlobalMembersFit.a((stderr,"f_range( \"%s\", %d, %d)\n", full.v.string_val, beg.v.int_val, end.v.int_val));
+		GlobalMembersFit.a(stderr,"f_range( \"%s\", %d, %d)\n", full.v.string_val, beg.v.int_val, end.v.int_val);
 
 		if (end.v.int_val > full.v.string_val.length())
 			end.v.int_val = full.v.string_val.length();
@@ -1581,7 +1583,7 @@ public class GlobalMembersInternal
 		if (beg.v.int_val > end.v.int_val)
 			beg.v.int_val = full.v.string_val.length() + 1;
 
-		full.v.string_val = tangible.StringFunctions.changeCharacter(full.v.string_val, end.v.int_val, '\0');
+		full.v.string_val = StringFunctions.changeCharacter(full.v.string_val, end.v.int_val, '\0');
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(substr, full.v.string_val.charAt(beg.v.int_val - 1)));
 		GlobalMembersEval.gpfree_string(full);
 	}
@@ -1671,7 +1673,7 @@ public class GlobalMembersInternal
 
 			next_length = strcspn(next_start + 1,"%") + 1;
 			tempchar = next_start.charAt(next_length);
-			next_start = tangible.StringFunctions.changeCharacter(next_start, next_length, '\0');
+			next_start = StringFunctions.changeCharacter(next_start, next_length, '\0');
 
 			spec_type = GlobalMembersInternal.sprintf_specifier(next_start);
 
@@ -1714,7 +1716,7 @@ public class GlobalMembersInternal
 			//	}
 			///#endif
 
-			next_start = tangible.StringFunctions.changeCharacter(next_start, next_length, tempchar);
+			next_start = StringFunctions.changeCharacter(next_start, next_length, tempchar);
 			next_start += next_length;
 			outpos = buffer.charAt(buffer.length());
 
@@ -1793,7 +1795,7 @@ public class GlobalMembersInternal
 		if (needle.type != DATA_TYPES.STRING || haystack.type != DATA_TYPES.STRING)
 			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "internal error : non-STRING argument to strstrt");
 
-		start = tangible.StringFunctions.strStr(haystack.v.string_val, needle.v.string_val);
+		start = StringFunctions.strStr(haystack.v.string_val, needle.v.string_val);
 		GlobalMembersEval.Ginteger(result, (int)(start != null ? (start - haystack.v.string_val) + 1 : 0));
 		GlobalMembersEval.gpfree_string(needle);
 		GlobalMembersEval.gpfree_string(haystack);
@@ -1817,7 +1819,7 @@ public class GlobalMembersInternal
 		if (val.type != DATA_TYPES.STRING)
 			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "non-string argument to system()");
 
-		GlobalMembersFit.a((stderr," f_system input = \"%s\"\n", val.v.string_val));
+		GlobalMembersFit.a(stderr," f_system input = \"%s\"\n", val.v.string_val);
 
 		tangible.RefObject<String[]> tempRef_output = new tangible.RefObject<String[]>(output);
 		ierr = GlobalMembersCommand.do_system_func(val.v.string_val, tempRef_output);
@@ -1831,9 +1833,9 @@ public class GlobalMembersInternal
 
 		/* chomp result */
 		if (output_len > 0 && output.charAt(output_len - 1) == '\n')
-			output = tangible.StringFunctions.changeCharacter(output, output_len - 1, DefineConstants.NUL);
+			output = StringFunctions.changeCharacter(output, output_len - 1, DefineConstants.NUL);
 
-		GlobalMembersFit.a((stderr," f_system result = \"%s\"\n", output));
+		GlobalMembersFit.a(stderr," f_system result = \"%s\"\n", output);
 
 		GlobalMembersEval.push(GlobalMembersEval.Gstring(result, output));
 
@@ -1924,7 +1926,7 @@ public class GlobalMembersInternal
 
 		/* Remove trailing space */
 		assert buffer.charAt(length - 1) == ' ';
-		buffer = tangible.StringFunctions.changeCharacter(buffer, length - 1, DefineConstants.NUL);
+		buffer = StringFunctions.changeCharacter(buffer, length - 1, DefineConstants.NUL);
 
 		GlobalMembersEval.gpfree_string(val);
 		GlobalMembersEval.gpfree_string(fmt);
@@ -1958,7 +1960,7 @@ public class GlobalMembersInternal
 
 		/* time_tm -> result */
 		result = GlobalMembersTime.gtimegm(time_tm);
-		GlobalMembersFit.a((stderr," strptime result = %g seconds \n", result));
+		GlobalMembersFit.a(stderr," strptime result = %g seconds \n", result);
 
 		GlobalMembersEval.gpfree_string(val);
 		GlobalMembersEval.gpfree_string(fmt);

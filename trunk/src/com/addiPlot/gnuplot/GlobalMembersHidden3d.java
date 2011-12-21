@@ -168,10 +168,10 @@ public class GlobalMembersHidden3d
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: hidden3d.c,v 1.69 2008/09/24 03:19:06 sfeam Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: hidden3d.c,v 1.69 2008/09/24 03:19:06 sfeam Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - hidden3d.c */
@@ -1161,12 +1161,12 @@ public class GlobalMembersHidden3d
 
 	/* Variables of hidden3d.c needed by other modules: */
 
-//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
+	//C++ TO JAVA CONVERTER NOTE: 'extern' variable declarations are not required in Java:
 	//extern boolean disable_mouse_z;
 
-/* Set the options for hidden3d. To be called from set.c, when the
- * user has begun a command with 'set hidden3d', to parse the rest of
- * that command */
+	/* Set the options for hidden3d. To be called from set.c, when the
+	 * user has begun a command with 'set hidden3d', to parse the rest of
+	 * that command */
 
 	/* Prototypes of functions exported by hidden3d.c */
 
@@ -1176,66 +1176,66 @@ public class GlobalMembersHidden3d
 
 		while (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: switch (lookup_table(&set_hidden3d_tbl[0], c_token))
-		switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_hidden3d_tbl[0]), GlobalMembersCommand.c_token))
-		{
-		case S_HI_DEFAULTS:
-			/* reset all parameters to defaults */
-			GlobalMembersHidden3d.reset_hidden3doptions();
+			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+			//ORIGINAL LINE: switch (lookup_table(&set_hidden3d_tbl[0], c_token))
+			switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.set_hidden3d_tbl[0]), GlobalMembersCommand.c_token))
+			{
+			case S_HI_DEFAULTS:
+				/* reset all parameters to defaults */
+				GlobalMembersHidden3d.reset_hidden3doptions();
+				GlobalMembersCommand.c_token++;
+				if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
+					GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "No further options allowed after 'defaults'");
+				return;
+				break;
+			case S_HI_OFFSET:
+				GlobalMembersCommand.c_token++;
+				hiddenBacksideLinetypeOffset = GlobalMembersParse.int_expression();
+				GlobalMembersCommand.c_token--;
+				break;
+			case S_HI_NOOFFSET:
+				hiddenBacksideLinetypeOffset = 0;
+				break;
+			case S_HI_TRIANGLEPATTERN:
+				GlobalMembersCommand.c_token++;
+				hiddenTriangleLinesdrawnPattern = GlobalMembersParse.int_expression();
+				GlobalMembersCommand.c_token--;
+				break;
+			case S_HI_UNDEFINED:
+				GlobalMembersCommand.c_token++;
+				tmp = GlobalMembersParse.int_expression();
+				if (tmp <= 0 || tmp > coord_type.UNDEFINED + 1)
+					tmp = coord_type.UNDEFINED.getValue() + 1;
+				hiddenHandleUndefinedPoints = tmp;
+				GlobalMembersCommand.c_token--;
+				break;
+			case S_HI_NOUNDEFINED:
+				hiddenHandleUndefinedPoints = coord_type.UNDEFINED.getValue() + 1;
+				break;
+			case S_HI_ALTDIAGONAL:
+				hiddenShowAlternativeDiagonal = 1;
+				break;
+			case S_HI_NOALTDIAGONAL:
+				hiddenShowAlternativeDiagonal = 0;
+				break;
+			case S_HI_BENTOVER:
+				hiddenHandleBentoverQuadrangles = 1;
+				break;
+			case S_HI_NOBENTOVER:
+				hiddenHandleBentoverQuadrangles = 0;
+				break;
+			case S_HI_BACK:
+				GlobalMembersGraph3d.hidden3d_layer = DefineConstants.LAYER_BACK;
+				break;
+			case S_HI_FRONT:
+				GlobalMembersGraph3d.hidden3d_layer = DefineConstants.LAYER_FRONT;
+				break;
+			case S_HI_INVALID:
+				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "No such option to hidden3d (or wrong order)");
+			default:
+				break;
+			}
 			GlobalMembersCommand.c_token++;
-			if (!GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "No further options allowed after 'defaults'");
-			return;
-			break;
-		case S_HI_OFFSET:
-			GlobalMembersCommand.c_token++;
-			hiddenBacksideLinetypeOffset = GlobalMembersParse.int_expression();
-			GlobalMembersCommand.c_token--;
-			break;
-		case S_HI_NOOFFSET:
-			hiddenBacksideLinetypeOffset = 0;
-			break;
-		case S_HI_TRIANGLEPATTERN:
-			GlobalMembersCommand.c_token++;
-			hiddenTriangleLinesdrawnPattern = GlobalMembersParse.int_expression();
-			GlobalMembersCommand.c_token--;
-			break;
-		case S_HI_UNDEFINED:
-			GlobalMembersCommand.c_token++;
-			tmp = GlobalMembersParse.int_expression();
-			if (tmp <= 0 || tmp > coord_type.UNDEFINED + 1)
-			tmp = coord_type.UNDEFINED.getValue() + 1;
-			hiddenHandleUndefinedPoints = tmp;
-			GlobalMembersCommand.c_token--;
-			break;
-		case S_HI_NOUNDEFINED:
-			hiddenHandleUndefinedPoints = coord_type.UNDEFINED.getValue() + 1;
-			break;
-		case S_HI_ALTDIAGONAL:
-			hiddenShowAlternativeDiagonal = 1;
-			break;
-		case S_HI_NOALTDIAGONAL:
-			hiddenShowAlternativeDiagonal = 0;
-			break;
-		case S_HI_BENTOVER:
-			hiddenHandleBentoverQuadrangles = 1;
-			break;
-		case S_HI_NOBENTOVER:
-			hiddenHandleBentoverQuadrangles = 0;
-			break;
-		case S_HI_BACK:
-			GlobalMembersGraph3d.hidden3d_layer = DefineConstants.LAYER_BACK;
-			break;
-		case S_HI_FRONT:
-			GlobalMembersGraph3d.hidden3d_layer = DefineConstants.LAYER_FRONT;
-			break;
-		case S_HI_INVALID:
-			GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "No such option to hidden3d (or wrong order)");
-		default:
-			break;
-		}
-		GlobalMembersCommand.c_token++;
 		}
 	}
 	public static void show_hidden3doptions()
@@ -1246,17 +1246,17 @@ public class GlobalMembersHidden3d
 		switch (hiddenHandleUndefinedPoints)
 		{
 		case OUTRANGE:
-		fputs("Outranged and undefined datapoints are omitted from the surface.\n", stderr);
-		break;
+			fputs("Outranged and undefined datapoints are omitted from the surface.\n", stderr);
+			break;
 		case UNDEFINED:
-		fputs("Only undefined datapoints are omitted from the surface.\n", stderr);
-		break;
+			fputs("Only undefined datapoints are omitted from the surface.\n", stderr);
+			break;
 		case UNDEFINED + 1:
-		fputs("Will not check for undefined datapoints (may cause crashes).\n", stderr);
+			fputs("Will not check for undefined datapoints (may cause crashes).\n", stderr);
 		break;
 		default:
-		fputs("Value stored for undefined datapoint handling is illegal!!!\n", stderr);
-		break;
+			fputs("Value stored for undefined datapoint handling is illegal!!!\n", stderr);
+			break;
 		}
 
 		fprintf(stderr,"\t  Will %suse other diagonal if it gives a less jaggy outline\n\t  Will %sdraw diagonal visibly if quadrangle is 'bent over'\n", hiddenShowAlternativeDiagonal != 0 ? "" : "not ", hiddenHandleBentoverQuadrangles != 0 ? "" : "not ");
@@ -1271,18 +1271,18 @@ public class GlobalMembersHidden3d
 		GlobalMembersGraph3d.hidden3d_layer = DefineConstants.LAYER_BACK;
 	}
 
-/* Implements proper 'save'ing of the new hidden3d options... */
+	/* Implements proper 'save'ing of the new hidden3d options... */
 	public static void save_hidden3doptions(FILE fp)
 	{
 		if (!GlobalMembersGraph3d.hidden3d)
 		{
-		fputs("unset hidden3d\n", fp);
-		return;
+			fputs("unset hidden3d\n", fp);
+			return;
 		}
 		fprintf(fp, "set hidden3d %s offset %d trianglepattern %ld undefined %d %saltdiagonal %sbentover\n", GlobalMembersGraph3d.hidden3d_layer == DefineConstants.LAYER_BACK ? "back" : "front", hiddenBacksideLinetypeOffset, hiddenTriangleLinesdrawnPattern, hiddenHandleUndefinedPoints, hiddenShowAlternativeDiagonal != 0 ? "" : "no", hiddenHandleBentoverQuadrangles != 0 ? "" : "no");
 	}
 
-/* Initialize the necessary steps for hidden line removal and
+	/* Initialize the necessary steps for hidden line removal and
    initialize global variables. */
 	///#ifndef LITE
 	public static void init_hidden_line_removal()
@@ -1295,47 +1295,47 @@ public class GlobalMembersHidden3d
 		/* Re-mapping of this value makes the test easier in the critical
 		 * section */
 		if (hiddenHandleUndefinedPoints < coord_type.OUTRANGE)
-		hiddenHandleUndefinedPoints = coord_type.UNDEFINED.getValue() + 1;
+			hiddenHandleUndefinedPoints = coord_type.UNDEFINED.getValue() + 1;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersDynarray.init_dynarray(vertices, sizeof(vertex), 100, 100);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersDynarray.init_dynarray(edges, sizeof(edge), 100, 100);
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersDynarray.init_dynarray(polygons, sizeof(mesh_triangle), 100, 100);
-	///#if HIDDEN3D_QUADTREE
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		///#if HIDDEN3D_QUADTREE
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersDynarray.init_dynarray(qtree, sizeof(qtreelist), 100, 100);
-	///#endif
+		///#endif
 
 	}
 
-/* Reset the hidden line data to a fresh start. */
+	/* Reset the hidden line data to a fresh start. */
 	public static void reset_hidden_line_removal()
 	{
 		vertices.end = 0;
 		edges.end = 0;
 		polygons.end = 0;
-	///#if HIDDEN3D_QUADTREE
+		///#if HIDDEN3D_QUADTREE
 		qtree.end = 0;
-	///#endif
+		///#endif
 	}
 
-/* Terminates the hidden line removal process.                  */
-/* Free any memory allocated by init_hidden_line_removal above. */
+	/* Terminates the hidden line removal process.                  */
+	/* Free any memory allocated by init_hidden_line_removal above. */
 	public static void term_hidden_line_removal()
 	{
 		GlobalMembersDynarray.free_dynarray(polygons);
 		GlobalMembersDynarray.free_dynarray(edges);
 		GlobalMembersDynarray.free_dynarray(vertices);
-	///#if HIDDEN3D_QUADTREE
+		///#if HIDDEN3D_QUADTREE
 		GlobalMembersDynarray.free_dynarray(qtree);
-	///#endif
+		///#endif
 	}
 
-/***********************************************************************
- * and, finally, the 'mother function' that uses all these lots of tools
- ***********************************************************************/
+	/***********************************************************************
+	 * and, finally, the 'mother function' that uses all these lots of tools
+	 ***********************************************************************/
 	public static void plot3d_hidden(surface_points plots, int pcount)
 	{
 		/* make vertices, edges and polygons out of all the plots */
@@ -1343,45 +1343,45 @@ public class GlobalMembersHidden3d
 
 		if (edges.end == 0)
 		{
-		/* No drawable edges found. Free all storage and bail out. */
-		GlobalMembersHidden3d.term_hidden_line_removal();
-		GlobalMembersUtil.graph_error("*All* edges undefined or out of range, thus no plot.");
+			/* No drawable edges found. Free all storage and bail out. */
+			GlobalMembersHidden3d.term_hidden_line_removal();
+			GlobalMembersUtil.graph_error("*All* edges undefined or out of range, thus no plot.");
 		}
 
 		if (polygons.end == 0)
 		{
-		/* No polygons anything could be hidden behind... */
+			/* No polygons anything could be hidden behind... */
 
-		GlobalMembersHidden3d.sort_edges_by_z();
-		while (efirst >= 0)
-		{
-			GlobalMembersHidden3d.draw_edge((edge) edges.v + efirst, (vertex GPHUGE *) vertices.v + (edge) edges.v[efirst].v1, (vertex GPHUGE *) vertices.v + (edge) edges.v[efirst].v2);
-			efirst = (edge) edges.v[efirst].next;
-		}
+			GlobalMembersHidden3d.sort_edges_by_z();
+			while (efirst >= 0)
+			{
+				GlobalMembersHidden3d.draw_edge((edge) edges.v + efirst, (vertex GPHUGE *) vertices.v + (edge) edges.v[efirst].v1, (vertex GPHUGE *) vertices.v + (edge) edges.v[efirst].v2);
+				efirst = (edge) edges.v[efirst].next;
+			}
 		}
 		else
 		{
-		int temporary_pfirst;
+			int temporary_pfirst;
 
-		/* Presort edges in z order */
-		GlobalMembersHidden3d.sort_edges_by_z();
-		/* Presort polygons in z order */
-		GlobalMembersHidden3d.sort_polys_by_z();
+			/* Presort edges in z order */
+			GlobalMembersHidden3d.sort_edges_by_z();
+			/* Presort polygons in z order */
+			GlobalMembersHidden3d.sort_polys_by_z();
 
-		temporary_pfirst = pfirst;
+			temporary_pfirst = pfirst;
 
-		while (efirst >= 0)
-		{
-			if ((edge) edges.v[efirst].style >= -2) // skip invisible edges
-			GlobalMembersHidden3d.in_front(efirst, (edge) edges.v[efirst].v1, (edge) edges.v[efirst].v2, temporary_pfirst);
-			efirst = (edge) edges.v[efirst].next;
-		}
+			while (efirst >= 0)
+			{
+				if ((edge) edges.v[efirst].style >= -2) // skip invisible edges
+					GlobalMembersHidden3d.in_front(efirst, (edge) edges.v[efirst].v1, (edge) edges.v[efirst].v2, temporary_pfirst);
+				efirst = (edge) edges.v[efirst].next;
+			}
 		}
 
 		/* Free memory */
 		/* FIXME: anything to free? */
 	}
-//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
+	//C++ TO JAVA CONVERTER TODO TASK: The implementation of the following method could not be found:
 	//void draw_line_hidden(vertex GPHUGE, vertex GPHUGE, lp_style_type NamelessParameter3);
 	///#endif
 
@@ -1704,11 +1704,11 @@ public class GlobalMembersHidden3d
 	public static int coord_to_treecell(double x)
 	{
 		int index;
-		index = ((((x) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0) * DefineConstants.QUADTREE_GRANULARITY;
+		index = (int) (((((x) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0) * DefineConstants.QUADTREE_GRANULARITY);
 		if (index >= DefineConstants.QUADTREE_GRANULARITY)
-		index = DefineConstants.QUADTREE_GRANULARITY - 1;
+			index = DefineConstants.QUADTREE_GRANULARITY - 1;
 		else if (index < 0)
-		index = 0;
+			index = 0;
 
 		return index;
 	}
@@ -1716,17 +1716,17 @@ public class GlobalMembersHidden3d
 	/* the dynarray to actually store all that stuff in: */
 	public static dynarray qtree = new dynarray();
 
-///#if 0 // UNUSED !
-//// /* Do we see the top or bottom of the polygon, or is it 'on edge'? */
-////#define GET_SIDE(vlst,csign)						do {									    double ctmp =								vlist[vlst[0]].x * (vlist[vlst[1]].y - vlist[vlst[2]].y) +		vlist[vlst[1]].x * (vlist[vlst[2]].y - vlist[vlst[0]].y) +		vlist[vlst[2]].x * (vlist[vlst[0]].y - vlist[vlst[1]].y);	    csign = SIGN (ctmp);						} while (0)
-////ignore
-////ignore
-////ignore
-////ignore
-////ignore
-////ignore
-////ignore
-///#endif // UNUSED 
+	///#if 0 // UNUSED !
+	//// /* Do we see the top or bottom of the polygon, or is it 'on edge'? */
+	////#define GET_SIDE(vlst,csign)						do {									    double ctmp =								vlist[vlst[0]].x * (vlist[vlst[1]].y - vlist[vlst[2]].y) +		vlist[vlst[1]].x * (vlist[vlst[2]].y - vlist[vlst[0]].y) +		vlist[vlst[2]].x * (vlist[vlst[0]].y - vlist[vlst[1]].y);	    csign = SIGN (ctmp);						} while (0)
+	////ignore
+	////ignore
+	////ignore
+	////ignore
+	////ignore
+	////ignore
+	////ignore
+	///#endif // UNUSED 
 
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define qlist ((p_qtreelist) qtree.v)
@@ -1739,32 +1739,32 @@ public class GlobalMembersHidden3d
 		thisvert.lp_style = lp_style;
 		if ((int) point.type >= hiddenHandleUndefinedPoints)
 		{
-		do
-		{
-			thisvert.z = -2.0;
-		} while (0);
-		return (-1);
+			do
+			{
+				thisvert.z = -2.0;
+			} while (0);
+			return (-1);
 		}
 		GlobalMembersUtil3d.map3d_xyz(point.x, point.y, point.z, thisvert);
 		if (color_from_column)
 		{
-		thisvert.real_z = point.ylow;
-		thisvert.lp_style.pm3d_color.lt = DefineConstants.LT_COLORFROMCOLUMN;
+			thisvert.real_z = point.ylow;
+			thisvert.lp_style.pm3d_color.lt = DefineConstants.LT_COLORFROMCOLUMN;
 		}
 		else
-		thisvert.real_z = point.z;
+			thisvert.real_z = point.z;
 
-	///#ifdef HIDDEN3D_VAR_PTSIZE
+		///#ifdef HIDDEN3D_VAR_PTSIZE
 		/* Store pointer back to original point */
 		/* Needed to support variable pointsize */
 		thisvert.original = point;
-	///#endif
+		///#endif
 
 		return (thisvert - (vertex GPHUGE *) vertices.v);
 	}
 
-/* A part of store_edge that does the actual storing. Used by
- * in_front(), as well, so I separated it out. */
+	/* A part of store_edge that does the actual storing. Used by
+	 * in_front(), as well, so I separated it out. */
 	public static int make_edge(int vnum1, int vnum2, lp_style_type lp, int style, int next)
 	{
 		edge GPHUGE * thisedge = GlobalMembersDynarray.nextfrom_dynarray(edges);
@@ -1774,13 +1774,13 @@ public class GlobalMembersHidden3d
 		/* ensure z ordering inside each edge */
 		if (v1.z >= v2.z)
 		{
-		thisedge.v1 = vnum1;
-		thisedge.v2 = vnum2;
+			thisedge.v1 = vnum1;
+			thisedge.v2 = vnum2;
 		}
 		else
 		{
-		thisedge.v1 = vnum2;
-		thisedge.v2 = vnum1;
+			thisedge.v1 = vnum2;
+			thisedge.v2 = vnum1;
 		}
 
 		thisedge.style = style;
@@ -1790,8 +1790,8 @@ public class GlobalMembersHidden3d
 		return thisedge - (edge) edges.v;
 	}
 
-/* store the edge from vnum1 to vnum2 into the edge list. Ensure that
- * the vertex with higher z is stored in v1, to ease sorting by zmax */
+	/* store the edge from vnum1 to vnum2 into the edge list. Ensure that
+	 * the vertex with higher z is stored in v1, to ease sorting by zmax */
 	public static int store_edge(int vnum1, edge_direction direction, int crvlen, lp_style_type lp, int style)
 	{
 		vertex GPHUGE * v1 = (vertex GPHUGE *) vertices.v + vnum1;
@@ -1802,137 +1802,137 @@ public class GlobalMembersHidden3d
 		switch (direction)
 		{
 		case edir_vector:
-		v2 = v1 + 1;
-		drawbits = 0;
-		break;
+			v2 = v1 + 1;
+			drawbits = 0;
+			break;
 		case edir_west:
-		v2 = v1 - 1;
-		break;
+			v2 = v1 - 1;
+			break;
 		case edir_north:
-		v2 = v1 - crvlen;
-		break;
+			v2 = v1 - crvlen;
+			break;
 		case edir_NW:
-		v2 = v1 - crvlen - 1;
-		break;
+			v2 = v1 - crvlen - 1;
+			break;
 		case edir_NE:
-		v2 = v1 - crvlen;
-		v1 -= 1;
-		drawbits >>= 1; // altDiag is handled like normal NW one
+			v2 = v1 - crvlen;
+			v1 -= 1;
+			drawbits >>= 1; // altDiag is handled like normal NW one
 		break;
 		case edir_impulse:
-		v2 = v1 - 1;
-		drawbits = 0; // don't care about the triangle pattern
-		break;
+			v2 = v1 - 1;
+			drawbits = 0; // don't care about the triangle pattern
+			break;
 		case edir_point:
-		v2 = v1;
-		drawbits = 0; // nothing to draw, but disable check
-		break;
+			v2 = v1;
+			drawbits = 0; // nothing to draw, but disable check
+			break;
 		}
 
 		vnum2 = v2 - (vertex GPHUGE *) vertices.v;
 
 		if ((v1.z == -2.0) || (v2.z == -2.0))
 		{
-		return -2;
+			return -2;
 		}
 
 		if (drawbits != 0 && !(hiddenTriangleLinesdrawnPattern & drawbits)) // no bits set: 'blind' edge --> no test!
-		style = -3;
+			style = -3;
 
 		return GlobalMembersHidden3d.make_edge(vnum1, vnum2, lp, style, -1);
 	}
 
-/* Evaluate the plane equation represented a four-vector for the given
- * vector. For points in the plane, this should result in values ==0.
- * < 0 is 'away' from the polygon, > 0 is infront of it */
-	public static __inline__ double eval_plane_equation(double[] p, vertex GPHUGE v)
+	/* Evaluate the plane equation represented a four-vector for the given
+	 * vector. For points in the plane, this should result in values ==0.
+	 * < 0 is 'away' from the polygon, > 0 is infront of it */
+	public static double eval_plane_equation(double[] p, vertex v)
 	{
 		return (p[0] * v.x + p[1] * v.y + p[2] * v.z + p[3]);
 	}
 
-/* Find the intersection of a line and plane in 3d space in
- * terms of parameterization u where v = v1 + u * (v2 - v1) */
-	public static __inline__ double intersect_line_plane(vertex GPHUGE v1, vertex GPHUGE v2, double[] p)
+	/* Find the intersection of a line and plane in 3d space in
+	 * terms of parameterization u where v = v1 + u * (v2 - v1) */
+	public static double intersect_line_plane(vertex v1, vertex v2, double[] p)
 	{
 		double numerator = GlobalMembersHidden3d.eval_plane_equation(p, v1);
 		if (numerator == 0)
-		return 0;
+			return 0;
 		else
 		{
-		double denominator = p[0] * (v1.x - v2.x) + p[1] * (v1.y - v2.y) + p[2] * (v1.z - v2.z);
-		return numerator / denominator;
+			double denominator = p[0] * (v1.x - v2.x) + p[1] * (v1.y - v2.y) + p[2] * (v1.z - v2.z);
+			return numerator / denominator;
 		}
 	}
 
-/* Find the intersection of two lines in 2d space in terms
- * of parameterization u where v = v1 + u * (v2 - v1) */
-	public static double intersect_line_line(vertex GPHUGE v1, vertex GPHUGE v2, vertex GPHUGE w1, vertex GPHUGE w2)
+	/* Find the intersection of two lines in 2d space in terms
+	 * of parameterization u where v = v1 + u * (v2 - v1) */
+	public static double intersect_line_line(vertex v1, vertex v2, vertex w1, vertex w2)
 	{
 		double numerator = (w2.x - w1.x) * (v1.y - w1.y) - (w2.y - w1.y) * (v1.x - w1.x);
 		if (numerator == 0)
-		return 0;
+			return 0;
 		else
 		{
-		double denominator = (w2.y - w1.y) * (v2.x - v1.x) - (w2.x - w1.x) * (v2.y - v1.y);
-		return numerator / denominator;
+			double denominator = (w2.y - w1.y) * (v2.x - v1.x) - (w2.x - w1.x) * (v2.y - v1.y);
+			return numerator / denominator;
 		}
 	}
 
-/* Check whether the point is covered by the plane in 3d space
- *
- * 0 - point not covered
- * 1 - point covered and does not lie in plane
- * 2 - point covered and lies in plane
- */
-	public static int cover_point_poly(vertex GPHUGE v1, vertex GPHUGE v2, double u, mesh_triangle GPHUGE poly)
+	/* Check whether the point is covered by the plane in 3d space
+	 *
+	 * 0 - point not covered
+	 * 1 - point covered and does not lie in plane
+	 * 2 - point covered and lies in plane
+	 */
+	public static int cover_point_poly(vertex v1, vertex v2, double u, mesh_triangle poly)
 	{
 		/* Using EQ() test seemed to have no effect on results */
 		if (poly.plane[2] == 0)
 		{
-		/* The element is "vertical" so treat as infitesimally small for now.
-		 * An alternative would be to interpolate the edge closest to the
-		 * viewer plane.  However, there may be tests previous to this that
-		 * rule out this case. */
-		return 0;
+			/* The element is "vertical" so treat as infitesimally small for now.
+			 * An alternative would be to interpolate the edge closest to the
+			 * viewer plane.  However, there may be tests previous to this that
+			 * rule out this case. */
+			return 0;
 		}
 		else
 		{
-		vertex GPHUGE * w1 = (vertex GPHUGE *) vertices.v + poly.vertex[0];
-		vertex GPHUGE * w2 = (vertex GPHUGE *) vertices.v + poly.vertex[1];
-		vertex GPHUGE * w3 = (vertex GPHUGE *) vertices.v + poly.vertex[2];
-		double[] p_side = new double[3]; // Signed areas
-		vertex p = new vertex();
-		p.x = v1.x + u * (v2.x - v1.x);
-		p.y = v1.y + u * (v2.y - v1.y);
-		p.z = v1.z + u * (v2.z - v1.z);
-		/* Check if point is inside triangular element */
-		p_side[0] = GlobalMembersHidden3d.area2D(w1, w2, p);
-		p_side[1] = GlobalMembersHidden3d.area2D(w2, w3, p);
-		p_side[2] = GlobalMembersHidden3d.area2D(w3, w1, p);
-		if (0 || (((p_side[0]) >= (0) - DefineConstants.EPSILON) && ((p_side[1]) >= (0) - DefineConstants.EPSILON) && ((p_side[2]) >= (0) - DefineConstants.EPSILON)) || (((0) >= (p_side[0]) - DefineConstants.EPSILON) && ((0) >= (p_side[1]) - DefineConstants.EPSILON) && ((0) >= (p_side[2]) - DefineConstants.EPSILON)))
-		{
-			/* Point inside closed triangle, now check z value */
-			double z_plane = -(poly.plane[0] * p.x + poly.plane[1] * p.y + poly.plane[3]) / poly.plane[2];
-			if (((z_plane) >= (p.z) - DefineConstants.EPSILON))
+			vertex GPHUGE * w1 = (vertex GPHUGE *) vertices.v + poly.vertex[0];
+			vertex GPHUGE * w2 = (vertex GPHUGE *) vertices.v + poly.vertex[1];
+			vertex GPHUGE * w3 = (vertex GPHUGE *) vertices.v + poly.vertex[2];
+			double[] p_side = new double[3]; // Signed areas
+			vertex p = new vertex();
+			p.x = v1.x + u * (v2.x - v1.x);
+			p.y = v1.y + u * (v2.y - v1.y);
+			p.z = v1.z + u * (v2.z - v1.z);
+			/* Check if point is inside triangular element */
+			p_side[0] = GlobalMembersHidden3d.area2D(w1, w2, p);
+			p_side[1] = GlobalMembersHidden3d.area2D(w2, w3, p);
+			p_side[2] = GlobalMembersHidden3d.area2D(w3, w1, p);
+			if (0 || (((p_side[0]) >= (0) - DefineConstants.EPSILON) && ((p_side[1]) >= (0) - DefineConstants.EPSILON) && ((p_side[2]) >= (0) - DefineConstants.EPSILON)) || (((0) >= (p_side[0]) - DefineConstants.EPSILON) && ((0) >= (p_side[1]) - DefineConstants.EPSILON) && ((0) >= (p_side[2]) - DefineConstants.EPSILON)))
 			{
-			/* Covered, but is it on the plane? */
-			if (((p.z) >= (z_plane) - DefineConstants.EPSILON))
-				return 2;
-			else
-				return 1;
+				/* Point inside closed triangle, now check z value */
+				double z_plane = -(poly.plane[0] * p.x + poly.plane[1] * p.y + poly.plane[3]) / poly.plane[2];
+				if (((z_plane) >= (p.z) - DefineConstants.EPSILON))
+				{
+					/* Covered, but is it on the plane? */
+					if (((p.z) >= (z_plane) - DefineConstants.EPSILON))
+						return 2;
+					else
+						return 1;
+				}
+				else
+					return 0;
 			}
 			else
-			return 0;
-		}
-		else
-			return 0;
+				return 0;
 		}
 	}
 
-/* Build the data structure for this polygon. The return value is the
- * index of the newly generated polygon. This is memorized for access
- * to polygons in the previous isoline, from the next-following
- * one. */
+	/* Build the data structure for this polygon. The return value is the
+	 * index of the newly generated polygon. This is memorized for access
+	 * to polygons in the previous isoline, from the next-following
+	 * one. */
 	public static int store_polygon(int vnum1, polygon_direction direction, int crvlen)
 	{
 		int[] v = new int[DefineConstants.POLY_NVERT];
@@ -1942,27 +1942,27 @@ public class GlobalMembersHidden3d
 		switch (direction)
 		{
 		case pdir_NE:
-		v[0] = vnum1;
-		v[2] = vnum1 - crvlen;
-		v[1] = v[2] - 1;
-		break;
+			v[0] = vnum1;
+			v[2] = vnum1 - crvlen;
+			v[1] = v[2] - 1;
+			break;
 		case pdir_SW:
-		/* triangle points southwest, here */
-		v[0] = vnum1;
-		v[1] = vnum1 - 1;
-		v[2] = v[1] - crvlen;
-		break;
+			/* triangle points southwest, here */
+			v[0] = vnum1;
+			v[1] = vnum1 - 1;
+			v[2] = v[1] - crvlen;
+			break;
 		case pdir_SE:
-		/* alt-diagonal, case 1: southeast triangle: */
-		v[0] = vnum1;
-		v[2] = vnum1 - crvlen;
-		v[1] = vnum1 - 1;
-		break;
+			/* alt-diagonal, case 1: southeast triangle: */
+			v[0] = vnum1;
+			v[2] = vnum1 - crvlen;
+			v[1] = vnum1 - 1;
+			break;
 		case pdir_NW:
-		v[2] = vnum1 - crvlen;
-		v[0] = vnum1 - 1;
-		v[1] = v[0] - crvlen;
-		break;
+			v[2] = vnum1 - crvlen;
+			v[0] = vnum1 - 1;
+			v[1] = v[0] - crvlen;
+			break;
 		}
 
 		v1 = (vertex GPHUGE *) vertices.v + v[0];
@@ -1970,33 +1970,33 @@ public class GlobalMembersHidden3d
 		v3 = (vertex GPHUGE *) vertices.v + v[2];
 
 		if ((v1.z == -2.0) || (v2.z == -2.0) || (v3.z == -2.0))
-		return (-2);
+			return (-2);
 
 		/* Check if polygon is degenerate */
 		if ((((0.0) >= (Math.abs((v1).x - (v2).x) + Math.abs((v1).y - (v2).y) + Math.abs((v1).z - (v2).z)) - DefineConstants.EPSILON)) || (((0.0) >= (Math.abs((v2).x - (v3).x) + Math.abs((v2).y - (v3).y) + Math.abs((v2).z - (v3).z)) - DefineConstants.EPSILON)) || (((0.0) >= (Math.abs((v3).x - (v1).x) + Math.abs((v3).y - (v1).y) + Math.abs((v3).z - (v1).z)) - DefineConstants.EPSILON)))
-		return (-2);
+			return (-2);
 
 		/* All else OK, fill in the polygon: */
 
 		GlobalMembersAnsi2knr.p = GlobalMembersDynarray.nextfrom_dynarray(polygons);
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		memcpy(GlobalMembersAnsi2knr.p.vertex, v, sizeof(v));
-	///#if ! HIDDEN3D_QUADTREE
-	//    p->next = -1;
-	///#endif
+		///#if ! HIDDEN3D_QUADTREE
+		//    p->next = -1;
+		///#endif
 
 		/* Some helper macros for repeated code blocks: */
 
 		/* Gets Minimum 'var' value of polygon 'poly' into variable
 		 * 'min. C is one of x, y, or z: */
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define GET_MIN(poly, var, min) do { int i; long *v = poly->vertex; min = vlist[*v++].var; for (i = 1; i< POLY_NVERT; i++, v++) if (vlist[*v].var < min) min = vlist[*v].var; if (min < -surface_scale) disable_mouse_z = TRUE; } while (0)
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define GET_MIN(poly, var, min) do { int i; long *v = poly->vertex; min = vlist[*v++].var; for (i = 1; i< POLY_NVERT; i++, v++) if (vlist[*v].var < min) min = vlist[*v].var; if (min < -surface_scale) disable_mouse_z = TRUE; } while (0)
 
 		/* Gets Maximum 'var' value of polygon 'poly', as with GET_MIN */
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define GET_MAX(poly, var, max) do { int i; long *v = poly->vertex; max = vlist[*v++].var; for (i = 1; i< POLY_NVERT; i++, v++) if (vlist[*v].var > max) max = vlist[*v].var; if (max > surface_scale) disable_mouse_z = TRUE; } while (0)
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define GET_MAX(poly, var, max) do { int i; long *v = poly->vertex; max = vlist[*v++].var; for (i = 1; i< POLY_NVERT; i++, v++) if (vlist[*v].var > max) max = vlist[*v].var; if (max > surface_scale) disable_mouse_z = TRUE; } while (0)
 
 		do
 		{
@@ -2006,8 +2006,8 @@ public class GlobalMembersHidden3d
 			for (i = 1; i < DefineConstants.POLY_NVERT; i++, v++)
 				if ((vertex GPHUGE *) vertices.v[*v].var < GlobalMembersAnsi2knr.p.xmin)
 					GlobalMembersAnsi2knr.p.xmin = (vertex GPHUGE *) vertices.v[*v].var;
-					if (GlobalMembersAnsi2knr.p.xmin < -GlobalMembersGraph3d.surface_scale)
-						disable_mouse_z = true;
+			if (GlobalMembersAnsi2knr.p.xmin < -GlobalMembersGraph3d.surface_scale)
+				disable_mouse_z = true;
 		} while (0);
 		do
 		{
@@ -2017,8 +2017,8 @@ public class GlobalMembersHidden3d
 			for (i = 1; i < DefineConstants.POLY_NVERT; i++, v++)
 				if ((vertex GPHUGE *) vertices.v[*v].var < GlobalMembersAnsi2knr.p.ymin)
 					GlobalMembersAnsi2knr.p.ymin = (vertex GPHUGE *) vertices.v[*v].var;
-					if (GlobalMembersAnsi2knr.p.ymin < -GlobalMembersGraph3d.surface_scale)
-						disable_mouse_z = true;
+			if (GlobalMembersAnsi2knr.p.ymin < -GlobalMembersGraph3d.surface_scale)
+				disable_mouse_z = true;
 		} while (0);
 		do
 		{
@@ -2028,8 +2028,8 @@ public class GlobalMembersHidden3d
 			for (i = 1; i < DefineConstants.POLY_NVERT; i++, v++)
 				if ((vertex GPHUGE *) vertices.v[*v].var < GlobalMembersAnsi2knr.p.zmin)
 					GlobalMembersAnsi2knr.p.zmin = (vertex GPHUGE *) vertices.v[*v].var;
-					if (GlobalMembersAnsi2knr.p.zmin < -GlobalMembersGraph3d.surface_scale)
-						disable_mouse_z = true;
+			if (GlobalMembersAnsi2knr.p.zmin < -GlobalMembersGraph3d.surface_scale)
+				disable_mouse_z = true;
 		} while (0);
 		do
 		{
@@ -2039,8 +2039,8 @@ public class GlobalMembersHidden3d
 			for (i = 1; i < DefineConstants.POLY_NVERT; i++, v++)
 				if ((vertex GPHUGE *) vertices.v[*v].var > GlobalMembersAnsi2knr.p.xmax)
 					GlobalMembersAnsi2knr.p.xmax = (vertex GPHUGE *) vertices.v[*v].var;
-					if (GlobalMembersAnsi2knr.p.xmax > GlobalMembersGraph3d.surface_scale)
-						disable_mouse_z = true;
+			if (GlobalMembersAnsi2knr.p.xmax > GlobalMembersGraph3d.surface_scale)
+				disable_mouse_z = true;
 		} while (0);
 		do
 		{
@@ -2050,8 +2050,8 @@ public class GlobalMembersHidden3d
 			for (i = 1; i < DefineConstants.POLY_NVERT; i++, v++)
 				if ((vertex GPHUGE *) vertices.v[*v].var > GlobalMembersAnsi2knr.p.ymax)
 					GlobalMembersAnsi2knr.p.ymax = (vertex GPHUGE *) vertices.v[*v].var;
-					if (GlobalMembersAnsi2knr.p.ymax > GlobalMembersGraph3d.surface_scale)
-						disable_mouse_z = true;
+			if (GlobalMembersAnsi2knr.p.ymax > GlobalMembersGraph3d.surface_scale)
+				disable_mouse_z = true;
 		} while (0);
 		do
 		{
@@ -2061,148 +2061,148 @@ public class GlobalMembersHidden3d
 			for (i = 1; i < DefineConstants.POLY_NVERT; i++, v++)
 				if ((vertex GPHUGE *) vertices.v[*v].var > GlobalMembersAnsi2knr.p.zmax)
 					GlobalMembersAnsi2knr.p.zmax = (vertex GPHUGE *) vertices.v[*v].var;
-					if (GlobalMembersAnsi2knr.p.zmax > GlobalMembersGraph3d.surface_scale)
-						disable_mouse_z = true;
+			if (GlobalMembersAnsi2knr.p.zmax > GlobalMembersGraph3d.surface_scale)
+				disable_mouse_z = true;
 		} while (0);
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef GET_MIN
-	//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-	///#undef GET_MAX
+		//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+		///#undef GET_MIN
+		//C++ TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
+		///#undef GET_MAX
 
-	///#if HIDDEN3D_GRIDBOX
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		///#if HIDDEN3D_GRIDBOX
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersAnsi2knr.p.xbits = ((~(~0 << (int)(((((GlobalMembersAnsi2knr.p.xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((GlobalMembersAnsi2knr.p.xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		GlobalMembersAnsi2knr.p.ybits = ((~(~0 << (int)(((((GlobalMembersAnsi2knr.p.ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((GlobalMembersAnsi2knr.p.ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-	///#endif
+		///#endif
 
 		GlobalMembersAnsi2knr.p.frontfacing = GlobalMembersHidden3d.get_plane(GlobalMembersAnsi2knr.p, GlobalMembersAnsi2knr.p.plane);
 
 		return (GlobalMembersAnsi2knr.p - (mesh_triangle) polygons.v);
 	}
 
-/* color edges, based on the orientation of polygon(s). One of the two
- * edges passed in is a new one, meaning there is no other polygon
- * sharing it, yet. The other, 'old' edge is common to the new polygon
- * and another one, which was created earlier on. If these two polygon
- * differ in their orientation (one front-, the other backsided to the
- * viewer), this routine has to resolve that conflict.  Edge colours
- * are changed only if the edge wasn't invisible, before */
+	/* color edges, based on the orientation of polygon(s). One of the two
+	 * edges passed in is a new one, meaning there is no other polygon
+	 * sharing it, yet. The other, 'old' edge is common to the new polygon
+	 * and another one, which was created earlier on. If these two polygon
+	 * differ in their orientation (one front-, the other backsided to the
+	 * viewer), this routine has to resolve that conflict.  Edge colours
+	 * are changed only if the edge wasn't invisible, before */
 	public static void color_edges(int new_edge, int old_edge, int new_poly, int old_poly, int above, int below)
 	{
 		int casenumber;
 
 		if (new_poly > -2)
 		{
-		/* new polygon was built successfully */
-		if (old_poly <= -2)
-			/* old polygon doesn't exist. Use new_polygon for both: */
-			old_poly = new_poly;
+			/* new polygon was built successfully */
+			if (old_poly <= -2)
+				/* old polygon doesn't exist. Use new_polygon for both: */
+				old_poly = new_poly;
 
-		casenumber = ((mesh_triangle) polygons.v[new_poly].frontfacing ? 1 : 0) + 2 * ((mesh_triangle) polygons.v[old_poly].frontfacing ? 1 : 0);
-		switch (casenumber)
-		{
-		case 0:
-			/* both backfacing */
-			if ((edge) edges.v[new_edge].style >= -2)
-			(edge) edges.v[new_edge].style = below;
-			if ((edge) edges.v[old_edge].style >= -2)
-			(edge) edges.v[old_edge].style = below;
-			break;
-		case 2:
-			if ((edge) edges.v[new_edge].style >= -2)
-			(edge) edges.v[new_edge].style = below;
-			/* FALLTHROUGH */
-		case 1:
-			/* new front-, old one backfacing, or */
-			/* new back-, old one frontfacing */
-			if (((new_edge == old_edge) && hiddenHandleBentoverQuadrangles != 0) || ((edge) edges.v[old_edge].style >= -2)) // a diagonal edge!
+			casenumber = ((mesh_triangle) polygons.v[new_poly].frontfacing ? 1 : 0) + 2 * ((mesh_triangle) polygons.v[old_poly].frontfacing ? 1 : 0);
+			switch (casenumber)
 			{
-			/* conflict has occured: two polygons meet here, with opposige
-			 * sides being shown. What's to do?
-			 * 1) find a vertex of one polygon outside this common
-			 * edge
-			 * 2) check wether it's in front of or behind the
-			 * other polygon's plane
-			 * 3) if in front, color the edge accoring to the
-			 * vertex' polygon, otherwise, color like the other
-			 * polygon */
-			int vnum1 = (edge) edges.v[old_edge].v1;
-			int vnum2 = (edge) edges.v[old_edge].v2;
-			mesh_triangle GPHUGE * GlobalMembersAnsi2knr.p = (mesh_triangle) polygons.v + new_poly;
-			int pvert = -1;
-			double point_to_plane;
+			case 0:
+				/* both backfacing */
+				if ((edge) edges.v[new_edge].style >= -2)
+					(edge) edges.v[new_edge].style = below;
+				if ((edge) edges.v[old_edge].style >= -2)
+					(edge) edges.v[old_edge].style = below;
+				break;
+			case 2:
+				if ((edge) edges.v[new_edge].style >= -2)
+					(edge) edges.v[new_edge].style = below;
+				/* FALLTHROUGH */
+			case 1:
+				/* new front-, old one backfacing, or */
+				/* new back-, old one frontfacing */
+				if (((new_edge == old_edge) && hiddenHandleBentoverQuadrangles != 0) || ((edge) edges.v[old_edge].style >= -2)) // a diagonal edge!
+				{
+					/* conflict has occured: two polygons meet here, with opposige
+					 * sides being shown. What's to do?
+					 * 1) find a vertex of one polygon outside this common
+					 * edge
+					 * 2) check wether it's in front of or behind the
+					 * other polygon's plane
+					 * 3) if in front, color the edge accoring to the
+					 * vertex' polygon, otherwise, color like the other
+					 * polygon */
+					int vnum1 = (edge) edges.v[old_edge].v1;
+					int vnum2 = (edge) edges.v[old_edge].v2;
+					mesh_triangle GPHUGE * GlobalMembersAnsi2knr.p = (mesh_triangle) polygons.v + new_poly;
+					int pvert = -1;
+					double point_to_plane;
 
-			if (GlobalMembersAnsi2knr.p.vertex[0] == vnum1)
-			{
-				if (GlobalMembersAnsi2knr.p.vertex[1] == vnum2)
-				{
-				pvert = GlobalMembersAnsi2knr.p.vertex[2];
-				}
-				else if (GlobalMembersAnsi2knr.p.vertex[2] == vnum2)
-				{
-				pvert = GlobalMembersAnsi2knr.p.vertex[1];
-				}
-			}
-			else if (GlobalMembersAnsi2knr.p.vertex[1] == vnum1)
-			{
-				if (GlobalMembersAnsi2knr.p.vertex[0] == vnum2)
-				{
-				pvert = GlobalMembersAnsi2knr.p.vertex[2];
-				}
-				else if (GlobalMembersAnsi2knr.p.vertex[2] == vnum2)
-				{
-				pvert = GlobalMembersAnsi2knr.p.vertex[0];
-				}
-			}
-			else if (GlobalMembersAnsi2knr.p.vertex[2] == vnum1)
-			{
-				if (GlobalMembersAnsi2knr.p.vertex[0] == vnum2)
-				{
-				pvert = GlobalMembersAnsi2knr.p.vertex[1];
-				}
-				else if (GlobalMembersAnsi2knr.p.vertex[1] == vnum2)
-				{
-				pvert = GlobalMembersAnsi2knr.p.vertex[0];
-				}
-			}
-			assert pvert >= 0;
+					if (GlobalMembersAnsi2knr.p.vertex[0] == vnum1)
+					{
+						if (GlobalMembersAnsi2knr.p.vertex[1] == vnum2)
+						{
+							pvert = GlobalMembersAnsi2knr.p.vertex[2];
+						}
+						else if (GlobalMembersAnsi2knr.p.vertex[2] == vnum2)
+						{
+							pvert = GlobalMembersAnsi2knr.p.vertex[1];
+						}
+					}
+					else if (GlobalMembersAnsi2knr.p.vertex[1] == vnum1)
+					{
+						if (GlobalMembersAnsi2knr.p.vertex[0] == vnum2)
+						{
+							pvert = GlobalMembersAnsi2knr.p.vertex[2];
+						}
+						else if (GlobalMembersAnsi2knr.p.vertex[2] == vnum2)
+						{
+							pvert = GlobalMembersAnsi2knr.p.vertex[0];
+						}
+					}
+					else if (GlobalMembersAnsi2knr.p.vertex[2] == vnum1)
+					{
+						if (GlobalMembersAnsi2knr.p.vertex[0] == vnum2)
+						{
+							pvert = GlobalMembersAnsi2knr.p.vertex[1];
+						}
+						else if (GlobalMembersAnsi2knr.p.vertex[1] == vnum2)
+						{
+							pvert = GlobalMembersAnsi2knr.p.vertex[0];
+						}
+					}
+					assert pvert >= 0;
 
-			point_to_plane = GlobalMembersHidden3d.eval_plane_equation((mesh_triangle) polygons.v[old_poly].plane, (vertex GPHUGE *) vertices.v + pvert);
+					point_to_plane = GlobalMembersHidden3d.eval_plane_equation((mesh_triangle) polygons.v[old_poly].plane, (vertex GPHUGE *) vertices.v + pvert);
 
-			if (point_to_plane > 0)
-			{
-				/* point in new_poly is in front of old_poly plane */
-				(edge) edges.v[old_edge].style = GlobalMembersAnsi2knr.p.frontfacing ? above : below;
-			}
-			else
-			{
-				(edge) edges.v[old_edge].style = (mesh_triangle) polygons.v[old_poly].frontfacing ? above : below;
-			}
-			}
-			break;
-		case 3:
-			/* both frontfacing: nothing to do */
-			break;
-		} // switch
+					if (point_to_plane > 0)
+					{
+						/* point in new_poly is in front of old_poly plane */
+						(edge) edges.v[old_edge].style = GlobalMembersAnsi2knr.p.frontfacing ? above : below;
+					}
+					else
+					{
+						(edge) edges.v[old_edge].style = (mesh_triangle) polygons.v[old_poly].frontfacing ? above : below;
+					}
+				}
+				break;
+			case 3:
+				/* both frontfacing: nothing to do */
+				break;
+			} // switch
 		}
 		else
 		{
-		/* Ooops? build_networks() must have guessed incorrectly that
-		 * this polygon should exist. */
-		return;
+			/* Ooops? build_networks() must have guessed incorrectly that
+			 * this polygon should exist. */
+			return;
 		}
 	}
 
-/* This somewhat monstrous routine fills the vlist, elist and plist
- * dynamic arrays with values from all those plots. It strives to
- * respect all the topological linkage between vertices, edges and
- * polygons. E.g., it has to find the correct color for each edge,
- * based on the orientation of the two polygons sharing it, WRT both
- * the observer and each other. */
-/* NEW FEATURE HBB 20000715: allow non-grid datasets too, by storing
- * only vertices and 'direct' edges, but no polygons or 'cross' edges
- * */
+	/* This somewhat monstrous routine fills the vlist, elist and plist
+	 * dynamic arrays with values from all those plots. It strives to
+	 * respect all the topological linkage between vertices, edges and
+	 * polygons. E.g., it has to find the correct color for each edge,
+	 * based on the orientation of the two polygons sharing it, WRT both
+	 * the observer and each other. */
+	/* NEW FEATURE HBB 20000715: allow non-grid datasets too, by storing
+	 * only vertices and 'direct' edges, but no polygons or 'cross' edges
+	 * */
 	public static void build_networks(surface_points plots, int pcount)
 	{
 		int i;
@@ -2231,92 +2231,92 @@ public class GlobalMembersHidden3d
 
 		for (this_plot = plots, surface = 0; surface < pcount; this_plot = this_plot.next_sp, surface++)
 		{
-		int crvlen;
+			int crvlen;
 
-		/* Quietly skip empty plots */
-		if (this_plot.plot_type == PLOT_TYPE.NODATA)
-			continue;
+			/* Quietly skip empty plots */
+			if (this_plot.plot_type == PLOT_TYPE.NODATA)
+				continue;
 
-		crvlen = this_plot.iso_crvs.p_count;
+			crvlen = this_plot.iso_crvs.p_count;
 
-		/* Allow individual plots to opt out of hidden3d calculations */
-		if (this_plot.opt_out_of_hidden3d)
-			continue;
+			/* Allow individual plots to opt out of hidden3d calculations */
+			if (this_plot.opt_out_of_hidden3d)
+				continue;
 
-		/* register maximal isocurve length. Only necessary for
-		 * grid-topology plots that will create polygons, so I can do
-		 * it here, already. */
-		if (crvlen > max_crvlen)
-			max_crvlen = crvlen;
+			/* register maximal isocurve length. Only necessary for
+			 * grid-topology plots that will create polygons, so I can do
+			 * it here, already. */
+			if (crvlen > max_crvlen)
+				max_crvlen = crvlen;
 
-		/* count 'curves' (i.e. isolines) and vertices in this plot */
-		nverts = 0;
-		if (this_plot.plot_type == PLOT_TYPE.FUNC3D)
-		{
-			ncrvs = 0;
-			for (icrvs = this_plot.iso_crvs; icrvs; icrvs = icrvs.next)
+			/* count 'curves' (i.e. isolines) and vertices in this plot */
+			nverts = 0;
+			if (this_plot.plot_type == PLOT_TYPE.FUNC3D)
 			{
-			ncrvs++;
+				ncrvs = 0;
+				for (icrvs = this_plot.iso_crvs; icrvs; icrvs = icrvs.next)
+				{
+					ncrvs++;
+				}
+				nverts += ncrvs * crvlen;
 			}
-			nverts += ncrvs * crvlen;
-		}
-		else if (this_plot.plot_type == PLOT_TYPE.DATA3D)
-		{
-			ncrvs = this_plot.num_iso_read;
-			if (this_plot.has_grid_topology != 0)
-			nverts += ncrvs * crvlen;
-			else if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-			nverts += this_plot.iso_crvs.p_count;
+			else if (this_plot.plot_type == PLOT_TYPE.DATA3D)
+			{
+				ncrvs = this_plot.num_iso_read;
+				if (this_plot.has_grid_topology != 0)
+					nverts += ncrvs * crvlen;
+				else if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+					nverts += this_plot.iso_crvs.p_count;
+				else
+				{
+					/* have to check each isoline separately: */
+					for (icrvs = this_plot.iso_crvs; icrvs; icrvs = icrvs.next)
+						nverts += icrvs.p_count;
+				}
+			}
 			else
 			{
-			/* have to check each isoline separately: */
-			for (icrvs = this_plot.iso_crvs; icrvs; icrvs = icrvs.next)
-				nverts += icrvs.p_count;
+				GlobalMembersUtil.graph_error("Plot type is neither function nor data");
+				return;
 			}
-		}
-		else
-		{
-			GlobalMembersUtil.graph_error("Plot type is neither function nor data");
-			return;
-		}
 
-		/* To avoid possibly suprising error messages, several 2d-only
-		 * plot styles are mapped to others, that are genuinely
-		 * available in 3d. */
-		switch (this_plot.plot_style)
-		{
-		case LINESPOINTS:
-		case STEPS:
-		case FSTEPS:
-		case HISTEPS:
-		case LINES:
-			nv += nverts;
-			ne += nverts - ncrvs;
-			if (this_plot.has_grid_topology != 0)
+			/* To avoid possibly suprising error messages, several 2d-only
+			 * plot styles are mapped to others, that are genuinely
+			 * available in 3d. */
+			switch (this_plot.plot_style)
 			{
-			ne += 2 * nverts - ncrvs - 2 * crvlen + 1;
-			np += 2 * (ncrvs - 1) * (crvlen - 1);
-			}
-			break;
-		case BOXES:
-		case FILLEDCURVES:
-		case IMPULSES:
-		case VECTOR:
-			nv += 2 * nverts;
-			ne += nverts;
-			break;
-		case POINTSTYLE:
-		default:
-			/* treat all remaining ones like 'points' */
-			nv += nverts;
-			ne += nverts; // a 'phantom edge' per isolated point
-			break;
-		} // switch
+			case LINESPOINTS:
+			case STEPS:
+			case FSTEPS:
+			case HISTEPS:
+			case LINES:
+				nv += nverts;
+				ne += nverts - ncrvs;
+				if (this_plot.has_grid_topology != 0)
+				{
+					ne += 2 * nverts - ncrvs - 2 * crvlen + 1;
+					np += 2 * (ncrvs - 1) * (crvlen - 1);
+				}
+				break;
+			case BOXES:
+			case FILLEDCURVES:
+			case IMPULSES:
+			case VECTOR:
+				nv += 2 * nverts;
+				ne += nverts;
+				break;
+			case POINTSTYLE:
+			default:
+				/* treat all remaining ones like 'points' */
+				nv += nverts;
+				ne += nverts; // a 'phantom edge' per isolated point
+				break;
+			} // switch
 		} // for (plots)
 
 		/* Check for no data at all */
 		if (max_crvlen <= 0)
-		return;
+			return;
 
 		/* allocate all the lists to the size we need: */
 		GlobalMembersDynarray.resize_dynarray(vertices, nv);
@@ -2326,13 +2326,13 @@ public class GlobalMembersHidden3d
 		/* allocate the storage for polygons and edges of the isoline just
 		 * above the current one, to allow easy access to them from the
 		 * current isoline */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		north_polygons = GlobalMembersAlloc.gp_alloc(2 * max_crvlen * sizeof(int), "hidden north_polys");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		these_polygons = GlobalMembersAlloc.gp_alloc(2 * max_crvlen * sizeof(int), "hidden these_polys");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		north_edges = GlobalMembersAlloc.gp_alloc(3 * max_crvlen * sizeof(int), "hidden north_edges");
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		these_edges = GlobalMembersAlloc.gp_alloc(3 * max_crvlen * sizeof(int), "hidden these_edges");
 
 		/* initialize the lists, all in one large loop. This is different
@@ -2340,322 +2340,322 @@ public class GlobalMembersHidden3d
 		 * first, and only then, in new loop, built polygons */
 		for (this_plot = plots, surface = 0; surface < pcount; this_plot = this_plot.next_sp, surface++)
 		{
-		lp_style_type lp_style = DefineConstants.NULL;
-		boolean color_from_column = this_plot.pm3d_color_from_column;
-		int crvlen;
+			lp_style_type lp_style = DefineConstants.NULL;
+			boolean color_from_column = this_plot.pm3d_color_from_column;
+			int crvlen;
 
-		/* Quietly skip empty plots */
-		if (this_plot.plot_type == PLOT_TYPE.NODATA)
-			continue;
+			/* Quietly skip empty plots */
+			if (this_plot.plot_type == PLOT_TYPE.NODATA)
+				continue;
 
-		crvlen = this_plot.iso_crvs.p_count;
+			crvlen = this_plot.iso_crvs.p_count;
 
-		/* Allow individual plots to opt out of hidden3d calculations */
-		if (this_plot.opt_out_of_hidden3d)
-			continue;
+			/* Allow individual plots to opt out of hidden3d calculations */
+			if (this_plot.opt_out_of_hidden3d)
+				continue;
 
-		lp = (this_plot.lp_properties);
-		above = this_plot.lp_properties.l_type;
-		below = this_plot.lp_properties.l_type + hiddenBacksideLinetypeOffset;
+			lp = (this_plot.lp_properties);
+			above = this_plot.lp_properties.l_type;
+			below = this_plot.lp_properties.l_type + hiddenBacksideLinetypeOffset;
 
-		/* calculate the point symbol type: */
-		/* Assumes that upstream functions have made sure this is
-		 * initialized sensibly --- thou hast been warned */
-		lp_style = (this_plot.lp_properties);
+			/* calculate the point symbol type: */
+			/* Assumes that upstream functions have made sure this is
+			 * initialized sensibly --- thou hast been warned */
+			lp_style = (this_plot.lp_properties);
 
-		/* HBB 20000715: new initialization code block for non-grid
-		 * structured datasets. Sufficiently different from the rest
-		 * to warrant separate code, I think. */
-		if (this_plot.has_grid_topology == 0)
-		{
+			/* HBB 20000715: new initialization code block for non-grid
+			 * structured datasets. Sufficiently different from the rest
+			 * to warrant separate code, I think. */
+			if (this_plot.has_grid_topology == 0)
+			{
+				for (crv = 0, icrvs = this_plot.iso_crvs; icrvs; crv++, icrvs = icrvs.next)
+				{
+					coordinate points = icrvs.points;
+					int previousvertex = -1;
+
+					/* To handle labels we must look inside a separate list */
+					/* rather than just walking through the points arrays.  */
+					if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
+					{
+						text_label label;
+						int thisvertex;
+						coordinate labelpoint = new coordinate();
+
+						lp.pointflag = 1; // Labels can use the code for hidden points
+						for (label = this_plot.labels.next; label != DefineConstants.NULL; label = label.next)
+						{
+							labelpoint.x = label.place.x;
+							labelpoint.y = label.place.y;
+							labelpoint.z = label.place.z;
+							thisvertex = GlobalMembersHidden3d.store_vertex(labelpoint, (this_plot.lp_properties), color_from_column);
+							if (thisvertex < 0)
+								continue;
+							((vertex GPHUGE *) vertices.v + thisvertex).label = label;
+							GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_point, crvlen, lp, above);
+						}
+
+					}
+					else
+						for (i = 0; i < icrvs.p_count; i++)
+						{
+							int thisvertex;
+							int basevertex;
+
+							thisvertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
+
+							if (this_plot.plot_style == PLOT_STYLE.VECTOR)
+							{
+								GlobalMembersHidden3d.store_vertex(icrvs.next.points + i, 0, 0);
+							}
+
+							if (thisvertex < 0)
+							{
+								previousvertex = thisvertex;
+								continue;
+							}
+
+							switch (this_plot.plot_style)
+							{
+							case LINESPOINTS:
+							case STEPS:
+							case FSTEPS:
+							case HISTEPS:
+							case LINES:
+								if (previousvertex >= 0)
+									GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_west, 0, lp, above);
+								break;
+							case VECTOR:
+								GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_vector, 0, lp, above);
+								break;
+							case BOXES:
+							case FILLEDCURVES:
+							case IMPULSES:
+								/* set second vertex to the low end of zrange */
+							{
+								double remember_z = points[i].z;
+
+								points[i].z = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
+								basevertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
+								points[i].z = remember_z;
+							}
+							if (basevertex > 0)
+								GlobalMembersHidden3d.store_edge(basevertex, edge_direction.edir_impulse, 0, lp, above);
+							break;
+
+							case POINTSTYLE:
+							default: // treat all the others like 'points'
+								GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_point, crvlen, lp, above);
+								break;
+							} // switch(plot_style)
+
+							previousvertex = thisvertex;
+						} // for(vertex)
+				} // for(crv)
+
+				continue; // done with this plot!
+			}
+
+			/* initialize stored indices of north-of-this-isoline polygons and
+			 * edges properly */
+			for (i = 0; i < this_plot.iso_crvs.p_count; i++)
+			{
+				north_polygons[2 * i] = north_polygons[2 * i + 1] = north_edges[3 * i] = north_edges[3 * i + 1] = north_edges[3 * i + 2] = -3;
+			}
+
 			for (crv = 0, icrvs = this_plot.iso_crvs; icrvs; crv++, icrvs = icrvs.next)
 			{
-			coordinate points = icrvs.points;
-			int previousvertex = -1;
+				//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
+				//ORIGINAL LINE: struct coordinate  *points = icrvs->points;
+				coordinate[] points = new coordinate(icrvs.points);
 
-			/* To handle labels we must look inside a separate list */
-			/* rather than just walking through the points arrays.  */
-			if (this_plot.plot_style == PLOT_STYLE.LABELPOINTS)
-			{
-				text_label label;
-				int thisvertex;
-				coordinate labelpoint = new coordinate();
-
-				lp.pointflag = 1; // Labels can use the code for hidden points
-				for (label = this_plot.labels.next; label != DefineConstants.NULL; label = label.next)
-				{
-				labelpoint.x = label.place.x;
-				labelpoint.y = label.place.y;
-				labelpoint.z = label.place.z;
-				thisvertex = GlobalMembersHidden3d.store_vertex(labelpoint, (this_plot.lp_properties), color_from_column);
-				if (thisvertex < 0)
-					continue;
-				((vertex GPHUGE *) vertices.v + thisvertex).label = label;
-				GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_point, crvlen, lp, above);
-				}
-
-			}
-			else
 				for (i = 0; i < icrvs.p_count; i++)
 				{
-				int thisvertex;
-				int basevertex;
+					int thisvertex;
+					int basevertex;
+					int e1;
+					int e2;
+					int e3;
+					int pnum;
 
-				thisvertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
+					thisvertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
 
-				if (this_plot.plot_style == PLOT_STYLE.VECTOR)
-				{
-				GlobalMembersHidden3d.store_vertex(icrvs.next.points + i, 0, 0);
-				}
+					/* Preset the pointers to the polygons and edges
+					 * belonging to this isoline */
+					these_polygons[2 * i] = these_polygons[2 * i + 1] = these_edges[3 * i] = these_edges[3 * i + 1] = these_edges[3 * i + 2] = -3;
 
-				if (thisvertex < 0)
-				{
-				previousvertex = thisvertex;
-				continue;
-				}
-
-				switch (this_plot.plot_style)
-				{
-				case LINESPOINTS:
-				case STEPS:
-				case FSTEPS:
-				case HISTEPS:
-				case LINES:
-				if (previousvertex >= 0)
-					GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_west, 0, lp, above);
-				break;
-				case VECTOR:
-				GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_vector, 0, lp, above);
-				break;
-				case BOXES:
-				case FILLEDCURVES:
-				case IMPULSES:
-				/* set second vertex to the low end of zrange */
-				{
-					double remember_z = points[i].z;
-
-					points[i].z = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
-					basevertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
-					points[i].z = remember_z;
-				}
-				if (basevertex > 0)
-					GlobalMembersHidden3d.store_edge(basevertex, edge_direction.edir_impulse, 0, lp, above);
-				break;
-
-				case POINTSTYLE:
-				default: // treat all the others like 'points'
-				GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_point, crvlen, lp, above);
-				break;
-				} // switch(plot_style)
-
-				previousvertex = thisvertex;
-				} // for(vertex)
-			} // for(crv)
-
-			continue; // done with this plot!
-		}
-
-		/* initialize stored indices of north-of-this-isoline polygons and
-		 * edges properly */
-		for (i = 0; i < this_plot.iso_crvs.p_count; i++)
-		{
-			north_polygons[2 * i] = north_polygons[2 * i + 1] = north_edges[3 * i] = north_edges[3 * i + 1] = north_edges[3 * i + 2] = -3;
-		}
-
-		for (crv = 0, icrvs = this_plot.iso_crvs; icrvs; crv++, icrvs = icrvs.next)
-		{
-//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-//ORIGINAL LINE: struct coordinate  *points = icrvs->points;
-			coordinate[] points = new coordinate(icrvs.points);
-
-			for (i = 0; i < icrvs.p_count; i++)
-			{
-			int thisvertex;
-			int basevertex;
-			int e1;
-			int e2;
-			int e3;
-			int pnum;
-
-			thisvertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
-
-			/* Preset the pointers to the polygons and edges
-			 * belonging to this isoline */
-			these_polygons[2 * i] = these_polygons[2 * i + 1] = these_edges[3 * i] = these_edges[3 * i + 1] = these_edges[3 * i + 2] = -3;
-
-			switch (this_plot.plot_style)
-			{
-			case LINESPOINTS:
-			case STEPS:
-			case FSTEPS:
-			case HISTEPS:
-			case LINES:
-				if (i > 0)
-				{
-				/* not first point, so we might want to set up
-				 * the edge(s) to the left of this vertex */
-				if (thisvertex < 0)
-				{
-					if ((crv > 0) && (hiddenShowAlternativeDiagonal))
+					switch (this_plot.plot_style)
 					{
-					/* this vertex is invalid, but the
-					 * other three might still form a
-					 * valid triangle, facing northwest to
-					 * do that, we'll need the 'wrong'
-					 * diagonal, which goes from SW to NE:
-					 * */
-					these_edges[i * 3 + 2] = e3 = GlobalMembersHidden3d.store_edge(vertices.end - 1, edge_direction.edir_NE, crvlen, lp, above);
-					if (e3 > -2)
-					{
-						/* don't store this polygon for
-						 * later: it doesn't share edges
-						 * with any others to the south or
-						 * east, so there's need to */
-						pnum = GlobalMembersHidden3d.store_polygon(vertices.end - 1, polygon_direction.pdir_NW, crvlen);
-						/* The other two edges of this
-						 * polygon need to be checked
-						 * against the neighboring
-						 * polygons' orientations, before
-						 * being coloured */
-						GlobalMembersHidden3d.color_edges(e3, these_edges[3 * (i - 1) + 1], pnum, these_polygons[2 * (i - 1) + 1], above, below);
-						GlobalMembersHidden3d.color_edges(e3, north_edges[3 * i], pnum, north_polygons[2 * i], above, below);
-					}
-					}
-					break; // nothing else to do for invalid vertex
-				}
+					case LINESPOINTS:
+					case STEPS:
+					case FSTEPS:
+					case HISTEPS:
+					case LINES:
+						if (i > 0)
+						{
+							/* not first point, so we might want to set up
+							 * the edge(s) to the left of this vertex */
+							if (thisvertex < 0)
+							{
+								if ((crv > 0) && (hiddenShowAlternativeDiagonal))
+								{
+									/* this vertex is invalid, but the
+									 * other three might still form a
+									 * valid triangle, facing northwest to
+									 * do that, we'll need the 'wrong'
+									 * diagonal, which goes from SW to NE:
+									 * */
+									these_edges[i * 3 + 2] = e3 = GlobalMembersHidden3d.store_edge(vertices.end - 1, edge_direction.edir_NE, crvlen, lp, above);
+									if (e3 > -2)
+									{
+										/* don't store this polygon for
+										 * later: it doesn't share edges
+										 * with any others to the south or
+										 * east, so there's need to */
+										pnum = GlobalMembersHidden3d.store_polygon(vertices.end - 1, polygon_direction.pdir_NW, crvlen);
+										/* The other two edges of this
+										 * polygon need to be checked
+										 * against the neighboring
+										 * polygons' orientations, before
+										 * being coloured */
+										GlobalMembersHidden3d.color_edges(e3, these_edges[3 * (i - 1) + 1], pnum, these_polygons[2 * (i - 1) + 1], above, below);
+										GlobalMembersHidden3d.color_edges(e3, north_edges[3 * i], pnum, north_polygons[2 * i], above, below);
+									}
+								}
+								break; // nothing else to do for invalid vertex
+							}
 
-				/* Coming here means that the current vertex
-				 * is valid: check the other three of this
-				 * cell, by trying to set up the edges from
-				 * this one to there */
-				these_edges[i * 3] = e1 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_west, crvlen, lp, above);
+							/* Coming here means that the current vertex
+							 * is valid: check the other three of this
+							 * cell, by trying to set up the edges from
+							 * this one to there */
+							these_edges[i * 3] = e1 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_west, crvlen, lp, above);
 
-				if (crv > 0) // vertices to the north exist
+							if (crv > 0) // vertices to the north exist
+							{
+								these_edges[i * 3 + 1] = e2 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_north, crvlen, lp, above);
+								these_edges[i * 3 + 2] = e3 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_NW, crvlen, lp, above);
+								if (e3 > -2)
+								{
+									/* diagonal edge of this cell is OK,
+									 * so try to build both the polygons:
+									 * */
+									if (e1 > -2)
+									{
+										/* one pair of edges is valid: put
+										 * first polygon, which points
+										 * towards the southwest */
+										these_polygons[2 * i] = pnum = GlobalMembersHidden3d.store_polygon(thisvertex, polygon_direction.pdir_SW, crvlen);
+										GlobalMembersHidden3d.color_edges(e1, these_edges[3 * (i - 1) + 1], pnum, these_polygons[2 * (i - 1) + 1], above, below);
+									}
+									if (e2 > -2)
+									{
+										/* other pair of two is fine, put
+										 * the northeast polygon: */
+										these_polygons[2 * i + 1] = pnum = GlobalMembersHidden3d.store_polygon(thisvertex, polygon_direction.pdir_NE, crvlen);
+										GlobalMembersHidden3d.color_edges(e2, north_edges[3 * i], pnum, north_polygons[2 * i], above, below);
+									}
+									/* In case these two new polygons
+									 * differ in orientation, find good
+									 * coloring of the diagonal */
+									GlobalMembersHidden3d.color_edges(e3, e3, these_polygons[2 * i], these_polygons[2 * i + 1], above, below);
+								} // if e3 valid
+								else if ((e1 > -2) && (e2 > -2) && hiddenShowAlternativeDiagonal != 0)
+								{
+									/* looks like all but the north-west
+									 * vertex are usable, so we set up the
+									 * southeast-pointing triangle, using
+									 * the 'wrong' diagonal: */
+									these_edges[3 * i + 2] = e3 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_NE, crvlen, lp, above);
+									if (e3 > -2)
+									{
+										/* fill this polygon into *both*
+										 * polygon places for this
+										 * quadrangle, as this triangle
+										 * coincides with both edges that
+										 * will be used by later polygons
+										 * */
+										these_polygons[2 * i] = these_polygons[2 * i + 1] = pnum = GlobalMembersHidden3d.store_polygon(thisvertex, polygon_direction.pdir_SE, crvlen);
+										/* This case is somewhat special:
+										 * all edges are new, so there is
+										 * no other polygon orientation to
+										 * consider */
+										if (!(mesh_triangle) polygons.v[pnum].frontfacing)
+											(edge) edges.v[e1].style = (edge) edges.v[e2].style = (edge) edges.v[e3].style = below;
+									}
+								}
+							}
+						}
+						else if ((crv > 0) && (thisvertex >= 0))
+						{
+							/* We're at the west border of the grid, but
+							 * not on the north one: put vertical end-wall
+							 * edge:*/
+							these_edges[3 * i + 1] = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_north, crvlen, lp, above);
+						}
+						break;
+
+					case BOXES:
+					case FILLEDCURVES:
+					case IMPULSES:
+						if (thisvertex < 0)
+							break;
+
+						/* set second vertex to the low end of zrange */
+						{
+							double remember_z = points[i].z;
+
+							points[i].z = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
+							basevertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
+							points[i].z = remember_z;
+						}
+						if (basevertex > 0)
+							GlobalMembersHidden3d.store_edge(basevertex, edge_direction.edir_impulse, 0, lp, above);
+						break;
+
+					case POINTSTYLE:
+					default: // treat all the others like 'points'
+						if (thisvertex < 0) // Ignore invalid vertex
+							break;
+						GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_point, crvlen, lp, above);
+						break;
+					} // switch
+				} // for(i)
+
+				/* Swap the 'north' lists of polygons and edges with
+				 * 'these' ones, which have been filled in the pass
+				 * through this isocurve */
 				{
-					these_edges[i * 3 + 1] = e2 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_north, crvlen, lp, above);
-					these_edges[i * 3 + 2] = e3 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_NW, crvlen, lp, above);
-					if (e3 > -2)
-					{
-					/* diagonal edge of this cell is OK,
-					 * so try to build both the polygons:
-					 * */
-					if (e1 > -2)
-					{
-						/* one pair of edges is valid: put
-						 * first polygon, which points
-						 * towards the southwest */
-						these_polygons[2 * i] = pnum = GlobalMembersHidden3d.store_polygon(thisvertex, polygon_direction.pdir_SW, crvlen);
-						GlobalMembersHidden3d.color_edges(e1, these_edges[3 * (i - 1) + 1], pnum, these_polygons[2 * (i - 1) + 1], above, below);
-					}
-					if (e2 > -2)
-					{
-						/* other pair of two is fine, put
-						 * the northeast polygon: */
-						these_polygons[2 * i + 1] = pnum = GlobalMembersHidden3d.store_polygon(thisvertex, polygon_direction.pdir_NE, crvlen);
-						GlobalMembersHidden3d.color_edges(e2, north_edges[3 * i], pnum, north_polygons[2 * i], above, below);
-					}
-					/* In case these two new polygons
-					 * differ in orientation, find good
-					 * coloring of the diagonal */
-					GlobalMembersHidden3d.color_edges(e3, e3, these_polygons[2 * i], these_polygons[2 * i + 1], above, below);
-					} // if e3 valid
-					else if ((e1 > -2) && (e2 > -2) && hiddenShowAlternativeDiagonal != 0)
-					{
-					/* looks like all but the north-west
-					 * vertex are usable, so we set up the
-					 * southeast-pointing triangle, using
-					 * the 'wrong' diagonal: */
-					these_edges[3 * i + 2] = e3 = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_NE, crvlen, lp, above);
-					if (e3 > -2)
-					{
-						/* fill this polygon into *both*
-						 * polygon places for this
-						 * quadrangle, as this triangle
-						 * coincides with both edges that
-						 * will be used by later polygons
-						 * */
-						these_polygons[2 * i] = these_polygons[2 * i + 1] = pnum = GlobalMembersHidden3d.store_polygon(thisvertex, polygon_direction.pdir_SE, crvlen);
-						/* This case is somewhat special:
-						 * all edges are new, so there is
-						 * no other polygon orientation to
-						 * consider */
-						if (!(mesh_triangle) polygons.v[pnum].frontfacing)
-						(edge) edges.v[e1].style = (edge) edges.v[e2].style = (edge) edges.v[e3].style = below;
-					}
-					}
+					int temp = north_polygons;
+					north_polygons = these_polygons;
+					these_polygons = temp;
+
+					temp = north_edges;
+					north_edges = these_edges;
+					these_edges = temp;
 				}
-				}
-				else if ((crv > 0) && (thisvertex >= 0))
-				{
-				/* We're at the west border of the grid, but
-				 * not on the north one: put vertical end-wall
-				 * edge:*/
-				these_edges[3 * i + 1] = GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_north, crvlen, lp, above);
-				}
-				break;
-
-			case BOXES:
-			case FILLEDCURVES:
-			case IMPULSES:
-				if (thisvertex < 0)
-				break;
-
-				/* set second vertex to the low end of zrange */
-				{
-				double remember_z = points[i].z;
-
-				points[i].z = GlobalMembersAxis.axis_array[AXIS_INDEX.FIRST_Z_AXIS.getValue()].min;
-				basevertex = GlobalMembersHidden3d.store_vertex(points + i, lp_style, color_from_column);
-				points[i].z = remember_z;
-				}
-				if (basevertex > 0)
-				GlobalMembersHidden3d.store_edge(basevertex, edge_direction.edir_impulse, 0, lp, above);
-				break;
-
-			case POINTSTYLE:
-			default: // treat all the others like 'points'
-				if (thisvertex < 0) // Ignore invalid vertex
-				break;
-				GlobalMembersHidden3d.store_edge(thisvertex, edge_direction.edir_point, crvlen, lp, above);
-				break;
-			} // switch
-			} // for(i)
-
-			/* Swap the 'north' lists of polygons and edges with
-			 * 'these' ones, which have been filled in the pass
-			 * through this isocurve */
-			{
-			int temp = north_polygons;
-			north_polygons = these_polygons;
-			these_polygons = temp;
-
-			temp = north_edges;
-			north_edges = these_edges;
-			these_edges = temp;
-			}
-		} // for(isocrv)
+			} // for(isocrv)
 		} // for(plot)
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(these_polygons);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(north_polygons);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(these_edges);
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(north_edges);
 	}
 
-/* Sort the elist in order of growing zmax. Uses qsort on an array of
- * plist indices, and then fills in the 'next' fields in struct
- * polygon to store the resulting order inside the plist */
-/* HBB 20010720: removed 'static' to avoid HP-sUX gcc bug */
+	/* Sort the elist in order of growing zmax. Uses qsort on an array of
+	 * plist indices, and then fills in the 'next' fields in struct
+	 * polygon to store the resulting order inside the plist */
+	/* HBB 20010720: removed 'static' to avoid HP-sUX gcc bug */
 	public static int compare_edges_by_zmin(Object p1, Object p2)
 	{
 		return ((((vertex GPHUGE *) vertices.v[(edge) edges.v[(Integer) p1].v2].z - (vertex GPHUGE *) vertices.v[(edge) edges.v[(Integer) p2].v2].z)<-DefineConstants.EPSILON) ? - 1: (((vertex GPHUGE *) vertices.v[(edge) edges.v[(Integer) p1].v2].z - (vertex GPHUGE *) vertices.v[(edge) edges.v[(Integer) p2].v2].z)>DefineConstants.EPSILON));
 	}
 
-/* HBB 20010720: removed 'static' to avoid HP-sUX gcc bug */
+	/* HBB 20010720: removed 'static' to avoid HP-sUX gcc bug */
 	public static int compare_polys_by_zmax(Object p1, Object p2)
 	{
 		return (((((mesh_triangle) polygons.v[(Integer) p1].zmax - (mesh_triangle) polygons.v[(Integer) p2].zmax)<-DefineConstants.EPSILON) ? - 1: (((mesh_triangle) polygons.v[(Integer) p1].zmax - (mesh_triangle) polygons.v[(Integer) p2].zmax)>DefineConstants.EPSILON)));
@@ -2667,15 +2667,15 @@ public class GlobalMembersHidden3d
 		edge GPHUGE this;
 
 		if (edges.end == 0)
-		return;
+			return;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		sortarray = GlobalMembersAlloc.gp_alloc(sizeof(int) * edges.end, "hidden sort edges");
 		/* initialize sortarray with an identity mapping */
 		for (i = 0; i < edges.end; i++)
-		sortarray[i] = i;
+			sortarray[i] = i;
 		/* sort it */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		qsort(sortarray, (int) edges.end, sizeof(int), GlobalMembersHidden3d.compare_edges_by_zmin);
 
 		/* traverse plist in the order given by sortarray, and set the
@@ -2683,15 +2683,15 @@ public class GlobalMembersHidden3d
 		this = (edge) edges.v + sortarray[0];
 		for (i = 1; i < edges.end; i++)
 		{
-		this.next = sortarray[i];
-		this = (edge) edges.v + sortarray[i];
+			this.next = sortarray[i];
+			this = (edge) edges.v + sortarray[i];
 		}
 		this.next = -1;
 
 		/* 'efirst' is the index of the leading element of plist */
 		efirst = sortarray[0];
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(sortarray);
 	}
 	public static void sort_polys_by_z()
@@ -2701,79 +2701,79 @@ public class GlobalMembersHidden3d
 		mesh_triangle GPHUGE this;
 
 		if (polygons.end == 0)
-		return;
+			return;
 
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		sortarray = GlobalMembersAlloc.gp_alloc(sizeof(int) * polygons.end, "hidden sortarray");
 
 		/* initialize sortarray with an identity mapping */
 		for (i = 0; i < polygons.end; i++)
-		sortarray[i] = i;
+			sortarray[i] = i;
 
 		/* sort it */
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 		qsort(sortarray, (int) polygons.end, sizeof(int), GlobalMembersHidden3d.compare_polys_by_zmax);
 
 		/* traverse plist in the order given by sortarray, and set the
 		 * 'next' pointers */
-	///#if HIDDEN3D_QUADTREE
+		///#if HIDDEN3D_QUADTREE
 		/* HBB 20000716: Loop backwards, to ease construction of
 		 * linked lists from the head: */
 		{
-		int grid_x;
-		int grid_y;
-		int grid_x_low;
-		int grid_x_high;
-		int grid_y_low;
-		int grid_y_high;
+			int grid_x;
+			int grid_y;
+			int grid_x_low;
+			int grid_x_high;
+			int grid_y_low;
+			int grid_y_high;
 
-		for (grid_x = 0; grid_x < DefineConstants.QUADTREE_GRANULARITY; grid_x++)
-			for (grid_y = 0; grid_y < DefineConstants.QUADTREE_GRANULARITY; grid_y++)
-			quadtree[grid_x][grid_y] = -1;
+			for (grid_x = 0; grid_x < DefineConstants.QUADTREE_GRANULARITY; grid_x++)
+				for (grid_y = 0; grid_y < DefineConstants.QUADTREE_GRANULARITY; grid_y++)
+					quadtree[grid_x][grid_y] = -1;
 
-		for (i = polygons.end - 1; i >= 0; i--)
-		{
-			this = (mesh_triangle) polygons.v + sortarray[i];
-
-			grid_x_low = GlobalMembersHidden3d.coord_to_treecell(this.xmin);
-			grid_x_high = GlobalMembersHidden3d.coord_to_treecell(this.xmax);
-			grid_y_low = GlobalMembersHidden3d.coord_to_treecell(this.ymin);
-			grid_y_high = GlobalMembersHidden3d.coord_to_treecell(this.ymax);
-
-			for (grid_x = grid_x_low; grid_x <= grid_x_high; grid_x++)
+			for (i = polygons.end - 1; i >= 0; i--)
 			{
-			for (grid_y = grid_y_low; grid_y <= grid_y_high; grid_y++)
-			{
-				qtreelist GPHUGE * newhead = GlobalMembersDynarray.nextfrom_dynarray(qtree);
+				this = (mesh_triangle) polygons.v + sortarray[i];
 
-				newhead.next = quadtree[grid_x][grid_y];
-				newhead.p = sortarray[i];
+				grid_x_low = GlobalMembersHidden3d.coord_to_treecell(this.xmin);
+				grid_x_high = GlobalMembersHidden3d.coord_to_treecell(this.xmax);
+				grid_y_low = GlobalMembersHidden3d.coord_to_treecell(this.ymin);
+				grid_y_high = GlobalMembersHidden3d.coord_to_treecell(this.ymax);
 
-				quadtree[grid_x][grid_y] = newhead - (qtreelist) qtree.v;
-			}
+				for (grid_x = grid_x_low; grid_x <= grid_x_high; grid_x++)
+				{
+					for (grid_y = grid_y_low; grid_y <= grid_y_high; grid_y++)
+					{
+						qtreelist GPHUGE * newhead = GlobalMembersDynarray.nextfrom_dynarray(qtree);
+
+						newhead.next = quadtree[grid_x][grid_y];
+						newhead.p = sortarray[i];
+
+						quadtree[grid_x][grid_y] = newhead - (qtreelist) qtree.v;
+					}
+				}
 			}
 		}
-		}
 
-	///#else // HIDDEN3D_QUADTREE
-	//    this = plist + sortarray[0];
-	//    for (i = 1; i < polygons.end; i++) {
-	//	this->next = sortarray[i];
-	//	this = plist + sortarray[i];
-	//    }
-	//    this->next = -1L;
-	// /* 'pfirst' is the index of the leading element of plist */
-	///#endif // HIDDEN3D_QUADTREE
+		///#else // HIDDEN3D_QUADTREE
+		//    this = plist + sortarray[0];
+		//    for (i = 1; i < polygons.end; i++) {
+		//	this->next = sortarray[i];
+		//	this = plist + sortarray[i];
+		//    }
+		//    this->next = -1L;
+		// /* 'pfirst' is the index of the leading element of plist */
+		///#endif // HIDDEN3D_QUADTREE
 		pfirst = sortarray[0];
 
-//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
 		free(sortarray);
 	}
 
-/* Calculate the normal equation coefficients of the plane of polygon
- * 'p'. Uses is the 'signed projected area' method. Its benefit is
- * that it doesn't rely on only three of the vertices of 'p', as the
- * naive cross product method does. */
+	/* Calculate the normal equation coefficients of the plane of polygon
+	 * 'p'. Uses is the 'signed projected area' method. Its benefit is
+	 * that it doesn't rely on only three of the vertices of 'p', as the
+	 * naive cross product method does. */
 	public static boolean get_plane(mesh_triangle GPHUGE poly, double[] plane)
 	{
 		int i;
@@ -2794,11 +2794,11 @@ public class GlobalMembersHidden3d
 		plane[2] = (v1.x - v2.x) * (v1.y + v2.y);
 		for (i = 1; i < DefineConstants.POLY_NVERT; i++)
 		{
-		v1 = v2;
-		v2 = (vertex GPHUGE *) vertices.v + poly.vertex[i];
-		plane[0] += (v1.y - v2.y) * (v1.z + v2.z);
-		plane[1] += (v1.z - v2.z) * (v1.x + v2.x);
-		plane[2] += (v1.x - v2.x) * (v1.y + v2.y);
+			v1 = v2;
+			v2 = (vertex GPHUGE *) vertices.v + poly.vertex[i];
+			plane[0] += (v1.y - v2.y) * (v1.z + v2.z);
+			plane[1] += (v1.z - v2.z) * (v1.x + v2.x);
+			plane[2] += (v1.x - v2.x) * (v1.y + v2.y);
 		}
 
 		/* Normalize the resulting normal vector */
@@ -2806,37 +2806,37 @@ public class GlobalMembersHidden3d
 
 		if (((0.0) >= (s) - DefineConstants.EPSILON))
 		{
-		/* The normal vanishes, i.e. the polygon is degenerate. We build
-		 * another vector that is orthogonal to the line of the polygon */
-		v1 = (vertex GPHUGE *) vertices.v + poly.vertex[0];
-		for (i = 1; i < DefineConstants.POLY_NVERT; i++)
-		{
-			v2 = (vertex GPHUGE *) vertices.v + poly.vertex[i];
-			if (!(((0.0) >= (Math.abs((v1).x - (v2).x) + Math.abs((v1).y - (v2).y) + Math.abs((v1).z - (v2).z)) - DefineConstants.EPSILON)))
-			break;
-		}
+			/* The normal vanishes, i.e. the polygon is degenerate. We build
+			 * another vector that is orthogonal to the line of the polygon */
+			v1 = (vertex GPHUGE *) vertices.v + poly.vertex[0];
+			for (i = 1; i < DefineConstants.POLY_NVERT; i++)
+			{
+				v2 = (vertex GPHUGE *) vertices.v + poly.vertex[i];
+				if (!(((0.0) >= (Math.abs((v1).x - (v2).x) + Math.abs((v1).y - (v2).y) + Math.abs((v1).z - (v2).z)) - DefineConstants.EPSILON)))
+					break;
+			}
 
-		/* build (x,y,z) that should be linear-independant from <v1, v2> */
-		x = v1.x;
-		y = v1.y;
-		z = v1.z;
-		if ((Math.abs((y) - (v2.y)) < DefineConstants.EPSILON))
-			y += 1.0;
-		else
-			x += 1.0;
+			/* build (x,y,z) that should be linear-independant from <v1, v2> */
+			x = v1.x;
+			y = v1.y;
+			z = v1.z;
+			if ((Math.abs((y) - (v2.y)) < DefineConstants.EPSILON))
+				y += 1.0;
+			else
+				x += 1.0;
 
-		/* Re-do the signed area computations */
-		plane[0] = v1.y * (v2.z - z) + v2.y * (z - v1.z) + y * (v1.z - v2.z);
-		plane[1] = v1.z * (v2.x - x) + v2.z * (x - v1.x) + z * (v1.x - v2.x);
-		plane[2] = v1.x * (v2.y - y) + v2.x * (y - v1.y) + x * (v1.y - v2.y);
-		s = Math.sqrt(plane[0] * plane[0] + plane[1] * plane[1] + plane[2] * plane[2]);
+			/* Re-do the signed area computations */
+			plane[0] = v1.y * (v2.z - z) + v2.y * (z - v1.z) + y * (v1.z - v2.z);
+			plane[1] = v1.z * (v2.x - x) + v2.z * (x - v1.x) + z * (v1.x - v2.x);
+			plane[2] = v1.x * (v2.y - y) + v2.x * (y - v1.y) + x * (v1.y - v2.y);
+			s = Math.sqrt(plane[0] * plane[0] + plane[1] * plane[1] + plane[2] * plane[2]);
 		}
 
 		/* ensure that normalized c is > 0 */
 		if (plane[2] < 0.0)
 		{
-		s *= -1.0;
-		frontfacing = false;
+			s *= -1.0;
+			frontfacing = false;
 		}
 
 		plane[0] /= s;
@@ -2851,21 +2851,21 @@ public class GlobalMembersHidden3d
 		return frontfacing;
 	}
 
-/*************************************************************/
-/*************************************************************/
-/*******   The depth sort algorithm (in_front) and its  ******/
-/*******   whole lot of helper functions                ******/
-/*************************************************************/
-/*************************************************************/
+	/*************************************************************/
+	/*************************************************************/
+	/*******   The depth sort algorithm (in_front) and its  ******/
+	/*******   whole lot of helper functions                ******/
+	/*************************************************************/
+	/*************************************************************/
 
-/* Split a given line segment into two at an inner point. The inner
- * point is specified as a fraction of the line-length (0 is V1, 1 is
- * V2) */
-/* HBB 20001108: changed to now take two vertex pointers as its
- * arguments, rather than an edge pointer. */
-/* HBB 20001204: changed interface again. Now use vertex indices,
- * rather than pointers, to avoid problems with dangling pointers
- * after nextfrom_dynarray() call. */
+	/* Split a given line segment into two at an inner point. The inner
+	 * point is specified as a fraction of the line-length (0 is V1, 1 is
+	 * V2) */
+	/* HBB 20001108: changed to now take two vertex pointers as its
+	 * arguments, rather than an edge pointer. */
+	/* HBB 20001204: changed interface again. Now use vertex indices,
+	 * rather than pointers, to avoid problems with dangling pointers
+	 * after nextfrom_dynarray() call. */
 	public static int split_line_at_ratio(int vnum1, int vnum2, double w)
 	{
 		vertex GPHUGE * v;
@@ -2884,21 +2884,21 @@ public class GlobalMembersHidden3d
 		/* additional checks to prevent adding unnecessary vertices */
 		if ((((0.0) >= (Math.abs((v).x - ((vertex GPHUGE *) vertices.v + vnum1).x) + Math.abs((v).y - ((vertex GPHUGE *) vertices.v + vnum1).y) + Math.abs((v).z - ((vertex GPHUGE *) vertices.v + vnum1).z)) - DefineConstants.EPSILON)))
 		{
-		GlobalMembersDynarray.droplast_dynarray(vertices);
-		return vnum1;
+			GlobalMembersDynarray.droplast_dynarray(vertices);
+			return vnum1;
 		}
 		if ((((0.0) >= (Math.abs((v).x - ((vertex GPHUGE *) vertices.v + vnum2).x) + Math.abs((v).y - ((vertex GPHUGE *) vertices.v + vnum2).y) + Math.abs((v).z - ((vertex GPHUGE *) vertices.v + vnum2).z)) - DefineConstants.EPSILON)))
 		{
-		GlobalMembersDynarray.droplast_dynarray(vertices);
-		return vnum2;
+			GlobalMembersDynarray.droplast_dynarray(vertices);
+			return vnum2;
 		}
 
 		return (v - (vertex GPHUGE *) vertices.v);
 	}
 
-/* Compute the 'signed area' of 3 points in their 2d projection
- * to the x-y plane. Essentially the z component of the crossproduct.
- * Should come out positive if v1, v2, v3 are ordered counter-clockwise */
+	/* Compute the 'signed area' of 3 points in their 2d projection
+	 * to the x-y plane. Essentially the z component of the crossproduct.
+	 * Should come out positive if v1, v2, v3 are ordered counter-clockwise */
 
 	public static __inline__ double area2D(vertex GPHUGE v1, vertex GPHUGE v2, vertex GPHUGE v3)
 	{
@@ -2909,12 +2909,12 @@ public class GlobalMembersHidden3d
 		return (dx12 * dy13 - dy12 * dx13);
 	}
 
-/************************************************/
-/*******            Drawing the polygons ********/
-/************************************************/
+	/************************************************/
+	/*******            Drawing the polygons ********/
+	/************************************************/
 
-/* draw a single vertex as a point symbol, if requested by the chosen
- * plot style (linespoints, points, or dots...) */
+	/* draw a single vertex as a point symbol, if requested by the chosen
+	 * plot style (linespoints, points, or dots...) */
 	public static void draw_vertex(vertex GPHUGE v)
 	{
 		int x;
@@ -2926,42 +2926,42 @@ public class GlobalMembersHidden3d
 		};
 		if (v.lp_style != null && v.lp_style.p_type >= -1 && GlobalMembersGadgets.clip_point(x, y) == 0)
 		{
-		int colortype = v.lp_style.pm3d_color.type;
+			int colortype = v.lp_style.pm3d_color.type;
 
-		if (v.label != null)
-		{
-			GlobalMembersGadgets.write_label(x, y, v.label);
+			if (v.label != null)
+			{
+				GlobalMembersGadgets.write_label(x, y, v.label);
+				v.lp_style = DefineConstants.NULL;
+				return;
+			}
+
+			/* EAM DEBUG - Check for extra point properties */
+			if (colortype == DefineConstants.TC_LT)
+				/* Should have been set already! */
+				;
+			else if (colortype == DefineConstants.TC_RGB && v.lp_style.pm3d_color.lt == DefineConstants.LT_COLORFROMCOLUMN)
+				GlobalMembersColor.set_rgbcolor(v.real_z);
+			else if (colortype == DefineConstants.TC_RGB)
+				GlobalMembersColor.set_rgbcolor(v.lp_style.pm3d_color.lt);
+			else if (colortype == DefineConstants.TC_Z)
+				GlobalMembersColor.set_color(GlobalMembersPm3d.cb2gray(GlobalMembersPm3d.z2cb(v.real_z)));
+
+			///#ifdef HIDDEN3D_VAR_PTSIZE
+			if (v.lp_style.p_size == DefineConstants.PTSZ_VARIABLE)
+				(GlobalMembersTerm.term.pointsize)(GlobalMembersGadgets.pointsize * v.original.xlow);
+			///#endif
+
+			(GlobalMembersTerm.term.point)(x,y, v.lp_style.p_type);
+
+			/* vertex has been drawn --> flag it as done */
 			v.lp_style = DefineConstants.NULL;
-			return;
-		}
-
-		/* EAM DEBUG - Check for extra point properties */
-		if (colortype == DefineConstants.TC_LT)
-			/* Should have been set already! */
-			;
-		else if (colortype == DefineConstants.TC_RGB && v.lp_style.pm3d_color.lt == DefineConstants.LT_COLORFROMCOLUMN)
-			GlobalMembersColor.set_rgbcolor(v.real_z);
-		else if (colortype == DefineConstants.TC_RGB)
-			GlobalMembersColor.set_rgbcolor(v.lp_style.pm3d_color.lt);
-		else if (colortype == DefineConstants.TC_Z)
-			GlobalMembersColor.set_color(GlobalMembersPm3d.cb2gray(GlobalMembersPm3d.z2cb(v.real_z)));
-
-	///#ifdef HIDDEN3D_VAR_PTSIZE
-		if (v.lp_style.p_size == DefineConstants.PTSZ_VARIABLE)
-			(GlobalMembersTerm.term.pointsize)(GlobalMembersGadgets.pointsize * v.original.xlow);
-	///#endif
-
-		(GlobalMembersTerm.term.point)(x,y, v.lp_style.p_type);
-
-		/* vertex has been drawn --> flag it as done */
-		v.lp_style = DefineConstants.NULL;
 		}
 	}
 
-/* The function that actually does the drawing of the visible portions
- * of lines */
-/* HBB 20001108: changed to take the pointers to the end vertices as
- * additional arguments. */
+	/* The function that actually does the drawing of the visible portions
+	 * of lines */
+	/* HBB 20001108: changed to take the pointers to the end vertices as
+	 * additional arguments. */
 	public static void draw_edge(edge GPHUGE e, vertex GPHUGE v1, vertex GPHUGE v2)
 	{
 		assert e >= (edge) edges.v && e < (edge) edges.v + edges.end;
@@ -2969,43 +2969,43 @@ public class GlobalMembersHidden3d
 		GlobalMembersUtil3d.draw3d_line_unconditional(v1, v2, e.lp, e.style);
 		if (e.lp.pointflag != 0)
 		{
-		GlobalMembersHidden3d.draw_vertex(v1);
-		GlobalMembersHidden3d.draw_vertex(v2);
+			GlobalMembersHidden3d.draw_vertex(v1);
+			GlobalMembersHidden3d.draw_vertex(v2);
 		}
 	}
 
-/* Utility routine: takes an edge and makes a new one, which is a fragment
- * of the old one. The fragment inherits the line style and stuff of the
- * given edge; only the two new vertices are different. The new edge
- * is then passed to in_front, for recursive handling */
-/* HBB 20001108: Changed from edge pointer to edge index. Don't
- * allocate a fresh anymore, as this is no longer needed after the
- * change to in_front().  What remains of this function may no longer
- * be worth having. I.e. it can be replaced by a direct recursion call
- * of in_front(), sometime soon. */
+	/* Utility routine: takes an edge and makes a new one, which is a fragment
+	 * of the old one. The fragment inherits the line style and stuff of the
+	 * given edge; only the two new vertices are different. The new edge
+	 * is then passed to in_front, for recursive handling */
+	/* HBB 20001108: Changed from edge pointer to edge index. Don't
+	 * allocate a fresh anymore, as this is no longer needed after the
+	 * change to in_front().  What remains of this function may no longer
+	 * be worth having. I.e. it can be replaced by a direct recursion call
+	 * of in_front(), sometime soon. */
 	public static __inline__ void handle_edge_fragment(int edgenum, int vnum1, int vnum2, int firstpoly)
 	{
-	///#if !HIDDEN3D_QUADTREE
-	// /* Avoid checking against the same polygon again. */
-	//    firstpoly = plist[firstpoly].next;
-	///#endif
+		///#if !HIDDEN3D_QUADTREE
+		// /* Avoid checking against the same polygon again. */
+		//    firstpoly = plist[firstpoly].next;
+		///#endif
 		GlobalMembersHidden3d.in_front(edgenum, vnum1, vnum2, firstpoly);
 	}
 
-/*********************************************************************/
-/* The actual heart of all this: determines if edge at index 'edgenum'
- * of the elist is in_front of all the polygons, or not. If necessary,
- * it will recursively call itself to isolate more than one visible
- * fragment of the input edge. Wherever possible, recursion is
- * avoided, by in-place modification of the edge.
- *
- * The visible fragments are then drawn by a call to 'draw_edge' from
- * inside this routine. */
-/*********************************************************************/
-/* HBB 20001108: changed to now take the vertex numbers as additional
- * arguments. The idea is to not overwrite the endpoint stored with
- * the edge, so Test 2 will catch on even after the subject edge has
- * been split up before one of its two polygons is tested against it. */
+	/*********************************************************************/
+	/* The actual heart of all this: determines if edge at index 'edgenum'
+	 * of the elist is in_front of all the polygons, or not. If necessary,
+	 * it will recursively call itself to isolate more than one visible
+	 * fragment of the input edge. Wherever possible, recursion is
+	 * avoided, by in-place modification of the edge.
+	 *
+	 * The visible fragments are then drawn by a call to 'draw_edge' from
+	 * inside this routine. */
+	/*********************************************************************/
+	/* HBB 20001108: changed to now take the vertex numbers as additional
+	 * arguments. The idea is to not overwrite the endpoint stored with
+	 * the edge, so Test 2 will catch on even after the subject edge has
+	 * been split up before one of its two polygons is tested against it. */
 
 	public static int in_front(int edgenum, int vnum1, int vnum2, int firstpoly)
 	{
@@ -3019,19 +3019,19 @@ public class GlobalMembersHidden3d
 		double ymax;
 		double zmin;
 		double zmax;
-	///#if HIDDEN3D_GRIDBOX
+		///#if HIDDEN3D_GRIDBOX
 		int xextent; // extent bitmask in x direction
 		int yextent; // same, in y direction
 
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define SET_XEXTENT xextent = ((~(~0U << (unsigned int) (((((xmax)) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (1)))) & (~0U << (unsigned int) ((((xmin) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (0))));
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define SET_YEXTENT yextent = ((~(~0U << (unsigned int) (((((ymax)) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (1)))) & (~0U << (unsigned int) ((((ymin) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (0))));
-	///#else
-	///#define SET_XEXTENT // nothing
-	///#define SET_YEXTENT // nothing
-	///#endif
-	///#if HIDDEN3D_QUADTREE
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define SET_XEXTENT xextent = ((~(~0U << (unsigned int) (((((xmax)) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (1)))) & (~0U << (unsigned int) ((((xmin) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (0))));
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define SET_YEXTENT yextent = ((~(~0U << (unsigned int) (((((ymax)) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (1)))) & (~0U << (unsigned int) ((((ymin) / surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(unsigned int) + (0))));
+		///#else
+		///#define SET_XEXTENT // nothing
+		///#define SET_YEXTENT // nothing
+		///#endif
+		///#if HIDDEN3D_QUADTREE
 		int grid_x;
 		int grid_y;
 		int grid_x_low;
@@ -3039,7 +3039,7 @@ public class GlobalMembersHidden3d
 		int grid_y_low;
 		int grid_y_high;
 		int listhead;
-	///#endif
+		///#endif
 
 		/* zmin of the edge, as it started out. This is needed separately to
 		 * allow modifying '*firstpoly', without moving it too far to the
@@ -3056,8 +3056,8 @@ public class GlobalMembersHidden3d
 		 * the viewer than v2 (in z direction) */
 		/* HBB 20001108: slightly changed so it can be called with vnum1
 		 * and vnum2 as its arguments, too */
-	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
-	///#define setup_edge(vert1, vert2) do { if (vlist[vert1].z > vlist[vert2].z) { v1 = vlist + (vert1); v2 = vlist + (vert2); } else { v1 = vlist + (vert2); v2 = vlist + (vert1); } vnum1 = v1 - vlist; vnum2 = v2 - vlist; zmax = v1->z; zmin = v2->z; if (v1->x > v2->x) { xmin = v2->x; xmax = v1->x; } else { xmin = v1->x; xmax = v2->x; } SET_XEXTENT; if (v1->y > v2->y) { ymin = v2->y; ymax = v1->y; } else { ymin = v1->y; ymax = v2->y; } SET_YEXTENT; } while (0)
+		//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
+		///#define setup_edge(vert1, vert2) do { if (vlist[vert1].z > vlist[vert2].z) { v1 = vlist + (vert1); v2 = vlist + (vert2); } else { v1 = vlist + (vert2); v2 = vlist + (vert1); } vnum1 = v1 - vlist; vnum2 = v2 - vlist; zmax = v1->z; zmin = v2->z; if (v1->x > v2->x) { xmin = v2->x; xmax = v1->x; } else { xmin = v1->x; xmax = v2->x; } SET_XEXTENT; if (v1->y > v2->y) { ymin = v2->y; ymax = v1->y; } else { ymin = v1->y; ymax = v2->y; } SET_YEXTENT; } while (0)
 
 		/* use the macro for initial setup, too: */
 		do
@@ -3086,7 +3086,7 @@ public class GlobalMembersHidden3d
 				xmin = v1.x;
 				xmax = v2.x;
 			}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 			xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
 			;
 			if (v1.y > v2.y)
@@ -3099,7 +3099,7 @@ public class GlobalMembersHidden3d
 				ymin = v1.y;
 				ymax = v2.y;
 			}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
 			yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
 			;
 		} while (0);
@@ -3108,344 +3108,344 @@ public class GlobalMembersHidden3d
 
 		enter_vertices = vertices.end;
 
-	///#if HIDDEN3D_QUADTREE
+		///#if HIDDEN3D_QUADTREE
 		grid_x_low = GlobalMembersHidden3d.coord_to_treecell(xmin);
 		grid_x_high = GlobalMembersHidden3d.coord_to_treecell(xmax);
 		grid_y_low = GlobalMembersHidden3d.coord_to_treecell(ymin);
 		grid_y_high = GlobalMembersHidden3d.coord_to_treecell(ymax);
 
 		for (grid_x = grid_x_low; grid_x <= grid_x_high; grid_x++)
-		for (grid_y = grid_y_low; grid_y <= grid_y_high; grid_y++)
-			for (listhead = quadtree[grid_x][grid_y]; listhead >= 0; listhead = (qtreelist) qtree.v[listhead].next)
-	///#else // HIDDEN3D_QUADTREE
-	// /* loop over all the polygons in the sorted list, starting at the
-	//  * currently first (i.e. furthest, from the viewer) polygon. */
-	//    for (polynum = *firstpoly; polynum >=0; polynum = p->next)
-	///#endif // HIDDEN3D_QUADTREE
-			{
-			/* shortcut variables for the three vertices of 'p':*/
-			vertex GPHUGE * w1, *w2, *w3;
-
-	///#if HIDDEN3D_QUADTREE
-			polynum = (qtreelist) qtree.v[listhead].p;
-	///#endif
-			GlobalMembersAnsi2knr.p = (mesh_triangle) polygons.v + polynum;
-
-			/* OK, off we go with the real work. This algorithm had its
-			 * beginnings as the one of 'HLines.java', as described in
-			 * the book 'Computer Graphics for Java Programmers', by
-			 * Dutch professor Leen Ammeraal, published by J. Wiley &
-			 * Sons, ISBN 0 471 98142 7.
-			 *
-			 * However, it was revamped with an approach that breaks
-			 * up the edge into five possible subsegments and removes
-			 * the one contiguous subsegment, if any, that is hidden.
-			 */
-
-			/* Test 1 (2D): minimax tests. Do x/y ranges of polygon
-			 * and edge have any overlap? */
-	///#if HIDDEN3D_GRIDBOX
-			/* First, check by comparing the extent bit patterns: */
-			if (0 || (!(xextent & GlobalMembersAnsi2knr.p.xbits)) || (!(yextent & GlobalMembersAnsi2knr.p.ybits)) || (GlobalMembersAnsi2knr.p.xmax < xmin) || (GlobalMembersAnsi2knr.p.xmin > xmax) || (GlobalMembersAnsi2knr.p.ymax < ymin) || (GlobalMembersAnsi2knr.p.ymin > ymax))
-	///#else
-	//        if (0
-	///#endif
-			continue;
-
-			/* Tests 2 and 3 switched... */
-
-			/* Test 3 (3D): Is edge completely in front of polygon? */
-			if (GlobalMembersAnsi2knr.p.zmax < zmin)
-			{
-			/* Polygon completely behind this edge. Move start of
-			 * relevant plist to this point, to speed up next
-			 * run. This makes use of the fact that elist is also
-			 * kept in upwardly sorted order of zmin, i.e. the
-			 * condition found here will also hold for all coming
-			 * edges in the list */
-			if (GlobalMembersAnsi2knr.p.zmax < first_zmin)
-				firstpoly = polynum;
-			continue; // this polygon is done with
-			}
-
-			/* Test 2 (0D): does edge belong to this very polygon? */
-			/* 20001108: to make this rejector more effective, do keep
-			 * the original edge vertices unchanged */
-			if (1 && (0 || (GlobalMembersAnsi2knr.p.vertex[0] == (edge) edges.v[edgenum].v1) || (GlobalMembersAnsi2knr.p.vertex[1] == (edge) edges.v[edgenum].v1) || (GlobalMembersAnsi2knr.p.vertex[2] == (edge) edges.v[edgenum].v1)) && (0 || (GlobalMembersAnsi2knr.p.vertex[0] == (edge) edges.v[edgenum].v2) || (GlobalMembersAnsi2knr.p.vertex[1] == (edge) edges.v[edgenum].v2) || (GlobalMembersAnsi2knr.p.vertex[2] == (edge) edges.v[edgenum].v2)))
-			continue;
-
-			w1 = (vertex GPHUGE *) vertices.v + GlobalMembersAnsi2knr.p.vertex[0];
-			w2 = (vertex GPHUGE *) vertices.v + GlobalMembersAnsi2knr.p.vertex[1];
-			w3 = (vertex GPHUGE *) vertices.v + GlobalMembersAnsi2knr.p.vertex[2];
-
-
-			/* The final 'catch-all' handler: [was Test 4-9 (3D)]
-			 * Daniel Sebald 2007
-			 * ---------------------------------------------------
-			 * If one examines the possible scenarios for an edge (v1,v2)
-			 * passing through a triangular 3D element in 2D space, it
-			 * is evident that at most 4 breaks in the edge are possible,
-			 * one for each infinite triangle side intersection and
-			 * one for the edge possibly passing directly through the
-			 * polygon.  We first compute all these intersections in terms
-			 * of parameterization v = v1 + u * (v2 - v1).  That gives us
-			 * four values of u.  They likely will not all be in the range
-			 * (0,1), i.e., between v1 and v2.  We discard all those not
-			 * in the range, and the remaining associated points along with
-			 * endpoint v1 and v2 describe a series of subsegements that are
-			 * considered individually.  If any contiguous subgroup is
-			 * hidden (there can only be at most one for a convex polygon),
-			 * it is removed.
-			 *
-			 * This routine is general in the sense that the earlier tests
-			 * it are only need for speed.
-			 *
-			 * The following website illustrates geometrical concepts and
-			 * formulas:  http://local.wasp.uwa.edu.au/~pbourke/geometry/
-			 */
-
-			{
-			double[] u_int = new double[4]; // Intersection points along edge v1, v2
-			double[] u_seg = new double[6]; // Sorted subsegment points
-			int segs; // Number of segments
-			int i;
-
-			u_int[0] = GlobalMembersHidden3d.intersect_line_plane(v1, v2, GlobalMembersAnsi2knr.p.plane);
-			u_int[1] = GlobalMembersHidden3d.intersect_line_line(v1, v2, w1, w2);
-			u_int[2] = GlobalMembersHidden3d.intersect_line_line(v1, v2, w2, w3);
-			u_int[3] = GlobalMembersHidden3d.intersect_line_line(v1, v2, w3, w1);
-
-			/* Check if between v1 and v2 */
-			u_seg[0] = 0;
-			segs = 1;
-			for (i = 0; i < 4; i++)
-			{
-				if ((0 < u_int[i]) && (u_int[i] < 1))
+			for (grid_y = grid_y_low; grid_y <= grid_y_high; grid_y++)
+				for (listhead = quadtree[grid_x][grid_y]; listhead >= 0; listhead = (qtreelist) qtree.v[listhead].next)
+					///#else // HIDDEN3D_QUADTREE
+					// /* loop over all the polygons in the sorted list, starting at the
+					//  * currently first (i.e. furthest, from the viewer) polygon. */
+					//    for (polynum = *firstpoly; polynum >=0; polynum = p->next)
+					///#endif // HIDDEN3D_QUADTREE
 				{
-				u_seg[segs] = u_int[i];
-				segs++;
-				}
-			}
-			u_seg[segs] = 1;
+					/* shortcut variables for the three vertices of 'p':*/
+					vertex GPHUGE * w1, *w2, *w3;
 
-			/* Sort the points.  First and last point already in order. */
-			for (i = 1; i < segs; i++)
-			{
-				int j = i + 1;
-				for (; j < segs; j++)
-				{
-				if (u_seg[i] > u_seg[j])
-				{
-					double temp = u_seg[i];
-					u_seg[i] = u_seg[j];
-					u_seg[j] = temp;
-				}
-				}
-			}
+					///#if HIDDEN3D_QUADTREE
+					polynum = (qtreelist) qtree.v[listhead].p;
+					///#endif
+					GlobalMembersAnsi2knr.p = (mesh_triangle) polygons.v + polynum;
 
-			/* Check if contiguous segments or segment is covered */
-			for (i = 0; i < segs; i++)
-			{
-				int covA = GlobalMembersHidden3d.cover_point_poly(v1, v2, u_seg[i], GlobalMembersAnsi2knr.p);
-				if (covA != 0)
-				{
-				/* First covered point, now look for last covered point */
-				int j;
-				int covB = 0;
-				for (j = i; j < segs; j++)
-				{
-					int cover = GlobalMembersHidden3d.cover_point_poly(v1, v2, u_seg[j + 1], GlobalMembersAnsi2knr.p);
-					if (cover == 0)
-					break;
-					covB = cover;
-				}
-				if (i == j)
-					break; // Only one covered point, no segment covered
-				if (covA == 2 && covB == 2)
-					break; // Points covered, but both are on the plane
-				else
-				{
-					/* This is the hidden segment */
-					if (i == 0)
-					{
-					/* Missing segment is at start of v1, v2 */
-					if (j == segs)
-					{
-						/* Whole edge is hidden */
-						while (vertices.end > enter_vertices)
-						GlobalMembersDynarray.droplast_dynarray(vertices);
-						return 0;
-					}
-					else
-					{
-						/* Shrink the edge and continue */
-						int newvert = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[j]);
-						do
-						{
-							if ((vertex GPHUGE *) vertices.v[newvert].z > (vertex GPHUGE *) vertices.v[vnum2].z)
-							{
-								v1 = (vertex GPHUGE *) vertices.v + (newvert);
-								v2 = (vertex GPHUGE *) vertices.v + (vnum2);
-							}
-							else
-							{
-								v1 = (vertex GPHUGE *) vertices.v + (vnum2);
-								v2 = (vertex GPHUGE *) vertices.v + (newvert);
-							}
-							vnum1 = v1 - (vertex GPHUGE *) vertices.v;
-							vnum2 = v2 - (vertex GPHUGE *) vertices.v;
-							zmax = v1.z;
-							zmin = v2.z;
-							if (v1.x > v2.x)
-							{
-								xmin = v2.x;
-								xmax = v1.x;
-							}
-							else
-							{
-								xmin = v1.x;
-								xmax = v2.x;
-							}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-							xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-							;
-							if (v1.y > v2.y)
-							{
-								ymin = v2.y;
-								ymax = v1.y;
-							}
-							else
-							{
-								ymin = v1.y;
-								ymax = v2.y;
-							}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-							yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-							;
-						} while (0);
-						break;
-					}
-					}
-					else if (j == segs)
-					{
-					/* Missing segment is at end of v1, v2.  The i = 0
-					 * case already tested, so shrink edge and continue */
-					int newvert = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[i]);
-					do
-					{
-						if ((vertex GPHUGE *) vertices.v[vnum1].z > (vertex GPHUGE *) vertices.v[newvert].z)
-						{
-							v1 = (vertex GPHUGE *) vertices.v + (vnum1);
-							v2 = (vertex GPHUGE *) vertices.v + (newvert);
-						}
-						else
-						{
-							v1 = (vertex GPHUGE *) vertices.v + (newvert);
-							v2 = (vertex GPHUGE *) vertices.v + (vnum1);
-						}
-						vnum1 = v1 - (vertex GPHUGE *) vertices.v;
-						vnum2 = v2 - (vertex GPHUGE *) vertices.v;
-						zmax = v1.z;
-						zmin = v2.z;
-						if (v1.x > v2.x)
-						{
-							xmin = v2.x;
-							xmax = v1.x;
-						}
-						else
-						{
-							xmin = v1.x;
-							xmax = v2.x;
-						}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-						xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-						;
-						if (v1.y > v2.y)
-						{
-							ymin = v2.y;
-							ymax = v1.y;
-						}
-						else
-						{
-							ymin = v1.y;
-							ymax = v2.y;
-						}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-						yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-						;
-					} while (0);
-					break;
-					}
-					else
-					{
-					/* Handle new edge then shrink edge */
-					int[] newvert = new int[2];
-					newvert[0] = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[i]);
-					newvert[1] = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[j]);
-					/* If the newvert[1] is vnum1 this would be an infinite
-					 * loop and stack overflow if not checked since in_front()
-					 * was just called with vnum1 and vnum2 and got to this
-					 * point.  This is the equivalent of snipping out a tiny
-					 * segment near end of an edge.  Simply ignore.
+					/* OK, off we go with the real work. This algorithm had its
+					 * beginnings as the one of 'HLines.java', as described in
+					 * the book 'Computer Graphics for Java Programmers', by
+					 * Dutch professor Leen Ammeraal, published by J. Wiley &
+					 * Sons, ISBN 0 471 98142 7.
+					 *
+					 * However, it was revamped with an approach that breaks
+					 * up the edge into five possible subsegments and removes
+					 * the one contiguous subsegment, if any, that is hidden.
 					 */
-					if (newvert[1] != vnum1)
+
+					/* Test 1 (2D): minimax tests. Do x/y ranges of polygon
+					 * and edge have any overlap? */
+					///#if HIDDEN3D_GRIDBOX
+					/* First, check by comparing the extent bit patterns: */
+					if (0 || (!(xextent & GlobalMembersAnsi2knr.p.xbits)) || (!(yextent & GlobalMembersAnsi2knr.p.ybits)) || (GlobalMembersAnsi2knr.p.xmax < xmin) || (GlobalMembersAnsi2knr.p.xmin > xmax) || (GlobalMembersAnsi2knr.p.ymax < ymin) || (GlobalMembersAnsi2knr.p.ymin > ymax))
+						///#else
+						//        if (0
+						///#endif
+						continue;
+
+					/* Tests 2 and 3 switched... */
+
+					/* Test 3 (3D): Is edge completely in front of polygon? */
+					if (GlobalMembersAnsi2knr.p.zmax < zmin)
 					{
-						GlobalMembersHidden3d.handle_edge_fragment(edgenum, newvert[1], vnum2, polynum);
-						do
+						/* Polygon completely behind this edge. Move start of
+						 * relevant plist to this point, to speed up next
+						 * run. This makes use of the fact that elist is also
+						 * kept in upwardly sorted order of zmin, i.e. the
+						 * condition found here will also hold for all coming
+						 * edges in the list */
+						if (GlobalMembersAnsi2knr.p.zmax < first_zmin)
+							firstpoly = polynum;
+						continue; // this polygon is done with
+					}
+
+					/* Test 2 (0D): does edge belong to this very polygon? */
+					/* 20001108: to make this rejector more effective, do keep
+					 * the original edge vertices unchanged */
+					if (1 && (0 || (GlobalMembersAnsi2knr.p.vertex[0] == (edge) edges.v[edgenum].v1) || (GlobalMembersAnsi2knr.p.vertex[1] == (edge) edges.v[edgenum].v1) || (GlobalMembersAnsi2knr.p.vertex[2] == (edge) edges.v[edgenum].v1)) && (0 || (GlobalMembersAnsi2knr.p.vertex[0] == (edge) edges.v[edgenum].v2) || (GlobalMembersAnsi2knr.p.vertex[1] == (edge) edges.v[edgenum].v2) || (GlobalMembersAnsi2knr.p.vertex[2] == (edge) edges.v[edgenum].v2)))
+						continue;
+
+					w1 = (vertex GPHUGE *) vertices.v + GlobalMembersAnsi2knr.p.vertex[0];
+					w2 = (vertex GPHUGE *) vertices.v + GlobalMembersAnsi2knr.p.vertex[1];
+					w3 = (vertex GPHUGE *) vertices.v + GlobalMembersAnsi2knr.p.vertex[2];
+
+
+					/* The final 'catch-all' handler: [was Test 4-9 (3D)]
+					 * Daniel Sebald 2007
+					 * ---------------------------------------------------
+					 * If one examines the possible scenarios for an edge (v1,v2)
+					 * passing through a triangular 3D element in 2D space, it
+					 * is evident that at most 4 breaks in the edge are possible,
+					 * one for each infinite triangle side intersection and
+					 * one for the edge possibly passing directly through the
+					 * polygon.  We first compute all these intersections in terms
+					 * of parameterization v = v1 + u * (v2 - v1).  That gives us
+					 * four values of u.  They likely will not all be in the range
+					 * (0,1), i.e., between v1 and v2.  We discard all those not
+					 * in the range, and the remaining associated points along with
+					 * endpoint v1 and v2 describe a series of subsegements that are
+					 * considered individually.  If any contiguous subgroup is
+					 * hidden (there can only be at most one for a convex polygon),
+					 * it is removed.
+					 *
+					 * This routine is general in the sense that the earlier tests
+					 * it are only need for speed.
+					 *
+					 * The following website illustrates geometrical concepts and
+					 * formulas:  http://local.wasp.uwa.edu.au/~pbourke/geometry/
+					 */
+
+					{
+						double[] u_int = new double[4]; // Intersection points along edge v1, v2
+						double[] u_seg = new double[6]; // Sorted subsegment points
+						int segs; // Number of segments
+						int i;
+
+						u_int[0] = GlobalMembersHidden3d.intersect_line_plane(v1, v2, GlobalMembersAnsi2knr.p.plane);
+						u_int[1] = GlobalMembersHidden3d.intersect_line_line(v1, v2, w1, w2);
+						u_int[2] = GlobalMembersHidden3d.intersect_line_line(v1, v2, w2, w3);
+						u_int[3] = GlobalMembersHidden3d.intersect_line_line(v1, v2, w3, w1);
+
+						/* Check if between v1 and v2 */
+						u_seg[0] = 0;
+						segs = 1;
+						for (i = 0; i < 4; i++)
 						{
-							if ((vertex GPHUGE *) vertices.v[vnum1].z > (vertex GPHUGE *) vertices.v[newvert[0]].z)
+							if ((0 < u_int[i]) && (u_int[i] < 1))
 							{
-								v1 = (vertex GPHUGE *) vertices.v + (vnum1);
-								v2 = (vertex GPHUGE *) vertices.v + (newvert[0]);
+								u_seg[segs] = u_int[i];
+								segs++;
 							}
-							else
-							{
-								v1 = (vertex GPHUGE *) vertices.v + (newvert[0]);
-								v2 = (vertex GPHUGE *) vertices.v + (vnum1);
-							}
-							vnum1 = v1 - (vertex GPHUGE *) vertices.v;
-							vnum2 = v2 - (vertex GPHUGE *) vertices.v;
-							zmax = v1.z;
-							zmin = v2.z;
-							if (v1.x > v2.x)
-							{
-								xmin = v2.x;
-								xmax = v1.x;
-							}
-							else
-							{
-								xmin = v1.x;
-								xmax = v2.x;
-							}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-							xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-							;
-							if (v1.y > v2.y)
-							{
-								ymin = v2.y;
-								ymax = v1.y;
-							}
-							else
-							{
-								ymin = v1.y;
-								ymax = v2.y;
-							}
-//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-							yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
-							;
-						} while (0);
-					}
-					break;
-					}
-				}
-				}
-			}
+						}
+						u_seg[segs] = 1;
 
-			/* Nothing is covered */
-			continue;
+						/* Sort the points.  First and last point already in order. */
+						for (i = 1; i < segs; i++)
+						{
+							int j = i + 1;
+							for (; j < segs; j++)
+							{
+								if (u_seg[i] > u_seg[j])
+								{
+									double temp = u_seg[i];
+									u_seg[i] = u_seg[j];
+									u_seg[j] = temp;
+								}
+							}
+						}
 
-			} // end of part 'T4-9'
-			} // for (polygons in list)
+						/* Check if contiguous segments or segment is covered */
+						for (i = 0; i < segs; i++)
+						{
+							int covA = GlobalMembersHidden3d.cover_point_poly(v1, v2, u_seg[i], GlobalMembersAnsi2knr.p);
+							if (covA != 0)
+							{
+								/* First covered point, now look for last covered point */
+								int j;
+								int covB = 0;
+								for (j = i; j < segs; j++)
+								{
+									int cover = GlobalMembersHidden3d.cover_point_poly(v1, v2, u_seg[j + 1], GlobalMembersAnsi2knr.p);
+									if (cover == 0)
+										break;
+									covB = cover;
+								}
+								if (i == j)
+									break; // Only one covered point, no segment covered
+								if (covA == 2 && covB == 2)
+									break; // Points covered, but both are on the plane
+								else
+								{
+									/* This is the hidden segment */
+									if (i == 0)
+									{
+										/* Missing segment is at start of v1, v2 */
+										if (j == segs)
+										{
+											/* Whole edge is hidden */
+											while (vertices.end > enter_vertices)
+												GlobalMembersDynarray.droplast_dynarray(vertices);
+											return 0;
+										}
+										else
+										{
+											/* Shrink the edge and continue */
+											int newvert = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[j]);
+											do
+											{
+												if ((vertex GPHUGE *) vertices.v[newvert].z > (vertex GPHUGE *) vertices.v[vnum2].z)
+												{
+													v1 = (vertex GPHUGE *) vertices.v + (newvert);
+													v2 = (vertex GPHUGE *) vertices.v + (vnum2);
+												}
+												else
+												{
+													v1 = (vertex GPHUGE *) vertices.v + (vnum2);
+													v2 = (vertex GPHUGE *) vertices.v + (newvert);
+												}
+												vnum1 = v1 - (vertex GPHUGE *) vertices.v;
+												vnum2 = v2 - (vertex GPHUGE *) vertices.v;
+												zmax = v1.z;
+												zmin = v2.z;
+												if (v1.x > v2.x)
+												{
+													xmin = v2.x;
+													xmax = v1.x;
+												}
+												else
+												{
+													xmin = v1.x;
+													xmax = v2.x;
+												}
+												//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+												xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
+												;
+												if (v1.y > v2.y)
+												{
+													ymin = v2.y;
+													ymax = v1.y;
+												}
+												else
+												{
+													ymin = v1.y;
+													ymax = v2.y;
+												}
+												//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+												yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
+												;
+											} while (0);
+											break;
+										}
+									}
+									else if (j == segs)
+									{
+										/* Missing segment is at end of v1, v2.  The i = 0
+										 * case already tested, so shrink edge and continue */
+										int newvert = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[i]);
+										do
+										{
+											if ((vertex GPHUGE *) vertices.v[vnum1].z > (vertex GPHUGE *) vertices.v[newvert].z)
+											{
+												v1 = (vertex GPHUGE *) vertices.v + (vnum1);
+												v2 = (vertex GPHUGE *) vertices.v + (newvert);
+											}
+											else
+											{
+												v1 = (vertex GPHUGE *) vertices.v + (newvert);
+												v2 = (vertex GPHUGE *) vertices.v + (vnum1);
+											}
+											vnum1 = v1 - (vertex GPHUGE *) vertices.v;
+											vnum2 = v2 - (vertex GPHUGE *) vertices.v;
+											zmax = v1.z;
+											zmin = v2.z;
+											if (v1.x > v2.x)
+											{
+												xmin = v2.x;
+												xmax = v1.x;
+											}
+											else
+											{
+												xmin = v1.x;
+												xmax = v2.x;
+											}
+											//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+											xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
+											;
+											if (v1.y > v2.y)
+											{
+												ymin = v2.y;
+												ymax = v1.y;
+											}
+											else
+											{
+												ymin = v1.y;
+												ymax = v2.y;
+											}
+											//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+											yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
+											;
+										} while (0);
+										break;
+									}
+									else
+									{
+										/* Handle new edge then shrink edge */
+										int[] newvert = new int[2];
+										newvert[0] = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[i]);
+										newvert[1] = GlobalMembersHidden3d.split_line_at_ratio(vnum1, vnum2, u_seg[j]);
+										/* If the newvert[1] is vnum1 this would be an infinite
+										 * loop and stack overflow if not checked since in_front()
+										 * was just called with vnum1 and vnum2 and got to this
+										 * point.  This is the equivalent of snipping out a tiny
+										 * segment near end of an edge.  Simply ignore.
+										 */
+										if (newvert[1] != vnum1)
+										{
+											GlobalMembersHidden3d.handle_edge_fragment(edgenum, newvert[1], vnum2, polynum);
+											do
+											{
+												if ((vertex GPHUGE *) vertices.v[vnum1].z > (vertex GPHUGE *) vertices.v[newvert[0]].z)
+												{
+													v1 = (vertex GPHUGE *) vertices.v + (vnum1);
+													v2 = (vertex GPHUGE *) vertices.v + (newvert[0]);
+												}
+												else
+												{
+													v1 = (vertex GPHUGE *) vertices.v + (newvert[0]);
+													v2 = (vertex GPHUGE *) vertices.v + (vnum1);
+												}
+												vnum1 = v1 - (vertex GPHUGE *) vertices.v;
+												vnum2 = v2 - (vertex GPHUGE *) vertices.v;
+												zmax = v1.z;
+												zmin = v2.z;
+												if (v1.x > v2.x)
+												{
+													xmin = v2.x;
+													xmax = v1.x;
+												}
+												else
+												{
+													xmin = v1.x;
+													xmax = v2.x;
+												}
+												//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+												xextent = ((~(~0 << (int)(((((xmax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((xmin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
+												;
+												if (v1.y > v2.y)
+												{
+													ymin = v2.y;
+													ymax = v1.y;
+												}
+												else
+												{
+													ymin = v1.y;
+													ymax = v2.y;
+												}
+												//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+												yextent = ((~(~0 << (int)(((((ymax)) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (1)))) & (~0 << (int)((((ymin) / GlobalMembersGraph3d.surface_scale) + 1.0) / 2.0 * CHAR_BIT * sizeof(int) + (0))));
+												;
+											} while (0);
+										}
+										break;
+									}
+								}
+							}
+						}
+
+						/* Nothing is covered */
+						continue;
+
+					} // end of part 'T4-9'
+				} // for (polygons in list)
 
 		/* Came here, so there's something left of this edge, which needs
 		 * to be drawn.  But the vertices are different, now, so copy our
@@ -3454,7 +3454,7 @@ public class GlobalMembersHidden3d
 		GlobalMembersHidden3d.draw_edge((edge) edges.v + edgenum, (vertex GPHUGE *) vertices.v + vnum1, (vertex GPHUGE *) vertices.v + vnum2);
 
 		while (vertices.end > enter_vertices)
-		GlobalMembersDynarray.droplast_dynarray(vertices);
+			GlobalMembersDynarray.droplast_dynarray(vertices);
 
 		return 1;
 	}
@@ -3466,7 +3466,7 @@ public class GlobalMembersHidden3d
 	/* NB: The p_vertex arguments are not allowed to be pointers into the
 	 * hidden3d 'vlist' structure. If they are, they may become invalid
 	 * before they're used, because of the nextfrom_dynarray() call. */
-	public static void draw_line_hidden(vertex GPHUGE v1, vertex GPHUGE v2, lp_style_type lp) // line and point style to draw in -  pointers to the end vertices
+	public static void draw_line_hidden(vertex v1, vertex v2, lp_style_type lp) // line and point style to draw in -  pointers to the end vertices
 	{
 		int vstore1;
 		int vstore2;
@@ -3478,8 +3478,8 @@ public class GlobalMembersHidden3d
 		 * invalid. So just draw the line and be done with it */
 		if (polygons.end == 0)
 		{
-		GlobalMembersUtil3d.draw3d_line_unconditional(v1, v2, lp, lp.l_type);
-		return;
+			GlobalMembersUtil3d.draw3d_line_unconditional(v1, v2, lp, lp.l_type);
+			return;
 		}
 
 		/* Copy two vertices into hidden3d arrays: */
@@ -3488,18 +3488,18 @@ public class GlobalMembersHidden3d
 		(vertex GPHUGE *) vertices.v[vstore1] = v1;
 		if (v2 != null)
 		{
-		(vertex GPHUGE *) vertices.v[vstore1].lp_style = DefineConstants.NULL;
-		GlobalMembersDynarray.nextfrom_dynarray(vertices);
-		vstore2 = vertices.end - 1;
-		(vertex GPHUGE *) vertices.v[vstore2] = v2;
-		(vertex GPHUGE *) vertices.v[vstore2].lp_style = DefineConstants.NULL;
+			(vertex GPHUGE *) vertices.v[vstore1].lp_style = DefineConstants.NULL;
+			GlobalMembersDynarray.nextfrom_dynarray(vertices);
+			vstore2 = vertices.end - 1;
+			(vertex GPHUGE *) vertices.v[vstore2] = v2;
+			(vertex GPHUGE *) vertices.v[vstore2].lp_style = DefineConstants.NULL;
 		}
 		else
 		{
-		/* v2 == NULL --> this is a point symbol to be drawn. Make two
-		 * vertex pointers the same, and set up the 'style' field */
-		vstore2 = vstore1;
-		(vertex GPHUGE *) vertices.v[vstore2].lp_style = lp;
+			/* v2 == NULL --> this is a point symbol to be drawn. Make two
+			 * vertex pointers the same, and set up the 'style' field */
+			vstore2 = vstore1;
+			(vertex GPHUGE *) vertices.v[vstore2].lp_style = lp;
 		}
 
 		/* store the edge into the hidden3d datastructures */
@@ -3513,6 +3513,6 @@ public class GlobalMembersHidden3d
 		GlobalMembersDynarray.droplast_dynarray(edges);
 		GlobalMembersDynarray.droplast_dynarray(vertices);
 		if (v2 != null)
-		GlobalMembersDynarray.droplast_dynarray(vertices);
+			GlobalMembersDynarray.droplast_dynarray(vertices);
 	}
 }
