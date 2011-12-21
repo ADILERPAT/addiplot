@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import com.addiPlot.gnuplot.tangible.RefObject;
+
 public class GlobalMembersStrftime
 {
 	///#define __STDC__ 1
@@ -168,10 +170,10 @@ public class GlobalMembersStrftime
 	///#define XAPPLRESDIR "/etc/X11/app-defaults/"
 
 	///#ifndef lint
-	public static String RCSid()
-	{
-		return GlobalMembersAlloc.RCSid("$Id: strftime.c,v 1.7 2004/07/01 17:10:08 broeker Exp $");
-	}
+	//public static String RCSid()
+	//{
+	//	return GlobalMembersAlloc.RCSid("$Id: strftime.c,v 1.7 2004/07/01 17:10:08 broeker Exp $");
+	//}
 	///#endif
 
 	/* GNUPLOT - strftime.c */
@@ -951,7 +953,7 @@ public class GlobalMembersStrftime
 	//
 	///#endif // TEST_STRFTIME 
 
-	public static void fill(String from, tangible.RefObject<String[]> pto, int pmaxsize)
+	public static void fill(String from, RefObject<String[]> pto, int pmaxsize)
 	{
 		GlobalMembersStdfn.safe_strncpy(pto.argvalue, from, pmaxsize);
 		if (pmaxsize < from.length())
