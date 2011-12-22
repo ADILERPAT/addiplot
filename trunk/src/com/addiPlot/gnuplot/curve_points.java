@@ -1,5 +1,9 @@
 package com.addiPlot.gnuplot;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+
 /* GNUPLOT - graphics.c */
 
 /*[
@@ -963,7 +967,7 @@ package com.addiPlot.gnuplot;
 
 public class curve_points
 {
-	public curve_points next; // pointer to next plot in linked list
+	//public curve_points next; // pointer to next plot in linked list
 	public int token; // last token used, for second parsing pass
 	public PLOT_TYPE plot_type; // DATA2D? DATA3D? FUNC2D FUNC3D? NODATA?
 	public PLOT_STYLE plot_style; // style set by "with" or by default
@@ -975,7 +979,7 @@ public class curve_points
 	public lp_style_type lp_properties = new lp_style_type();
 	public arrow_style_type arrow_properties = new arrow_style_type();
 	public fill_style_type fill_properties = new fill_style_type();
-	public text_label labels; // Only used if plot_style == LABELPOINTS
+	LinkedList<text_label>labels; // Only used if plot_style == LABELPOINTS
 	public t_image image_properties = new t_image(); // only used if plot_style is IMAGE or RGB_IMAGE
 
 	/* 2D and 3D plot structure fields overlay only to this point */
@@ -989,6 +993,6 @@ public class curve_points
 	public int x_axis; // FIRST_X_AXIS or SECOND_X_AXIS
 	public int y_axis; // FIRST_Y_AXIS or SECOND_Y_AXIS
 	public int z_axis; // same as either x_axis or y_axis, for 5-column plot types
-	public coordinate points;
+	ArrayList<coordinate>points;
 }
 ///#endif

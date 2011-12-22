@@ -120,6 +120,11 @@ public enum e_uses_axis
 	{
 		return intValue;
 	}
+	
+	public void setValue(int value)
+	{
+		intValue = value;
+	}
 
 	public static e_uses_axis forValue(int value)
 	{

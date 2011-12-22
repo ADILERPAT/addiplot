@@ -1,6 +1,6 @@
 package com.addiPlot.gnuplot;
 
-public class GlobalMembersAlloc
+public class GlobalMembersAlloc1
 {
 	/*
 	 * $Id: alloc.h,v 1.9 2004/07/01 17:10:03 broeker Exp $

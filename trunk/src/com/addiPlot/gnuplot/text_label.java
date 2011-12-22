@@ -3,7 +3,7 @@ package com.addiPlot.gnuplot;
 /* Linked list of structures storing 'set label' information */
 public class text_label
 {
-	public text_label next; // pointer to next label in linked list
+	//public text_label next; // pointer to next label in linked list
 	public int tag; // identifies the label
 	public position place = new position();
 	public JUSTIFY pos;
