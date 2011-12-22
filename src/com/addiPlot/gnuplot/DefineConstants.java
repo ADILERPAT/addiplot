@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import java.io.File;
+
 ///#ifdef FARALLOC
 //void
 //gpfree(generic *p)
@@ -589,4 +591,5 @@ final class DefineConstants
 	public static final String FAQ_LOCATION = "http://www.gnuplot.info/faq/";
 	public static final String SUPPORT = "http://sf.net/projects/gnuplot/support";
 	public static final double DBL_MAX = Double.MAX_VALUE;
+	public static final File stderr = new File("stderr");
 }

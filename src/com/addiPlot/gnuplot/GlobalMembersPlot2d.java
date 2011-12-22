@@ -1,5 +1,8 @@
 package com.addiPlot.gnuplot;
 
+import java.util.LinkedList;
+
+import com.addiPlot.gnuplot.tangible.PrintfFunctions;
 import com.addiPlot.gnuplot.tangible.StringFunctions;
 
 public class GlobalMembersPlot2d
@@ -925,12 +928,12 @@ public class GlobalMembersPlot2d
 	 * forced "set autoscale" since the previous plot or refresh, we need to reset the
 	 * axis limits and try to approximate the full auto-scaling behaviour.
 	 */
-	public static void refresh_bounds(curve_points first_plot, int nplots)
+	public static void refresh_bounds(LinkedList<curve_points> first_plot, int nplots)
 	{
-		curve_points this_plot = first_plot;
+		curve_points this_plot = first_plot.getFirst();
 		int iplot; // plot index
 
-		for (iplot = 0; iplot < nplots; iplot++, this_plot = this_plot.next)
+		for (iplot = 0; iplot < nplots; iplot++, this_plot = first_plot.get(iplot))
 		{
 			int i; // point index
 			axis x_axis = GlobalMembersAxis.axis_array[this_plot.x_axis];
@@ -948,7 +951,7 @@ public class GlobalMembersPlot2d
 
 			for (i = 0; i < this_plot.p_count; i++)
 			{
-				coordinate point = this_plot.points[i];
+				coordinate point = this_plot.points.get(i);
 
 				if (point.type == coord_type.UNDEFINED)
 					continue;
@@ -997,27 +1000,9 @@ public class GlobalMembersPlot2d
 	 * iteratively */
 
 	/* internal and external variables */
-	public static void cp_free(curve_points cp)
+	public static void cp_free(LinkedList<curve_points> cp)
 	{
-		while (cp != null)
-		{
-			curve_points next = cp.next;
-
-			if (cp.title != null)
-				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(cp.title);
-			if (cp.points != null)
-				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(cp.points);
-			if (cp.labels != null)
-			{
-				GlobalMembersGadgets.free_labels(cp.labels);
-				cp.labels = (GlobalMembersMouse.struct text_label *)DefineConstants.NULL;
-			}
-			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-			free(cp);
-			cp = next;
-		}
+		cp.clear();
 	}
 
 	/*
@@ -1041,23 +1026,23 @@ public class GlobalMembersPlot2d
 
 		if (num > 0)
 		{
-			if (cp.points == null)
-			{
-				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				cp.points = GlobalMembersAlloc.gp_alloc(num * sizeof(cp.points[0]), "curve points");
-			}
-			else
-			{
-				//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-				cp.points = GlobalMembersAlloc.gp_realloc(cp.points, num * sizeof(cp.points[0]), "expanding curve points");
-			}
+			//if (cp.points == null)
+			//{
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//cp.points = GlobalMembersAlloc.gp_alloc(num * sizeof(cp.points[0]), "curve points");
+			//}
+			//else
+			//{
+			//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
+			//cp.points = GlobalMembersAlloc.gp_realloc(cp.points, num * sizeof(cp.points[0]), "expanding curve points");
+			//}
 			cp.p_max = num;
 		}
 		else
 		{
-			if (cp.points != null)
-				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(cp.points);
+			//if (cp.points != null)
+			//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
+			//free(cp.points);
 			cp.points = null;
 			cp.p_max = 0;
 		}
@@ -1527,26 +1512,14 @@ public class GlobalMembersPlot2d
 	//C++ TO JAVA CONVERTER NOTE: The following #define macro was replaced in-line:
 	///#define DEFAULT_POLYGON_STYLE { NULL, -1, 0, OBJ_POLYGON, {FS_SOLID, 100, 0, BLACK_COLORSPEC}, {1, LT_BLACK, 0, 0, 1.0, 0.0, FALSE, DEFAULT_COLORSPEC}, {.polygon = {0, NULL} } }
 	///#endif
-	public static void store_label(text_label listhead, coordinate cp, int i, String String, double colorval)
+	public static void store_label(LinkedList<text_label> listhead, coordinate cp, int i, String string, double colorval)
 	{
-		text_label tl = listhead;
+		text_label tl = new text_label();
 		int textlen;
 
-		/* Walk through list to get to the end. Yes I know this is inefficient */
-		/* but is anyone really going to plot so many labels that it matters?  */
-		if (tl == null)
+		if (listhead == null)
 			GlobalMembersBf_test.int_error(DefineConstants.NO_CARET, "text_label list was not initialized");
-		while (tl.next != null)
-			tl = tl.next;
 
-		/* Allocate a new label structure and fill it in */
-		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		tl.next = GlobalMembersAlloc.gp_alloc(sizeof(GlobalMembersMouse.struct text_label), "labelpoint label");
-		//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'memcpy' has no equivalent in Java:
-		//C++ TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'sizeof':
-		memcpy(tl.next,tl,sizeof(text_label));
-		tl = tl.next;
-		tl.next = (text_label)DefineConstants.NULL;
 		tl.tag = i;
 		tl.place.x = cp.x;
 		tl.place.y = cp.y;
@@ -1557,11 +1530,11 @@ public class GlobalMembersPlot2d
 			tl.textcolor.value = colorval;
 		/* Check for optional (textcolor rgb variable) */
 		else if (tl.textcolor.type == DefineConstants.TC_RGB && tl.textcolor.value < 0)
-			tl.textcolor.lt = colorval;
+			tl.textcolor.lt = (int) colorval;
 
 		/* Check for null string (no label) */
-		if (String == null)
-			String = "";
+		if (string == null)
+			string = "";
 
 		textlen = 0;
 		/* FIXME EAM - this code is ugly but seems to work */
@@ -1569,39 +1542,40 @@ public class GlobalMembersPlot2d
 		if (GlobalMembersDatafile.df_separator != 0)
 		{
 			boolean in_quote = false;
-			while (String.charAt(textlen))
+			while (textlen < string.length() - 1)
 			{
-				if (String.charAt(textlen) == '"')
+				if (string.charAt(textlen) == '"')
 					in_quote = !in_quote;
-				else if (String.charAt(textlen) == GlobalMembersDatafile.df_separator && !in_quote)
+				else if (string.charAt(textlen) == GlobalMembersDatafile.df_separator && !in_quote)
 					break;
 				textlen++;
 			}
-			while (textlen > 0 && Character.isWhitespace(String.charAt(textlen - 1)))
+			while (textlen > 0 && Character.isWhitespace(string.charAt(textlen - 1)))
 				textlen--;
 		}
 		else
 		{
 			/* This is the normal case (no special separator character) */
-			if (String.equals('"'))
+			if (string.equals('"'))
 			{
-				for (textlen = 1; String.charAt(textlen) && String.charAt(textlen) != '"'; textlen++)
+				for (textlen = 1; (textlen < string.length()-1) && string.charAt(textlen) != '"'; textlen++)
 					;
 			}
-			while (String.charAt(textlen) && !Character.isWhitespace(String.charAt(textlen)))
+			while ((textlen < string.length()-1) && !Character.isWhitespace(string.charAt(textlen)))
 				textlen++;
 		}
 
 		/* Strip double quote from both ends */
-		if (String.charAt(0) == '"' && String.charAt(textlen - 1) == '"')
-			textlen -= 2, String++;
+		int startChar = 0;
+		if (string.charAt(0) == '"' && string.charAt(textlen - 1) == '"') {
+			textlen -= 2;
+			startChar = 1;
+		}
 
-		tl.text = GlobalMembersAlloc.gp_alloc(textlen + 1, "labelpoint text");
-		tl.text = String.substring(0, textlen);
-		tl.text = tangible.StringFunctions.changeCharacter(tl.text, textlen, '\0');
+		tl.text = string.substring(startChar, textlen-1);
 		GlobalMembersUtil.parse_esc(tl.text);
 
-		GlobalMembersFit.a((stderr,"LABELPOINT %f %f \"%s\" \n", tl.place.x, tl.place.y, tl.text));
+		PrintfFunctions.fprintf(DefineConstants.stderr,"LABELPOINT %f %f \"%s\" \n", tl.place.x, tl.place.y, tl.text);
 	}
 
 	/* function implementations */
@@ -2036,7 +2010,7 @@ public class GlobalMembersPlot2d
 
 	/* static prototypes */
 
-	public static curve_points cp_alloc(int num)
+	public static LinkedList<curve_points> cp_alloc(int num)
 	{
 		curve_points cp;
 		lp_style_type default_lp_properties = new lp_style_type(0, -2, 0, 0, 1.0, DefineConstants.PTSZ_DEFAULT, false, {DefineConstants.TC_DEFAULT, 0, 0.0});
@@ -2209,7 +2183,7 @@ public class GlobalMembersPlot2d
 			/* 4th column allows rgb variable */
 			min_cols = 3;
 			max_cols = 4;
-			GlobalMembersDatafile.expect_string(3);
+			GlobalMembersDatafile.expect_string((byte) 3);
 			break;
 
 		case IMAGE:
@@ -2265,10 +2239,13 @@ public class GlobalMembersPlot2d
 
 		/* If the user has set an explicit locale for numeric input, apply it */
 		/* here so that it affects data fields read from the input file.      */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (0)();
+		do {if (GlobalMembersUtil.numeric_locale != null && (StringFunctions.strcmp(GlobalMembersUtil.numeric_locale,"C") != 0)) setlocale(AnonymousEnum11.__LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (false);
 
 		while ((j = GlobalMembersDatafile.df_readline(v, max_cols)) != DefineConstants.DF_EOF)
 		{
+			boolean doImage = false;
+			boolean doHErrBar = false;
+
 			/* j <= max_cols */
 
 			if (i >= current_plot.p_max)
@@ -2317,7 +2294,7 @@ public class GlobalMembersPlot2d
 				/* Plot type specific handling of missing points goes here. */
 				if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
 				{
-					current_plot.points[i].type = coord_type.UNDEFINED;
+					current_plot.points.get(i).type = coord_type.UNDEFINED;
 					i++;
 					continue;
 				}
@@ -2325,12 +2302,12 @@ public class GlobalMembersPlot2d
 				/* Jun 2006 - Return to behavior of 3.7 and current docs:
 				 *            do not interrupt plotted line because of missing data
 				 */
-				GlobalMembersFit.a((stderr,"Missing datum %d\n", i));
+				PrintfFunctions.fprintf(DefineConstants.stderr,"Missing datum %d\n", i);
 				continue;
 
 			case DefineConstants.DF_UNDEFINED:
 				/* NaN or bad result from extended using expression */
-				current_plot.points[i].type = coord_type.UNDEFINED;
+				current_plot.points.get(i).type = coord_type.UNDEFINED;
 				i++;
 				continue;
 
@@ -2348,7 +2325,7 @@ public class GlobalMembersPlot2d
 				/* break in data, make next point undefined */
 				/* FIXME: We really should distinguish between a blank	*/
 				/*        line and an undefined value on a non-blank line.	*/
-				current_plot.points[i].type = coord_type.UNDEFINED;
+				current_plot.points.get(i).type = coord_type.UNDEFINED;
 				i++;
 				continue;
 
@@ -2362,7 +2339,7 @@ public class GlobalMembersPlot2d
 				GlobalMembersDatafile.df_set_key_title(current_plot);
 				continue;
 			case DefineConstants.DF_KEY_TITLE_MISSING:
-				fprintf(stderr,"get_data: key title not found in requested column\n");
+				PrintfFunctions.fprintf(DefineConstants.stderr,"get_data: key title not found in requested column\n");
 				continue;
 
 			case 0: // not blank line, but df_readline couldn't parse it
@@ -2380,77 +2357,8 @@ public class GlobalMembersPlot2d
 			}
 
 			case 2:
-				//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-				H_ERR_BARS:
-					if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
-					{
-						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
-						{
-							/* The code is a tangle, but we can get here with j = 1, 2, or 3 */
-							if (j == 1)
-								GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Not enough columns in using specification");
-							else if (j == 2)
-							{
-								v[3] = v[0] + v[1];
-								v[2] = v[0] - v[1];
-							}
-							else
-							{
-								v[3] = v[2];
-								v[2] = v[1];
-							}
-							v[1] = v[0];
-							v[0] = GlobalMembersDatafile.df_datum;
-						}
-						else if (j >= 2)
-							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Too many columns in using specification");
-						else
-							v[2] = v[3] = v[1];
-
-						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_TOWERS.getValue())
-						{
-							histogram_rightmost = current_plot.histogram_sequence + current_plot.histogram.start;
-							current_plot.histogram.end = histogram_rightmost;
-						}
-						else if (v[0] + current_plot.histogram.start > histogram_rightmost)
-						{
-							histogram_rightmost = v[0] + current_plot.histogram.start;
-							current_plot.histogram.end = histogram_rightmost;
-						}
-						/* Histogram boxwidths are always absolute */
-						if (boxwidth > 0)
-							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[2], v[3], 0.0);
-						else
-							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - 0.5, v[0] + 0.5, v[2], v[3], 0.0);
-
-						/* x, y */
-						/* ylow and yhigh are same as y */
-
-					}
-					else if ((current_plot.plot_style == PLOT_STYLE.BOXES) && boxwidth > 0 && boxwidth_is_absolute)
-					{
-						/* calculate width now */
-						if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
-						{
-							double base = GlobalMembersAxis.axis_array[current_plot.x_axis].base;
-							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] * Math.pow(base, -boxwidth / 2.), v[0] * Math.pow(base, boxwidth / 2.), v[1], variable_color_value, 0.0);
-						}
-						else
-							GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[1], variable_color_value, 0.0);
-
-					}
-					else
-					{
-						if (current_plot.plot_style == PLOT_STYLE.CANDLESTICKS || current_plot.plot_style == PLOT_STYLE.FINANCEBARS)
-						{
-							GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 1 or 2 cols. Setting to points");
-							current_plot.plot_style = PLOT_STYLE.POINTSTYLE;
-						}
-						/* xlow and xhigh are same as x */
-						/* auto width if boxes, else ignored */
-						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], variable_color_value, -1.0);
-					}
-			break;
+				doHErrBar = true;
+				break;
 
 
 			case 3:
@@ -2462,11 +2370,12 @@ public class GlobalMembersPlot2d
 					{
 
 					case HISTOGRAMS:
-						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
-							//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-							goto H_ERR_BARS;
-						else
+						if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue()) {
+							doHErrBar = true;
+							break;
+						} else {
 							/* fall through */
+						}
 					default:
 						GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 3 cols. Setting to yerrorbars");
 						current_plot.plot_style = PLOT_STYLE.YERRORBARS;
@@ -2498,18 +2407,18 @@ public class GlobalMembersPlot2d
 						/* Load the coords just as we would have for a point plot */
 						GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], -1.0);
 						/* Allocate and fill in a text_label structure to match it */
-						GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points[i]), i, GlobalMembersDatafile.df_tokens[2], 0.0);
+						GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points.get(i)), i, GlobalMembersDatafile.df_tokens[2], 0.0);
 						i++;
 						break;
 
 					case IMAGE: // x_center y_center color_value
 						GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
-						cp = (current_plot.points[i]);
+						cp = (current_plot.points.get(i));
 						{
 							coord_type c_type_tmp = cp.type;
 							do
 							{
-								if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+								if (AXIS_INDEX.COLOR_AXIS.getValue() == DefineConstants.NO_AXIS)
 									break;
 								if (!(v[2] > -DefineConstants.VERYLARGE && v[2] < DefineConstants.VERYLARGE))
 								{
@@ -2529,7 +2438,6 @@ public class GlobalMembersPlot2d
 									{
 										cp.ylow = -DefineConstants.VERYLARGE;
 										c_type_tmp = coord_type.OUTRANGE;
-										()0;
 										break;
 									}
 									else
@@ -2549,12 +2457,11 @@ public class GlobalMembersPlot2d
 									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = v[2];
 								if (v[2] < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
 								{
-									if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+									if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = v[2];
 									else
 									{
 										c_type_tmp = coord_type.OUTRANGE;
-										()0;
 										break;
 									}
 								}
@@ -2562,15 +2469,14 @@ public class GlobalMembersPlot2d
 									GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = v[2];
 								if (v[2] > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
 								{
-									if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+									if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 										GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = v[2];
 									else
 									{
 										c_type_tmp = coord_type.OUTRANGE;
-										()0;
 									}
 								}
-							} while (0);
+							} while (false);
 						};
 						i++;
 						break;
@@ -2654,7 +2560,7 @@ public class GlobalMembersPlot2d
 					/* Load the coords just as we would have for a point plot */
 					GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], -1.0);
 					/* Allocate and fill in a text_label structure to match it */
-					GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points[i]), i, GlobalMembersDatafile.df_tokens[2], v[3]);
+					GlobalMembersPlot2d.store_label(current_plot.labels, (current_plot.points.get(i)), i, GlobalMembersDatafile.df_tokens[2], v[3]);
 					i++;
 					break;
 
@@ -2682,9 +2588,8 @@ public class GlobalMembersPlot2d
 					break;
 
 				case RGBIMAGE: // x_center y_center r_value g_value b_value (rgb)
-					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-					goto images;
-
+					doImage = true;
+					break;
 				}
 				break;
 			}
@@ -2705,24 +2610,97 @@ public class GlobalMembersPlot2d
 				case BOXXYERROR:
 					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[2], v[3], v[4], v[5], 0.0);
 					break;
-					//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
-					images:
 				case RGBA_IMAGE: // x_cent y_cent red green blue alpha
 				case RGBIMAGE: // x_cent y_cent red green blue
-					GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
-					/* We will autoscale the RGB components to  a total range [0:255]
-					 * so we don't need to do any fancy scaling here.
-					 */
-					cp = (current_plot.points[i]);
-					cp.yhigh = v[2];
-					cp.xlow = v[3];
-					cp.xhigh = v[4];
-					cp.ylow = v[5]; // Alpha channel
-					i++;
+					doImage = true;
 					break;
 				}
 
 			} //switch
+
+			if (doImage) {
+				GlobalMembersPlot2d.store2d_point(current_plot, i, v[0], v[1], v[0], v[0], v[1], v[1], v[2]);
+				/* We will autoscale the RGB components to  a total range [0:255]
+				 * so we don't need to do any fancy scaling here.
+				 */
+				cp = (current_plot.points.get(i));
+				cp.yhigh = v[2];
+				cp.xlow = v[3];
+				cp.xhigh = v[4];
+				cp.ylow = v[5]; // Alpha channel
+				i++;
+			}
+
+			if (doHErrBar) {
+				if (current_plot.plot_style == PLOT_STYLE.HISTOGRAMS)
+				{
+					if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_ERRORBARS.getValue())
+					{
+						/* The code is a tangle, but we can get here with j = 1, 2, or 3 */
+						if (j == 1)
+							GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Not enough columns in using specification");
+						else if (j == 2)
+						{
+							v[3] = v[0] + v[1];
+							v[2] = v[0] - v[1];
+						}
+						else
+						{
+							v[3] = v[2];
+							v[2] = v[1];
+						}
+						v[1] = v[0];
+						v[0] = GlobalMembersDatafile.df_datum;
+					}
+					else if (j >= 2)
+						GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "Too many columns in using specification");
+					else
+						v[2] = v[3] = v[1];
+
+					if (GlobalMembersGadgets.histogram_opts.type == histogram_type.HT_STACKED_IN_TOWERS.getValue())
+					{
+						histogram_rightmost = current_plot.histogram_sequence + current_plot.histogram.start;
+						current_plot.histogram.end = histogram_rightmost;
+					}
+					else if (v[0] + current_plot.histogram.start > histogram_rightmost)
+					{
+						histogram_rightmost = v[0] + current_plot.histogram.start;
+						current_plot.histogram.end = histogram_rightmost;
+					}
+					/* Histogram boxwidths are always absolute */
+					if (boxwidth > 0)
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[2], v[3], 0.0);
+					else
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - 0.5, v[0] + 0.5, v[2], v[3], 0.0);
+
+					/* x, y */
+					/* ylow and yhigh are same as y */
+
+				}
+				else if ((current_plot.plot_style == PLOT_STYLE.BOXES) && boxwidth > 0 && boxwidth_is_absolute)
+				{
+					/* calculate width now */
+					if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
+					{
+						double base = GlobalMembersAxis.axis_array[current_plot.x_axis].base;
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] * Math.pow(base, -boxwidth / 2.), v[0] * Math.pow(base, boxwidth / 2.), v[1], variable_color_value, 0.0);
+					}
+					else
+						GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0] - boxwidth / 2, v[0] + boxwidth / 2, v[1], variable_color_value, 0.0);
+
+				}
+				else
+				{
+					if (current_plot.plot_style == PLOT_STYLE.CANDLESTICKS || current_plot.plot_style == PLOT_STYLE.FINANCEBARS)
+					{
+						GlobalMembersUtil.int_warn(storetoken, "This plot style does not work with 1 or 2 cols. Setting to points");
+						current_plot.plot_style = PLOT_STYLE.POINTSTYLE;
+					}
+					/* xlow and xhigh are same as x */
+					/* auto width if boxes, else ignored */
+					GlobalMembersPlot2d.store2d_point(current_plot, i++, v[0], v[1], v[0], v[0], v[1], variable_color_value, -1.0);
+				}
+			}
 
 		} //while
 
@@ -2732,7 +2710,7 @@ public class GlobalMembersPlot2d
 		GlobalMembersDatafile.df_close();
 
 		/* We are finished reading user input; return to C locale for internal use */
-		() do {if (GlobalMembersUtil.numeric_locale != null && strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(LC_NUMERIC,"C");} while (0)();
+		do {if (GlobalMembersUtil.numeric_locale != null && StringFunctions.strcmp(GlobalMembersUtil.numeric_locale,"C")) setlocale(__LC_NUMERIC,"C");} while (false);
 
 		return i; // i==0 indicates an 'empty' file
 	}
@@ -2740,7 +2718,7 @@ public class GlobalMembersPlot2d
 	/* called by get_data for each point */
 	public static void store2d_point(curve_points current_plot, int i, double x, double y, double xlow, double xhigh, double ylow, double yhigh, double width)
 	{
-		coordinate cp = (current_plot.points[i]);
+		coordinate cp = (current_plot.points.get(i));
 		coord_type dummy_type = coord_type.INRANGE; // sometimes we dont care about outranging
 
 		/* jev -- pass data values thru user-defined function */
@@ -2749,25 +2727,19 @@ public class GlobalMembersPlot2d
 		{
 			value val = new value();
 
-			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-			//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], y, 0.0);
-			() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), y, 0.0);
+			GlobalMembersEval.Gcomplex(GlobalMembersDatafile.ydata_func.dummy_values[0], y, 0.0);
 			GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
 			GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
 			y = GlobalMembersEval.undefined ? 0.0 : GlobalMembersEval.real(val);
 
 			/* EAM FIXME - filtering ylow and yhigh is nonsense for many plot styles */
 
-			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-			//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], ylow, 0.0);
-			() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), ylow, 0.0);
+			GlobalMembersEval.Gcomplex(GlobalMembersDatafile.ydata_func.dummy_values[0], ylow, 0.0);
 			GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
 			GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
 			ylow = GlobalMembersEval.undefined ? 0 : GlobalMembersEval.real(val);
 
-			//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-			//ORIGINAL LINE: () Gcomplex(&ydata_func.dummy_values[0], yhigh, 0.0);
-			() GlobalMembersEval.Gcomplex(new value(GlobalMembersDatafile.ydata_func.dummy_values[0]), yhigh, 0.0);
+			GlobalMembersEval.Gcomplex(GlobalMembersDatafile.ydata_func.dummy_values[0], yhigh, 0.0);
 			GlobalMembersDatafile.ydata_func.dummy_values[2] = GlobalMembersDatafile.ydata_func.dummy_values[0];
 			GlobalMembersEval.evaluate_at(GlobalMembersDatafile.ydata_func.at, val);
 			yhigh = GlobalMembersEval.undefined ? 0 : GlobalMembersEval.real(val);
@@ -2778,11 +2750,11 @@ public class GlobalMembersPlot2d
 		{
 			double newx;
 			double newy;
-			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && y > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+			if (((GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) == 0) && y > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
 			{
 				cp.type = coord_type.OUTRANGE;
 			}
-			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+			if ((GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) == 0)
 			{
 				/* we store internally as if plotting r(t)-rmin */
 				y -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
@@ -2792,11 +2764,11 @@ public class GlobalMembersPlot2d
 			y = newy;
 			x = newx;
 
-			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && yhigh > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+			if (((GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) == 0) && yhigh > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
 			{
 				cp.type = coord_type.OUTRANGE;
 			}
-			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+			if ((GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) == 0)
 			{
 				/* we store internally as if plotting r(t)-rmin */
 				yhigh -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
@@ -2806,11 +2778,11 @@ public class GlobalMembersPlot2d
 			yhigh = newy;
 			xhigh = newx;
 
-			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX) && ylow > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
+			if (((GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale.getValue() & e_autoscale.AUTOSCALE_MAX.getValue()) == 0) && ylow > GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].max)
 			{
 				cp.type = coord_type.OUTRANGE;
 			}
-			if (!(GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN))
+			if ((GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].autoscale.getValue() & e_autoscale.AUTOSCALE_MIN.getValue()) == 0)
 			{
 				/* we store internally as if plotting r(t)-rmin */
 				ylow -= GlobalMembersAxis.axis_array[AXIS_INDEX.R_AXIS.getValue()].min;
@@ -2834,7 +2806,6 @@ public class GlobalMembersPlot2d
 			{
 				cp.type = coord_type.UNDEFINED;
 				return;
-				break;
 			}
 			if (GlobalMembersAxis.axis_array[current_plot.x_axis].log)
 			{
@@ -2842,13 +2813,11 @@ public class GlobalMembersPlot2d
 				{
 					cp.type = coord_type.UNDEFINED;
 					return;
-					break;
 				}
 				else if (x == 0.0)
 				{
 					cp.x = -DefineConstants.VERYLARGE;
 					cp.type = coord_type.OUTRANGE;
-					()0;
 					break;
 				}
 				else
@@ -2868,12 +2837,11 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = x;
 			if (x < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
 			{
-				if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 					GlobalMembersAxis.axis_array[current_plot.x_axis].min = x;
 				else
 				{
 					cp.type = coord_type.OUTRANGE;
-					()0;
 					break;
 				}
 			}
@@ -2881,15 +2849,14 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = x;
 			if (x > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
 			{
-				if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+				if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 					GlobalMembersAxis.axis_array[current_plot.x_axis].max = x;
 				else
 				{
 					cp.type = coord_type.OUTRANGE;
-					()0;
 				}
 			}
-		} while (0);
+		} while (false);
 		do
 		{
 			if (current_plot.y_axis == DefineConstants.NO_AXIS)
@@ -2898,7 +2865,6 @@ public class GlobalMembersPlot2d
 			{
 				cp.type = coord_type.UNDEFINED;
 				return;
-				break;
 			}
 			if (GlobalMembersAxis.axis_array[current_plot.y_axis].log)
 			{
@@ -2906,13 +2872,11 @@ public class GlobalMembersPlot2d
 				{
 					cp.type = coord_type.UNDEFINED;
 					return;
-					break;
 				}
 				else if (y == 0.0)
 				{
 					cp.y = -DefineConstants.VERYLARGE;
 					cp.type = coord_type.OUTRANGE;
-					()0;
 					break;
 				}
 				else
@@ -2932,12 +2896,11 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = y;
 			if (y < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
 			{
-				if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+				if ((GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 					GlobalMembersAxis.axis_array[current_plot.y_axis].min = y;
 				else
 				{
 					cp.type = coord_type.OUTRANGE;
-					()0;
 					break;
 				}
 			}
@@ -2945,15 +2908,14 @@ public class GlobalMembersPlot2d
 				GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = y;
 			if (y > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
 			{
-				if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+				if ((GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 					GlobalMembersAxis.axis_array[current_plot.y_axis].max = y;
 				else
 				{
 					cp.type = coord_type.OUTRANGE;
-					()0;
 				}
 			}
-		} while (0);
+		} while (false);
 
 		switch (current_plot.plot_style)
 		{
@@ -2997,7 +2959,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.xlow = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3017,12 +2978,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xlow;
 				if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xlow;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3030,15 +2990,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xlow;
 				if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xlow;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 			do
 			{
 				if (current_plot.x_axis == DefineConstants.NO_AXIS)
@@ -3061,7 +3020,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.xhigh = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3081,12 +3039,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xhigh;
 				if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xhigh;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3094,15 +3051,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xhigh;
 				if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xhigh;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 			break;
 		default: // auto-scale to xlow xhigh ylow yhigh
 			do
@@ -3127,7 +3083,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.xlow = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3147,12 +3102,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xlow;
 				if (xlow < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xlow;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3160,15 +3114,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xlow;
 				if (xlow > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xlow;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 			do
 			{
 				if (current_plot.x_axis == DefineConstants.NO_AXIS)
@@ -3191,7 +3144,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.xhigh = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3211,12 +3163,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_min = xhigh;
 				if (xhigh < GlobalMembersAxis.axis_array[current_plot.x_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].min = xhigh;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3224,15 +3175,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.x_axis].data_max = xhigh;
 				if (xhigh > GlobalMembersAxis.axis_array[current_plot.x_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.x_axis].max = xhigh;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 			do
 			{
 				if (current_plot.y_axis == DefineConstants.NO_AXIS)
@@ -3255,7 +3205,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.ylow = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3275,12 +3224,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = ylow;
 				if (ylow < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.y_axis].min = ylow;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3288,15 +3236,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = ylow;
 				if (ylow > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.y_axis].max = ylow;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 			do
 			{
 				if (current_plot.y_axis == DefineConstants.NO_AXIS)
@@ -3319,7 +3266,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.yhigh = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3339,12 +3285,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.y_axis].data_min = yhigh;
 				if (yhigh < GlobalMembersAxis.axis_array[current_plot.y_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.y_axis].min = yhigh;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3352,15 +3297,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.y_axis].data_max = yhigh;
 				if (yhigh > GlobalMembersAxis.axis_array[current_plot.y_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.y_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.y_axis].max = yhigh;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 			break;
 		}
 
@@ -3389,7 +3333,6 @@ public class GlobalMembersPlot2d
 					{
 						cp.z = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3409,12 +3352,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.z_axis].data_min = width;
 				if (width < GlobalMembersAxis.axis_array[current_plot.z_axis].min)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.z_axis].min = width;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3422,15 +3364,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[current_plot.z_axis].data_max = width;
 				if (width > GlobalMembersAxis.axis_array[current_plot.z_axis].max)
 				{
-					if (GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[current_plot.z_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[current_plot.z_axis].max = width;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 		else
 			cp.z = width;
 
@@ -3438,12 +3379,11 @@ public class GlobalMembersPlot2d
 		if (current_plot.lp_properties.pm3d_color.type == DefineConstants.TC_Z)
 			do
 			{
-				if (AXIS_INDEX.COLOR_AXIS == DefineConstants.NO_AXIS)
+				if (AXIS_INDEX.COLOR_AXIS.getValue() == DefineConstants.NO_AXIS)
 					break;
 				if (!(cp.z > -DefineConstants.VERYLARGE && cp.z < DefineConstants.VERYLARGE))
 				{
 					dummy_type = coord_type.UNDEFINED;
-					()0;
 					break;
 				}
 				if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].log)
@@ -3451,14 +3391,12 @@ public class GlobalMembersPlot2d
 					if (cp.z < 0.0)
 					{
 						dummy_type = coord_type.UNDEFINED;
-						()0;
 						break;
 					}
 					else if (cp.z == 0.0)
 					{
 						cp.z = -DefineConstants.VERYLARGE;
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 					else
@@ -3478,12 +3416,11 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_min = cp.z;
 				if (cp.z < GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min)
 				{
-					if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MIN != 0)
+					if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].min = cp.z;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 						break;
 					}
 				}
@@ -3491,15 +3428,14 @@ public class GlobalMembersPlot2d
 					GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].data_max = cp.z;
 				if (cp.z > GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max)
 				{
-					if (GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+					if ((GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 						GlobalMembersAxis.axis_array[AXIS_INDEX.COLOR_AXIS.getValue()].max = cp.z;
 					else
 					{
 						dummy_type = coord_type.OUTRANGE;
-						()0;
 					}
 				}
-			} while (0);
+			} while (false);
 
 	} // store2d_point
 
@@ -3516,8 +3452,8 @@ public class GlobalMembersPlot2d
 	public static void eval_plots()
 	{
 		int i;
-		curve_points this_plot;
-		curve_points[] tp_ptr;
+		LinkedList<curve_points> this_plot;
+		LinkedList<curve_points> tp_ptr;
 		e_uses_axis[] uses_axis = new e_uses_axis[DefineConstants.AXIS_ARRAY_SIZE];
 		int some_functions = 0;
 		int plot_num;
@@ -3526,7 +3462,7 @@ public class GlobalMembersPlot2d
 		boolean in_parametric = false;
 		boolean was_definition = false;
 		int pattern_num;
-		String xtitle = DefineConstants.NULL;
+		String xtitle = null;
 		int begin_token = GlobalMembersCommand.c_token; // so we can rewind for second pass
 		int start_token = 0;
 		int end_token;
@@ -3537,12 +3473,14 @@ public class GlobalMembersPlot2d
 		int newhist_color = 0;
 		int newhist_pattern = DefineConstants.LT_UNDEFINED;
 		histogram_rightmost = 0.0;
-		//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
-		//ORIGINAL LINE: free_histlist(&histogram_opts);
-		GlobalMembersGraphics.free_histlist(new histogram_style(GlobalMembersGadgets.histogram_opts));
-		GlobalMembersGraphics.init_histogram(DefineConstants.NULL, DefineConstants.NULL);
 
-		uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()] = uses_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()] = uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()] = uses_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()] = 0;
+		GlobalMembersGraphics.free_histlist(GlobalMembersGadgets.histogram_opts);
+		GlobalMembersGraphics.init_histogram(null, null);
+
+		uses_axis[AXIS_INDEX.FIRST_X_AXIS.getValue()].setValue(0);
+		uses_axis[AXIS_INDEX.FIRST_Y_AXIS.getValue()].setValue(0);
+		uses_axis[AXIS_INDEX.SECOND_X_AXIS.getValue()].setValue(0);
+		uses_axis[AXIS_INDEX.SECOND_Y_AXIS.getValue()].setValue(0);
 
 		/* Original Comment follows: */
 		/* Reset first_plot. This is usually done at the end of this function.
@@ -3554,15 +3492,15 @@ public class GlobalMembersPlot2d
 		 */
 		if (first_plot != null)
 			GlobalMembersPlot2d.cp_free(first_plot);
-		first_plot = DefineConstants.NULL;
+		first_plot = null;
 
-		tp_ptr = &(first_plot);
+		tp_ptr = first_plot;
 		plot_num = 0;
 		line_num = 0; // default line type
 		point_num = 0; // default point type
 		pattern_num = GlobalMembersGadgets.default_fillstyle.fillpattern; // default fill pattern
 
-		xtitle = DefineConstants.NULL;
+		xtitle = null;
 
 		/* Assume that the input data can be re-read later */
 		GlobalMembersGadgets.volatile_data = false;
@@ -3578,7 +3516,7 @@ public class GlobalMembersPlot2d
 			if (GlobalMembersCommand.c_token >= GlobalMembersCommand.num_tokens || GlobalMembersUtil.equals(GlobalMembersCommand.c_token, ";") != 0)
 				GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "function to plot expected");
 
-			this_plot = DefineConstants.NULL;
+			this_plot = null;
 			if (!in_parametric && !was_definition)
 				start_token = GlobalMembersCommand.c_token;
 
@@ -3589,9 +3527,7 @@ public class GlobalMembersPlot2d
 				int previous_token;
 				GlobalMembersCommand.c_token++;
 				histogram_sequence = -1;
-				//C++ TO JAVA CONVERTER TODO TASK: The memory management function 'free' has no equivalent in Java:
-				free(histogram_title);
-				histogram_title = DefineConstants.NULL;
+				histogram_title = null;
 
 				if (histogram_rightmost > 0)
 					newhist_start = histogram_rightmost + 2;
@@ -3611,14 +3547,14 @@ public class GlobalMembersPlot2d
 
 					/* Store title in temporary variable and then copy into the */
 					/* new histogram structure when it is allocated.            */
-					if (histogram_title == null && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING))
+					if (histogram_title == null && (GlobalMembersUtil.isstring(GlobalMembersCommand.c_token) != 0 || GlobalMembersUtil.type_udv(GlobalMembersCommand.c_token) == DATA_TYPES.STRING.getValue()))
 						histogram_title = GlobalMembersUtil.try_to_get_string();
 
 					/* Allow explicit starting color or pattern for this histogram */
 					GlobalMembersMisc.lp_parse(lp, false, false);
 					//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
 					//ORIGINAL LINE: parse_fillstyle(&fs, FS_SOLID, 100, fs.fillpattern, default_fillstyle.border_color);
-					GlobalMembersMisc.parse_fillstyle(fs, t_fillstyle.FS_SOLID, 100, fs.fillpattern, new t_colorspec(GlobalMembersGadgets.default_fillstyle.border_color));
+					GlobalMembersMisc.parse_fillstyle(fs, t_fillstyle.FS_SOLID.getValue(), 100, fs.fillpattern, GlobalMembersGadgets.default_fillstyle.border_color);
 
 				} while (GlobalMembersCommand.c_token != previous_token);
 
@@ -3658,8 +3594,8 @@ public class GlobalMembersPlot2d
 					was_definition = false;
 					GlobalMembersCommand.dummy_func = plot_func;
 					/* should this be saved in "this_plot"? */
-					name_str = GlobalMembersParse.string_or_express(DefineConstants.NULL);
-					GlobalMembersCommand.dummy_func = DefineConstants.NULL;
+					name_str = GlobalMembersParse.string_or_express(null);
+					GlobalMembersCommand.dummy_func = null;
 
 					if (name_str != null) // data file to plot
 					{
@@ -3773,7 +3709,7 @@ public class GlobalMembersPlot2d
 							GlobalMembersCommand.c_token++;
 							//C++ TO JAVA CONVERTER WARNING: The following line was determined to be a copy constructor call - this should be verified and a copy constructor should be created if it does not yet exist:
 							//ORIGINAL LINE: switch(lookup_table(&plot_axes_tbl[0],c_token))
-							switch (GlobalMembersTables.lookup_table(new gen_table(GlobalMembersTables.plot_axes_tbl[0]), GlobalMembersCommand.c_token))
+							switch (GlobalMembersTables.lookup_table(plot_axes_tbl[0], GlobalMembersCommand.c_token))
 							{
 							case AXES_X1Y1:
 								GlobalMembersAxis.x_axis = AXIS_INDEX.FIRST_X_AXIS;
@@ -3819,7 +3755,7 @@ public class GlobalMembersPlot2d
 								if (in_parametric)
 									GlobalMembersBf_test.int_error(GlobalMembersCommand.c_token, "\"title\" allowed only after parametric function fully specified");
 								else if (!xtitle.equals(DefineConstants.NULL))
-									xtitle = tangible.StringFunctions.changeCharacter(xtitle, 0, '\0'); // Remove default title .
+									xtitle = StringFunctions.changeCharacter(xtitle, 0, '\0'); // Remove default title .
 							}
 							GlobalMembersCommand.c_token++;
 
@@ -4485,7 +4421,7 @@ public class GlobalMembersPlot2d
 							/* parametric/polar => NOT a log quantity */
 							double x = (!GlobalMembersGadgets.parametric && !GlobalMembersGadgets.polar) ? (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log ? Math.exp((t) * GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log_base): (t)) : t;
 
-							() GlobalMembersEval.Gcomplex(plot_func.dummy_values[0], x, 0.0);
+							GlobalMembersEval.Gcomplex(plot_func.dummy_values[0], x, 0.0);
 							GlobalMembersEval.evaluate_at(plot_func.at, a);
 
 							if (GlobalMembersEval.undefined || (Math.abs(GlobalMembersEval.imag(a)) > GlobalMembersGadgets.zero))
@@ -4546,7 +4482,6 @@ public class GlobalMembersPlot2d
 										if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
 										{
 											dmy_type = coord_type.UNDEFINED;
-											()0;
 											break;
 										}
 										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
@@ -4554,14 +4489,12 @@ public class GlobalMembersPlot2d
 											if (xlow < 0.0)
 											{
 												dmy_type = coord_type.UNDEFINED;
-												()0;
 												break;
 											}
 											else if (xlow == 0.0)
 											{
 												this_plot.points[i].xlow = -DefineConstants.VERYLARGE;
 												dmy_type = coord_type.OUTRANGE;
-												()0;
 												break;
 											}
 											else
@@ -4586,7 +4519,6 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE;
-												()0;
 												break;
 											}
 										}
@@ -4599,10 +4531,9 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE;
-												()0;
 											}
 										}
-									} while (0);
+									} while (false);
 									dmy_type = coord_type.INRANGE;
 									do
 									{
@@ -4611,7 +4542,6 @@ public class GlobalMembersPlot2d
 										if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
 										{
 											dmy_type = coord_type.UNDEFINED;
-											()0;
 											break;
 										}
 										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
@@ -4619,14 +4549,12 @@ public class GlobalMembersPlot2d
 											if (xhigh < 0.0)
 											{
 												dmy_type = coord_type.UNDEFINED;
-												()0;
 												break;
 											}
 											else if (xhigh == 0.0)
 											{
 												this_plot.points[i].xhigh = -DefineConstants.VERYLARGE;
 												dmy_type = coord_type.OUTRANGE;
-												()0;
 												break;
 											}
 											else
@@ -4651,7 +4579,6 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE;
-												()0;
 												break;
 											}
 										}
@@ -4664,10 +4591,9 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE;
-												()0;
 											}
 										}
-									} while (0);
+									} while (false);
 								}
 								temp = y;
 								do
@@ -4694,7 +4620,6 @@ public class GlobalMembersPlot2d
 										{
 											this_plot.points[i].x = -DefineConstants.VERYLARGE;
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 											break;
 										}
 										else
@@ -4719,7 +4644,6 @@ public class GlobalMembersPlot2d
 										else
 										{
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 											break;
 										}
 									}
@@ -4732,10 +4656,9 @@ public class GlobalMembersPlot2d
 										else
 										{
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 										}
 									}
-								} while (0);
+								} while (false);
 								do
 								{
 									if (GlobalMembersAxis.y_axis == DefineConstants.NO_AXIS)
@@ -4760,7 +4683,6 @@ public class GlobalMembersPlot2d
 										{
 											this_plot.points[i].y = -DefineConstants.VERYLARGE;
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 											break;
 										}
 										else
@@ -4785,7 +4707,6 @@ public class GlobalMembersPlot2d
 										else
 										{
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 											break;
 										}
 									}
@@ -4798,10 +4719,9 @@ public class GlobalMembersPlot2d
 										else
 										{
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 										}
 									}
-								} while (0);
+								} while (false);
 							} // neither parametric or polar
 							else
 							{
@@ -4832,7 +4752,6 @@ public class GlobalMembersPlot2d
 										if (!(xlow > -DefineConstants.VERYLARGE && xlow < DefineConstants.VERYLARGE))
 										{
 											dmy_type = coord_type.UNDEFINED.getValue();
-											()0;
 											break;
 										}
 										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
@@ -4840,14 +4759,12 @@ public class GlobalMembersPlot2d
 											if (xlow < 0.0)
 											{
 												dmy_type = coord_type.UNDEFINED.getValue();
-												()0;
 												break;
 											}
 											else if (xlow == 0.0)
 											{
 												this_plot.points[i].xlow = -DefineConstants.VERYLARGE;
 												dmy_type = coord_type.OUTRANGE.getValue();
-												()0;
 												break;
 											}
 											else
@@ -4872,7 +4789,6 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE.getValue();
-												()0;
 												break;
 											}
 										}
@@ -4885,10 +4801,9 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE.getValue();
-												()0;
 											}
 										}
-									} while (0);
+									} while (false);
 									dmy_type = coord_type.INRANGE.getValue();
 									do
 									{
@@ -4897,7 +4812,6 @@ public class GlobalMembersPlot2d
 										if (!(xhigh > -DefineConstants.VERYLARGE && xhigh < DefineConstants.VERYLARGE))
 										{
 											dmy_type = coord_type.UNDEFINED.getValue();
-											()0;
 											break;
 										}
 										if (GlobalMembersAxis.axis_array[GlobalMembersAxis.x_axis.getValue()].log)
@@ -4905,14 +4819,12 @@ public class GlobalMembersPlot2d
 											if (xhigh < 0.0)
 											{
 												dmy_type = coord_type.UNDEFINED.getValue();
-												()0;
 												break;
 											}
 											else if (xhigh == 0.0)
 											{
 												this_plot.points[i].xhigh = -DefineConstants.VERYLARGE;
 												dmy_type = coord_type.OUTRANGE.getValue();
-												()0;
 												break;
 											}
 											else
@@ -4937,7 +4849,6 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE.getValue();
-												()0;
 												break;
 											}
 										}
@@ -4950,10 +4861,9 @@ public class GlobalMembersPlot2d
 											else
 											{
 												dmy_type = coord_type.OUTRANGE.getValue();
-												()0;
 											}
 										}
-									} while (0);
+									} while (false);
 								}
 								do
 								{
@@ -4979,7 +4889,6 @@ public class GlobalMembersPlot2d
 										{
 											this_plot.points[i].y = -DefineConstants.VERYLARGE;
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 											break;
 										}
 										else
@@ -5004,7 +4913,6 @@ public class GlobalMembersPlot2d
 										else
 										{
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 											break;
 										}
 									}
@@ -5017,10 +4925,9 @@ public class GlobalMembersPlot2d
 										else
 										{
 											this_plot.points[i].type = coord_type.OUTRANGE;
-											()0;
 										}
 									}
-								} while (0);
+								} while (false);
 
 								/* could not use a continue in this case */
 								//C++ TO JAVA CONVERTER TODO TASK: There are no gotos or labels in Java:
@@ -5805,19 +5712,19 @@ public class GlobalMembersPlot2d
 
 		if ((GlobalMembersAxis.axis_array[plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MIN.getValue() != 0) ? 1 : 0)) != 0)
 		{
-			if (plot.points[0].type != coord_type.UNDEFINED && plot.points[1].type != coord_type.UNDEFINED)
+			if (plot.points.get(0).type != coord_type.UNDEFINED && plot.points.get(1).type != coord_type.UNDEFINED)
 			{
-				xlow = plot.points[0].x - (plot.points[1].x - plot.points[0].x) / 2.;
+				xlow = plot.points.get(0).x - (plot.points.get(1).x - plot.points.get(0).x) / 2.;
 				if (GlobalMembersAxis.axis_array[plot.x_axis].min > xlow)
 					GlobalMembersAxis.axis_array[plot.x_axis].min = xlow;
 			}
 		}
-		if (GlobalMembersAxis.axis_array[plot.x_axis].autoscale & e_autoscale.AUTOSCALE_MAX != 0)
+		if ((GlobalMembersAxis.axis_array[plot.x_axis].autoscale.getValue() & ((e_autoscale.AUTOSCALE_MAX.getValue() != 0) ? 1 : 0)) != 0)
 		{
 			int i = plot.p_count - 1;
-			if (plot.points[i].type != coord_type.UNDEFINED && plot.points[i - 1].type != coord_type.UNDEFINED)
+			if (plot.points.get(i).type != coord_type.UNDEFINED && plot.points.get(i-1).type != coord_type.UNDEFINED)
 			{
-				xhigh = plot.points[i].x + (plot.points[i].x - plot.points[i - 1].x) / 2.;
+				xhigh = plot.points.get(i).x + (plot.points.get(i).x - plot.points.get(i - 1).x) / 2.;
 				if (GlobalMembersAxis.axis_array[plot.x_axis].max < xhigh)
 					GlobalMembersAxis.axis_array[plot.x_axis].max = xhigh;
 			}
@@ -5945,7 +5852,7 @@ public class GlobalMembersPlot2d
 	/* internal and external variables */
 
 	/* the curves/surfaces of the plot */
-	public static curve_points first_plot = null;
+	public static LinkedList<curve_points> first_plot = null;
 	public static udft_entry plot_func = new udft_entry();
 
 	/* box width (automatic) */
