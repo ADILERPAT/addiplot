@@ -1,5 +1,7 @@
 package com.addiPlot.gnuplot;
 
+import java.util.LinkedList;
+
 import com.addiPlot.term;
 import com.addiPlot.gnuplot.tangible.StringFunctions;
 
@@ -191,7 +193,7 @@ public class GlobalMembersGraphics
 
 	/* function prototypes */
 
-	public static void do_plot(curve_points plots, int pcount)
+	public static void do_plot(LinkedList<curve_points> first_plot, int pcount)
 	{
 
 		int curve;
@@ -222,7 +224,7 @@ public class GlobalMembersGraphics
 		 * but plot_bounds.xleft depends on ytics. Boundary calculations depend
 		 * on term->v_char etc, so terminal must be initialised first.
 		 */
-		GlobalMembersGraphics.boundary(plots, pcount);
+		GlobalMembersGraphics.boundary(first_plot, pcount);
 
 		/* Make palette */
 		if (GlobalMembersPm3d.is_plot_with_palette())
@@ -483,7 +485,7 @@ public class GlobalMembersGraphics
 		} // lkey
 
 		/* DRAW CURVES */
-		this_plot = plots;
+		this_plot = first_plot;
 		for (curve = 0; curve < pcount; this_plot = this_plot.next, curve++)
 		{
 			boolean localkey = lkey; // a local copy

@@ -989,13 +989,26 @@ public enum AXIS_INDEX
 
 	public int getValue()
 	{
-		return this.ordinal();
+		if (valueSet == false) {
+			return this.ordinal();
+		} else {
+			return intValue;
+		}
 	}
 
 	public static AXIS_INDEX forValue(int value)
 	{
 		return values()[value];
 	}
+	
+	public void setValue(int value)
+	{
+		intValue = value;
+		valueSet = true;
+	}
+	
+	private boolean valueSet = false;
+	private int intValue;
 ///#define FIRST_AXES 0
 ///#define SECOND_AXES 4
 ///#define NO_AXIS 99
