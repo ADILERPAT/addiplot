@@ -2239,7 +2239,7 @@ public class GlobalMembersPlot2d
 
 		/* If the user has set an explicit locale for numeric input, apply it */
 		/* here so that it affects data fields read from the input file.      */
-		do {if (GlobalMembersUtil.numeric_locale != null && (StringFunctions.strcmp(GlobalMembersUtil.numeric_locale,"C") != 0)) setlocale(AnonymousEnum11.__LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (false);
+		do {if (GlobalMembersUtil.numeric_locale != null && (StringFunctions.strcmp(GlobalMembersUtil.numeric_locale,"C") != 0)) setlocale(__LC_NUMERIC,GlobalMembersUtil.numeric_locale);} while (false);
 
 		while ((j = GlobalMembersDatafile.df_readline(v, max_cols)) != DefineConstants.DF_EOF)
 		{
