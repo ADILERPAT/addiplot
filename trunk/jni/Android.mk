@@ -3,7 +3,9 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := AddiPlot
-### Add all source file names to be included in lib separated by a whitespace
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/term $(LOCAL_PATH)/src
+
 LOCAL_SRC_FILES := src/alloc.c src/axis.c src/binary.c \
         src/breaders.c src/bitmap.c src/color.c \
         src/command.c src/contour.c src/datafile.c \

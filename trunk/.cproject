@@ -44,6 +44,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.android.toolchain.gcc.125516549.2063214609" name="plot.c" rcbsApplicability="disable" resourcePath="jni/src/plot.c" toolsToInvoke="com.android.tool.compiler.c.1244305378.495228991">
+						<tool id="com.android.tool.compiler.c.1244305378.495228991" name="Android GCC" superClass="com.android.tool.compiler.c.1244305378">
+							<inputType id="com.android.tool.compiler.c.input.1378189408" superClass="com.android.tool.compiler.c.input"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="jni"/>
 					</sourceEntries>
@@ -55,16 +60,19 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="AddiPlot.null.1440892384" name="AddiPlot"/>
 	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/AddiPlot"/>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.android.toolchain.gcc.125516549;com.android.toolchain.gcc.125516549.1649083187;com.android.tool.compiler.c.1244305378;com.android.tool.compiler.c.input.35454848">
+		<scannerConfigBuildInfo instanceId="com.android.toolchain.gcc.125516549;com.android.toolchain.gcc.125516549.2063214609;com.android.tool.compiler.c.1244305378.495228991;com.android.tool.compiler.c.input.1378189408">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.android.toolchain.gcc.125516549;com.android.toolchain.gcc.125516549.1649083187;com.android.tool.compiler.g++.157558121;com.android.tool.compiler.g++.input.1691049334">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
 		</scannerConfigBuildInfo>
-	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/AddiPlot"/>
+		<scannerConfigBuildInfo instanceId="com.android.toolchain.gcc.125516549;com.android.toolchain.gcc.125516549.1649083187;com.android.tool.compiler.c.1244305378;com.android.tool.compiler.c.input.35454848">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
+		</scannerConfigBuildInfo>
 	</storageModule>
 </cproject>
