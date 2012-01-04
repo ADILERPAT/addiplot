@@ -41,7 +41,7 @@
 /* #undef GNUGRAPH */
 
 /* Define if you want to use a gnuplot history file. */
-#define GNUPLOT_HISTORY 1
+// CCX #define GNUPLOT_HISTORY 1
 
 /* Define to allow 'fit' to create parameter error variables. */
 #define GP_FIT_ERRVARS 1
@@ -65,7 +65,7 @@
 #define HAVE_BZERO 1
 
 /* Define if you want the cairo-based terminals. */
-#define HAVE_CAIROPDF 1
+//CCX #define HAVE_CAIROPDF 1
 
 /* Define to 1 if you have the declaration of `signgam', and to 0 if you
    don't. */
@@ -225,13 +225,13 @@
 #define HAVE_POPEN 1
 
 /* Define to 1 if you have the <readline/history.h> header file. */
-#define HAVE_READLINE_HISTORY_H 1
+//CCX #define HAVE_READLINE_HISTORY_H 1
 
 /* Define to 1 if you have the <readline/readline.h> header file. */
-#define HAVE_READLINE_READLINE_H 1
+//CCX #define HAVE_READLINE_READLINE_H 1
 
 /* Define to 1 if you have the <readline/tilde.h> header file. */
-#define HAVE_READLINE_TILDE_H 1
+//CCX #define HAVE_READLINE_TILDE_H 1
 
 /* Define to 1 if you have the `rindex' function. */
 #define HAVE_RINDEX 1
@@ -480,7 +480,7 @@
 #define USE_MOUSE 1
 
 /* Define to enable multi-byte font support for x11 */
-#define USE_X11_MULTIBYTE 1
+//CCX #define USE_X11_MULTIBYTE 1
 
 /* Version number of package */
 #define VERSION "4.4.0"
