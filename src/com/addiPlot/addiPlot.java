@@ -8,9 +8,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
 
-import com.addiPlot.gp_types.coordinate;
-import com.addiPlot.graphics.curve_points;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -51,7 +48,7 @@ public class addiPlot extends Activity {
 	final Runnable mRunThread = new Runnable() {
 		public void run() {
 			//do something compute intensive
-			term.plotIt(mHandler);
+			//term.plotIt(mHandler);
 			mHandler.post(mUpdateResults);
 		}
 	};
@@ -92,7 +89,7 @@ public class addiPlot extends Activity {
 	    
 	    //will get rid of this, but this handles original way of passing data
 	    if (plotData != null) {
-	    	term.usePlotDataString(plotData);
+	    	//term.usePlotDataString(plotData);
 	    	demoview.invalidate();
 	    }
 	}
@@ -228,7 +225,7 @@ public class addiPlot extends Activity {
 			
 			//move(0,0);
 			//vector(100,100);
-			int padding = 20;
+/*			int padding = 20;
 			int width = getWidth() - 2*padding;
 			int height = getHeight() - 2*padding;
 			paint.setColor(Color.WHITE);
@@ -286,7 +283,7 @@ public class addiPlot extends Activity {
 		    	_canvas.drawText(exp.format(xMin), padding, height + padding + 10, paint);
 		    	_canvas.drawText(exp.format(yMax), 0, padding + 10, paint);
 		    	_canvas.drawText(exp.format(yMin), 0, height + padding, paint);
-			}
+			}*/
 		}
 	}
 }
