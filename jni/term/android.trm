@@ -1,0 +1,167 @@
+/* Hello, Emacs, this is -*-C-*-
+ * $Id: android.trm,v 1.15 2006/07/21 02:35:48 sfeam Exp $
+ *
+ */
+
+/* GNUPLOT - android.trm */
+
+/*[
+ * Copyright 1990 - 1993, 1998, 2004
+ *
+ * Permission to use, copy, and distribute this software and its
+ * documentation for any purpose with or without fee is hereby granted,
+ * provided that the above copyright notice appear in all copies and
+ * that both that copyright notice and this permission notice appear
+ * in supporting documentation.
+ *
+ * Permission to modify the software is granted, but not the right to
+ * distribute the complete modified source code.  Modifications are to
+ * be distributed as patches to the released version.  Permission to
+ * distribute binaries produced by compiling modified sources is granted,
+ * provided you
+ *   1. distribute the corresponding source modifications from the
+ *    released version in the form of a patch file along with the binaries,
+ *   2. add special version identification to distinguish your version
+ *    in addition to the base release version number,
+ *   3. provide your name and address as the primary contact for the
+ *    support of your modified version, and
+ *   4. retain our contact information in regard to use of the base
+ *    software.
+ * Permission to distribute the released version of the source code along
+ * with corresponding source modifications in the form of a patch file is
+ * granted with same provisions 2 through 4 for binary distributions.
+ *
+ * This software is provided "as is" without express or implied warranty
+ * to the extent permitted by applicable law.
+]*/
+
+/*
+ * This file is included by ../term.c.
+ *
+ * This terminal driver supports:
+ *  ANDROID devices
+ *
+ * AUTHORS
+ *  Corbin Champion
+ *
+ * send your comments or suggestions to (gnuplot-info@lists.sourceforge.net).
+ *
+ */
+
+#include "driver.h"
+
+#ifdef TERM_ANDROID
+android_term(android)
+#endif
+
+#ifdef TERM_PROTO
+TERM_PUBLIC void ANDROID_options __PROTO((void));
+TERM_PUBLIC void ANDROID_init __PROTO((void));
+TERM_PUBLIC void ANDROID_reset __PROTO((void));
+TERM_PUBLIC void ANDROID_text __PROTO((void));
+TERM_PUBLIC void ANDROID_graphics __PROTO((void));
+TERM_PUBLIC void ANDROID_move __PROTO((unsigned int x, unsigned int y));
+TERM_PUBLIC void ANDROID_vector __PROTO((unsigned int x, unsigned int y));
+TERM_PUBLIC void ANDROID_linetype __PROTO((int linetype));
+TERM_PUBLIC void ANDROID_put_text __PROTO((unsigned int x, unsigned int y, const char *str));
+
+#define ANDROIDXMAX 1000
+#define ANDROIDYMAX 1000
+
+#define ANDROIDXLAST (ANDROIDXMAX - 1)
+#define ANDROIDYLAST (ANDROIDYMAX - 1)
+
+#define ANDROIDVCHAR		20
+#define ANDROIDHCHAR		9
+#define ANDROIDVTIC		8
+#define ANDROIDHTIC		6
+
+/* is defined in plot.h
+#define TRUE 1
+#define FALSE 0
+*/
+#endif
+
+#ifndef TERM_PROTO_ONLY
+#ifdef TERM_BODY
+
+TERM_PUBLIC void
+ANDROID_init()
+{
+   printf("ANDROIDTERM init\n");
+}
+
+TERM_PUBLIC void
+ANDROID_graphics()
+{
+}
+
+TERM_PUBLIC void
+ANDROID_text()
+{
+}
+
+TERM_PUBLIC void
+ANDROID_linetype(int linetype)
+{
+}
+
+TERM_PUBLIC void
+ANDROID_move(unsigned int x, unsigned int y)
+{
+   printf("ANDROIDTERM move x=%d, y=%d\n", x, y);
+}
+
+TERM_PUBLIC void
+ANDROID_vector(unsigned int x, unsigned int y)
+{
+   printf("ANDROIDTERM vector x=%d, y=%d\n", x, y);
+}
+
+TERM_PUBLIC void
+ANDROID_put_text(unsigned int x, unsigned int y, const char *str)
+{
+}
+
+TERM_PUBLIC void
+ANDROID_reset()
+{
+}
+
+TERM_PUBLIC void
+ANDROID_options()
+{
+}
+
+#endif
+
+#ifdef TERM_TABLE
+TERM_TABLE_START(android_driver)
+    "android", "ANDROID canvas",
+    ANDROIDXMAX, ANDROIDYMAX, ANDROIDVCHAR, ANDROIDHCHAR,
+    ANDROIDVTIC, ANDROIDHTIC, ANDROID_options, ANDROID_init, ANDROID_reset,
+    ANDROID_text, null_scale, ANDROID_graphics, ANDROID_move, ANDROID_vector,
+    ANDROID_linetype, ANDROID_put_text, null_text_angle,
+    null_justify_text, line_and_point, do_arrow, set_font_null
+TERM_TABLE_END(android_driver)
+
+#undef LAST_TERM
+#define LAST_TERM android_driver
+#endif
+#endif /* TERM_PROTO_ONLY */
+
+#ifdef TERM_HELP
+START_HELP(android)
+"1 android",
+"?commands set terminal android",
+"?set terminal android",
+"?set term android",
+"?terminal android",
+"?term android",
+"?android",
+" The `android` terminal device generates output into an Android canvas through some JNI.",
+"",
+" Syntax:",
+"       set terminal android"
+END_HELP(android)
+#endif

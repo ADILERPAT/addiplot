@@ -20,8 +20,11 @@ LOCAL_SRC_FILES := src/alloc.c src/axis.c src/binary.c \
         src/show.c src/specfun.c src/standard.c src/stdfn.c \
         src/tables.c src/tabulate.c \
         src/term.c src/time.c src/unset.c src/util.c \
-        src/util3d.c src/variable.c src/version.c
+        src/util3d.c src/variable.c src/version.c \
+        AddiPlot.cpp
         
 LOCAL_CFLAGS := -DHAVE_CONFIG_H=1 -DX11_DRIVER_DIR="/usr/local/libexec/gnuplot/4.4"
+
+LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -llog
 
 include $(BUILD_SHARED_LIBRARY)

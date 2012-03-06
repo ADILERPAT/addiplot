@@ -2,11 +2,20 @@ package com.addiPlot;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
+
+import com.addiPlot.session.ByteQueue;
+import com.addiPlot.session.TermSession;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -22,7 +31,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
+import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class addiPlot extends Activity {
@@ -32,7 +50,12 @@ public class addiPlot extends Activity {
 	private static int _x;
 	private static int _y;
 	private static term mTerm;
+	public TextView mTextView;
+	public ScrollView mScrollView;
+	public EditText mCmdEditText;
 	
+	private TermSession mTermSession;
+
 	// Need handler for callbacks to the UI thread
 	public final Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) { 
@@ -43,7 +66,7 @@ public class addiPlot extends Activity {
 			}
 		};
 	};
-	
+
 	// Create runnable for thread run
 	final Runnable mRunThread = new Runnable() {
 		public void run() {
@@ -52,18 +75,18 @@ public class addiPlot extends Activity {
 			mHandler.post(mUpdateResults);
 		}
 	};
-	
+
 	// Create runnable for posting
 	final Runnable mUpdateResults = new Runnable() {
 		public void run() {
 			updateResultsInUi();
 		}
 	};
-	
+
 	private void updateResultsInUi() {
 		// Back in the UI thread -- update our UI elements based on the data in mResults
 	}
-	
+
 	public void plotIt() {
 		// Fire off a thread to do some work that we shouldn't do directly in the UI thread
 		ThreadGroup threadGroup = new ThreadGroup("plotItCmdGroup");
@@ -71,34 +94,71 @@ public class addiPlot extends Activity {
 		t.start();
 	}
 
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		demoview = new DemoView(this);
-		setContentView(demoview);
+		setContentView(R.layout.main);
+		mTextView = (TextView)findViewById(R.id.termWindow);
+		
+		mScrollView = (ScrollView)findViewById(R.id.scrollView);
+		
+		mCmdEditText = (EditText)findViewById(R.id.edit_command);
+		
+		mCmdEditText.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View view, int keyCode, KeyEvent event) { 
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+					if (keyCode == KeyEvent.KEYCODE_ENTER) {
+						String command = mCmdEditText.getText().toString();
+						mCmdEditText.setText("");
+						mTermSession.write(command + "\n");
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+		
+		//demoview = new DemoView(this);
+		//setContentView(demoview);
 		onNewIntent(getIntent());
 	}
-	
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-	    setIntent(intent);
-	    String plotData = intent.getStringExtra("plotData"); 
-	    
-	    //will get rid of this, but this handles original way of passing data
-	    if (plotData != null) {
-	    	//term.usePlotDataString(plotData);
-	    	demoview.invalidate();
-	    }
+		setIntent(intent);
+		//String plotData = intent.getStringExtra("plotData"); 
+
+		//will get rid of this, but this handles original way of passing data
+		//if (plotData != null) {
+		//	//term.usePlotDataString(plotData);
+		//	demoview.invalidate();
+		//}
+
+		mTermSession = new TermSession(this);
+		mTermSession.updateSize(1024, 1024);
 	}
 	
+	public void scrollToBottom()
+	{
+	    mScrollView.post(new Runnable()
+	    { 
+	        public void run()
+	        { 
+	            mScrollView.smoothScrollTo(0, mTextView.getBottom());
+	        } 
+	    });
+	}
+
+
 	public static void move (int x, int y) {
 		_x = x;
 		_y = y;
 	}
-	
+
 	public static void vector (int x, int y) {
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
@@ -110,7 +170,7 @@ public class addiPlot extends Activity {
 	}
 
 	private class DemoView extends View{
-		
+
 		public DemoView(Context context){
 			super(context);
 		}
@@ -207,7 +267,7 @@ public class addiPlot extends Activity {
 
 			// rotate the canvas on center of the text to draw
 			//canvas.rotate(-45, x + rect.exactCenterX(),
-            //                                   y + rect.exactCenterY());
+			//                                   y + rect.exactCenterY());
 			// draw the rotated text
 			//paint.setStyle(Paint.Style.FILL);
 			//canvas.drawText(str2rotate, x, y, paint);
@@ -218,19 +278,19 @@ public class addiPlot extends Activity {
 
 			// draw a thick dashed line
 			//DashPathEffect dashPath =
-            //                new DashPathEffect(new float[]{20,5}, 1);
+			//                new DashPathEffect(new float[]{20,5}, 1);
 			//paint.setPathEffect(dashPath);
 			//paint.setStrokeWidth(8);
 			//canvas.drawLine(0, 300 , 320, 300, paint);
-			
+
 			//move(0,0);
 			//vector(100,100);
-/*			int padding = 20;
+			/*			int padding = 20;
 			int width = getWidth() - 2*padding;
 			int height = getHeight() - 2*padding;
 			paint.setColor(Color.WHITE);
 			_canvas.drawRect(padding, padding, padding+width, padding+height, paint);
-			
+
 			if (!term.mCurves.isEmpty()) {
 				NumberFormat exp = DecimalFormat.getInstance();
 				if (exp instanceof DecimalFormat) {
@@ -286,4 +346,5 @@ public class addiPlot extends Activity {
 			}*/
 		}
 	}
+
 }
