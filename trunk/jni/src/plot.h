@@ -60,7 +60,9 @@ extern TBOOLEAN CallFromRexx;
 #endif
 
 /* Prototypes of functions exported by plot.c */
-
+#ifdef ANDROID
+int gnu_main __PROTO((int, char **));
+#endif
 void bail_to_command_line __PROTO((void));
 void interrupt_setup __PROTO((void));
 void gp_expand_tilde __PROTO((char **));

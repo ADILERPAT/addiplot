@@ -53,6 +53,14 @@ static char *RCSid() { return RCSid("$Id: plot.c,v 1.104.2.4 2010/02/18 05:52:49
 #include <signal.h>
 #include <setjmp.h>
 
+#define LOG_TAG "plot.c"
+
+#include <android/log.h>
+
+#define LOGI(...) do { __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__); } while(0)
+#define LOGW(...) do { __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__); } while(0)
+#define LOGE(...) do { __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__); } while(0)
+
 #ifdef OS2 /* os2.h required for gpexecute.h */
 # define INCL_DOS
 # define INCL_REXXSAA
@@ -267,7 +275,7 @@ bail_to_command_line()
     LONGJMP(command_line_env, TRUE);
 }
 
-#if defined(_Windows) || defined(_Macintosh)
+#if defined(_Windows) || defined(_Macintosh) || defined(ANDROID)
 int
 gnu_main(int argc, char **argv)
 #else

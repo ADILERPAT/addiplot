@@ -1667,6 +1667,7 @@ void
 init_terminal()
 {
     char *term_name = DEFAULTTERM;
+
 #if (defined(__TURBOC__) && defined(MSDOS) && !defined(_Windows)) || defined(NEXT) || defined(SUN) || defined(X11)
     char *env_term = NULL;      /* from TERM environment var */
 #endif
@@ -1680,6 +1681,10 @@ init_terminal()
     if (gnuterm != (char *) NULL) {
 	term_name = gnuterm;
     } else {
+
+#ifdef ANDROID
+    term_name = "android";
+#endif
 
 #ifdef __ZTC__
 	term_name = ztc_init();

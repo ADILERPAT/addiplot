@@ -364,6 +364,11 @@
 #include "post.trm"
 #endif
 
+/* android */
+#ifdef ANDROID
+#include "android.trm"
+#endif
+
 /* QMS laser printers */
 #include "qms.trm"
 
