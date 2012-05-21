@@ -1,59 +1,51 @@
 package com.addiPlot;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Vector;
-
-import com.addiPlot.session.ByteQueue;
 import com.addiPlot.session.TermSession;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.net.Uri;
+import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.InputType;
-import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 public class addiPlot extends Activity {
-	DemoView demoview;
+	DemoView demoview = null;
 
-	private static Canvas _canvas = new Canvas();
-	private static int _x;
-	private static int _y;
-	private static term mTerm;
+	private Canvas _canvas;
+	private Bitmap _bitmap;
+	private int _screenHeight;
+	private int _screenWidth;
+	private int _x;
+	private int _y;
+	private LinearLayout mTerminalLayout;
+	private LinearLayout mPlotLayout;
+	private ViewSwitcher mSwitcher;
 	public TextView mTextView;
 	public ScrollView mScrollView;
 	public EditText mCmdEditText;
-	
+	private String textViewString = "";
+	private String partialLine = "";
+	private int _linetype;
+	private int _linewidth;
+	private String _justMode = "LEFT";
+
 	private TermSession mTermSession;
 
 	// Need handler for callbacks to the UI thread
@@ -100,12 +92,18 @@ public class addiPlot extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		mTerminalLayout = (LinearLayout)findViewById(R.id.terminalLayout);
+		
+		mPlotLayout = (LinearLayout)findViewById(R.id.plotLayout);
+		
 		mTextView = (TextView)findViewById(R.id.termWindow);
-		
+
 		mScrollView = (ScrollView)findViewById(R.id.scrollView);
-		
+
 		mCmdEditText = (EditText)findViewById(R.id.edit_command);
 		
+		mSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
+
 		mCmdEditText.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View view, int keyCode, KeyEvent event) { 
@@ -120,9 +118,7 @@ public class addiPlot extends Activity {
 				return false;
 			}
 		});
-		
-		//demoview = new DemoView(this);
-		//setContentView(demoview);
+
 		onNewIntent(getIntent());
 	}
 
@@ -130,43 +126,115 @@ public class addiPlot extends Activity {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
-		//String plotData = intent.getStringExtra("plotData"); 
-
-		//will get rid of this, but this handles original way of passing data
-		//if (plotData != null) {
-		//	//term.usePlotDataString(plotData);
-		//	demoview.invalidate();
-		//}
+		String plotData = intent.getStringExtra("plotData");
 
 		mTermSession = new TermSession(this);
 		mTermSession.updateSize(1024, 1024);
 	}
-	
+
 	public void scrollToBottom()
 	{
-	    mScrollView.post(new Runnable()
-	    { 
-	        public void run()
-	        { 
-	            mScrollView.smoothScrollTo(0, mTextView.getBottom());
-	        } 
-	    });
+		mScrollView.post(new Runnable()
+		{ 
+			public void run()
+			{ 
+				mScrollView.smoothScrollTo(0, mTextView.getBottom());
+			} 
+		});
 	}
 
+	private void init() {
+		_screenHeight = mTerminalLayout.getHeight();
+		_screenWidth = mTerminalLayout.getWidth();
+		if (_screenWidth < _screenHeight) {
+			_screenHeight = _screenWidth;
+		}
+		_bitmap = Bitmap.createBitmap(480, 480, Bitmap.Config.ARGB_8888);
+		_canvas = new Canvas(_bitmap);
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.FILL);
 
-	public static void move (int x, int y) {
+		// make the entire canvas white
+		paint.setColor(Color.WHITE);
+		_canvas.drawPaint(paint);
+		
+		if (demoview == null) {
+			demoview = new DemoView(this);
+			demoview.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT,
+                    ViewGroup.LayoutParams.FILL_PARENT));
+			mPlotLayout.addView(demoview);
+			mPlotLayout.invalidate();
+			mSwitcher.invalidate();
+		}
+	}
+	
+
+	private void linewidth(int width) {
+		_linewidth = width;
+	}
+
+	private void linetype(int type) {
+		_linetype = type;
+	}
+	
+	private void justify_text(String mode) {
+		_justMode = mode;
+	}
+
+	private void move (int x, int y) {
 		_x = x;
 		_y = y;
 	}
 
-	public static void vector (int x, int y) {
+	private void vector (int x, int y) {
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(4);
-		paint.setColor(Color.RED);
-		_canvas.drawLine(_x, _y , x, y, paint);
+		paint.setStrokeWidth(_linewidth);
+		
+		if (_linetype < 0) {
+			paint.setColor(Color.BLACK);
+		} else if ((_linetype % 9) == 0) {
+			paint.setColor(Color.RED);
+		} else if ((_linetype % 9) == 1) {
+			paint.setColor(Color.GREEN);
+		} else if ((_linetype % 9) == 2) {
+			paint.setColor(Color.BLUE);
+		} else if ((_linetype % 9) == 3) {
+			paint.setColor(Color.MAGENTA);
+		} else if ((_linetype % 9) == 4) {
+			paint.setColor(Color.CYAN);
+		} else if ((_linetype % 9) == 5) {
+			paint.setColor(Color.YELLOW);
+		} else if ((_linetype % 9) == 6) {
+			paint.setColor(Color.BLACK);
+		} else if ((_linetype % 9) == 7) {
+			paint.setARGB(1,139,69,19);
+		} else if ((_linetype % 9) == 8) {
+			paint.setColor(Color.LTGRAY);
+		} else {
+			paint.setColor(Color.BLACK);
+		}
+		_canvas.drawLine(_x, 480-_y , x, 480-y, paint);
 		_x = x;
 		_y = y;
+	}
+
+	private void text(int x, int y, String text) {
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeWidth(_linewidth);
+		paint.setColor(Color.BLACK);
+		paint.setTextSize(18);
+		paint.setTypeface(Typeface.MONOSPACE);
+		if (_justMode.equals("RIGHT")) {
+			paint.setTextAlign(Align.RIGHT);
+		} else if (_justMode.equals("CENTRE")) {
+			paint.setTextAlign(Align.CENTER);
+		} else {
+			paint.setTextAlign(Align.LEFT);
+		}
+		_canvas.drawText(text, x, 480-y, paint);
 	}
 
 	private class DemoView extends View{
@@ -177,19 +245,20 @@ public class addiPlot extends Activity {
 
 		@Override protected void onDraw(Canvas canvas) {
 			super.onDraw(canvas);
-			_canvas = canvas;
+			canvas.drawBitmap(_bitmap,0,0,null);
+			//_canvas = canvas;
 
 			// custom drawing code here
 			// remember: y increases from top to bottom
 			// x increases from left to right
 			//int x = 0;
 			//int y = 0;
-			Paint paint = new Paint();
-			paint.setStyle(Paint.Style.FILL);
+			//Paint paint = new Paint();
+			//paint.setStyle(Paint.Style.FILL);
 
 			// make the entire canvas white
-			paint.setColor(Color.GRAY);
-			_canvas.drawPaint(paint);
+			//paint.setColor(Color.GRAY);
+			//_canvas.drawPaint(paint);
 			// another way to do this is to use:
 			// canvas.drawColor(Color.WHITE);
 
@@ -346,5 +415,72 @@ public class addiPlot extends Activity {
 			}*/
 		}
 	}
+
+	public void processString(String newTermOut) {
+		String modifiedTermOut = partialLine + newTermOut;
+		int incompleteLine;
+		String lines[] = modifiedTermOut.split("\\r?\\n");
+		if ((lines.length > 0) && (modifiedTermOut.length() > 0)) {
+			if ((modifiedTermOut.charAt(modifiedTermOut.length()-1) == '\n') || (modifiedTermOut.charAt(modifiedTermOut.length()-1) == '\r')) {
+				incompleteLine = 0;
+				partialLine = "";
+			} else {
+				incompleteLine = 1;
+				partialLine = lines[lines.length-1];
+			}
+			for (int lineNum = 0; lineNum < lines.length - incompleteLine; lineNum++) {
+				if (lines[lineNum].startsWith("ANDROIDTERM")) {
+					lines[lineNum] = lines[lineNum].replaceAll("\\r|\\n", "");
+					String termCommand[] = lines[lineNum].split(",");
+					if (termCommand[1].equals("move")) {
+						try {
+							move(Integer.parseInt(termCommand[2]), Integer.parseInt(termCommand[3]));
+						} catch(NumberFormatException ex) {
+							//Toast.makeText(getBaseContext(), "why am I here", Toast.LENGTH_LONG).show();
+						}
+					} else if (termCommand[1].equals("vector")) {
+						try {
+							vector(Integer.parseInt(termCommand[2]), Integer.parseInt(termCommand[3]));
+						} catch(NumberFormatException ex) {
+							//Toast.makeText(getBaseContext(), "why am I here", Toast.LENGTH_LONG).show();
+						}
+					} else if (termCommand[1].equals("put_text")) {
+						text(Integer.parseInt(termCommand[2]), Integer.parseInt(termCommand[3]), termCommand[4]);
+					} else if (termCommand[1].equals("linetype")) {
+						linetype(Integer.parseInt(termCommand[2]));
+					} else if (termCommand[1].equals("linewidth")) {
+						linewidth(Integer.parseInt(termCommand[2]));
+					} else if (termCommand[1].equals("justify_text")) {
+						justify_text(termCommand[2]);
+					} else if (termCommand[1].equals("init")) {
+						init();
+					} else if (termCommand[1].equals("text")) {
+						demoview.invalidate();
+						mSwitcher.showNext();
+					}
+				} else {
+					textViewString = textViewString + lines[lineNum] + "\n";
+				}
+			}
+		}
+		mTextView.setText(textViewString);
+		scrollToBottom();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        if (mSwitcher.getDisplayedChild() != 0) {
+	        	mSwitcher.showPrevious();
+	        	return true;
+	        } else {
+	        	return super.onKeyDown(keyCode, event);
+	        }
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+
+	
+	
 
 }
