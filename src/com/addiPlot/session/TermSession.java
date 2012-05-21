@@ -197,11 +197,7 @@ public class TermSession {
         try {
             int bytesRead = mByteQueue.read(mReceiveBuffer, 0, bytesToRead);
             String valueStr = new String(mReceiveBuffer);
-            mParent.mTextView.append(valueStr.substring(0, bytesToRead));
-            mParent.scrollToBottom();
-            //Toast toast=Toast.makeText(mParent, valueStr, 10000);
-            //toast.setGravity(Gravity.TOP, -30, 50);
-            //toast.show();
+            mParent.processString(valueStr.substring(0, bytesRead));
         } catch (InterruptedException e) {
         }
     }

@@ -64,17 +64,18 @@ TERM_PUBLIC void ANDROID_move __PROTO((unsigned int x, unsigned int y));
 TERM_PUBLIC void ANDROID_vector __PROTO((unsigned int x, unsigned int y));
 TERM_PUBLIC void ANDROID_linetype __PROTO((int linetype));
 TERM_PUBLIC void ANDROID_put_text __PROTO((unsigned int x, unsigned int y, const char *str));
+TERM_PUBLIC int ANDROID_text_angle __PROTO((int ang));
 
-#define ANDROIDXMAX 1000
-#define ANDROIDYMAX 1000
+#define ANDROIDXMAX 480
+#define ANDROIDYMAX 480
 
 #define ANDROIDXLAST (ANDROIDXMAX - 1)
 #define ANDROIDYLAST (ANDROIDYMAX - 1)
 
-#define ANDROIDVCHAR		20
-#define ANDROIDHCHAR		9
-#define ANDROIDVTIC		8
-#define ANDROIDHTIC		6
+#define ANDROIDVCHAR		18
+#define ANDROIDHCHAR		11
+#define ANDROIDVTIC		18
+#define ANDROIDHTIC		18
 
 /* is defined in plot.h
 #define TRUE 1
@@ -88,44 +89,83 @@ TERM_PUBLIC void ANDROID_put_text __PROTO((unsigned int x, unsigned int y, const
 TERM_PUBLIC void
 ANDROID_init()
 {
-   printf("ANDROIDTERM init\n");
+   printf("ANDROIDTERM,init\n");
 }
 
 TERM_PUBLIC void
 ANDROID_graphics()
 {
+   printf("ANDROIDTERM,graphics\n");
 }
 
 TERM_PUBLIC void
 ANDROID_text()
 {
+   printf("ANDROIDTERM,text\n");
+}
+
+TERM_PUBLIC void
+ANDROID_linewidth(int linetype)
+{
+   printf("ANDROIDTERM,linetype,%d\n",linetype);
 }
 
 TERM_PUBLIC void
 ANDROID_linetype(int linetype)
 {
+   printf("ANDROIDTERM,linetype,%d\n",linetype);
 }
 
 TERM_PUBLIC void
 ANDROID_move(unsigned int x, unsigned int y)
 {
-   printf("ANDROIDTERM move x=%d, y=%d\n", x, y);
+   printf("ANDROIDTERM,move,%d,%d\n", x, y);
 }
 
 TERM_PUBLIC void
 ANDROID_vector(unsigned int x, unsigned int y)
 {
-   printf("ANDROIDTERM vector x=%d, y=%d\n", x, y);
+   printf("ANDROIDTERM,vector,%d,%d\n", x, y);
 }
 
 TERM_PUBLIC void
 ANDROID_put_text(unsigned int x, unsigned int y, const char *str)
 {
+   printf("ANDROIDTERM,put_text,%d,%d,%s\n",x,y,str);
+}
+
+TERM_PUBLIC int 
+ANDROID_text_angle(int ang)
+{
+   printf("ANDROIDTERM,text_angle,%d\n",ang);
+}
+
+TERM_PUBLIC int
+ANDROID_justify_text(enum JUSTIFY mode)
+{
+    switch (mode) {
+    case LEFT:
+	printf("ANDROIDTERM,justify_text,%s\n","LEFT");
+	break;
+    case CENTRE:
+	printf("ANDROIDTERM,justify_text,%s\n","CENTRE");
+	break;
+    case RIGHT:
+	printf("ANDROIDTERM,justify_text,%s\n","RIGHT");
+	break;
+	/* shouldn't happen */
+    default:
+	printf("ANDROIDTERM,justify_text,%s\n","LEFT");
+	return (FALSE);
+	break;
+    }
+    return (TRUE);
 }
 
 TERM_PUBLIC void
 ANDROID_reset()
 {
+   printf("ANDROIDTERM,reset\n");
 }
 
 TERM_PUBLIC void
@@ -142,7 +182,7 @@ TERM_TABLE_START(android_driver)
     ANDROIDVTIC, ANDROIDHTIC, ANDROID_options, ANDROID_init, ANDROID_reset,
     ANDROID_text, null_scale, ANDROID_graphics, ANDROID_move, ANDROID_vector,
     ANDROID_linetype, ANDROID_put_text, null_text_angle,
-    null_justify_text, line_and_point, do_arrow, set_font_null
+    ANDROID_justify_text, line_and_point, do_arrow, set_font_null
 TERM_TABLE_END(android_driver)
 
 #undef LAST_TERM
