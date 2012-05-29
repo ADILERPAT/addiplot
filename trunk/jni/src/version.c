@@ -39,7 +39,7 @@ static char *RCSid() { return RCSid("$Id: version.c,v 1.89.2.8 2010/03/05 06:52:
 #include "syscfg.h"		/* for FAQ_LOCATION */
 
 
-const char gnuplot_version[] = "4.4";
+const char gnuplot_version[] = "addiplot_using_4.4";
 const char gnuplot_patchlevel[] = "0";
 const char gnuplot_date[] = "March 2010";
 const char gnuplot_copyright[] = "Copyright (C) 1986-1993, 1998, 2004, 2007-2010";
@@ -47,16 +47,16 @@ const char gnuplot_copyright[] = "Copyright (C) 1986-1993, 1998, 2004, 2007-2010
 char *compile_options = (void *)0;	/* Will be loaded at runtime */
 
 # ifndef FAQ_LOCATION
-#  define FAQ_LOCATION "http://www.gnuplot.info/faq/"
+#  define FAQ_LOCATION "gnuplot: http://www.gnuplot.info/faq/\naddiplot: http://addiplot.googlecode.com"
 # endif
 # ifndef HELPMAIL
-#  define HELPMAIL "gnuplot-info@lists.sourceforge.net";
+#  define HELPMAIL "gnuplot help: gnuplot-info@lists.sourceforge.net\naddiplot specific help: corbinlc@gmail.com";
 # endif
 # ifndef CONTACT
-#  define CONTACT "gnuplot-beta@lists.sourceforge.ent";
+#  define CONTACT "gnuplot contact: gnuplot-beta@lists.sourceforge.ent\naddiplot specific contact: corbinlc@gmail.com";
 # endif
 # ifndef SUPPORT
-#  define SUPPORT "http://sf.net/projects/gnuplot/support"
+#  define SUPPORT "gnuplot support: http://sf.net/projects/gnuplot/support\naddiplot specific support: addiplot.googlecode.com"
 # endif
 
 const char faq_location[] = FAQ_LOCATION;

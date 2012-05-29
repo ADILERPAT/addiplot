@@ -66,16 +66,13 @@ TERM_PUBLIC void ANDROID_linetype __PROTO((int linetype));
 TERM_PUBLIC void ANDROID_put_text __PROTO((unsigned int x, unsigned int y, const char *str));
 TERM_PUBLIC int ANDROID_text_angle __PROTO((int ang));
 
-#define ANDROIDXMAX 480
-#define ANDROIDYMAX 480
+#define ANDROIDDEFAULTXMAX	480
+#define ANDROIDDEFAULTYMAX	480
 
-#define ANDROIDXLAST (ANDROIDXMAX - 1)
-#define ANDROIDYLAST (ANDROIDYMAX - 1)
-
-#define ANDROIDVCHAR		18
-#define ANDROIDHCHAR		11
-#define ANDROIDVTIC		18
-#define ANDROIDHTIC		18
+#define ANDROIDDEFAULTVCHAR	18
+#define ANDROIDDEFAULTHCHAR	11
+#define ANDROIDDEFAULTVTIC	18
+#define ANDROIDDEFAULTHTIC	18
 
 /* is defined in plot.h
 #define TRUE 1
@@ -85,6 +82,21 @@ TERM_PUBLIC int ANDROID_text_angle __PROTO((int ang));
 
 #ifndef TERM_PROTO_ONLY
 #ifdef TERM_BODY
+
+enum ANDROID_id {
+    ANDROID_SIZE,
+    ANDROID_CHARSIZE,
+    ANDROID_TICSIZE,
+    ANDROID_OTHER
+};
+
+static struct gen_table PNG_opts[] =
+{
+    { "size", ANDROID_SIZE },
+    { "charsize", ANDROID_CHARSIZE },
+    { "ticsize", ANDROID_TICSIZE },
+    { NULL, ANDROID_OTHER }
+};
 
 TERM_PUBLIC void
 ANDROID_init()
@@ -168,9 +180,51 @@ ANDROID_reset()
    printf("ANDROIDTERM,reset\n");
 }
 
+static struct gen_table ANDROID_opts[] =
+{
+    { "size", ANDROID_SIZE },
+    { "charsize", ANDROID_CHARSIZE },
+    { "ticsize", ANDROID_TICSIZE },
+    { NULL, ANDROID_OTHER }
+};
+
 TERM_PUBLIC void
 ANDROID_options()
 {
+   while (!END_OF_COMMAND) {
+      switch(lookup_table(&ANDROID_opts[0],c_token)) {
+         case ANDROID_SIZE:
+            c_token++;
+            if (!END_OF_COMMAND) {
+               term->xmax = real_expression();
+               if (equals(c_token, ",")) {
+		       c_token++;
+		       term->ymax = real_expression();
+               }
+            }
+            break;
+         case ANDROID_CHARSIZE:
+            c_token++;
+            if (!END_OF_COMMAND) {
+               term->h_char = real_expression();
+               if (equals(c_token, ",")) {
+		       c_token++;
+		       term->v_char = real_expression();
+               }
+            }
+            break;
+         case ANDROID_TICSIZE:
+            c_token++;
+            if (!END_OF_COMMAND) {
+               term->h_tic = real_expression();
+               if (equals(c_token, ",")) {
+		       c_token++;
+		       term->v_tic = real_expression();
+               }
+            }
+            break;
+      }
+   }
 }
 
 #endif
@@ -178,8 +232,8 @@ ANDROID_options()
 #ifdef TERM_TABLE
 TERM_TABLE_START(android_driver)
     "android", "ANDROID canvas",
-    ANDROIDXMAX, ANDROIDYMAX, ANDROIDVCHAR, ANDROIDHCHAR,
-    ANDROIDVTIC, ANDROIDHTIC, ANDROID_options, ANDROID_init, ANDROID_reset,
+    ANDROIDDEFAULTXMAX, ANDROIDDEFAULTYMAX, ANDROIDDEFAULTVCHAR, ANDROIDDEFAULTHCHAR,
+    ANDROIDDEFAULTVTIC, ANDROIDDEFAULTHTIC, ANDROID_options, ANDROID_init, ANDROID_reset,
     ANDROID_text, null_scale, ANDROID_graphics, ANDROID_move, ANDROID_vector,
     ANDROID_linetype, ANDROID_put_text, null_text_angle,
     ANDROID_justify_text, line_and_point, do_arrow, set_font_null
