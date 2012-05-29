@@ -236,7 +236,6 @@ static void android_os_Exec_hangupProcessGroup(JNIEnv *env, jobject clazz,
     kill(-procId, SIGHUP);
 }
 
-
 static int register_FileDescriptor(JNIEnv *env)
 {
     jclass localRef_class_fileDescriptor = env->FindClass("java/io/FileDescriptor");

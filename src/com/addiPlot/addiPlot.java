@@ -1,10 +1,16 @@
 package com.addiPlot;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
 import com.addiPlot.session.TermSession;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,6 +20,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +39,8 @@ public class addiPlot extends Activity {
 	private Bitmap _bitmap;
 	private int _screenHeight;
 	private int _screenWidth;
+	private int _textHeight;
+	private int _textWidth;
 	private int _x;
 	private int _y;
 	private LinearLayout mTerminalLayout;
@@ -45,47 +54,11 @@ public class addiPlot extends Activity {
 	private int _linetype;
 	private int _linewidth;
 	private String _justMode = "LEFT";
+	private boolean _ready = false;
+	private boolean _plotDataPresent = false;
+	private String _plotData = "";
 
 	private TermSession mTermSession;
-
-	// Need handler for callbacks to the UI thread
-	public final Handler mHandler = new Handler() {
-		public void handleMessage(Message msg) { 
-			if (msg.getData().getString("command").equals("move")) {
-				move(msg.getData().getInt("x"),msg.getData().getInt("y"));
-			} else if (msg.getData().getString("command").equals("vector")) {
-				vector(msg.getData().getInt("x"),msg.getData().getInt("y"));
-			}
-		};
-	};
-
-	// Create runnable for thread run
-	final Runnable mRunThread = new Runnable() {
-		public void run() {
-			//do something compute intensive
-			//term.plotIt(mHandler);
-			mHandler.post(mUpdateResults);
-		}
-	};
-
-	// Create runnable for posting
-	final Runnable mUpdateResults = new Runnable() {
-		public void run() {
-			updateResultsInUi();
-		}
-	};
-
-	private void updateResultsInUi() {
-		// Back in the UI thread -- update our UI elements based on the data in mResults
-	}
-
-	public void plotIt() {
-		// Fire off a thread to do some work that we shouldn't do directly in the UI thread
-		ThreadGroup threadGroup = new ThreadGroup("plotItCmdGroup");
-		Thread t = new Thread(threadGroup, mRunThread, "plotItCmd", 16*1024*1024) {};
-		t.start();
-	}
-
 
 	/** Called when the activity is first created. */
 	@Override
@@ -93,22 +66,22 @@ public class addiPlot extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		mTerminalLayout = (LinearLayout)findViewById(R.id.terminalLayout);
-		
+
 		mPlotLayout = (LinearLayout)findViewById(R.id.plotLayout);
-		
+
 		mTextView = (TextView)findViewById(R.id.termWindow);
 
 		mScrollView = (ScrollView)findViewById(R.id.scrollView);
 
 		mCmdEditText = (EditText)findViewById(R.id.edit_command);
-		
+
 		mSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
 
 		mCmdEditText.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View view, int keyCode, KeyEvent event) { 
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
-					if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					if ((keyCode == KeyEvent.KEYCODE_ENTER) && (_ready == true)) {
 						String command = mCmdEditText.getText().toString();
 						mCmdEditText.setText("");
 						mTermSession.write(command + "\n");
@@ -126,7 +99,8 @@ public class addiPlot extends Activity {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
-		String plotData = intent.getStringExtra("plotData");
+		_ready = false;
+		_plotData = intent.getStringExtra("plotData");
 
 		mTermSession = new TermSession(this);
 		mTermSession.updateSize(1024, 1024);
@@ -134,41 +108,92 @@ public class addiPlot extends Activity {
 
 	public void scrollToBottom()
 	{
-		mScrollView.post(new Runnable()
+		mScrollView.postDelayed(new Runnable()
 		{ 
 			public void run()
 			{ 
 				mScrollView.smoothScrollTo(0, mTextView.getBottom());
+				if (_ready == false) {
+					_ready = true;
+					_screenHeight = mTerminalLayout.getHeight();
+					_screenWidth = mTerminalLayout.getWidth();
+					if (_screenWidth < _screenHeight) {
+						_screenHeight = _screenWidth;
+					} else {
+						_screenWidth = _screenHeight;
+					}
+					// Converts 14 dip into its equivalent px
+					Resources r = getResources();
+					_textHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics());
+					Paint paint = new Paint();
+					paint.setStyle(Paint.Style.STROKE);
+					paint.setTextSize(_textHeight);
+					paint.setTypeface(Typeface.MONOSPACE);
+					_textWidth = (int) paint.measureText("A");
+					_plotDataPresent = false;
+					mTermSession.write("set term android size " + Integer.toString(_screenWidth) + "," + Integer.toString(_screenHeight) + " charsize " + Integer.toString(_textWidth) + "," + Integer.toString(_textHeight) + " ticsize " + Integer.toString(_textWidth) + "," + Integer.toString(_textWidth) + "\n");
+					if (_plotData != null && _plotData.length() > 0) {
+						_plotDataPresent = true;
+						String fileName = "tempPlotData.csv";	
+						OutputStreamWriter out;
+						try {
+							out = new OutputStreamWriter(openFileOutput(fileName, Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE));
+							_plotData = _plotData.replaceAll(";", "\n");
+							out.write(_plotData);
+							out.flush();
+							out.close();
+							_plotDataPresent = true;
+						} catch (Exception e) {;
+						}
+						String lines[] = _plotData.split("\\n");
+						String lines2[] = lines[0].split(",");
+						int lineCount = (lines2.length+1)/2;
+						mTermSession.write("set datafile separator \",\" \n");
+						mTermSession.write("set nokey \n");
+						String command = "plot \"" + getFilesDir() + "/tempPlotData.csv\" using ";
+						for (int lineNum = 0; lineNum < lineCount; lineNum++) {
+							if (lineNum != 0) {
+								command = command + ", ";
+							}
+							command = command + Integer.toString(lineNum*2+1) + ":" +  Integer.toString(lineNum*2+2);
+						}
+						command = command + " with lines \n";
+						mTermSession.write(command);
+					}
+				}
 			} 
-		});
+		}, _ready ? 100 : 1000);
 	}
 
 	private void init() {
-		_screenHeight = mTerminalLayout.getHeight();
-		_screenWidth = mTerminalLayout.getWidth();
-		if (_screenWidth < _screenHeight) {
-			_screenHeight = _screenWidth;
+		if (_bitmap == null) {
+			_bitmap = Bitmap.createBitmap(_screenWidth, _screenHeight, Bitmap.Config.ARGB_8888);
 		}
-		_bitmap = Bitmap.createBitmap(480, 480, Bitmap.Config.ARGB_8888);
-		_canvas = new Canvas(_bitmap);
+		if (_canvas == null) {
+			_canvas = new Canvas(_bitmap);
+		}
+
+		if (demoview == null) {
+			demoview = new DemoView(this);
+			demoview.setLayoutParams(new ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.FILL_PARENT,
+					ViewGroup.LayoutParams.FILL_PARENT));
+			mPlotLayout.addView(demoview);
+			mPlotLayout.invalidate();
+			mSwitcher.invalidate();
+		}
+	}
+
+
+	private void graphics() {
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.FILL);
 
 		// make the entire canvas white
 		paint.setColor(Color.WHITE);
 		_canvas.drawPaint(paint);
-		
-		if (demoview == null) {
-			demoview = new DemoView(this);
-			demoview.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.FILL_PARENT));
-			mPlotLayout.addView(demoview);
-			mPlotLayout.invalidate();
-			mSwitcher.invalidate();
-		}
 	}
-	
+
 
 	private void linewidth(int width) {
 		_linewidth = width;
@@ -177,7 +202,7 @@ public class addiPlot extends Activity {
 	private void linetype(int type) {
 		_linetype = type;
 	}
-	
+
 	private void justify_text(String mode) {
 		_justMode = mode;
 	}
@@ -191,7 +216,7 @@ public class addiPlot extends Activity {
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(_linewidth);
-		
+
 		if (_linetype < 0) {
 			paint.setColor(Color.BLACK);
 		} else if ((_linetype % 9) == 0) {
@@ -215,7 +240,7 @@ public class addiPlot extends Activity {
 		} else {
 			paint.setColor(Color.BLACK);
 		}
-		_canvas.drawLine(_x, 480-_y , x, 480-y, paint);
+		_canvas.drawLine(_x, _screenHeight-_y , x, _screenHeight-y, paint);
 		_x = x;
 		_y = y;
 	}
@@ -225,7 +250,7 @@ public class addiPlot extends Activity {
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(_linewidth);
 		paint.setColor(Color.BLACK);
-		paint.setTextSize(18);
+		paint.setTextSize(_textHeight);
 		paint.setTypeface(Typeface.MONOSPACE);
 		if (_justMode.equals("RIGHT")) {
 			paint.setTextAlign(Align.RIGHT);
@@ -234,7 +259,7 @@ public class addiPlot extends Activity {
 		} else {
 			paint.setTextAlign(Align.LEFT);
 		}
-		_canvas.drawText(text, x, 480-y, paint);
+		_canvas.drawText(text, x, _screenHeight-y, paint);
 	}
 
 	private class DemoView extends View{
@@ -417,6 +442,7 @@ public class addiPlot extends Activity {
 	}
 
 	public void processString(String newTermOut) {
+
 		String modifiedTermOut = partialLine + newTermOut;
 		int incompleteLine;
 		String lines[] = modifiedTermOut.split("\\r?\\n");
@@ -454,6 +480,8 @@ public class addiPlot extends Activity {
 						justify_text(termCommand[2]);
 					} else if (termCommand[1].equals("init")) {
 						init();
+					} else if (termCommand[1].equals("graphics")) {
+						graphics();
 					} else if (termCommand[1].equals("text")) {
 						demoview.invalidate();
 						mSwitcher.showNext();
@@ -463,24 +491,36 @@ public class addiPlot extends Activity {
 				}
 			}
 		}
+		String textLines[] = textViewString.split("\\n");
+		textViewString = "";
+		int lineNum;
+		int lineCount;
+		for (lineNum = textLines.length-1, lineCount = 0; (lineNum >= 0) && (lineCount < 1000); lineNum--, lineCount++) {
+			textViewString = textLines[lineNum] + "\n" + textViewString;
+		}	
 		mTextView.setText(textViewString);
 		scrollToBottom();
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	        if (mSwitcher.getDisplayedChild() != 0) {
-	        	mSwitcher.showPrevious();
-	        	return true;
-	        } else {
-	        	return super.onKeyDown(keyCode, event);
-	        }
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (_plotDataPresent) {
+				if (mSwitcher.getDisplayedChild() != 1) {
+					mSwitcher.showPrevious();
+					return true;
+				} else {
+					return super.onKeyDown(keyCode, event);
+				}
+			} else if (mSwitcher.getDisplayedChild() != 0) {
+			} else {
+				return super.onKeyDown(keyCode, event);
+			}
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
-	
-	
+
+
 
 }
