@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -35,8 +37,8 @@ import android.widget.ViewSwitcher;
 public class addiPlot extends Activity {
 	DemoView demoview = null;
 
-	private Canvas _canvas;
-	private Bitmap _bitmap;
+	private Canvas _canvas = null;
+	private Bitmap _bitmap = null;
 	private int _screenHeight;
 	private int _screenWidth;
 	private int _textHeight;
@@ -57,6 +59,7 @@ public class addiPlot extends Activity {
 	private boolean _ready = false;
 	private boolean _plotDataPresent = false;
 	private String _plotData = "";
+	private addiPlot _sessionParent = null;
 
 	private TermSession mTermSession;
 
@@ -92,29 +95,14 @@ public class addiPlot extends Activity {
 			}
 		});
 
-		onNewIntent(getIntent());
-	}
+		_sessionParent = this;
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		setIntent(intent);
-		_ready = false;
-		_plotData = intent.getStringExtra("plotData");
-
-		mTermSession = new TermSession(this);
-		mTermSession.updateSize(1024, 1024);
-	}
-
-	public void scrollToBottom()
-	{
-		mScrollView.postDelayed(new Runnable()
-		{ 
-			public void run()
-			{ 
-				mScrollView.smoothScrollTo(0, mTextView.getBottom());
-				if (_ready == false) {
-					_ready = true;
+		ViewTreeObserver viewTreeObserver = mTerminalLayout.getViewTreeObserver();
+		if (viewTreeObserver.isAlive()) {
+			viewTreeObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					mTerminalLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 					_screenHeight = mTerminalLayout.getHeight();
 					_screenWidth = mTerminalLayout.getWidth();
 					if (_screenWidth < _screenHeight) {
@@ -130,47 +118,93 @@ public class addiPlot extends Activity {
 					paint.setTextSize(_textHeight);
 					paint.setTypeface(Typeface.MONOSPACE);
 					_textWidth = (int) paint.measureText("A");
-					_plotDataPresent = false;
-					mTermSession.write("set term android size " + Integer.toString(_screenWidth) + "," + Integer.toString(_screenHeight) + " charsize " + Integer.toString(_textWidth) + "," + Integer.toString(_textHeight) + " ticsize " + Integer.toString(_textWidth) + "," + Integer.toString(_textWidth) + "\n");
-					if (_plotData != null && _plotData.length() > 0) {
-						_plotDataPresent = true;
-						String fileName = "tempPlotData.csv";	
-						OutputStreamWriter out;
-						try {
-							out = new OutputStreamWriter(openFileOutput(fileName, Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE));
+					_bitmap = Bitmap.createBitmap(_screenWidth, _screenHeight, Bitmap.Config.ARGB_8888);
+					_canvas = new Canvas(_bitmap);
+
+					mTermSession = new TermSession(_sessionParent);
+					mTermSession.updateSize(1024, 1024);
+				}
+			});
+		}
+
+		onNewIntent(getIntent());
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		_ready = false;
+		_plotData = intent.getStringExtra("plotData");
+
+		_plotDataPresent = false;
+		if (_plotData != null && _plotData.length() > 0) {
+			String fileName = "tempPlotData.csv";	
+			OutputStreamWriter out;
+			try {
+				out = new OutputStreamWriter(openFileOutput(fileName, Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE));
+				_plotData = _plotData.replaceAll(";", "\n");
+				out.write(_plotData);
+				out.flush();
+				out.close();
+				_plotDataPresent = true;
+			} catch (Exception e) {;
+			}
+		}
+	}
+
+	public void scrollToBottom()
+	{
+		mScrollView.post(new Runnable()
+		{ 
+			public void run()
+			{ 
+				mScrollView.smoothScrollTo(0, mTextView.getBottom());
+				if (_ready == false && partialLine.startsWith("gnuplot>")) {  //prompt is up
+					_ready = true;
+					String fileName = "startup.p";	
+					OutputStreamWriter out;
+					try {
+						out = new OutputStreamWriter(openFileOutput(fileName, Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE));
+						out.write("set term android size " + Integer.toString(_screenWidth) + "," + Integer.toString(_screenHeight) + " charsize " + Integer.toString(_textWidth) + "," + Integer.toString(_textHeight) + " ticsize " + Integer.toString(_textWidth) + "," + Integer.toString(_textWidth) + "\n");
+
+						if (_plotDataPresent == true) {
+							//if (false) {
+
 							_plotData = _plotData.replaceAll(";", "\n");
-							out.write(_plotData);
-							out.flush();
-							out.close();
-							_plotDataPresent = true;
-						} catch (Exception e) {;
-						}
-						String lines[] = _plotData.split("\\n");
-						String lines2[] = lines[0].split(",");
-						int lineCount = (lines2.length+1)/2;
-						mTermSession.write("set datafile separator \",\" \n");
-						mTermSession.write("set nokey \n");
-						String command = "plot \"" + getFilesDir() + "/tempPlotData.csv\" using ";
-						for (int lineNum = 0; lineNum < lineCount; lineNum++) {
-							if (lineNum != 0) {
-								command = command + ", ";
+							String lines[] = _plotData.split("\\n");
+							String lines2[] = lines[0].split(",");
+							int lineCount = (lines2.length+1)/2;
+							out.write("set datafile separator \",\" \n");
+							out.write("set nokey \n");
+							String command = "plot \"" + getFilesDir() + "/tempPlotData.csv\" using ";
+							for (int lineNum = 0; lineNum < lineCount; lineNum++) {
+								if (lineNum != 0) {
+									command = command + ", ";
+								}
+								command = command + Integer.toString(lineNum*2+1) + ":" +  Integer.toString(lineNum*2+2);
 							}
-							command = command + Integer.toString(lineNum*2+1) + ":" +  Integer.toString(lineNum*2+2);
+							command = command + " with lines \n";
+							out.write(command);
+
+
 						}
-						command = command + " with lines \n";
-						mTermSession.write(command);
+						out.flush();
+						out.close();
+						mTermSession.write("load \"" + getFilesDir() + "/startup.p\" \n");
+					} catch (Exception e) {;
 					}
 				}
 			} 
-		}, _ready ? 100 : 1000);
+		});
 	}
 
 	private void init() {
 		if (_bitmap == null) {
-			_bitmap = Bitmap.createBitmap(_screenWidth, _screenHeight, Bitmap.Config.ARGB_8888);
+
 		}
 		if (_canvas == null) {
-			_canvas = new Canvas(_bitmap);
+
 		}
 
 		if (demoview == null) {
@@ -513,6 +547,8 @@ public class addiPlot extends Activity {
 					return super.onKeyDown(keyCode, event);
 				}
 			} else if (mSwitcher.getDisplayedChild() != 0) {
+				mSwitcher.showPrevious();
+				return true;
 			} else {
 				return super.onKeyDown(keyCode, event);
 			}

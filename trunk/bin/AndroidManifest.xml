@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      android:installLocation="auto"
+      package="com.addiPlot"
+      android:versionCode="3"
+      android:versionName="2.0.1">
+    <supports-screens android:resizeable="true"
+                    android:smallScreens="true"
+                    android:normalScreens="true"
+                    android:largeScreens="true"
+                    android:xlargeScreens="true"
+                    android:anyDensity="true"/>
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name=".addiPlot"
+                  android:windowSoftInputMode="stateHidden|adjustResize"
+                  android:configChanges="keyboard|keyboardHidden|orientation" 
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+    <uses-sdk android:minSdkVersion="3" />
+
+</manifest> 

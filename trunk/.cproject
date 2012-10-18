@@ -16,11 +16,11 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration buildProperties="" description="" id="com.android.toolchain.gcc.125516549" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
+				<configuration artifactName="AddiPlot" buildProperties="" description="" id="com.android.toolchain.gcc.125516549" name="Default" parent="org.eclipse.cdt.build.core.emptycfg">
 					<folderInfo id="com.android.toolchain.gcc.125516549.1649083187" name="/" resourcePath="">
 						<toolChain id="com.android.toolchain.gcc.478805613" name="com.android.toolchain.gcc" superClass="com.android.toolchain.gcc">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.android.targetPlatform.1675676276" name="Android Platform" osList="all" superClass="com.android.targetPlatform"/>
-							<builder arguments="C:\ndk\android-ndk-r7\ndk-build" command="bash" id="com.android.builder.1813873226" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.android.builder">
+							<builder arguments="C:\ndk\android-ndk-r7c\ndk-build" command="bash" id="com.android.builder.1813873226" keepEnvironmentInBuildfile="false" managedBuildOn="false" superClass="com.android.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="libs"/>
 								</outputEntries>
@@ -44,11 +44,7 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.android.toolchain.gcc.125516549.2063214609" name="plot.c" rcbsApplicability="disable" resourcePath="jni/src/plot.c" toolsToInvoke="com.android.tool.compiler.c.1244305378.495228991">
-						<tool id="com.android.tool.compiler.c.1244305378.495228991" name="Android GCC" superClass="com.android.tool.compiler.c.1244305378">
-							<inputType id="com.android.tool.compiler.c.input.1378189408" superClass="com.android.tool.compiler.c.input"/>
-						</tool>
-					</fileInfo>
+					<fileInfo id="com.android.toolchain.gcc.125516549.1296538977" name="icon.png" rcbsApplicability="disable" resourcePath="res/drawable/icon.png" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="jni"/>
 					</sourceEntries>
